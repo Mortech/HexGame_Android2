@@ -6,7 +6,7 @@ public class PlayerObject implements PlayingEntity {
 	byte team;
 	
 	public PlayerObject(byte i) {
-	this.team=i;	//sets the players team
+		this.team=i;	//sets the players team
 	}
 
 	@Override

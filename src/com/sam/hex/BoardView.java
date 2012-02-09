@@ -9,8 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 
 public class BoardView extends View{
-	GameLogic game = new GameLogic();
-	int n = game.getN();
+	int n = BoardTools.getN();
 	private ShapeDrawable[][] mDrawable = new ShapeDrawable[n][n];
 	
 	public BoardView(Context context){
@@ -43,7 +42,7 @@ public class BoardView extends View{
 				mDrawable[i][j] = new ShapeDrawable(new PathShape(path, width, height));
 				mDrawable[i][j].setBounds(x,y,x+width,y+height);
 				
-				game.setPolyXY(i, j, new Posn(x-2*L,y));
+				BoardTools.setPolyXY(i, j, new Posn(x-2*L,y));
 				
 				x+=width;
 			}
@@ -57,10 +56,10 @@ public class BoardView extends View{
 	protected void onDraw(Canvas canvas){
 		for(int i=0;i<n;i++){
 			for(int j=0;j<n;j++){
-				if(game.getGameboard()[i][j]==1){
+				if(BoardTools.teamGrid()[i][j]==1){
 					mDrawable[i][j].getPaint().setColor(0xffff0000);
 				}
-				else if(game.getGameboard()[i][j]==2){
+				else if(BoardTools.teamGrid()[i][j]==2){
 					mDrawable[i][j].getPaint().setColor(0xff00ffff);
 				}
 				else{

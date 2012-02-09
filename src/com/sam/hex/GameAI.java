@@ -13,8 +13,9 @@ public class GameAI implements PlayingEntity {
 	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	List<List<List<Integer>>> pairs = new ArrayList();//List of pair-pieces
-	int rand_a = new Random().nextInt(5)-2;
-	int rand_b = new Random().nextInt(5)-2;
+	int diameter = (int) (0.60*(BoardTools.teamGrid().length-1));
+	int rand_a = new Random().nextInt(diameter)-diameter/2;
+	int rand_b = new Random().nextInt(diameter)-diameter/2;
 
 	public GameAI(byte teamNumberT,byte difficaltyT){
 		team=teamNumberT;
@@ -35,10 +36,10 @@ public class GameAI implements PlayingEntity {
 	}
 	
 	private boolean right(){
-		return m[0]+2 <= gameBoard.length-1 && m[1]+2 <= gameBoard.length-1 && m[1]-1 >= 0;
+		return m[0]+2 <= gameBoard.length-1 && m[1]+1 <= gameBoard.length-1 && m[1]-1 >= 0;
 	}
 	private boolean left(){
-		return n[0]-2 >= 0 && n[1]-1 >= 0 && n[1]+2 <= gameBoard.length-1;
+		return n[0]-2 >= 0 && n[1]-1 >= 0 && n[1]+1 <= gameBoard.length-1;
 	}
 
 	private void makeMove(){
@@ -70,7 +71,7 @@ public class GameAI implements PlayingEntity {
 			n[1] = mid;//vertical
 			m[0] = mid;
 			m[1] = mid;
-			Global.gamePiece[mid][mid].setTeam(team);
+			BoardTools.makeMove(mid, mid, team);
 			
 			return;
 		}
@@ -79,7 +80,7 @@ public class GameAI implements PlayingEntity {
 			n[y] = mid+rand_b;//vertical
 			m[x] = mid+rand_a;
 			m[y] = mid+rand_b;
-			Global.gamePiece[mid+rand_a][mid+rand_b].setTeam(team);
+			BoardTools.makeMove(mid+rand_a, mid+rand_b, team);
 
 			return;
 		}
@@ -121,7 +122,7 @@ public class GameAI implements PlayingEntity {
 				if(gameBoard[pairs.get(i).get(0).get(x)][pairs.get(i).get(0).get(y)]!=0){
 					System.out.println("Oh no, they played here: "+pairs.get(i).get(0).get(x)+","+pairs.get(i).get(0).get(y));
 					System.out.println("I'll be playing here: "+pairs.get(i).get(1).get(x)+","+pairs.get(i).get(1).get(y));
-					Global.gamePiece[pairs.get(i).get(1).get(x)][pairs.get(i).get(1).get(y)].setTeam(team);
+					BoardTools.makeMove(pairs.get(i).get(1).get(x), pairs.get(i).get(1).get(y), team);
 					pairs.remove(i);
 					
 					return;
@@ -129,7 +130,7 @@ public class GameAI implements PlayingEntity {
 				else if(gameBoard[pairs.get(i).get(1).get(x)][pairs.get(i).get(1).get(y)]!=0){
 					System.out.println("Oh no, they played here: "+pairs.get(i).get(1).get(x)+","+pairs.get(i).get(1).get(y));
 					System.out.println("I'll be playing here: "+pairs.get(i).get(0).get(x)+","+pairs.get(i).get(0).get(y));
-					Global.gamePiece[pairs.get(i).get(0).get(x)][pairs.get(i).get(0).get(y)].setTeam(team);
+					BoardTools.makeMove(pairs.get(i).get(0).get(x), pairs.get(i).get(0).get(y), team);
 					pairs.remove(i);
 					
 					return;
@@ -145,23 +146,23 @@ public class GameAI implements PlayingEntity {
 			if(gameBoard[m[x]-1*x+1*y][m[y]-1*y+1*x]==0){
 				m[0] = m[0]+1;
 				m[1] = m[1]-1;
-				
-				Global.gamePiece[m[x]][m[y]].setTeam(team);
+
+				BoardTools.makeMove(m[x], m[y], team);
 				return;
 			}
 			else if(gameBoard[m[x]+1*x+0*y][m[y]+1*y+0*x]==0){
 				m[0] = m[0];
 				m[1] = m[1]+1;
-				
-				Global.gamePiece[m[x]][m[y]].setTeam(team);
+
+				BoardTools.makeMove(m[x], m[y], team);
 				return;
 			}
 		}
 		if(right() && (gameBoard[m[x]-1*x+1*y][m[y]-1*y+1*x]!=0 || gameBoard[m[x]+1*x+0*y][m[y]+1*y+0*x]!=0) && gameBoard[m[x]+0*x+1*y][m[y]+0*y+1*x]==0){
 			m[0] = m[0]+1;
 			m[1] = m[1];
-			
-			Global.gamePiece[m[x]][m[y]].setTeam(team);
+
+			BoardTools.makeMove(m[x], m[y], team);
 			return;
 		}
 		//Check if they were sneakier and played behind us
@@ -169,23 +170,23 @@ public class GameAI implements PlayingEntity {
 			if(gameBoard[n[x]+1*x-1*y][n[y]+1*y-1*x]==0){
 				n[0] = n[0]-1;
 				n[1] = n[1]+1;
-				
-				Global.gamePiece[n[x]][n[y]].setTeam(team);
+
+				BoardTools.makeMove(n[x], n[y], team);
 				return;
 			}
 			else if(gameBoard[n[x]-1*x+0*y][n[y]-1*y+0*x]==0){
 				n[0] = n[0];
 				n[1] = n[1]-1;
-				
-				Global.gamePiece[n[x]][n[y]].setTeam(team);
+
+				BoardTools.makeMove(n[x], n[y], team);
 				return;
 			}
 		}
 		if(left() && (gameBoard[n[x]+1*x-1*y][n[y]+1*y-1*x]!=0 || gameBoard[n[x]-1*x+0*y][n[y]-1*y+0*x]!=0) && gameBoard[n[x]+0*x-1*y][n[y]+0*y-1*x]==0){
 			n[0] = n[0]-1;
 			n[1] = n[1];
-			
-			Global.gamePiece[n[x]][n[y]].setTeam(team);
+
+			BoardTools.makeMove(n[x], n[y], team);
 			return;
 		}
 		
@@ -206,8 +207,8 @@ public class GameAI implements PlayingEntity {
 				
 				n[0] = n[0]-2;
 				n[1] = n[1]+1;
-				
-				Global.gamePiece[n[x]][n[y]].setTeam(team);
+
+				BoardTools.makeMove(n[x], n[y], team);
 				return;
 			}
 			else if(gameBoard[n[x]+1*x-2*y][n[y]+1*y-2*x]!=0 && gameBoard[n[x]-1*x-1*y][n[y]-1*y-1*x]==0){
@@ -224,8 +225,8 @@ public class GameAI implements PlayingEntity {
 
 				n[0] = n[0]-1;
 				n[1] = n[1]-1;
-				
-				Global.gamePiece[n[x]][n[y]].setTeam(team);
+
+				BoardTools.makeMove(n[x], n[y], team);
 				return;
 			}
 		}
@@ -246,8 +247,8 @@ public class GameAI implements PlayingEntity {
 
 				m[0] = m[0]+1;
 				m[1] = m[1]+1;
-				
-				Global.gamePiece[m[x]][m[y]].setTeam(team);
+
+				BoardTools.makeMove(m[x], m[y], team);
 				return;
 			}
 			else if(gameBoard[m[x]+1*x+1*y][m[y]+1*y+1*x]!=0 && gameBoard[m[x]-1*x+2*y][m[y]-1*y+2*x]==0){
@@ -264,8 +265,8 @@ public class GameAI implements PlayingEntity {
 
 				m[0] = m[0]+2;
 				m[1] = m[1]-1;
-				
-				Global.gamePiece[m[x]][m[y]].setTeam(team);
+
+				BoardTools.makeMove(m[x], m[y], team);
 				return;
 			}
 		}
@@ -287,8 +288,8 @@ public class GameAI implements PlayingEntity {
 
 			n[0] = n[0]-2;
 			n[1] = n[1]+1;
-			
-			Global.gamePiece[n[x]][n[y]].setTeam(team);
+
+			BoardTools.makeMove(n[x], n[y], team);
 			return;
 		}
 		else if(left() && rand==1 && gameBoard[n[x]-1*x-1*y][n[y]-1*y-1*x]==0){
@@ -305,8 +306,8 @@ public class GameAI implements PlayingEntity {
 
 			n[0] = n[0]-1;
 			n[1] = n[1]-1;
-			
-			Global.gamePiece[n[x]][n[y]].setTeam(team);
+
+			BoardTools.makeMove(n[x], n[y], team);
 			return;
 		}
 		//Extend right if we haven't gone left
@@ -324,8 +325,8 @@ public class GameAI implements PlayingEntity {
 
 			m[0] = m[0]+2;
 			m[1] = m[1]-1;
-			
-			Global.gamePiece[m[x]][m[y]].setTeam(team);
+
+			BoardTools.makeMove(m[x], m[y], team);
 			return;
 		}
 		else if(right() && rand==1 && gameBoard[m[x]+1*x+1*y][m[y]+1*y+1*x]==0){
@@ -342,15 +343,16 @@ public class GameAI implements PlayingEntity {
 
 			m[0] = m[0]+1;
 			m[1] = m[1]+1;
-			
-			Global.gamePiece[m[x]][m[y]].setTeam(team);
+
+			BoardTools.makeMove(m[x], m[y], team);
 			return;
 		}
 		
 		//Fill in the pairs after we've reached both sides of the map
 		if( !left() && !right() && pairs.size() > 0){
 			//Play a random pair
-			Global.gamePiece[pairs.get(0).get(1).get(x)][pairs.get(0).get(1).get(y)].setTeam(team);
+
+			BoardTools.makeMove(pairs.get(0).get(1).get(x), pairs.get(0).get(1).get(y), team);
 			pairs.remove(0);
 			
 			return;
@@ -370,7 +372,7 @@ public class GameAI implements PlayingEntity {
 					moves--;
 				}
 				if(moves==0) {
-					Global.gamePiece[a][b].setTeam(team);
+					BoardTools.makeMove(a, b, team);
 					moves=-10;
 				}	
 			}
@@ -379,8 +381,6 @@ public class GameAI implements PlayingEntity {
 		return;
 	}
 	private void badMove(){
-
-
 		int moves=1;
 		for(int x=0; x<gameBoard.length; x++){
 			for(int y=0; y<gameBoard[x].length; y++){
@@ -394,7 +394,7 @@ public class GameAI implements PlayingEntity {
 					moves--;
 				}
 				if(moves==0) {
-					Global.gamePiece[x][y].setTeam(team);
+					BoardTools.makeMove(x, y, team);
 					moves=-10;
 				}	
 			}

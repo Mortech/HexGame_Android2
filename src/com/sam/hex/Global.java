@@ -1,39 +1,39 @@
 package com.sam.hex;
 
-import java.awt.Shape; //import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.awt.Color;
-
-public class Global {
-	public static int gridSize = 7;
-	public static int windowHeight = 600;
-	public static BufferedImage background;
-	public static int windowWidth = 800;
-	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[0][0];
-	public static Shape[][] hexes = gamePiece;
-	public static Color playerOne=Color.blue;
-	public static Color playerTwo=Color.red;
+public class Global{
+	private static byte[][] gameboard;
+	private static int n;
+	private static Posn[][] polyXY;
+	private static byte currentPlayer = 0;
 	public static byte gameType; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
-
-	// public static Color[][] background;
-	public static void set(int gS, int wH, int wW) {
-		if (gS > 0)
-			gridSize = gS;
-		if (wH > 10)
-			windowHeight = wH;
-		if (wW > 10)
-			windowWidth = wW;
-		gamePiece = new RegularPolygonGameObject[gridSize][gridSize];
-		hexes = gamePiece;
-		background = new BufferedImage(windowWidth, windowHeight,
-				BufferedImage.TYPE_INT_ARGB);
-		// background=new Color[windowWidth][windowHeight];
+	public static int getN() {
+		return n;
 	}
-	public static void set(int gS, int wH, int wW, byte AI){
-		set(gS, wH, wW);
-		if (gameType < 4)
-		gameType=AI;
+	public static void setN(int n) {
+		Global.n = n;
 	}
-	// public static int windowHeight=200;
-	// public static int windowWidth=400;
+	public static byte[][] getGameboard() {
+		return gameboard;
+	}
+	public static void setGameboard(byte[][] gameboard) {
+		Global.gameboard = gameboard;
+	}
+	public static void setGameboard(int x, int y, byte team) {
+		Global.gameboard[x][y] = team;
+	}
+	public static Posn[][] getPolyXY() {
+		return polyXY;
+	}
+	public static void setPolyXY(Posn[][] polyXY) {
+		Global.polyXY = polyXY;
+	}
+	public static void setPolyXY(int x, int y, Posn posn) {
+		Global.polyXY[x][y] = posn;
+	}
+	public static byte getCurrentPlayer(){
+		return currentPlayer;
+	}
+	public static void setCurrentPlayer(){
+		Global.currentPlayer = (byte) (currentPlayer%2+1);
+	}
 }
