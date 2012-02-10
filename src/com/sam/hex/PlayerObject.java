@@ -21,7 +21,15 @@ public class PlayerObject implements PlayingEntity {
 		makeMove();
 	}
 	public void makeMove(){
-		GameAction.getPlayerTurn(team); // lets the player make his move
+		while(Global.getPendingMove()==null){
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		BoardTools.makeMove(Global.getPendingMove().getX(), Global.getPendingMove().getY(), team);
+		Global.setPendingMove(null);
 	}
 
 }

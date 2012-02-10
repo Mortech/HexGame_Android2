@@ -21,28 +21,32 @@ public class HexGame extends Activity {
         super.onCreate(savedInstanceState);
         
         if(BoardTools.teamGrid()==null){
-        	BoardTools.setGame(n);//Must be set up immediately
+        	BoardTools.setGame(n);
+        	initializeNewGame();//Must be set up immediately
+        	
+    		@SuppressWarnings("unused")
+			GameObject game = new GameObject();
         }
         
         Global.setBoard(new BoardView(this));
         OnTouchListener touchListener = new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+				//Check if its a human's turn
+				if(Global.getCurrentPlayer()==1){
+					if(Global.getGameType()<2) 
+						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+				}
+				else{
+					if((Global.getGameType()+1)%2>0) 
+						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+				}
+				
 				return false;
 			}
         };
         Global.getBoard().setOnTouchListener(touchListener);
         setContentView(Global.getBoard());
-        
-//        PlayingEntity player1;
-//		PlayingEntity player2;
-//		
-//		if(Global.getGameType()<2) player1=new PlayerObject((byte)1);
-//		else player1=new GameAI((byte)1,(byte)1);// sets player vs Ai
-//		
-//		if((Global.getGameType()+1)%2>0) player2=new PlayerObject((byte)2);
-//		else player2=new GameAI((byte)2,(byte)1);// sets player vs Ai
     }
     
     public boolean makeMove(int X, int Y, byte team){
@@ -50,7 +54,7 @@ public class HexGame extends Activity {
     		for(int j=BoardTools.getN()-1;j>-1;j--){
     			if(X>BoardTools.getPolyXY()[i][j].getX() && Y>BoardTools.getPolyXY()[i][j].getY()){
     				if(BoardTools.teamGrid()[i][j]==0){
-    					BoardTools.makeMove(i, j, team);
+    					Global.setPendingMove(new Posn(i,j));
     					return true;
     				}
     				else{
@@ -60,6 +64,22 @@ public class HexGame extends Activity {
     		}
     	}
     	return false;
+    }
+    
+    public void initializeNewGame(){
+    	//TODO Load n from settings
+    	//TODO Load Game Type from settings
+    	
+    	BoardTools.clearBoard();
+    	BoardTools.clearMoveList();
+    	Global.setCurrentPlayer((byte) 1);
+    	Global.setRunning(true);
+    	
+    	if(Global.getGameType()<2) Global.setPlayer1(new PlayerObject((byte)1));
+		else Global.setPlayer1(new GameAI((byte)1,(byte)1));// sets player vs Ai
+		
+		if((Global.getGameType()+1)%2>0) Global.setPlayer2(new PlayerObject((byte)2));
+		else Global.setPlayer2(new GameAI((byte)2,(byte)1));// sets player vs Ai
     }
     
     @Override
@@ -82,9 +102,7 @@ public class HexGame extends Activity {
         	Global.getBoard().invalidate();
             return true;
         case R.id.newgame:
-        	BoardTools.clearBoard();
-        	BoardTools.clearMoveList();
-        	Global.setCurrentPlayer((byte) 1);
+        	initializeNewGame();
         	Global.getBoard().invalidate();
             return true;
         case R.id.quit:
