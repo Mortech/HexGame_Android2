@@ -9,12 +9,35 @@ import android.util.DisplayMetrics;
 import android.view.View;
 
 public class BoardView extends View{
-	int n = Global.getN();
-	private ShapeDrawable[][] mDrawable = new ShapeDrawable[n][n];
+	private ShapeDrawable[][] mDrawable;
 	
 	public BoardView(Context context){
 		super(context);
+		calculateGrid(context);
+	}
+	
+	protected void onDraw(Canvas canvas){
+		int n = Global.getN();
 		
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				if(BoardTools.teamGrid()[i][j]==1){
+					mDrawable[i][j].getPaint().setColor(0xffff0000);
+				}
+				else if(BoardTools.teamGrid()[i][j]==2){
+					mDrawable[i][j].getPaint().setColor(0xff00ffff);
+				}
+				else{
+					mDrawable[i][j].getPaint().setColor(0xff74AC23);
+				}
+				mDrawable[i][j].draw(canvas);
+			}
+		}
+	}
+	
+	public void calculateGrid(Context context){
+		int n = Global.getN();
+		mDrawable = new ShapeDrawable[n][n];
 		
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		int L=Math.min(metrics.widthPixels/(3*n/2),metrics.heightPixels/(3*n/2))/2;
@@ -27,6 +50,7 @@ public class BoardView extends View{
 		int y=height;
 		int spacing=0;
 		
+		//Shape of a hexagon
 		Path path = new Path();
         path.moveTo(0, 0+L/2);
         path.lineTo(0, L+L/2);
@@ -35,7 +59,7 @@ public class BoardView extends View{
         path.lineTo((float) (-L*Math.sqrt(3)),0+L/2);
         path.lineTo((float) (-L*Math.sqrt(3)/2),-L*1/2+L/2);
         path.close();
-
+        
 		
 		for(int i=0;i<n;i++){
 			for(int j=0;j<n;j++){
@@ -50,23 +74,6 @@ public class BoardView extends View{
 			spacing+=width/2;
 			x=width+spacing;
 			y+=height;
-		}
-	}
-	
-	protected void onDraw(Canvas canvas){
-		for(int i=0;i<n;i++){
-			for(int j=0;j<n;j++){
-				if(BoardTools.teamGrid()[i][j]==1){
-					mDrawable[i][j].getPaint().setColor(0xffff0000);
-				}
-				else if(BoardTools.teamGrid()[i][j]==2){
-					mDrawable[i][j].getPaint().setColor(0xff00ffff);
-				}
-				else{
-					mDrawable[i][j].getPaint().setColor(0xff74AC23);
-				}
-				mDrawable[i][j].draw(canvas);
-			}
 		}
 	}
 }

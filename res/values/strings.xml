@@ -9,6 +9,4 @@
     <string name="quit">Quit</string>
     
     <string name="inline_preferences">Settings</string>
-    <string name="checkbox_preference">The Settings Are A Lie</string>
-    <string name="summary_checkbox_preference">A lie...</string>
 </resources>

@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,36 +16,13 @@ import android.view.View.OnTouchListener;
 
 public class HexGame extends Activity {
     /** Called when the activity is first created. */
-	int n=7;
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         if(BoardTools.teamGrid()==null){
-        	BoardTools.setGame(n);
         	initializeNewGame();//Must be set up immediately
         }
-        
-        Global.setBoard(new BoardView(this));
-        OnTouchListener touchListener = new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				//Check if its a human's turn
-				if(Global.getCurrentPlayer()==1){
-					if(Global.getGameType()<2) 
-						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-				}
-				else{
-					if((Global.getGameType()+1)%2>0) 
-						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-				}
-				
-				return false;
-			}
-        };
-        Global.getBoard().setOnTouchListener(touchListener);
-        setContentView(Global.getBoard());
     }
     
     public boolean makeMove(int X, int Y, byte team){
@@ -64,23 +43,49 @@ public class HexGame extends Activity {
     }
     
     public void initializeNewGame(){
-    	//TODO Load n from settings
-    	//TODO Load Game Type from settings
+    	//Load preferences
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
+    	//Create our board
+    	BoardTools.setGame(Integer.decode(prefs.getString("gameSizePref", "7")));
     	BoardTools.clearBoard();
+    	Global.setBoard(new BoardView(this));
+    	
+    	//Make sure the board is empty and defaults are set
     	BoardTools.clearMoveList();
     	Global.setCurrentPlayer((byte) 1);
     	Global.setRunning(true);
     	
+    	//Set game mode
+    	Global.setGameType(prefs.getString("gameModePref", "0"));
     	if(Global.getGameType()<2) Global.setPlayer1(new PlayerObject((byte)1));
-		else Global.setPlayer1(new GameAI((byte)1,(byte)1));// sets player vs Ai
-		
+		else Global.setPlayer1(new GameAI((byte)1,(byte)1));//Sets Player vs Ai
 		if((Global.getGameType()+1)%2>0) Global.setPlayer2(new PlayerObject((byte)2));
-		else Global.setPlayer2(new GameAI((byte)2,(byte)1));// sets player vs Ai
+		else Global.setPlayer2(new GameAI((byte)2,(byte)1));//Sets Player vs Ai
 		
-
+		//Create the game object
 		@SuppressWarnings("unused")
 		GameObject game = new GameObject();
+		
+		//Add the touch listener
+		OnTouchListener touchListener = new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				//Check if its a human's turn
+				if(Global.getCurrentPlayer()==1){
+					if(Global.getGameType()<2) 
+						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+				}
+				else{
+					if((Global.getGameType()+1)%2>0) 
+						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+				}
+				
+				return false;
+			}
+        };
+        Global.getBoard().setOnTouchListener(touchListener);
+        setContentView(Global.getBoard());
     }
     
     @Override

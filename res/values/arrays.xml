@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+    <string-array name="gameModeArray">
+        <item>PvP</item>
+        <item>PvC</item>
+        <item>CvP</item>
+        <item>CvC</item>
+    </string-array>
+    <string-array name="gameModeValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="gameSizeArray">
+        <item>7x7</item>
+        <item>9x9</item>
+        <item>11x11</item>
+        <item>13x13</item>
+    </string-array>
+    <string-array name="gameSizeValues">
+        <item>7</item>
+        <item>9</item>
+        <item>11</item>
+        <item>13</item>
+    </string-array>
+</resources>
