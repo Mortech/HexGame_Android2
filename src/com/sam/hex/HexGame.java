@@ -23,6 +23,28 @@ public class HexGame extends Activity {
         if(BoardTools.teamGrid()==null){
         	initializeNewGame();//Must be set up immediately
         }
+        else{
+        	Global.setBoard(new BoardView(this));
+        	//Add the touch listener
+    		OnTouchListener touchListener = new OnTouchListener() {
+    			@Override
+    			public boolean onTouch(View v, MotionEvent event) {
+    				//Check if its a human's turn
+    				if(Global.getCurrentPlayer()==1){
+    					if(Global.getGameType()<2) 
+    						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+    				}
+    				else{
+    					if((Global.getGameType()+1)%2>0) 
+    						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+    				}
+    				
+    				return false;
+    			}
+            };
+            Global.getBoard().setOnTouchListener(touchListener);
+            setContentView(Global.getBoard());
+        }
     }
     
     public boolean makeMove(int X, int Y, byte team){
