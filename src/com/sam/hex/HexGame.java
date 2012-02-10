@@ -89,6 +89,19 @@ public class HexGame extends Activity {
     }
     
     @Override
+    public void onResume(){
+    	super.onResume();
+    	
+    	//Load preferences
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    	
+    	//Check if settings were changed
+    	if(Integer.decode(prefs.getString("gameSizePref", "7")) != Global.getN() || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.getGameType()){
+    		initializeNewGame();
+    	}
+    }
+    
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.layout.menu, menu);
