@@ -23,9 +23,6 @@ public class HexGame extends Activity {
         if(BoardTools.teamGrid()==null){
         	BoardTools.setGame(n);
         	initializeNewGame();//Must be set up immediately
-        	
-    		@SuppressWarnings("unused")
-			GameObject game = new GameObject();
         }
         
         Global.setBoard(new BoardView(this));
@@ -50,8 +47,8 @@ public class HexGame extends Activity {
     }
     
     public boolean makeMove(int X, int Y, byte team){
-    	for(int i=BoardTools.getN()-1;i>-1;i--){
-    		for(int j=BoardTools.getN()-1;j>-1;j--){
+    	for(int i=Global.getN()-1;i>-1;i--){
+    		for(int j=Global.getN()-1;j>-1;j--){
     			if(X>BoardTools.getPolyXY()[i][j].getX() && Y>BoardTools.getPolyXY()[i][j].getY()){
     				if(BoardTools.teamGrid()[i][j]==0){
     					Global.setPendingMove(new Posn(i,j));
@@ -80,6 +77,10 @@ public class HexGame extends Activity {
 		
 		if((Global.getGameType()+1)%2>0) Global.setPlayer2(new PlayerObject((byte)2));
 		else Global.setPlayer2(new GameAI((byte)2,(byte)1));// sets player vs Ai
+		
+
+		@SuppressWarnings("unused")
+		GameObject game = new GameObject();
     }
     
     @Override

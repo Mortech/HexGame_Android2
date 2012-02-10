@@ -28,7 +28,7 @@ public class PlayerObject implements PlayingEntity {
 				e.printStackTrace();
 			}
 		}
-		BoardTools.makeMove(Global.getPendingMove().getX(), Global.getPendingMove().getY(), team);
+		BoardTools.makeMove(Global.getPendingMove().getX(), Global.getPendingMove().getY(), Global.getCurrentPlayer());
 		Global.setPendingMove(null);
 	}
 

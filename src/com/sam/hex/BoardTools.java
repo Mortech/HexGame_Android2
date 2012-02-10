@@ -12,20 +12,7 @@ public class BoardTools{
 			//Play move
 			Global.setGameboard(x,y,team);
         	Global.addToMoveList(new Posn(x,y));
-        	
-        	
-        	//Call next player's move
-//        	if(Global.getCurrentPlayer()==(byte) 1){
-//        		Global.getPlayer1().getPlayerTurn();
-//        	}
-//        	else{
-//        		Global.getPlayer2().getPlayerTurn();
-//        	}
 		}
-	}
-	
-	public static int getN(){
-		return Global.getN();
 	}
 	
 	public static byte[][] teamGrid(){
@@ -58,16 +45,13 @@ public class BoardTools{
 			Posn lastMove = Global.getMoveList().get(Global.getMoveList().size()-1);
 			Global.setGameboard(lastMove.getX(), lastMove.getY(), (byte) 0);
 			Global.removeFromMoveList(lastMove);
+			if(!Global.getRunning()){
+				Global.setRunning(true);
+				Global.setPendingMove(null);
+				@SuppressWarnings("unused")
+				GameObject game = new GameObject();
+			}
 			updateCurrentPlayer();
-			Global.setRunning(true);
-			
-			//Call next player's move
-        	if(Global.getCurrentPlayer()==(byte) 1){
-        		Global.getPlayer1().getPlayerTurn();
-        	}
-        	else{
-        		Global.getPlayer2().getPlayerTurn();
-        	}
 		}
 	}
 	
@@ -86,6 +70,17 @@ public class BoardTools{
 //				return true;
 //			}
 //		}
+		
+		
+		
+		for(int i=0;i<Global.getN();i++){
+			
+		}
+		
+		
+		
+		
+		
 		if(Global.getGameboard()[1][1]==1 || Global.getGameboard()[1][1]==2){
 			return true;
 		}

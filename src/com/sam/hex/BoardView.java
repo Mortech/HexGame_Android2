@@ -9,7 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 
 public class BoardView extends View{
-	int n = BoardTools.getN();
+	int n = Global.getN();
 	private ShapeDrawable[][] mDrawable = new ShapeDrawable[n][n];
 	
 	public BoardView(Context context){

@@ -15,8 +15,9 @@ public class Global{
 	private static byte currentPlayer = 1;
 	private static View board;
 	private static List<Posn> moveList = new ArrayList<Posn>();
-	private static byte gameType = 3; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
+	private static byte gameType = 0; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
 	private static Posn pendingMove;
+	private static boolean undo;
 	public static int getN() {
 		return n;
 	}
@@ -97,5 +98,11 @@ public class Global{
 	}
 	public static void setPendingMove(Posn pos){
 		Global.pendingMove = pos;
+	}
+	public static boolean getUndo(){
+		return undo;
+	}
+	public static void setUndo(boolean bool){
+		Global.undo = bool;
 	}
 }
