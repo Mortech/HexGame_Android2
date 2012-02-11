@@ -140,7 +140,50 @@ public class HexGame extends Activity {
         	startActivity(settingsActivity);
             return true;
         case R.id.undo:
-        	BoardTools.undo();
+        	if(!Global.getMoveList().isEmpty()){
+    			Posn lastMove = Global.getMoveList().get(Global.getMoveList().size()-1);
+    			Global.setGameboard(lastMove.getX(), lastMove.getY(), (byte) 0);
+    			Global.removeFromMoveList(lastMove);
+        	}
+        	BoardTools.updateCurrentPlayer();
+    		Global.setRunning(true);
+    		Global.setPendingMove(null);
+    		for(int i=0;i<Global.getN();i++){
+				for(int j=0;j<Global.getN();j++){
+					if(Global.getGameboard()[i][j]==(byte) 3){
+						Global.setGameboard(i, j, (byte) 1);
+					}
+					else if(Global.getGameboard()[i][j]==(byte) 4){
+						Global.setGameboard(i, j, (byte) 2);
+					}
+				}
+			}
+        	//Create our board
+        	Global.setBoard(new BoardView(this));
+    		
+    		//Create the game object
+    		@SuppressWarnings("unused")
+    		GameObject game = new GameObject();
+    		
+    		//Add the touch listener
+    		OnTouchListener touchListener = new OnTouchListener() {
+    			@Override
+    			public boolean onTouch(View v, MotionEvent event) {
+    				//Check if its a human's turn
+    				if(Global.getCurrentPlayer()==1){
+    					if(Global.getGameType()<2) 
+    						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+    				}
+    				else{
+    					if((Global.getGameType()+1)%2>0) 
+    						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+    				}
+    				
+    				return false;
+    			}
+            };
+            Global.getBoard().setOnTouchListener(touchListener);
+            setContentView(Global.getBoard());
         	Global.getBoard().invalidate();
             return true;
         case R.id.newgame:

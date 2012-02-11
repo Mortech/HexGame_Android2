@@ -40,31 +40,6 @@ public class BoardTools{
 		Global.clearMoveList();
 	}
 	
-	public static void undo(){
-		if(!Global.getMoveList().isEmpty()){
-			Posn lastMove = Global.getMoveList().get(Global.getMoveList().size()-1);
-			Global.setGameboard(lastMove.getX(), lastMove.getY(), (byte) 0);
-			Global.removeFromMoveList(lastMove);
-			if(!Global.getRunning()){
-				Global.setRunning(true);
-				Global.setPendingMove(null);
-				@SuppressWarnings("unused")
-				GameObject game = new GameObject();
-				for(int i=0;i<Global.getN();i++){
-					for(int j=0;j<Global.getN();j++){
-						if(Global.getGameboard()[i][j]==3){
-							Global.setGameboard(i, j, (byte) 1);
-						}
-						else if(Global.getGameboard()[i][j]==4){
-							Global.setGameboard(i, j, (byte) 2);
-						}
-					}
-				}
-			}
-			updateCurrentPlayer();
-		}
-	}
-	
 	public static void updateCurrentPlayer(){
 		Global.setCurrentPlayer((byte) (Global.getCurrentPlayer()%2+1));
 	}
@@ -77,22 +52,26 @@ public class BoardTools{
 		//(x+1),(y) Down and Forward
 		//(x-1),(y) Up and Back 
 		//(x-1),(y+1) Up and Forward
-		byte[][] checked = new byte[Global.getN()][Global.getN()];
+		byte[][] flags = new byte[Global.getN()][Global.getN()];
 		for(int i=0;i<Global.getN();i++){
 			for(int j=0;j<Global.getN();j++){
-				checked[i][j]=0;
+				flags[i][j]=0;
 			}
 		}
 		for(int i=0;i<Global.getN();i++){
-			if(recursiveCheckP1(new Posn(i,0),checked)){
+			if(recursiveCheckP1(new Posn(i,0),flags)){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public static boolean recursiveCheckP1(Posn hex, byte[][] checked){
-		if(Global.getGameboard()[hex.getX()][hex.getY()]!=Global.getCurrentPlayer() || checked[hex.getX()][hex.getY()]==1){
+	public static boolean recursiveCheckP1(Posn hex, byte[][] flags){
+		byte[][] checked = new byte[Global.getN()][Global.getN()];
+		for(int i=0;i<Global.getN();i++){
+			checked[i] = flags[i].clone();
+		}
+		if(Global.getGameboard()[hex.getX()][hex.getY()]!=(byte) 1 || checked[hex.getX()][hex.getY()]==1){
 			//This isn't a valid piece
 			return false;
 		}
@@ -147,22 +126,26 @@ public class BoardTools{
 		//(x+1),(y) Down and Forward
 		//(x-1),(y) Up and Back 
 		//(x-1),(y+1) Up and Forward
-		byte[][] checked = new byte[Global.getN()][Global.getN()];
+		byte[][] flags = new byte[Global.getN()][Global.getN()];
 		for(int i=0;i<Global.getN();i++){
 			for(int j=0;j<Global.getN();j++){
-				checked[i][j]=0;
+				flags[i][j]=0;
 			}
 		}
 		for(int i=0;i<Global.getN();i++){
-			if(recursiveCheckP2(new Posn(0,i),checked)){
+			if(recursiveCheckP2(new Posn(0,i),flags)){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public static boolean recursiveCheckP2(Posn hex, byte[][] checked){
-		if(Global.getGameboard()[hex.getX()][hex.getY()]!=Global.getCurrentPlayer() || checked[hex.getX()][hex.getY()]==1){
+	public static boolean recursiveCheckP2(Posn hex, byte[][] flags){
+		byte[][] checked = new byte[Global.getN()][Global.getN()];
+		for(int i=0;i<Global.getN();i++){
+			checked[i] = flags[i].clone();
+		}
+		if(Global.getGameboard()[hex.getX()][hex.getY()]!=(byte) 2 || checked[hex.getX()][hex.getY()]==1){
 			//This isn't a valid piece
 			return false;
 		}
