@@ -17,6 +17,7 @@ public class Global{
 	private static List<Posn> moveList = new ArrayList<Posn>();
 	private static byte gameType = 0; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
 	private static Posn pendingMove;
+	private static int hexLength;
 	public static int getN() {
 		return n;
 	}
@@ -101,5 +102,11 @@ public class Global{
 	}
 	public static void setPendingMove(Posn pos){
 		Global.pendingMove = pos;
+	}
+	public static int getHexLength(){
+		return hexLength;
+	}
+	public static void setHexLength(int L){
+		Global.hexLength = L;
 	}
 }

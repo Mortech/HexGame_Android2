@@ -10,21 +10,22 @@ public class GameAI implements PlayingEntity {
 	byte team;// 1 is left-right, 2 is top-down
 	byte difficalty;
 	byte[][] gameBoard;
-	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	List<List<List<Integer>>> pairs = new ArrayList();//List of pair-pieces
-	int diameter = (int) (0.60*(BoardTools.teamGrid().length-1));
-	int rand_a = new Random().nextInt(diameter)-diameter/2;
-	int rand_b = new Random().nextInt(diameter)-diameter/2;
+	int[] n = {BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move;
+	List<List<List<Integer>>> pairs;
+	int diameter;
+	int rand_a;
+	int rand_b;
 
 	public GameAI(byte teamNumberT,byte difficaltyT){
 		team=teamNumberT;
 		difficalty=difficaltyT;
-
+		pairs = new ArrayList<List<List<Integer>>>();//List of pair-pieces
+		diameter = (int) (0.60*(BoardTools.teamGrid().length-1));
+		rand_a = new Random().nextInt(diameter)-diameter/2;
+		rand_b = new Random().nextInt(diameter)-diameter/2;
 	}
 
 	public void getPlayerTurn(byte[][] gameBoard) { // for net play
-
 		 this.gameBoard=gameBoard;
 		 makeMove();
 	}
@@ -50,10 +51,10 @@ public class GameAI implements PlayingEntity {
 		int x = 0;
 		int y = 0;
 		if(team==2){
-			x++;
+			y++;
 		}
 		else if(team==1){
-			y++;
+			x++;
 		}
 		
 		//Sleep to stop instantaneous playing
@@ -380,6 +381,7 @@ public class GameAI implements PlayingEntity {
 		
 		return;
 	}
+	@SuppressWarnings("unused")
 	private void badMove(){
 		int moves=1;
 		for(int x=0; x<gameBoard.length; x++){

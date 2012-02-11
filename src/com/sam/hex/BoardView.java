@@ -22,10 +22,16 @@ public class BoardView extends View{
 		for(int i=0;i<n;i++){
 			for(int j=0;j<n;j++){
 				if(BoardTools.teamGrid()[i][j]==1){
-					mDrawable[i][j].getPaint().setColor(0xffff0000);
+					mDrawable[i][j].getPaint().setColor(0xffff0000);//Red
 				}
 				else if(BoardTools.teamGrid()[i][j]==2){
-					mDrawable[i][j].getPaint().setColor(0xff00ffff);
+					mDrawable[i][j].getPaint().setColor(0xff00ffff);//Blue
+				}
+				else if(BoardTools.teamGrid()[i][j]==3){
+					mDrawable[i][j].getPaint().setColor(0xffffff00);//Yellow
+				}
+				else if(BoardTools.teamGrid()[i][j]==4){
+					mDrawable[i][j].getPaint().setColor(0xffffff00);//Yellow
 				}
 				else{
 					mDrawable[i][j].getPaint().setColor(0xff74AC23);
@@ -43,6 +49,7 @@ public class BoardView extends View{
 		int L=Math.min(metrics.widthPixels/(3*n/2),metrics.heightPixels/(3*n/2))/2;
 		int width = Math.min(metrics.widthPixels/(3*n/2),metrics.heightPixels/(3*n/2));
 		int height = Math.min(metrics.widthPixels/(3*n/2),metrics.heightPixels/(3*n/2));
+		Global.setHexLength(L);
 		//double game_length=L*Math.sqrt(3) * n * (n-1)*L*(Math.sqrt(3)/2);
 		
 		

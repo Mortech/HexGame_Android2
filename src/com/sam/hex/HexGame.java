@@ -48,9 +48,9 @@ public class HexGame extends Activity {
     }
     
     public boolean makeMove(int X, int Y, byte team){
-    	for(int i=Global.getN()-1;i>-1;i--){
-    		for(int j=Global.getN()-1;j>-1;j--){
-    			if(X>BoardTools.getPolyXY()[i][j].getX() && Y>BoardTools.getPolyXY()[i][j].getY()){
+    	for(int i=0;i<Global.getN();i++){
+    		for(int j=0;j<Global.getN();j++){
+    			if(BoardTools.getPolyXY()[i][j].getX()+2*Global.getHexLength()>X && X>BoardTools.getPolyXY()[i][j].getX() && Y>BoardTools.getPolyXY()[i][j].getY() && BoardTools.getPolyXY()[i][j].getY()+2*Global.getHexLength()>Y){
     				if(BoardTools.teamGrid()[i][j]==0){
     					Global.setPendingMove(new Posn(i,j));
     					return true;
@@ -77,6 +77,7 @@ public class HexGame extends Activity {
     	BoardTools.clearMoveList();
     	Global.setCurrentPlayer((byte) 1);
     	Global.setRunning(true);
+    	Global.setPendingMove(null);
     	
     	//Set game mode
     	Global.setGameType(prefs.getString("gameModePref", "0"));
