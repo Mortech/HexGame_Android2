@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-        <PreferenceCategory android:title="@string/inline_preferences">
-                <ListPreference
-                        android:title="Game Mode"
-                        android:summary="Switch between PvP, PvC, CvP, CvC"
-                        android:key="gameModePref"
-                        android:defaultValue="0"
-                        android:entries="@array/gameModeArray"
-                        android:entryValues="@array/gameModeValues" />
-                <ListPreference
-                        android:title="Game Size"
-                        android:summary="Pick a size for the gameboard"
-                        android:key="gameSizePref"
-                        android:defaultValue="7"
-                        android:entries="@array/gameSizeArray"
-                        android:entryValues="@array/gameSizeValues" />
-        </PreferenceCategory>
+        <ListPreference
+            android:title="Game Mode"
+            android:summary="Switch between PvP, PvC, CvP, CvC"
+            android:key="gameModePref"
+            android:defaultValue="0"
+            android:entries="@array/gameModeArray"
+            android:entryValues="@array/gameModeValues" />
+        <ListPreference
+            android:title="Game Size"
+            android:summary="Pick a size for the gameboard"
+            android:key="gameSizePref"
+            android:defaultValue="7"
+            android:entries="@array/gameSizeArray"
+            android:entryValues="@array/gameSizeValues" />
 </PreferenceScreen>
