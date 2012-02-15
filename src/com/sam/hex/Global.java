@@ -4,8 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.view.View;
+import sl.shapes.*;
+
+import 	android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.view.SurfaceHolder;
+import android.view.View;
+
+
 
 public class Global{
+	
+	
 	private static byte[][] gameboard;
 	private static PlayingEntity player1;
 	private static PlayingEntity player2;
@@ -18,6 +30,38 @@ public class Global{
 	private static byte gameType = 0; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
 	private static Posn pendingMove;
 	private static int hexLength;
+	
+	
+	public static int gridSize = 7;
+	public static int windowHeight = 600;
+	public static Bitmap background;
+	public static int windowWidth = 800;
+	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[0][0];
+	public static int playerOne=Color.BLUE;
+	public static int playerTwo=Color.RED;
+	public static Canvas cPolygons=new Canvas();
+	public static Paint paint= new Paint();
+	public static SurfaceHolder _surfaceHolder;
+
+	//public static View drawer=new View();
+
+	// public static Color[][] background;
+	public static void set(int gS, int wH, int wW) {
+		if (gS > 0)
+			gridSize = gS;
+		if (wH > 10)
+			windowHeight = wH;
+		if (wW > 10)
+			windowWidth = wW;
+		gamePiece = new RegularPolygonGameObject[gridSize][gridSize];
+	
+		background = Bitmap.createBitmap(windowWidth, windowHeight,
+				Bitmap.Config.ARGB_8888);
+		// background=new Color[windowWidth][windowHeight];
+	}
+	
+	
+	
 	public static int getN() {
 		return n;
 	}
