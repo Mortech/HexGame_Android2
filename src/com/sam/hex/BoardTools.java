@@ -2,9 +2,11 @@ package com.sam.hex;
 
 public class BoardTools{
 	public static void setGame(int m){
-		Global.setN(m);
+		
+		Global.gridSize=m;
 		clearBoard();
-		Global.setPolyXY(new Posn[Global.getN()][Global.getN()]);
+		Global.setPolyXY(new Posn[Global.gridSize][Global.gridSize]); //old
+		Global.gamePiece = new RegularPolygonGameObject[Global.gridSize][Global.gridSize]; //new
 	}
 	
 	public static void makeMove(final int x, final int y, final byte team){

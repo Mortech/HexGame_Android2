@@ -22,10 +22,10 @@ public class BoardView extends View{
 		for(int i=0;i<n;i++){
 			for(int j=0;j<n;j++){
 				if(BoardTools.teamGrid()[i][j]==1){
-					mDrawable[i][j].getPaint().setColor(0xffff0000);//Red
+					mDrawable[i][j].getPaint().setColor(Global.playerOne);//player one
 				}
 				else if(BoardTools.teamGrid()[i][j]==2){
-					mDrawable[i][j].getPaint().setColor(0xff00ffff);//Blue
+					mDrawable[i][j].getPaint().setColor(Global.playerTwo);//Blue
 				}
 				else if(BoardTools.teamGrid()[i][j]==3){
 					mDrawable[i][j].getPaint().setColor(0xffffff00);//Yellow
