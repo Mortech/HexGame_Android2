@@ -9,13 +9,13 @@ public class PlayerObject implements PlayingEntity {
 		this.team=i;	//sets the players team
 	}
 
-	@Override
+	
 	public void getPlayerTurn(byte[][] gameBoard) {
 		 this.gameBoard=gameBoard;
 		 makeMove();
 	}
 
-	@Override
+	
 	public void getPlayerTurn() {
 		this.gameBoard=BoardTools.teamGrid();
 		makeMove();

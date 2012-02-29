@@ -27,7 +27,7 @@ public class HexGame extends Activity {
         	Global.setBoard(new BoardView(this));
         	//Add the touch listener
     		OnTouchListener touchListener = new OnTouchListener() {
-    			@Override
+    			
     			public boolean onTouch(View v, MotionEvent event) {
     				//Check if its a human's turn
     				if(Global.getCurrentPlayer()==1){
@@ -92,7 +92,7 @@ public class HexGame extends Activity {
 		
 		//Add the touch listener
 		OnTouchListener touchListener = new OnTouchListener() {
-			@Override
+			
 			public boolean onTouch(View v, MotionEvent event) {
 				//Check if its a human's turn
 				if(Global.getCurrentPlayer()==1){
@@ -167,7 +167,7 @@ public class HexGame extends Activity {
     		
     		//Add the touch listener
     		OnTouchListener touchListener = new OnTouchListener() {
-    			@Override
+    			
     			public boolean onTouch(View v, MotionEvent event) {
     				//Check if its a human's turn
     				if(Global.getCurrentPlayer()==1){
@@ -192,7 +192,7 @@ public class HexGame extends Activity {
             return true;
         case R.id.quit:
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        	    @Override
+        	    
         	    public void onClick(DialogInterface dialog, int which) {
         	        switch (which){
         	        case DialogInterface.BUTTON_POSITIVE:

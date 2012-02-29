@@ -18,18 +18,18 @@ import android.view.View;
 public class Global{
 	
 	
-	private static byte[][] gameboard;
-	private static PlayingEntity player1;
-	private static PlayingEntity player2;
-	private static boolean running;
-	private static int n;
-	private static Posn[][] polyXY;
-	private static byte currentPlayer = 1;
-	private static View board;
-	private static List<Posn> moveList = new ArrayList<Posn>();
-	private static byte gameType = 0; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
-	private static Posn pendingMove;
-	private static int hexLength;
+	public static byte[][] gameboard;
+	public static PlayingEntity player1;
+	public static PlayingEntity player2;
+	public static boolean running;
+	public static int n;
+	public static Posn[][] polyXY;
+	public static byte currentPlayer = 1;
+	public static View board;
+	public static List<Posn> moveList = new ArrayList<Posn>();
+	public static byte gameType = 0; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
+	public static Posn pendingMove;
+	public static int hexLength;
 	
 	
 	public static int gridSize = 7;

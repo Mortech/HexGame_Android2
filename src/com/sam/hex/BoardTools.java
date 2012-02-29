@@ -4,6 +4,7 @@ public class BoardTools{
 	public static void setGame(int m){
 		
 		Global.gridSize=m;
+		Global.n=Global.gridSize;
 		clearBoard();
 		Global.setPolyXY(new Posn[Global.gridSize][Global.gridSize]); //old
 		Global.gamePiece = new RegularPolygonGameObject[Global.gridSize][Global.gridSize]; //new
@@ -30,9 +31,9 @@ public class BoardTools{
 	}
 	
 	public static void clearBoard(){
-		Global.setGameboard(new byte[Global.getN()][Global.getN()]);
-		for(int i=0;i<Global.getN();i++){
-			for(int j=0;j<Global.getN();j++){
+		Global.setGameboard(new byte[Global.gridSize][Global.gridSize]);
+		for(int i=0;i<Global.gridSize;i++){
+			for(int j=0;j<Global.gridSize;j++){
 				Global.getGameboard()[i][j]=0;
 			}
 		}
@@ -54,13 +55,13 @@ public class BoardTools{
 		//(x+1),(y) Down and Forward
 		//(x-1),(y) Up and Back 
 		//(x-1),(y+1) Up and Forward
-		byte[][] flags = new byte[Global.getN()][Global.getN()];
-		for(int i=0;i<Global.getN();i++){
-			for(int j=0;j<Global.getN();j++){
+		byte[][] flags = new byte[Global.gridSize][Global.gridSize];
+		for(int i=0;i<Global.gridSize;i++){
+			for(int j=0;j<Global.gridSize;j++){
 				flags[i][j]=0;
 			}
 		}
-		for(int i=0;i<Global.getN();i++){
+		for(int i=0;i<Global.gridSize;i++){
 			if(recursiveCheckP1(new Posn(i,0),flags)){
 				return true;
 			}
@@ -69,19 +70,19 @@ public class BoardTools{
 	}
 	
 	public static boolean recursiveCheckP1(Posn hex, byte[][] flags){
-		byte[][] checked = new byte[Global.getN()][Global.getN()];
-		for(int i=0;i<Global.getN();i++){
+		byte[][] checked = new byte[Global.gridSize][Global.gridSize];
+		for(int i=0;i<Global.gridSize;i++){
 			checked[i] = flags[i].clone();
 		}
 		if(Global.getGameboard()[hex.getX()][hex.getY()]!=(byte) 1 || checked[hex.getX()][hex.getY()]==1){
 			//This isn't a valid piece
 			return false;
 		}
-		else if(hex.getY()==Global.getN()-1){
+		else if(hex.getY()==Global.gridSize-1){
 			//We made it to the other side
 			checked[hex.getX()][hex.getY()]=1;
-			for(int i=0;i<Global.getN();i++){
-				for(int j=0;j<Global.getN();j++){
+			for(int i=0;i<Global.gridSize;i++){
+				for(int j=0;j<Global.gridSize;j++){
 					if(checked[i][j]==1){
 						Global.setGameboard(i, j, (byte) 3);
 					}
@@ -96,11 +97,11 @@ public class BoardTools{
 			if(hex.getX()>0){
 				rest = rest || 
 						recursiveCheckP1(new Posn(hex.getX()-1,hex.getY()),checked);
-				if(hex.getY()<Global.getN()-1){
+				if(hex.getY()<Global.gridSize-1){
 					recursiveCheckP1(new Posn(hex.getX()-1,hex.getY()+1),checked);
 				}
 			}
-			if(hex.getX()<Global.getN()-1){
+			if(hex.getX()<Global.gridSize-1){
 				rest = rest || 
 						recursiveCheckP1(new Posn(hex.getX()+1,hex.getY()),checked);
 				if(hex.getY()>0){
@@ -112,7 +113,7 @@ public class BoardTools{
 				rest = rest || 
 						recursiveCheckP1(new Posn(hex.getX(),hex.getY()-1),checked);
 			}
-			if(hex.getY()<Global.getN()-1){
+			if(hex.getY()<Global.gridSize-1){
 				rest = rest || 
 						recursiveCheckP1(new Posn(hex.getX(),hex.getY()+1),checked);
 			}
@@ -128,13 +129,13 @@ public class BoardTools{
 		//(x+1),(y) Down and Forward
 		//(x-1),(y) Up and Back 
 		//(x-1),(y+1) Up and Forward
-		byte[][] flags = new byte[Global.getN()][Global.getN()];
-		for(int i=0;i<Global.getN();i++){
-			for(int j=0;j<Global.getN();j++){
+		byte[][] flags = new byte[Global.gridSize][Global.gridSize];
+		for(int i=0;i<Global.gridSize;i++){
+			for(int j=0;j<Global.gridSize;j++){
 				flags[i][j]=0;
 			}
 		}
-		for(int i=0;i<Global.getN();i++){
+		for(int i=0;i<Global.gridSize;i++){
 			if(recursiveCheckP2(new Posn(0,i),flags)){
 				return true;
 			}
@@ -143,19 +144,19 @@ public class BoardTools{
 	}
 	
 	public static boolean recursiveCheckP2(Posn hex, byte[][] flags){
-		byte[][] checked = new byte[Global.getN()][Global.getN()];
-		for(int i=0;i<Global.getN();i++){
+		byte[][] checked = new byte[Global.gridSize][Global.gridSize];
+		for(int i=0;i<Global.gridSize;i++){
 			checked[i] = flags[i].clone();
 		}
 		if(Global.getGameboard()[hex.getX()][hex.getY()]!=(byte) 2 || checked[hex.getX()][hex.getY()]==1){
 			//This isn't a valid piece
 			return false;
 		}
-		else if(hex.getX()==Global.getN()-1){
+		else if(hex.getX()==Global.gridSize-1){
 			//We made it to the other side
 			checked[hex.getX()][hex.getY()]=1;
-			for(int i=0;i<Global.getN();i++){
-				for(int j=0;j<Global.getN();j++){
+			for(int i=0;i<Global.gridSize;i++){
+				for(int j=0;j<Global.gridSize;j++){
 					if(checked[i][j]==1){
 						Global.setGameboard(i, j, (byte) 4);
 					}
@@ -170,11 +171,11 @@ public class BoardTools{
 			if(hex.getX()>0){
 				rest = rest || 
 						recursiveCheckP2(new Posn(hex.getX()-1,hex.getY()),checked);
-				if(hex.getY()<Global.getN()-1){
+				if(hex.getY()<Global.gridSize-1){
 					recursiveCheckP2(new Posn(hex.getX()-1,hex.getY()+1),checked);
 				}
 			}
-			if(hex.getX()<Global.getN()-1){
+			if(hex.getX()<Global.gridSize-1){
 				rest = rest || 
 						recursiveCheckP2(new Posn(hex.getX()+1,hex.getY()),checked);
 				if(hex.getY()>0){
@@ -186,7 +187,7 @@ public class BoardTools{
 				rest = rest || 
 						recursiveCheckP2(new Posn(hex.getX(),hex.getY()-1),checked);
 			}
-			if(hex.getY()<Global.getN()-1){
+			if(hex.getY()<Global.gridSize-1){
 				rest = rest || 
 						recursiveCheckP2(new Posn(hex.getX(),hex.getY()+1),checked);
 			}

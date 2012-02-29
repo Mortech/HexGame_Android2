@@ -17,7 +17,7 @@ public class BoardView extends View{
 	}
 	
 	protected void onDraw(Canvas canvas){
-		int n = Global.getN();
+		int n = Global.gridSize;
 		
 		for(int i=0;i<n;i++){
 			for(int j=0;j<n;j++){
@@ -42,7 +42,7 @@ public class BoardView extends View{
 	}
 	
 	public void calculateGrid(Context context){
-		int n = Global.getN();
+		int n = Global.gridSize;
 		mDrawable = new ShapeDrawable[n][n];
 		
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();

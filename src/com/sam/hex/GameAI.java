@@ -30,7 +30,7 @@ public class GameAI implements PlayingEntity {
 		 makeMove();
 	}
 
-	@Override
+	
 	public void getPlayerTurn() { // with out net play
 		this.gameBoard=BoardTools.teamGrid();
 		makeMove();
