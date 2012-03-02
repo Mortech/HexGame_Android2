@@ -46,6 +46,9 @@ public class BoardView extends View{
 		mDrawable = new ShapeDrawable[n][n];
 		
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+		
+		Global.windowHeight=metrics.heightPixels;
+		Global.windowWidth=metrics.widthPixels;
 		int L=Math.min(metrics.widthPixels/(3*n/2),metrics.heightPixels/(3*n/2))/2;
 		int width = Math.min(metrics.widthPixels/(3*n/2),metrics.heightPixels/(3*n/2));
 		int height = Math.min(metrics.widthPixels/(3*n/2),metrics.heightPixels/(3*n/2));

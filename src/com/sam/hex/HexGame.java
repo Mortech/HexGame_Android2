@@ -26,27 +26,25 @@ public class HexGame extends Activity {
         else{
         	Global.setBoard(new BoardView(this));
         	//Add the touch listener
-    		OnTouchListener touchListener = new OnTouchListener() {
-    			
-    			public boolean onTouch(View v, MotionEvent event) {
-    				//Check if its a human's turn
-    				if(Global.getCurrentPlayer()==1){
-    					if(Global.getGameType()<2) 
-    						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-    				}
-    				else{
-    					if((Global.getGameType()+1)%2>0) 
-    						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-    				}
-    				
-    				return false;
-    			}
-            };
+    		TouchListener touchListener = new TouchListener();
             Global.getBoard().setOnTouchListener(touchListener);
             setContentView(Global.getBoard());
         }
     }
-    
+    class TouchListener implements OnTouchListener{
+    	public boolean onTouch(View v, MotionEvent event){
+    		if(Global.getCurrentPlayer()==1){
+				if(Global.getGameType()<2) 
+					makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+			}
+			else{
+				if((Global.getGameType()+1)%2>0) 
+					makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+			}
+			
+			return false;
+    	}
+    }
     public boolean makeMove(int X, int Y, byte team){
     	for(int i=0;i<Global.getN();i++){
     		for(int j=0;j<Global.getN();j++){
@@ -91,22 +89,7 @@ public class HexGame extends Activity {
 		GameObject game = new GameObject();
 		
 		//Add the touch listener
-		OnTouchListener touchListener = new OnTouchListener() {
-			
-			public boolean onTouch(View v, MotionEvent event) {
-				//Check if its a human's turn
-				if(Global.getCurrentPlayer()==1){
-					if(Global.getGameType()<2) 
-						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-				}
-				else{
-					if((Global.getGameType()+1)%2>0) 
-						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-				}
-				
-				return false;
-			}
-        };
+		TouchListener touchListener = new TouchListener();
         Global.getBoard().setOnTouchListener(touchListener);
         setContentView(Global.getBoard());
     }
@@ -166,22 +149,7 @@ public class HexGame extends Activity {
     		GameObject game = new GameObject();
     		
     		//Add the touch listener
-    		OnTouchListener touchListener = new OnTouchListener() {
-    			
-    			public boolean onTouch(View v, MotionEvent event) {
-    				//Check if its a human's turn
-    				if(Global.getCurrentPlayer()==1){
-    					if(Global.getGameType()<2) 
-    						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-    				}
-    				else{
-    					if((Global.getGameType()+1)%2>0) 
-    						makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-    				}
-    				
-    				return false;
-    			}
-            };
+    		TouchListener touchListener = new TouchListener();
             Global.getBoard().setOnTouchListener(touchListener);
             setContentView(Global.getBoard());
         	Global.getBoard().invalidate();
