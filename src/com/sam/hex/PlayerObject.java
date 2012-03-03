@@ -6,7 +6,7 @@ public class PlayerObject implements PlayingEntity {
 	byte team;
 	
 	public PlayerObject(byte i) {
-		this.team=i;	//sets the players team
+	this.team=i;	//sets the players team
 	}
 
 	
@@ -21,15 +21,7 @@ public class PlayerObject implements PlayingEntity {
 		makeMove();
 	}
 	public void makeMove(){
-		while(Global.getPendingMove()==null){
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		BoardTools.makeMove(Global.getPendingMove().getX(), Global.getPendingMove().getY(), Global.getCurrentPlayer());
-		Global.setPendingMove(null);
+		GameAction.getPlayerTurn(team); // lets the player make his move
 	}
 
 }

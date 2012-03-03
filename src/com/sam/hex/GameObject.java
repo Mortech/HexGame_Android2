@@ -1,36 +1,45 @@
 package com.sam.hex;
 
-public class GameObject{
-	public GameObject(){
-		new Thread(new Runnable() {
-			public void run() {
-				while (Global.getRunning()) {
-					//Patch - Game doesn't end correctly (sometimes). This is a failsafe.
-		        	for(int i=0;i<Global.getN();i++){
-						for(int j=0;j<Global.getN();j++){
-							if(Global.getGameboard()[i][j]==3 || Global.getGameboard()[i][j]==4){
-								return;
-							}
-						}
-					}
-					if(Global.getCurrentPlayer()==(byte) 1){
-		        		Global.getPlayer1().getPlayerTurn();
-		        		//Check for victory
-		        		if(BoardTools.checkWinPlayer1()) 
-		        			Global.setRunning(false);
-		        	}
-		        	else if(Global.getCurrentPlayer()==(byte) 2){
-		        		Global.getPlayer2().getPlayerTurn();
-		        		//Check for victory
-		        		if(BoardTools.checkWinPlayer2()) 
-		        			Global.setRunning(false);
-		        	}
-		        	
-		        	//Update the player, refresh the board
-		        	BoardTools.updateCurrentPlayer();
-		        	Global.getBoard().postInvalidate();
-				}
-			}
-		}).start();
+
+public class GameObject implements Runnable {
+	Thread theGameRunner;
+
+	public GameObject() {
+		theGameRunner = new Thread(this, "runningGame"); // (1) Create a new
+		// thread.
+		System.out.println(theGameRunner.getName());
+		theGameRunner.start(); // (2) Start the thread.
 	}
+
+	public void run() {
+		PlayingEntity player1;
+		PlayingEntity player2;
+		
+		if(Global.gameType<2) player1=new PlayerObject((byte)1);
+		else player1=new GameAI((byte)1,(byte)1);// sets player vs Ai
+		
+		if((Global.gameType+1)%2>0) player2=new PlayerObject((byte)2);
+		else player2=new GameAI((byte)2,(byte)1);// sets player vs Ai
+		
+		
+		byte player = 1;
+		while (true) {
+
+			if (player == 1) {
+				player1.getPlayerTurn();
+				if (GameAction.checkWinPlayer1())
+					break;
+				player = 2;
+			} else {
+				player2.getPlayerTurn();
+				if (GameAction.checkWinPlayer2())
+					break;
+				player = 1;
+				GameAction.checkedFlagReset();
+			}
+
+		}
+
+	}
+
 }

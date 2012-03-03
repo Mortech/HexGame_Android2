@@ -45,7 +45,7 @@ public class HexGame extends Activity {
 			return false;
     	}
     }
-    public boolean makeMove(int X, int Y, byte team){
+    public boolean makeMove(int X, int Y, byte team){ //TODO: rewrite
     	for(int i=0;i<Global.getN();i++){
     		for(int j=0;j<Global.getN();j++){
     			if(BoardTools.getPolyXY()[i][j].getX()+2*Global.getHexLength()>X && X>BoardTools.getPolyXY()[i][j].getX() && Y>BoardTools.getPolyXY()[i][j].getY() && BoardTools.getPolyXY()[i][j].getY()+2*Global.getHexLength()>Y){
