@@ -24,42 +24,25 @@ public class HexGame extends Activity {
         	initializeNewGame();//Must be set up immediately
         }
         else{
-        	Global.setBoard(new BoardView(this));
+        	Global.board=new BoardView(this);
         	//Add the touch listener
     		TouchListener touchListener = new TouchListener();
-            Global.getBoard().setOnTouchListener(touchListener);
-            setContentView(Global.getBoard());
+            Global.board.setOnTouchListener(touchListener);
+            setContentView(Global.board);
         }
     }
     class TouchListener implements OnTouchListener{
     	public boolean onTouch(View v, MotionEvent event){
-    		if(Global.getCurrentPlayer()==1){
-				if(Global.getGameType()<2) 
-					makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
+    		int x = (int)event.getX();
+			int y = (int)event.getX();
+			for (int xc = 0; xc < Global.gamePiece.length; xc++) {
+				for (RegularPolygonGameObject hex : Global.gamePiece[xc])
+					if (hex.contains(x, y)) {
+						GameAction.setPiece(hex);
+					}
 			}
-			else{
-				if((Global.getGameType()+1)%2>0) 
-					makeMove((int)event.getX(), (int)event.getY(), Global.getCurrentPlayer());
-			}
-			
-			return false;
+			return true; //or maybe false?
     	}
-    }
-    public boolean makeMove(int X, int Y, byte team){ //TODO: rewrite
-    	for(int i=0;i<Global.getN();i++){
-    		for(int j=0;j<Global.getN();j++){
-    			if(BoardTools.getPolyXY()[i][j].getX()+2*Global.getHexLength()>X && X>BoardTools.getPolyXY()[i][j].getX() && Y>BoardTools.getPolyXY()[i][j].getY() && BoardTools.getPolyXY()[i][j].getY()+2*Global.getHexLength()>Y){
-    				if(BoardTools.teamGrid()[i][j]==0){
-    					Global.setPendingMove(new Posn(i,j));
-    					return true;
-    				}
-    				else{
-    					return false;
-    				}
-    			}
-    		}
-    	}
-    	return false;
     }
     
     public void initializeNewGame(){
@@ -67,22 +50,15 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Create our board
-    	BoardTools.setGame(Integer.decode(prefs.getString("gameSizePref", "7")));
-    	BoardTools.clearBoard();
-    	Global.setBoard(new BoardView(this));
+    	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    	BoardTools.clearBoard(); //TODO: implement clearBoard() and clearMoveList() functions
+    	Global.board=new BoardView(this);
     	
     	//Make sure the board is empty and defaults are set
     	BoardTools.clearMoveList();
-    	Global.setCurrentPlayer((byte) 1);
-    	Global.setRunning(true);
-    	Global.setPendingMove(null);
     	
     	//Set game mode
-    	Global.setGameType(prefs.getString("gameModePref", "0"));
-    	if(Global.getGameType()<2) Global.setPlayer1(new PlayerObject((byte)1));
-		else Global.setPlayer1(new GameAI((byte)1,(byte)1));//Sets Player vs Ai
-		if((Global.getGameType()+1)%2>0) Global.setPlayer2(new PlayerObject((byte)2));
-		else Global.setPlayer2(new GameAI((byte)2,(byte)1));//Sets Player vs Ai
+    	Global.gameType=(byte)Integer.parseInt(prefs.getString("gameModePref", "0"));
 		
 		//Create the game object
 		@SuppressWarnings("unused")
@@ -90,8 +66,8 @@ public class HexGame extends Activity {
 		
 		//Add the touch listener
 		TouchListener touchListener = new TouchListener();
-        Global.getBoard().setOnTouchListener(touchListener);
-        setContentView(Global.getBoard());
+        Global.board.setOnTouchListener(touchListener);
+        setContentView(Global.board);
     }
     
     @Override
@@ -102,7 +78,7 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed
-    	if(Integer.decode(prefs.getString("gameSizePref", "7")) != Global.getN() || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.getGameType()){
+    	if(Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType){
     		initializeNewGame();
     	}
     }
@@ -122,7 +98,7 @@ public class HexGame extends Activity {
         	Intent settingsActivity = new Intent(getBaseContext(),Preferences.class);
         	startActivity(settingsActivity);
             return true;
-        case R.id.undo:
+        case R.id.undo: //TODO: implement undo functionality
         	if(!Global.getMoveList().isEmpty()){
     			Posn lastMove = Global.getMoveList().get(Global.getMoveList().size()-1);
     			Global.setGameboard(lastMove.getX(), lastMove.getY(), (byte) 0);
@@ -142,7 +118,7 @@ public class HexGame extends Activity {
 				}
 			}
         	//Create our board
-        	Global.setBoard(new BoardView(this));
+        	Global.board=new BoardView(this);
     		
     		//Create the game object
     		@SuppressWarnings("unused")
@@ -150,13 +126,13 @@ public class HexGame extends Activity {
     		
     		//Add the touch listener
     		TouchListener touchListener = new TouchListener();
-            Global.getBoard().setOnTouchListener(touchListener);
-            setContentView(Global.getBoard());
-        	Global.getBoard().invalidate();
+            Global.board.setOnTouchListener(touchListener);
+            setContentView(Global.board);
+        	Global.board.invalidate();
             return true;
         case R.id.newgame:
         	initializeNewGame();
-        	Global.getBoard().invalidate();
+        	Global.board.invalidate();
             return true;
         case R.id.quit:
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {

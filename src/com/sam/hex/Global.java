@@ -3,6 +3,7 @@ package com.sam.hex;
 import java.awt.Shape; 
 import android.graphics.Color;
 import android.graphics.Bitmap;
+import android.view.View;
 
 public class Global {
 	public static int gridSize = 7;
@@ -14,6 +15,7 @@ public class Global {
 	public static int playerOne=Color.BLUE;
 	public static int playerTwo=Color.RED;
 	public static byte gameType; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
+	public static BoardView board;
 
 	// public static Color[][] background;
 	public static void set(int gS, int wH, int wW) {
