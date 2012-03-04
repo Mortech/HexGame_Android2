@@ -1,22 +1,18 @@
 package com.sam.hex;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import android.graphics.Color;
 
 import sl.shapes.RegularPolygon;
 
 
-public class RegularPolygonGameObject implements Shape {
+public class RegularPolygonGameObject {
 
 	RegularPolygon Hex;
 	private byte teamNumber; // 1 is left-right, 2 is top-down
-	private Color objectColor = Color.white;
+	private int objectColor = Color.WHITE;
 	boolean checkedflage = false;
+	int x;
+	int y;
 
 	public RegularPolygonGameObject(double x, double y, double r,
 			int vertexCount) {
@@ -51,7 +47,7 @@ public class RegularPolygonGameObject implements Shape {
 		if (team == teamNumber && !checkedflage) {
 			checkedflage = !checkedflage;
 			if (checkSpot(team, x, y) || checkWinTeam(team, x, y, gamePeace)) {
-				objectColor = Color.green;
+				objectColor = Color.GREEN;
 				return true;
 			}
 		}
@@ -197,71 +193,17 @@ public class RegularPolygonGameObject implements Shape {
 		return false;
 	}
 
-	public void setColor(Color c) {
+	public void setColor(int c) {
 		objectColor = c;
 	}
 
-	public Color getColor() {
+	public int getColor() {
 		return objectColor;
 	}
 
-	@Override
-	public boolean contains(Point2D p) {
-
-		return Hex.contains(p);
-	}
-
-	@Override
-	public boolean contains(Rectangle2D r) {
-
-		return Hex.contains(r);
-	}
-
-	@Override
 	public boolean contains(double x, double y) {
 
 		return Hex.contains(x, y);
 	}
 
-	@Override
-	public boolean contains(double x, double y, double w, double h) {
-
-		return Hex.contains(x, y, w, h);
-	}
-
-	@Override
-	public Rectangle getBounds() {
-
-		return Hex.getBounds();
-	}
-
-	@Override
-	public Rectangle2D getBounds2D() {
-
-		return Hex.getBounds2D();
-	}
-
-	@Override
-	public PathIterator getPathIterator(AffineTransform at) {
-
-		return Hex.getPathIterator(at);
-	}
-
-	@Override
-	public PathIterator getPathIterator(AffineTransform at, double flatness) {
-
-		return Hex.getPathIterator(at, flatness);
-	}
-
-	@Override
-	public boolean intersects(Rectangle2D r) {
-
-		return Hex.intersects(r);
-	}
-
-	@Override
-	public boolean intersects(double x, double y, double w, double h) {
-
-		return Hex.intersects(x, y, w, h);
-	}
 }

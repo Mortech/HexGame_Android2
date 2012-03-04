@@ -21,8 +21,8 @@ public class BoardTools {
 
 	}
 
-	public static void setBackground(int w, int h) {
-		Global.background =Bitmap.createBitmap(Global.windowWidth, Global.windowHeight,Bitmap.Config.ARGB_8888); //the background is drawn to this bitmap. 
+	public static Bitmap getBackground(int w, int h) {
+		Bitmap background =Bitmap.createBitmap(Global.windowWidth, Global.windowHeight,Bitmap.Config.ARGB_8888); //the background is drawn to this bitmap. 
 		RegularPolygonGameObject[][] gamePeace = Global.gamePiece;
 		double radius = BoardTools.radiusCalculator(Global.windowWidth, Global.windowHeight,Global.gridSize);
 		double hrad = radius * Math.sqrt(3) / 2; // Horizontal radius
@@ -52,13 +52,14 @@ public class BoardTools {
 						+ (cY - cX * slope2)) { // if above line 1 == above line
 					// 2
 					// if((y+x)/(((double)h+(double)w))<.5==((double)h/(double)w>y/x)){
-					Global.background.setPixel((int) x, (int) y, Global.playerOne);
+					background.setPixel((int) x, (int) y, Global.playerOne);
 				} else {
-					Global.background.setPixel((int) x, (int) y, Global.playerTwo);
+					background.setPixel((int) x, (int) y, Global.playerTwo);
 				}
 				// (((h*w)-h)>y/x)
 			}
 		}
+		return background;
 
 	}
 
