@@ -13,6 +13,7 @@ public class RegularPolygonGameObject {
 	boolean checkedflage = false;
 	int x;
 	int y;
+	double radius;
 
 	public RegularPolygonGameObject(double x, double y, double r,
 			int vertexCount) {
