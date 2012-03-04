@@ -71,4 +71,9 @@ public class BoardTools {
 				loyalty[x][y] = gamePeace[x][y].getTeam();
 		return loyalty;
 	}
+	public static void clearBoard(){
+		for(RegularPolygonGameObject[] things:Global.gamePiece)
+			for(RegularPolygonGameObject guy:things)
+				guy.setTeam((byte)0);
+	}
 }

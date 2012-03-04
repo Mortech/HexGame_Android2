@@ -51,9 +51,9 @@ public class HexGame extends Activity {
     	
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
-    	BoardTools.clearBoard(); //TODO: implement clearBoard() and clearMoveList() functions
+    	BoardTools.clearBoard(); 
     	Global.board=new BoardView(this);
-    	
+    	//TODO: implement clearMoveList() functions
     	//Make sure the board is empty and defaults are set
     	BoardTools.clearMoveList();
     	

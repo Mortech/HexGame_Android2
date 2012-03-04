@@ -8,7 +8,7 @@ import sl.shapes.RegularPolygon;
 public class RegularPolygonGameObject {
 
 	RegularPolygon Hex;
-	private byte teamNumber; // 1 is left-right, 2 is top-down
+	private byte teamNumber=0; // 1 is left-right, 2 is top-down
 	private int objectColor = Color.WHITE;
 	boolean checkedflage = false;
 	int x;
@@ -35,8 +35,10 @@ public class RegularPolygonGameObject {
 		teamNumber = t;
 		if (teamNumber == 1)
 			setColor(Global.playerOne);
-		else
+		else if(teamNumber==2)
 			setColor(Global.playerTwo);
+		else
+			setColor(Color.WHITE);
 	}
 
 	public byte getTeam() {
@@ -169,7 +171,7 @@ public class RegularPolygonGameObject {
 	
 	public static void colorPath(int x,int y, String path){
 		
-		while (path!=null&&!path.isEmpty()){
+		while (path!=null&&path.length()!=0){
 				 
 			Global.gamePiece[x][y].setColor(Color.BLACK);
 				switch (posDir.valueOf(path.substring(0, 2))){
@@ -202,9 +204,9 @@ public class RegularPolygonGameObject {
 		return objectColor;
 	}
 
-	public boolean contains(double x, double y) {
-
-		return Hex.contains(x, y);
+	public boolean contains(double ex, double why) {
+		
+		return Math.abs(x-ex)<radius/2 && Math.abs(y-why)<radius/2; //very simplified!
 	}
 
 }

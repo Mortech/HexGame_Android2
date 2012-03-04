@@ -38,7 +38,7 @@ public class GameAction {
 			}
 		}
 	}
-	public static void updateBoard() { //should be handled in boardview
+/*	public static void updateBoard() { //should be handled in boardview
 		if (HexGameWindow.cPolygons.getWidth() != Global.windowWidth
 				|| HexGameWindow.cPolygons.getHeight() != Global.windowHeight) {
 			fullUpdateBoard();
@@ -74,7 +74,7 @@ public class GameAction {
 		HexGameWindow.cPolygons.revalidate();
 		HexGameWindow.cPolygons.repaint();
 
-	}
+	}*/
 
 	public static void setPiece(RegularPolygonGameObject h) {
 		hex = h;
