@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.graphics.Point;
+import java.util.ArrayList;
 
 public class HexGame extends Activity {
     /** Called when the activity is first created. */
@@ -20,7 +22,7 @@ public class HexGame extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if(BoardTools.teamGrid()==null){
+        if(Global.gamePiece[0][0]==null){
         	initializeNewGame();//Must be set up immediately
         }
         else{
@@ -51,11 +53,13 @@ public class HexGame extends Activity {
     	
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
     	BoardTools.clearBoard(); 
     	Global.board=new BoardView(this);
-    	//TODO: implement clearMoveList() functions
+    	
     	//Make sure the board is empty and defaults are set
-    	BoardTools.clearMoveList();
+    	Global.moveList=new ArrayList<Point>();
+    	BoardTools.setBoard();
     	
     	//Set game mode
     	Global.gameType=(byte)Integer.parseInt(prefs.getString("gameModePref", "0"));
@@ -99,7 +103,7 @@ public class HexGame extends Activity {
         	startActivity(settingsActivity);
             return true;
         case R.id.undo: //TODO: implement undo functionality
-        	if(!Global.getMoveList().isEmpty()){
+      /*  	if(!Global.getMoveList().isEmpty()){
     			Posn lastMove = Global.getMoveList().get(Global.getMoveList().size()-1);
     			Global.setGameboard(lastMove.getX(), lastMove.getY(), (byte) 0);
     			Global.removeFromMoveList(lastMove);
@@ -128,7 +132,7 @@ public class HexGame extends Activity {
     		TouchListener touchListener = new TouchListener();
             Global.board.setOnTouchListener(touchListener);
             setContentView(Global.board);
-        	Global.board.invalidate();
+        	Global.board.invalidate(); */
             return true;
         case R.id.newgame:
         	initializeNewGame();

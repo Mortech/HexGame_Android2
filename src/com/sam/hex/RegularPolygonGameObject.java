@@ -11,10 +11,28 @@ public class RegularPolygonGameObject {
 	private byte teamNumber=0; // 1 is left-right, 2 is top-down
 	private int objectColor = Color.WHITE;
 	boolean checkedflage = false;
-	int x;
-	int y;
+	double x;
+	double y;
 	double radius;
 
+	
+	public RegularPolygonGameObject() {
+		x=0;
+		y=0;
+		radius=0;
+
+	}
+	public RegularPolygonGameObject(double x, double y, double r) {
+		this.x=x;
+		this.y=y;
+		radius=r;
+
+	}
+	public void set(double x, double y, double r){
+		this.x=x;
+		this.y=y;
+		radius=r;
+	}
 	public RegularPolygonGameObject(double x, double y, double r,
 			int vertexCount) {
 		Hex = new RegularPolygon(x, y, r, vertexCount);

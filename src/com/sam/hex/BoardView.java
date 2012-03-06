@@ -21,27 +21,12 @@ public class BoardView extends View{
 	
 	protected void onDraw(Canvas canvas){ //TODO: Draw stuff
 		int n = Global.gridSize;
-		
-		for(int i=0;i<n;i++){
-			for(int j=0;j<n;j++){
-				if(BoardTools.teamGrid()[i][j]==1){
-					mDrawable[i][j].getPaint().setColor(Global.playerOne);//player one
-				}
-				else if(BoardTools.teamGrid()[i][j]==2){
-					mDrawable[i][j].getPaint().setColor(Global.playerTwo);//Blue
-				}
-				else if(BoardTools.teamGrid()[i][j]==3){
-					mDrawable[i][j].getPaint().setColor(0xffffff00);//Yellow
-				}
-				else if(BoardTools.teamGrid()[i][j]==4){
-					mDrawable[i][j].getPaint().setColor(0xffffff00);//Yellow
-				}
-				else{
-					mDrawable[i][j].getPaint().setColor(0xff74AC23);
-				}
-				mDrawable[i][j].draw(canvas);
+		background.draw(canvas);
+		for(int xc=0;xc<n;xc++)
+			for(int yc=0;yc<n;yc++){
+				mDrawable[xc][yc].getPaint().setColor(Global.gamePiece[xc][yc].getColor());
+				mDrawable[xc][yc].draw(canvas);
 			}
-		}
 	}
 	
 	public void calculateGrid(Context context){
@@ -80,6 +65,7 @@ public class BoardView extends View{
 				int y=(int)(1.5* radius * yc + radius)+ yOffset;
 				mDrawable[xc][yc] = new ShapeDrawable(new PathShape(path, (int)hrad*2, (int)radius*2));
 				mDrawable[xc][yc].setBounds(x,y,(int)(x+hrad*2),(int)(y+radius*2));
+				Global.gamePiece[xc][yc]=new RegularPolygonGameObject(x, y, radius);
 			}
 	}
 }

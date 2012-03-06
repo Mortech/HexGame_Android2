@@ -3,16 +3,20 @@ package com.sam.hex;
 import android.graphics.Color;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.graphics.Point;
+import java.util.ArrayList;
 
 public class Global {
 	public static int gridSize = 7;
 	public static int windowHeight = 600;
 	public static int windowWidth = 800;
-	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[0][0];
+	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[7][7];
 	public static int playerOne=Color.BLUE;
 	public static int playerTwo=Color.RED;
 	public static byte gameType; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
 	public static BoardView board;
+	public static ArrayList<Point> moveList=new ArrayList<Point>();
+	
 
 	// public static Color[][] background;
 	public static void set(int gS, int wH, int wW) {

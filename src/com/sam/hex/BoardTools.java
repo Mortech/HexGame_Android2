@@ -67,13 +67,18 @@ public class BoardTools {
 		byte[][] loyalty = new byte[Global.gridSize][Global.gridSize];
 		RegularPolygonGameObject[][] gamePeace = Global.gamePiece;
 		for (int x = 0; x < gamePeace.length; x++)
-			for (int y = 0; y < gamePeace.length; y++)
+			for (int y = 0; y < gamePeace[0].length; y++)
 				loyalty[x][y] = gamePeace[x][y].getTeam();
 		return loyalty;
 	}
 	public static void clearBoard(){
 		for(RegularPolygonGameObject[] things:Global.gamePiece)
 			for(RegularPolygonGameObject guy:things)
-				guy.setTeam((byte)0);
+				if(guy!=null)guy.setTeam((byte)0);
+	}
+	public static void setBoard(){
+		for(RegularPolygonGameObject[] things:Global.gamePiece)
+			for(RegularPolygonGameObject guy:things)
+				guy= new RegularPolygonGameObject();
 	}
 }
