@@ -36,7 +36,7 @@ public class HexGame extends Activity {
     class TouchListener implements OnTouchListener{
     	public boolean onTouch(View v, MotionEvent event){
     		int x = (int)event.getX();
-			int y = (int)event.getX();
+			int y = (int)event.getY();
 			for (int xc = 0; xc < Global.gamePiece.length; xc++) {
 				for (RegularPolygonGameObject hex : Global.gamePiece[xc])
 					if (hex.contains(x, y)) {

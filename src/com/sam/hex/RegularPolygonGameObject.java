@@ -219,7 +219,7 @@ public class RegularPolygonGameObject {
 		return objectColor;
 	}
 
-	public boolean contains(double ex, double why) {
+	public boolean contains(double ex, double why) { //TODO: hit detection WAY to the right
 		
 		return Math.abs(x-ex)<radius/2 && Math.abs(y-why)<radius/2; //very simplified!
 	}

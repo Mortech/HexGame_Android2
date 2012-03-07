@@ -7,9 +7,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
 import android.view.View;
+import android.graphics.Color;
 
 public class BoardView extends View{
 	private ShapeDrawable[][] mDrawable;
+	private ShapeDrawable[][] mOutline;
 	private BitmapDrawable background;
 	
 	public BoardView(Context context){
@@ -20,20 +22,25 @@ public class BoardView extends View{
 	protected void onDraw(Canvas canvas){
 		int n = Global.gridSize;
 		background.setTargetDensity(canvas);
-		background.draw(canvas); //TODO: fix this (where is background set?)
+		background.setBounds(0,0,Global.windowWidth,Global.windowHeight);
+		background.draw(canvas);
 		for(int xc=0;xc<n;xc++)
 			for(int yc=0;yc<n;yc++){
+				mOutline[xc][yc].draw(canvas);
 				mDrawable[xc][yc].getPaint().setColor(Global.gamePiece[xc][yc].getColor());
 				mDrawable[xc][yc].draw(canvas);
 			}
-		//TODO: draw outlines
+		
 	}
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh){
 		int n = Global.gridSize;
 		mDrawable = new ShapeDrawable[n][n];
+		mOutline=new ShapeDrawable[n][n];
 		Global.windowHeight=getHeight();
 		Global.windowWidth=getWidth();
+		//Size of border
+		int border=1;
 		
 		double radius=BoardTools.radiusCalculator(Global.windowWidth, Global.windowHeight, Global.gridSize); 
 		double hrad = radius * Math.sqrt(3) / 2;
@@ -45,15 +52,16 @@ public class BoardView extends View{
 		System.out.println("height="+Global.windowHeight);
 		System.out.println("xOffset="+xOffset);
 		
-		//Shape of a hexagon
-		Path path = new Path();
-        path.moveTo((float)0, (float)-radius);
-        path.lineTo((float)hrad, (float)-radius/2);
-        path.lineTo((float)hrad, (float)radius/2);
-        path.lineTo(0,(float)radius);
-        path.lineTo((float)-hrad,(float)radius/2);
-        path.lineTo((float)-hrad,(float)-radius/2);
-        path.close();
+		
+      //Shape of a hexagon
+      		Path path = new Path();
+              path.moveTo((float)0, (float)-radius);
+              path.lineTo((float)hrad, (float)-radius/2);
+              path.lineTo((float)hrad, (float)radius/2);
+              path.lineTo(0,(float)radius);
+              path.lineTo((float)-hrad,(float)radius/2);
+              path.lineTo((float)-hrad,(float)-radius/2);
+              path.close();
         
 		
 		for(int xc=0;xc<n;xc++)
@@ -61,7 +69,10 @@ public class BoardView extends View{
 				double x=((hrad + yc * hrad + 2 * hrad * xc) + hrad+xOffset);
 				double y=(1.5* radius * yc + radius)+ yOffset;
 				mDrawable[xc][yc] = new ShapeDrawable(new PathShape(path, (int)hrad*2, (int)radius*2));
-				mDrawable[xc][yc].setBounds((int)(x-hrad),(int)(y),(int)(x+hrad),(int)(y+radius*2));
+				mDrawable[xc][yc].setBounds((int)(x-hrad),(int)(y),(int)(x+hrad)-border,(int)(y+radius*2)-border);
+				mOutline[xc][yc] = new ShapeDrawable(new PathShape(path, (int)hrad*2, (int)radius*2));
+				mOutline[xc][yc].setBounds((int)(x-hrad),(int)(y),(int)(x+hrad),(int)(y+radius*2));
+				mOutline[xc][yc].getPaint().setColor(Color.BLACK);
 				Global.gamePiece[xc][yc].set(x, y, radius);
 			}
 		background=new BitmapDrawable(BoardTools.getBackground(Global.windowWidth, Global.windowHeight));
