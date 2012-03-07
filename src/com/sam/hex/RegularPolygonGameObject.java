@@ -20,13 +20,11 @@ public class RegularPolygonGameObject {
 		x=0;
 		y=0;
 		radius=0;
-
 	}
 	public RegularPolygonGameObject(double x, double y, double r) {
 		this.x=x;
 		this.y=y;
 		radius=r;
-
 	}
 	public void set(double x, double y, double r){
 		this.x=x;
@@ -48,7 +46,6 @@ public class RegularPolygonGameObject {
 			double startAngle) {
 		Hex = new RegularPolygon(x, y, r, vertexCount, startAngle);
 	}
-
 	public void setTeam(byte t) {
 		teamNumber = t;
 		if (teamNumber == 1)
