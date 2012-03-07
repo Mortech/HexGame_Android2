@@ -19,9 +19,9 @@ public class BoardView extends View{
 		calculateGrid(context);
 	}
 	
-	protected void onDraw(Canvas canvas){ //TODO: Draw stuff
+	protected void onDraw(Canvas canvas){ //TODO: not being called?
 		int n = Global.gridSize;
-		background.draw(canvas);
+		background.draw(canvas); //TODO: fix this (where is background set?)
 		for(int xc=0;xc<n;xc++)
 			for(int yc=0;yc<n;yc++){
 				mDrawable[xc][yc].getPaint().setColor(Global.gamePiece[xc][yc].getColor());
@@ -39,7 +39,6 @@ public class BoardView extends View{
 		
 		Global.windowHeight=metrics.heightPixels;
 		Global.windowWidth=metrics.widthPixels;
-		background=new BitmapDrawable(context.getResources(),BoardTools.getBackground(Global.windowWidth, Global.windowHeight));
 		
 		double radius=BoardTools.radiusCalculator(Global.windowWidth, Global.windowHeight, Global.gridSize); //Off due to display not equaling drawable area?
 		double hrad = radius * Math.sqrt(3) / 2;
@@ -67,5 +66,6 @@ public class BoardView extends View{
 				mDrawable[xc][yc].setBounds(x,y,(int)(x+hrad*2),(int)(y+radius*2));
 				Global.gamePiece[xc][yc]=new RegularPolygonGameObject(x, y, radius);
 			}
+		background=new BitmapDrawable(context.getResources(),BoardTools.getBackground(Global.windowWidth, Global.windowHeight));
 	}
 }
