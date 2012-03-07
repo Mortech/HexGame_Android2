@@ -73,12 +73,12 @@ public class BoardView extends View{
 				mOutline[xc][yc] = new ShapeDrawable(new PathShape(path, (int)hrad*2, (int)radius*2));
 				mOutline[xc][yc].setBounds((int)(x-hrad),(int)(y),(int)(x+hrad),(int)(y+radius*2));
 				mOutline[xc][yc].getPaint().setColor(Color.BLACK);
-				Global.gamePiece[xc][yc].set(x, y, radius);
+				Global.gamePiece[xc][yc].set(x-hrad, y, radius);
 			}
 		background=new BitmapDrawable(BoardTools.getBackground(Global.windowWidth, Global.windowHeight));
 	}
 	
-	public void calculateGrid(Context context){
+	public void calculateGrid(Context context){ //TODO: Clean this up!
 		int n = Global.gridSize;
 /*		mDrawable = new ShapeDrawable[n][n];
 		

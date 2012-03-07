@@ -1,7 +1,7 @@
 package com.sam.hex;
 
 
-public class GameObject implements Runnable {
+public class GameObject implements Runnable { //TODO: Recode to allow for undo function
 	Thread theGameRunner;
 
 	public GameObject() {
