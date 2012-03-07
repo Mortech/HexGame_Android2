@@ -75,7 +75,7 @@ public class HexGame extends Activity {
     }
     
     @Override
-    public void onResume(){ //TODO: Keep current game running after a rotation!
+    public void onResume(){
     	super.onResume();
     	
     	//Load preferences

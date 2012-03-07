@@ -47,10 +47,6 @@ public class BoardView extends View{
 		int yOffset = (int) ((Global.windowHeight - ((3 * radius / 2)
 				* (Global.gamePiece[0].length - 1) + 2 * radius)) / 2);
 		int xOffset = (int) ((Global.windowWidth - (hrad * Global.gamePiece.length*2+hrad*(Global.gamePiece.length-1))) / 2);
-		System.out.println("hrad="+hrad);
-		System.out.println("width="+Global.windowWidth);
-		System.out.println("height="+Global.windowHeight);
-		System.out.println("xOffset="+xOffset);
 		
 		
       //Shape of a hexagon
@@ -109,6 +105,7 @@ public class BoardView extends View{
         path.close();
         
 		*/
+		if(Global.gamePiece[0][0]==null)
 		for(int xc=0;xc<n;xc++)
 			for(int yc=0;yc<n;yc++){
 			//	int x=(int)((hrad + yc * hrad + 2 * hrad * xc) + xOffset);
