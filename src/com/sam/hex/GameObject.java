@@ -37,9 +37,9 @@ public class GameObject implements Runnable {
 				player = 1;
 				GameAction.checkedFlagReset();
 			}
-
+			Global.board.postInvalidate();
 		}
-
+		Global.board.postInvalidate();
 	}
 
 }

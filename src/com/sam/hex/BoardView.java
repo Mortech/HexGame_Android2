@@ -19,7 +19,7 @@ public class BoardView extends View{
 		calculateGrid(context);
 	}
 	
-	protected void onDraw(Canvas canvas){ //TODO: not being called?
+	protected void onDraw(Canvas canvas){
 		int n = Global.gridSize;
 		background.draw(canvas); //TODO: fix this (where is background set?)
 		for(int xc=0;xc<n;xc++)
