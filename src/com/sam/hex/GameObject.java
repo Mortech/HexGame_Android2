@@ -47,7 +47,7 @@ public class GameObject implements Runnable { //TODO: Recode to allow for undo f
 			else
 				player1.getPlayerTurn();
 			hex=null;
-			if (GameAction.checkWinPlayer1())
+			if (success && GameAction.checkWinPlayer1())
 				go=false;
 			if(success)
 				player = 2;
@@ -58,11 +58,11 @@ public class GameObject implements Runnable { //TODO: Recode to allow for undo f
 			else
 				player2.getPlayerTurn();
 			hex=null;
-			if (GameAction.checkWinPlayer2())
+			if (success && GameAction.checkWinPlayer2())
 				go=false;
 			if(success)
 				player = 1;
-			GameAction.checkedFlagReset();
+			if(go)GameAction.checkedFlagReset();
 		}
 		Global.board.postInvalidate();
 	}
