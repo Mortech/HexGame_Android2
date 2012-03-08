@@ -30,6 +30,7 @@ public class RegularPolygonGameObject {
 		this.x=x;
 		this.y=y;
 		radius=r;
+		update(x,y,r,6, Math.PI / 2);
 	}
 	public RegularPolygonGameObject(double x, double y, double r,
 			int vertexCount) {
@@ -221,7 +222,9 @@ public class RegularPolygonGameObject {
 
 	public boolean contains(double ex, double why) { //TODO: better hit detect?
 		
-		return Math.abs(x-ex)<radius/2 && Math.abs(y-why)<radius/2; //very simplified!
+		
+		//return Math.abs(x-ex)<radius/2 && Math.abs(y-why)<radius/2; //very simplified!
+		return Hex.contains((int)ex,(int)why);
 	}
 
 }

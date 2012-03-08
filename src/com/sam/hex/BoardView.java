@@ -113,6 +113,7 @@ public class BoardView extends View{
 			//	mDrawable[xc][yc] = new ShapeDrawable(new PathShape(path, (int)hrad*2, (int)radius*2));
 			//	mDrawable[xc][yc].setBounds(x,y,(int)(x+hrad*2),(int)(y+radius*2));
 				Global.gamePiece[xc][yc]=new RegularPolygonGameObject();
+				
 			}
 		//background=new BitmapDrawable(context.getResources(),BoardTools.getBackground(Global.windowWidth, Global.windowHeight));
 	}
