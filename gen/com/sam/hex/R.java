@@ -9,6 +9,8 @@ package com.sam.hex;
 
 public final class R {
     public static final class array {
+        public static final int aiLabels=0x7f040004;
+        public static final int aiValues=0x7f040005;
         public static final int gameModeArray=0x7f040000;
         public static final int gameModeValues=0x7f040001;
         public static final int gameSizeArray=0x7f040002;

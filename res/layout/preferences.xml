@@ -14,4 +14,11 @@
             android:defaultValue="7"
             android:entries="@array/gameSizeArray"
             android:entryValues="@array/gameSizeValues" />
+        <ListPreference
+            android:title="Difficulty"
+            android:summary="Set AI intelligence"
+            android:key="aiPref"
+            android:defaultValue="1"
+            android:entries="@array/aiLabels"
+            android:entryValues="@array/aiValues" />
 </PreferenceScreen>

@@ -42,7 +42,7 @@ public class HexGame extends Activity {
 			for (int xc = 0; xc < Global.gamePiece.length; xc++) {
 				for (RegularPolygonGameObject hex : Global.gamePiece[xc])
 					if (hex.contains(x, y)) {
-						if(game!=null)game.setPiece(hex); //TODO: Set piece in GameObject instead!
+						if(game!=null)game.setPiece(hex);
 						return true;
 					}
 			}
@@ -57,6 +57,7 @@ public class HexGame extends Activity {
     		game.stop();
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    	Global.difficulty=Integer.decode(prefs.getString("aiPref", "1"));
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
     	BoardTools.clearBoard(); 
     	Global.board=new BoardView(this);
@@ -88,7 +89,7 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed
-    	if(Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType){
+    	if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType){
     		initializeNewGame();
     	}
     }

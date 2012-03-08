@@ -28,7 +28,9 @@ public class GameAI implements PlayingEntity {
 	
 	public void getPlayerTurn() { // with out net play
 		this.gameBoard=BoardTools.teamGrid();
-		makeMove();
+		if(Global.difficulty==1)
+			makeMove();
+		else badMove();
 	}
 	
 	private boolean right(){
