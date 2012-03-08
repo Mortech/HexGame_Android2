@@ -41,6 +41,7 @@ public class HexGame extends Activity {
 				for (RegularPolygonGameObject hex : Global.gamePiece[xc])
 					if (hex.contains(x, y)) {
 						GameAction.setPiece(hex);
+						return true;
 					}
 			}
 			return true; //or maybe false?
