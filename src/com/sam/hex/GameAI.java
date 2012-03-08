@@ -269,8 +269,8 @@ public class GameAI implements PlayingEntity {
 				return;
 			}
 		}
-		int rand = 2;
-		rand*=Math.random();
+		int rand = 0;
+		//rand*=Math.random();
 		
 		//Extend left if we haven't gone right
 		if(left() && rand==0 && gameBoard[n[x]+1*x-2*y][n[y]+1*y-2*x]==0){
@@ -356,14 +356,15 @@ public class GameAI implements PlayingEntity {
 			return;
 		}
 		
-		//Sam's AI
-		int moves=1;
+		//pick randomly
+		int moves=0;
 		for(int a=0; a<gameBoard.length; a++){
 			for(int b=0; b<gameBoard[a].length; b++){
 				if(gameBoard[a][b]==0) moves++;
 			}
 		}
 		moves*=Math.random();
+		moves++;
 		for(int a=0; a<gameBoard.length; a++){
 			for(int b=0; b<gameBoard[a].length; b++){
 				if(gameBoard[a][b]==0) {
@@ -381,13 +382,14 @@ public class GameAI implements PlayingEntity {
 	private void badMove(){
 
 
-		int moves=1;
+		int moves=0;
 		for(int x=0; x<gameBoard.length; x++){
 			for(int y=0; y<gameBoard[x].length; y++){
 				if(gameBoard[x][y]==0) moves++;
 			}
 		}
 		moves*=Math.random();
+		moves++;
 		for(int x=0; x<gameBoard.length; x++)
 			for(int y=0; y<gameBoard[x].length; y++){
 				if(gameBoard[x][y]==0) {
