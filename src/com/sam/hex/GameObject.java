@@ -1,7 +1,7 @@
 package com.sam.hex;
 
 
-public class GameObject implements Runnable { //TODO: Recode to allow for undo function
+public class GameObject implements Runnable {
 	Thread theGameRunner;
 	private RegularPolygonGameObject hex;
 	PlayingEntity player1;
@@ -18,7 +18,31 @@ public class GameObject implements Runnable { //TODO: Recode to allow for undo f
 		
 		if((Global.gameType+1)%2>0) player2=new PlayerObject((byte)2);
 		else player2=new GameAI((byte)2,(byte)1);// sets player vs Ai
+		replay();
+		
 		theGameRunner.start(); // (2) Start the thread.
+		
+	}
+	public void replay(){
+		Global.slowAI=false;
+		for(int i=0; i<Global.moveList.size(); i++){
+			if(Global.moveList.get(i)==null){
+				if(player==1)
+					player1.getPlayerTurn();
+				else player2.getPlayerTurn();
+			}
+			else{	
+				Global.gamePiece[Global.moveList.get(i).x][Global.moveList.get(i).y].setTeam(player);
+			}
+			
+			if(player==1)
+				player=2;
+			else
+				player=1;
+		}
+		hex=null;
+		Global.slowAI=true;
+		Global.board.postInvalidate();
 	}
 	public void stop(){
 		//theGameRunner.stop();

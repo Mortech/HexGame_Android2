@@ -2,7 +2,7 @@ package com.sam.hex;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.graphics.Point;
 
 
 public class GameAI implements PlayingEntity { 
@@ -56,6 +56,7 @@ public class GameAI implements PlayingEntity {
 		}
 		
 		//Sleep to stop instantaneous playing
+		if(Global.slowAI)
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
@@ -402,6 +403,11 @@ public class GameAI implements PlayingEntity {
 			}
 
 	}	
+	private void sendMove(int x, int y){
+		if(Global.slowAI){
+			Global.moveList.add(new Point(x,y));
+		}
+	}
 	/*  Bah, ignore this for now.
 	private void nickMove(){
 		int[][] moves=new int[gameBoard.length][gameBoard.length];

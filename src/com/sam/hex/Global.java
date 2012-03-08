@@ -17,6 +17,7 @@ public class Global {
 	public static BoardView board;
 	public static ArrayList<Point> moveList=new ArrayList<Point>();
 	public static int difficulty=1;
+	public static boolean slowAI=true;
 	
 
 	// public static Color[][] background;

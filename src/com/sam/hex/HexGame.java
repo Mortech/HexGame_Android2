@@ -42,7 +42,7 @@ public class HexGame extends Activity {
 			for (int xc = 0; xc < Global.gamePiece.length; xc++) {
 				for (RegularPolygonGameObject hex : Global.gamePiece[xc])
 					if (hex.contains(x, y)) {
-						if(game!=null)game.setPiece(hex);
+						if(game!=null)game.setPiece(hex); //TODO: send point instead of hex!
 						return true;
 					}
 			}
@@ -109,37 +109,12 @@ public class HexGame extends Activity {
         	Intent settingsActivity = new Intent(getBaseContext(),Preferences.class);
         	startActivity(settingsActivity);
             return true;
-        case R.id.undo: //TODO: implement undo functionality
-      /*  	if(!Global.getMoveList().isEmpty()){
-    			Posn lastMove = Global.getMoveList().get(Global.getMoveList().size()-1);
-    			Global.setGameboard(lastMove.getX(), lastMove.getY(), (byte) 0);
-    			Global.removeFromMoveList(lastMove);
-        	}
-        	BoardTools.updateCurrentPlayer();
-    		Global.setRunning(true);
-    		Global.setPendingMove(null);
-    		for(int i=0;i<Global.getN();i++){
-				for(int j=0;j<Global.getN();j++){
-					if(Global.getGameboard()[i][j]==(byte) 3){
-						Global.setGameboard(i, j, (byte) 1);
-					}
-					else if(Global.getGameboard()[i][j]==(byte) 4){
-						Global.setGameboard(i, j, (byte) 2);
-					}
-				}
-			}
-        	//Create our board
-        	Global.board=new BoardView(this);
-    		
-    		//Create the game object
-    		@SuppressWarnings("unused")
-    		GameObject game = new GameObject();
-    		
-    		//Add the touch listener
-    		TouchListener touchListener = new TouchListener();
-            Global.board.setOnTouchListener(touchListener);
-            setContentView(Global.board);
-        	Global.board.invalidate(); */
+        case R.id.undo:
+        	if(game!=null)
+        		game.stop();
+        	BoardTools.clearBoard();
+        	BoardTools.undo();
+        	game= new GameObject();
             return true;
         case R.id.newgame:
         	initializeNewGame();
