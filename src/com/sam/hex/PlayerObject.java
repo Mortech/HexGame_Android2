@@ -15,7 +15,13 @@ public class PlayerObject implements PlayingEntity {
 		 makeMove();
 	}
 
-	
+	public boolean getPlayerTurn(RegularPolygonGameObject hex){
+		if (hex!=null && hex.getTeam() == 0) {
+			hex.setTeam(team);
+			return true;
+		}
+		return false;
+	}
 	public void getPlayerTurn() {
 		this.gameBoard=BoardTools.teamGrid();
 		makeMove();

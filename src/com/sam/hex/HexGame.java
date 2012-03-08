@@ -17,6 +17,8 @@ import android.graphics.Point;
 import java.util.ArrayList;
 
 public class HexGame extends Activity {
+	GameObject game;
+	TouchListener touchListener=new TouchListener();
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class HexGame extends Activity {
         else{
         	Global.board=new BoardView(this);
         	//Add the touch listener
-    		TouchListener touchListener = new TouchListener();
+    		//touchListener = new TouchListener();
             Global.board.setOnTouchListener(touchListener);
             setContentView(Global.board);
         }
@@ -40,7 +42,7 @@ public class HexGame extends Activity {
 			for (int xc = 0; xc < Global.gamePiece.length; xc++) {
 				for (RegularPolygonGameObject hex : Global.gamePiece[xc])
 					if (hex.contains(x, y)) {
-						GameAction.setPiece(hex);
+						if(game!=null)game.setPiece(hex); //TODO: Set piece in GameObject instead!
 						return true;
 					}
 			}
@@ -51,7 +53,8 @@ public class HexGame extends Activity {
     public void initializeNewGame(){
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	
+    	if(game!=null)
+    		game.stop();
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
@@ -66,13 +69,15 @@ public class HexGame extends Activity {
     	Global.gameType=(byte)Integer.parseInt(prefs.getString("gameModePref", "0"));
 		
 		//Create the game object
-		@SuppressWarnings("unused")
-		GameObject game = new GameObject();
+    	
+		
 		
 		//Add the touch listener
-		TouchListener touchListener = new TouchListener();
+		//touchListener = new TouchListener();
         Global.board.setOnTouchListener(touchListener);
         setContentView(Global.board);
+        
+        game = new GameObject();
     }
     
     @Override
