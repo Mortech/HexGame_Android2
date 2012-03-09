@@ -1,6 +1,8 @@
 package com.sam.hex;
 
 import android.graphics.Point;
+import android.os.Looper;
+import android.widget.Toast;
 
 public class GameObject implements Runnable {
 	Thread theGameRunner;
@@ -76,6 +78,17 @@ public class GameObject implements Runnable {
 				GameAction.checkedFlagReset();
 		}
 		
+		if (GameAction.checkWinPlayer1()){
+			Looper.prepare();
+			Toast.makeText(Global.board.getContext(), Global.playerOneName+" wins!", Toast.LENGTH_SHORT).show();
+			Looper.loop();
+		}
+		if (GameAction.checkWinPlayer2()){
+			Looper.prepare();
+			Toast.makeText(Global.board.getContext(), Global.playerTwoName+" wins!", Toast.LENGTH_SHORT).show();
+			Looper.loop();
+		}
+		
 	}
 	public void doStuff(){
 		if (player == 1) {
@@ -85,8 +98,9 @@ public class GameObject implements Runnable {
 			else
 				player1.getPlayerTurn();
 			hex=null;
-			if (success && GameAction.checkWinPlayer1())
+			if (success && GameAction.checkWinPlayer1()){
 				go=false;
+			}
 			
 			if(success)
 				player = 2;
@@ -98,8 +112,9 @@ public class GameObject implements Runnable {
 			else
 				player2.getPlayerTurn();
 			hex=null;
-			if (success && GameAction.checkWinPlayer2())
+			if (success && GameAction.checkWinPlayer2()){
 				go=false;
+			}
 			if(success)
 				player = 1;
 			GameAction.checkedFlagReset();
