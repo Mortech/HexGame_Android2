@@ -27,9 +27,13 @@ Preference.OnPreferenceClickListener {
 		@Override
 		public boolean onPreferenceClick(Preference arg0) {
 			//SharedPreferences.Editor EditSetings =Global.gamePrefs.edit();
-			SharedPreferences.Editor EditSetings =PreferenceManager.getDefaultSharedPreferences(context).edit();
+			SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(context);
+			SharedPreferences.Editor EditSetings =prefs.edit();
 			EditSetings.clear();
 			EditSetings.commit();
+	    	Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
+	    	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
+	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,Global.windowWidth,Global.windowHeight);
 			Global.board.invalidate();
 			return false;
 		}
