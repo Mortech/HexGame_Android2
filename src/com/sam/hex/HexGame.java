@@ -40,9 +40,9 @@ public class HexGame extends Activity {
     		int x = (int)event.getX();
 			int y = (int)event.getY();
 			for (int xc = 0; xc < Global.gamePiece.length; xc++) {
-				for (RegularPolygonGameObject hex : Global.gamePiece[xc])
-					if (hex.contains(x, y)) {
-						if(game!=null)game.setPiece(hex); //TODO: send point instead of hex!
+				for (int yc=0; yc<Global.gamePiece[0].length; yc++)
+					if (Global.gamePiece[xc][yc].contains(x, y)) {
+						if(game!=null)game.setPiece(new Point(xc,yc)); //TODO: send point instead of hex!
 						return true;
 					}
 			}
@@ -84,7 +84,7 @@ public class HexGame extends Activity {
     @Override
     public void onResume(){
     	super.onResume();
-    	
+    	game.resume();
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
@@ -100,7 +100,10 @@ public class HexGame extends Activity {
         inflater.inflate(R.layout.menu, menu);
         return true;
     }
-    
+    public void onPause(){
+    	super.onPause();
+    	game.pause();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -114,6 +117,8 @@ public class HexGame extends Activity {
         		game.stop();
         	BoardTools.clearBoard();
         	BoardTools.undo();
+        	if(Global.gameType!=0)
+        		BoardTools.undo();
         	game= new GameObject();
             return true;
         case R.id.newgame:

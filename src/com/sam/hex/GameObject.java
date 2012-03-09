@@ -1,9 +1,10 @@
 package com.sam.hex;
 
+import android.graphics.Point;
 
 public class GameObject implements Runnable {
 	Thread theGameRunner;
-	private RegularPolygonGameObject hex;
+	private Point hex;
 	PlayingEntity player1;
 	PlayingEntity player2;
 	byte player = 1;
@@ -40,6 +41,8 @@ public class GameObject implements Runnable {
 			else
 				player=1;
 		}
+		if(GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2())
+			go=false;
 		hex=null;
 		Global.slowAI=true;
 		Global.board.postInvalidate();
@@ -48,7 +51,13 @@ public class GameObject implements Runnable {
 		//theGameRunner.stop();
 		go=false;
 	}
-	public void setPiece(RegularPolygonGameObject h){
+	public void pause(){
+		
+	}
+	public void resume(){
+		
+	}
+	public void setPiece(Point h){
 		hex=h;
 	}
 	public void run() {
