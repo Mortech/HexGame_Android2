@@ -7,15 +7,21 @@
     <uses-sdk android:minSdkVersion="7" />
 
     <application android:icon="@drawable/icon" android:label="@string/app_name" >
-        <activity android:label="@string/app_name" android:name=".HexGame" >
-            <intent-filter >
+		<activity android:name=".StartUp" android:label="@string/app_name">
+		    <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".Preferences" android:label="@string/inline_preferences">
 		</activity>
+		<activity android:label="@string/app_name" android:name=".HexGame" >
+        </activity>
+        <activity android:label="@string/inline_preferences" android:name=".Preferences">
+		</activity>
+		<activity android:label="@string/app_name" android:name=".Instructions" >
+        </activity>
+        <!--activity android:label="@string/app_name" android:name=".Preferences">
+		</activity-->
     </application>
 
 </manifest>

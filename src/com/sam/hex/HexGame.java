@@ -52,6 +52,10 @@ public class HexGame extends Activity {
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
+    	//Set player names
+    	Global.playerOneName = prefs.getString("player1Name", "Player1");
+    	Global.playerTwoName = prefs.getString("player2Name", "Player2");
+    	
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
