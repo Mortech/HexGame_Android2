@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class HexGame extends Activity {
 	GameObject game;
+
 	//TouchListener touchListener=new TouchListener();
     /** Called when the activity is first created. */
     @Override
@@ -58,7 +59,7 @@ public class HexGame extends Activity {
     public void initializeNewGame(){
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
+    	Global.gamePrefs=prefs;
     	
     	//Set player names
     	Global.playerOneName = prefs.getString("player1Name", "Player1");

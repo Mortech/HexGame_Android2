@@ -37,7 +37,6 @@
 		    android:summary="Pick a color for Player2"
 		    android:defaultValue="@integer/COLOR_RED"
 		/>
-
         <ListPreference
             android:title="Difficulty"
             android:summary="Set AI intelligence"
@@ -45,5 +44,9 @@
             android:defaultValue="1"
             android:entries="@array/aiLabels"
             android:entryValues="@array/aiValues" />
+       <com.sam.hex.setDefaults
+            android:title="Reset Defaults"
+            android:summary="Reset The Defaults"
+            />
 
 </PreferenceScreen>

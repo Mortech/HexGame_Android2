@@ -9,37 +9,75 @@ package com.sam.hex;
 
 public final class R {
     public static final class array {
-        public static final int aiLabels=0x7f040004;
-        public static final int aiValues=0x7f040005;
-        public static final int gameModeArray=0x7f040000;
-        public static final int gameModeValues=0x7f040001;
-        public static final int gameSizeArray=0x7f040002;
-        public static final int gameSizeValues=0x7f040003;
+        public static final int aiLabels=0x7f050004;
+        public static final int aiValues=0x7f050005;
+        public static final int gameModeArray=0x7f050000;
+        public static final int gameModeValues=0x7f050001;
+        public static final int gameSizeArray=0x7f050002;
+        public static final int gameSizeValues=0x7f050003;
     }
     public static final class attr {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int icon=0x7f020001;
+        public static final int icon_old=0x7f020002;
     }
     public static final class id {
-        public static final int newgame=0x7f060002;
-        public static final int quit=0x7f060003;
-        public static final int settings=0x7f060000;
-        public static final int undo=0x7f060001;
+        public static final int color_picker_view=0x7f080000;
+        public static final int imageView1=0x7f080004;
+        public static final int instructionsButton=0x7f080006;
+        public static final int new_color_panel=0x7f080002;
+        public static final int newgame=0x7f08000a;
+        public static final int old_color_panel=0x7f080001;
+        public static final int optionsButton=0x7f080007;
+        public static final int quit=0x7f08000b;
+        public static final int settings=0x7f080008;
+        public static final int startButton=0x7f080005;
+        public static final int textView1=0x7f080003;
+        public static final int undo=0x7f080009;
+    }
+    public static final class integer {
+        public static final int COLOR_BLACK=0x7f060000;
+        public static final int COLOR_BLUE=0x7f060003;
+        public static final int COLOR_GREEN=0x7f060001;
+        public static final int COLOR_RED=0x7f060002;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
-        public static final int menu=0x7f030001;
-        public static final int preferences=0x7f030002;
+        public static final int dialog_color_picker=0x7f030000;
+        public static final int instructions=0x7f030001;
+        public static final int main=0x7f030002;
+        public static final int menu=0x7f030003;
+        public static final int preferences=0x7f030004;
     }
     public static final class string {
-        public static final int app_name=0x7f050000;
-        public static final int inline_preferences=0x7f050005;
-        public static final int newgame=0x7f050003;
-        public static final int quit=0x7f050004;
-        public static final int settings=0x7f050001;
-        public static final int undo=0x7f050002;
+        public static final int app_name=0x7f070003;
+        public static final int color1_summary=0x7f07000e;
+        public static final int color1_title=0x7f07000d;
+        public static final int color2_summary=0x7f070010;
+        public static final int color2_title=0x7f07000f;
+        public static final int color3_summary=0x7f070012;
+        public static final int color3_title=0x7f070011;
+        public static final int color4_summary=0x7f070014;
+        public static final int color4_title=0x7f070013;
+        /**  Color Picker 
+         */
+        public static final int dialog_color_picker=0x7f07000a;
+        public static final int inline_preferences=0x7f070008;
+        public static final int instructions=0x7f070009;
+        public static final int newgame=0x7f070006;
+        public static final int options=0x7f070002;
+        /**  Preferences 
+         */
+        public static final int pref_category=0x7f07000c;
+        public static final int press_color_to_apply=0x7f07000b;
+        public static final int quit=0x7f070007;
+        public static final int rules=0x7f070001;
+        public static final int settings=0x7f070004;
+        public static final int start=0x7f070000;
+        public static final int undo=0x7f070005;
+    }
+    public static final class xml {
+        public static final int settings=0x7f040000;
     }
 }
->>>>>>> 7832bc035a0ddf929852a7d5d4e74051efbfbcc4
