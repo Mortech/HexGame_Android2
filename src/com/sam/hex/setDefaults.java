@@ -1,7 +1,6 @@
 package com.sam.hex;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
@@ -10,6 +9,7 @@ import android.util.AttributeSet;
 public class setDefaults extends Preference implements
 Preference.OnPreferenceClickListener {
 	Context context;
+
 		public setDefaults(Context context){
 			super(context);
 			this.context=context;
@@ -31,6 +31,7 @@ Preference.OnPreferenceClickListener {
 			SharedPreferences.Editor EditSetings =prefs.edit();
 			EditSetings.clear();
 			EditSetings.commit();
+			notifyChanged();
 	    /*	Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
 	    	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
 	    	Global.playerOneName = prefs.getString("player1Name", "Player1");
@@ -39,4 +40,5 @@ Preference.OnPreferenceClickListener {
 			return false;
 		}
 		
+
 }

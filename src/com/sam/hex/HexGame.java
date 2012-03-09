@@ -117,7 +117,6 @@ public class HexGame extends Activity {
 	    	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
 	    	Global.playerOneName = prefs.getString("player1Name", "Player1");
 	    	Global.playerTwoName = prefs.getString("player2Name", "Player2");
-	    	Global.board.invalidate();
 	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
 	    	Global.board.invalidate();
 	    	

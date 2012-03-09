@@ -108,6 +108,7 @@ public class BoardView extends View{
 				mOutline[xc][yc].setBounds((int)(x-hrad),(int)(y),(int)(x+hrad),(int)(y+radius*2));
 				mOutline[xc][yc].getPaint().setColor(Color.BLACK);
 				Global.gamePiece[xc][yc].set(x-hrad, y, radius);
+				
 			}
 	}
 	
