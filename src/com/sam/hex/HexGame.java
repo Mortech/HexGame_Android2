@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class HexGame extends Activity {
 	GameObject game;
-	TouchListener touchListener=new TouchListener();
+	//TouchListener touchListener=new TouchListener();
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,10 @@ public class HexGame extends Activity {
         else{
         	Global.board=new BoardView(this);
         	//Add the touch listener
-    		//touchListener = new TouchListener();
+        	if(game!=null)
+        		game.stop();
+        	game=new GameObject();
+    		TouchListener touchListener = new TouchListener();
             Global.board.setOnTouchListener(touchListener);
             setContentView(Global.board);
         }
@@ -42,7 +45,7 @@ public class HexGame extends Activity {
 			for (int xc = 0; xc < Global.gamePiece.length; xc++) {
 				for (int yc=0; yc<Global.gamePiece[0].length; yc++)
 					if (Global.gamePiece[xc][yc].contains(x, y)) {
-						if(game!=null)game.setPiece(new Point(xc,yc)); //TODO: send point instead of hex!
+						if(game!=null)game.setPiece(new Point(xc,yc));
 						return true;
 					}
 			}
@@ -74,7 +77,7 @@ public class HexGame extends Activity {
 		
 		
 		//Add the touch listener
-		//touchListener = new TouchListener();
+		TouchListener touchListener = new TouchListener();
         Global.board.setOnTouchListener(touchListener);
         setContentView(Global.board);
         

@@ -41,8 +41,10 @@ public class GameObject implements Runnable {
 			else
 				player=1;
 		}
-		//if(go && (GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2()))
-			//go=false;
+		if(go && (GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2())){
+			go=false;
+		}
+			GameAction.checkedFlagReset();
 		hex=null;
 		Global.slowAI=true;
 		Global.board.postInvalidate();
