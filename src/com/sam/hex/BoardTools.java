@@ -20,7 +20,10 @@ public class BoardTools {
 		return spaceH;
 
 	}
-
+	public static void undo(){
+		if(!Global.moveList.isEmpty())
+			Global.moveList.remove(Global.moveList.size()-1);
+	}
 	public static Bitmap getBackground(int w, int h) {
 		Bitmap background =Bitmap.createBitmap(Global.windowWidth, Global.windowHeight,Bitmap.Config.ARGB_8888); //the background is drawn to this bitmap. 
 		RegularPolygonGameObject[][] gamePeace = Global.gamePiece;

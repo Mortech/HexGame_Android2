@@ -1,5 +1,7 @@
 package com.sam.hex;
 
+import android.graphics.Point;
+
 public class PlayerObject implements PlayingEntity {
 	
 	byte[][] gameBoard; 
@@ -15,7 +17,14 @@ public class PlayerObject implements PlayingEntity {
 		 makeMove();
 	}
 
-	
+	public boolean getPlayerTurn(Point hex){
+		if (hex!=null && Global.gamePiece[hex.x][hex.y].getTeam() == 0) {
+			Global.gamePiece[hex.x][hex.y].setTeam(team);
+			Global.moveList.add(hex);
+			return true;
+		}
+		return false;
+	}
 	public void getPlayerTurn() {
 		this.gameBoard=BoardTools.teamGrid();
 		makeMove();

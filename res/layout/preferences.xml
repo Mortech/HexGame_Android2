@@ -14,6 +14,7 @@
             android:defaultValue="7"
             android:entries="@array/gameSizeArray"
             android:entryValues="@array/gameSizeValues" />
+
         <EditTextPreference
             android:title="Player1's Name"
             android:summary="Enter a name for Player1"
@@ -36,4 +37,13 @@
 		    android:summary="Pick a color for Player2"
 		    android:defaultValue="@integer/COLOR_RED"
 		/>
+
+        <ListPreference
+            android:title="Difficulty"
+            android:summary="Set AI intelligence"
+            android:key="aiPref"
+            android:defaultValue="1"
+            android:entries="@array/aiLabels"
+            android:entryValues="@array/aiValues" />
+
 </PreferenceScreen>

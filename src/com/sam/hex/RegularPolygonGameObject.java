@@ -220,7 +220,7 @@ public class RegularPolygonGameObject {
 		return objectColor;
 	}
 
-	public boolean contains(double ex, double why) { //TODO: better hit detect?
+	public boolean contains(double ex, double why) { //TODO: hit detect MAY be off slightly...
 		
 		
 		//return Math.abs(x-ex)<radius/2 && Math.abs(y-why)<radius/2; //very simplified!

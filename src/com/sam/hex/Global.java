@@ -16,6 +16,8 @@ public class Global {
 	public static byte gameType; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
 	public static BoardView board;
 	public static ArrayList<Point> moveList=new ArrayList<Point>();
+	public static int difficulty=1;
+	public static boolean slowAI=true;
 	
 
 	// public static Color[][] background;
