@@ -31,10 +31,11 @@ Preference.OnPreferenceClickListener {
 			SharedPreferences.Editor EditSetings =prefs.edit();
 			EditSetings.clear();
 			EditSetings.commit();
-	    	Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
+	    /*	Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
 	    	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
-	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,Global.windowWidth,Global.windowHeight);
-			Global.board.invalidate();
+	    	Global.playerOneName = prefs.getString("player1Name", "Player1");
+	    	Global.playerTwoName = prefs.getString("player2Name", "Player2");
+		*/
 			return false;
 		}
 		

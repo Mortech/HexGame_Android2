@@ -22,6 +22,7 @@ public class Global {
 	public static int difficulty=1;
 	public static boolean slowAI=true;
 	static SharedPreferences gamePrefs;
+
 	
 
 	// public static Color[][] background;

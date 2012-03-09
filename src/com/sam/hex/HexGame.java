@@ -106,9 +106,22 @@ public class HexGame extends Activity {
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
-    	//Check if settings were changed
+    	//Check if settings were changed the need a new game
     	if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType){
     		initializeNewGame();
+    	}	
+    	else
+    	{	
+    	//apply minor changes
+    		Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
+	    	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
+	    	Global.playerOneName = prefs.getString("player1Name", "Player1");
+	    	Global.playerTwoName = prefs.getString("player2Name", "Player2");
+	    	Global.board.invalidate();
+	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
+	    	Global.board.invalidate();
+	    	
+    		
     	}
     }
     
