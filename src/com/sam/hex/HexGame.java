@@ -28,10 +28,12 @@ public class HexGame extends Activity {
         	initializeNewGame();//Must be set up immediately
         }
         else{
-        	Global.board=new BoardView(this);
+        	
         	//Add the touch listener
         	if(game!=null)
         		game.stop();
+        	BoardTools.clearBoard();
+        	Global.board=new BoardView(this);
         	game=new GameObject();
     		TouchListener touchListener = new TouchListener();
             Global.board.setOnTouchListener(touchListener);

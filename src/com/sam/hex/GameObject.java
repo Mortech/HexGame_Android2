@@ -58,7 +58,10 @@ public class GameObject implements Runnable {
 	}
 	public void run() {
 		while(go){
-			
+		//	if(go && (GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2())){
+			//	go=false;
+			//}
+				GameAction.checkedFlagReset();
 			if(go) doStuff();
 			Global.board.postInvalidate();
 			
@@ -67,8 +70,10 @@ public class GameObject implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			//if(go &&(GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2()))
-				//go=false;
+		//	if(go && (GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2())){
+			//	go=false;
+		//	}
+				GameAction.checkedFlagReset();
 		}
 		
 	}
