@@ -8,7 +8,7 @@ public class GameAction {
 		for (int i = 0; i < Global.gridSize; i++) {
 			if (RegularPolygonGameObject.checkWinTeam((byte) 1,
 					Global.gridSize, i, Global.gamePiece)) {
-				System.out.print("Player one wins");
+				System.out.println("Player one wins");
 				String path=RegularPolygonGameObject.findShortestPath((byte) 1,
 						Global.gridSize, i, Global.gamePiece);
 				RegularPolygonGameObject.colorPath(Global.gridSize,i,path);
@@ -22,7 +22,7 @@ public class GameAction {
 		for (int i = 0; i < Global.gridSize; i++) {
 			if (RegularPolygonGameObject.checkWinTeam((byte) 2, i,
 					Global.gridSize, Global.gamePiece)) {
-				System.out.print("Player Two wins");
+				System.out.println("Player Two wins");
 				RegularPolygonGameObject.findShortestPath((byte) 2, i,
 				Global.gridSize, Global.gamePiece);
 				return true;

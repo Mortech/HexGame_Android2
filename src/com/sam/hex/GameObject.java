@@ -41,8 +41,8 @@ public class GameObject implements Runnable {
 			else
 				player=1;
 		}
-		if(GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2())
-			go=false;
+		//if(go && (GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2()))
+			//go=false;
 		hex=null;
 		Global.slowAI=true;
 		Global.board.postInvalidate();
@@ -51,24 +51,22 @@ public class GameObject implements Runnable {
 		//theGameRunner.stop();
 		go=false;
 	}
-	public void pause(){
-		
-	}
-	public void resume(){
-		
-	}
 	public void setPiece(Point h){
 		hex=h;
 	}
 	public void run() {
 		while(go){
+			
 			if(go) doStuff();
 			Global.board.postInvalidate();
+			
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			//if(go &&(GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2()))
+				//go=false;
 		}
 		
 	}
@@ -82,8 +80,10 @@ public class GameObject implements Runnable {
 			hex=null;
 			if (success && GameAction.checkWinPlayer1())
 				go=false;
+			
 			if(success)
 				player = 2;
+			GameAction.checkedFlagReset();
 		} else {
 			boolean success=true;
 			if(player2 instanceof PlayerObject)
@@ -95,7 +95,7 @@ public class GameObject implements Runnable {
 				go=false;
 			if(success)
 				player = 1;
-			if(go)GameAction.checkedFlagReset();
+			GameAction.checkedFlagReset();
 		}
 		Global.board.postInvalidate();
 	}

@@ -84,7 +84,7 @@ public class HexGame extends Activity {
     @Override
     public void onResume(){
     	super.onResume();
-    	game.resume();
+    	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
@@ -99,10 +99,6 @@ public class HexGame extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.layout.menu, menu);
         return true;
-    }
-    public void onPause(){
-    	super.onPause();
-    	game.pause();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
