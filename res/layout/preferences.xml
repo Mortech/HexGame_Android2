@@ -19,9 +19,21 @@
             android:summary="Enter a name for Player1"
             android:defaultValue="Player1"
             android:key="player1Name" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+		    android:key="player1Color"
+		    android:title="Player1's Color"
+		    android:summary="Pick a color for Player1"
+		    android:defaultValue="@integer/COLOR_BLUE"
+		/>
         <EditTextPreference
             android:title="Player2's Name"
             android:summary="Enter a name for Player2"
             android:defaultValue="Player2"
             android:key="player2Name" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+		    android:key="player2Color"
+		    android:title="Player2's Color"
+		    android:summary="Pick a color for Player2"
+		    android:defaultValue="@integer/COLOR_RED"
+		/>
 </PreferenceScreen>

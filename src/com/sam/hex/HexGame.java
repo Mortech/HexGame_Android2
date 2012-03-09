@@ -56,6 +56,10 @@ public class HexGame extends Activity {
     	Global.playerOneName = prefs.getString("player1Name", "Player1");
     	Global.playerTwoName = prefs.getString("player2Name", "Player2");
     	
+    	//Set player colors
+    	Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
+    	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
+    	
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
