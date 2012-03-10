@@ -1,7 +1,6 @@
 package com.sam.hex;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
@@ -24,10 +23,8 @@ Preference.OnPreferenceClickListener {
 
 	@Override
 	public boolean onPreferenceClick(Preference arg0) {
-		SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(context);
-		SharedPreferences.Editor EditSetings =prefs.edit();
-		EditSetings.clear();
-		EditSetings.commit();
+		//Clear everything
+		PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit();
 		notifyChanged();
 		return false;
 	}
