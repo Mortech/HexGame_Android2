@@ -12,10 +12,12 @@ public final class R {
         public static final int aiLabels=0x7f050004;
         public static final int aiValues=0x7f050005;
         public static final int availablePlayers=0x7f050006;
-        /**  <item>Player vs Online Player</item> 
+        /**  <item>Player vs Local Player</item>
+        <item>Player vs Online Player</item> 
          */
         public static final int gameModeArray=0x7f050000;
-        /**  <item>5</item> 
+        /**  <item>4</item>
+        <item>5</item> 
          */
         public static final int gameModeValues=0x7f050001;
         public static final int gameSizeArray=0x7f050002;
@@ -61,42 +63,45 @@ public final class R {
     public static final class string {
         /**  Application name 
          */
-        public static final int app_name=0x7f070003;
-        public static final int color1_summary=0x7f07000f;
-        public static final int color1_title=0x7f07000e;
-        public static final int color2_summary=0x7f070011;
-        public static final int color2_title=0x7f070010;
-        public static final int color3_summary=0x7f070013;
-        public static final int color3_title=0x7f070012;
-        public static final int color4_summary=0x7f070015;
-        public static final int color4_title=0x7f070014;
+        public static final int app_name=0x7f070000;
+        public static final int color1_summary=0x7f070010;
+        public static final int color1_title=0x7f07000f;
+        public static final int color2_summary=0x7f070012;
+        public static final int color2_title=0x7f070011;
+        public static final int color3_summary=0x7f070014;
+        public static final int color3_title=0x7f070013;
+        public static final int color4_summary=0x7f070016;
+        public static final int color4_title=0x7f070015;
         /**  Color Picker 
          */
-        public static final int dialog_color_picker=0x7f07000b;
+        public static final int dialog_color_picker=0x7f07000c;
+        /**  Main page title 
+         */
+        public static final int frontpage=0x7f070003;
         /**  Preference title 
          */
-        public static final int inline_preferences=0x7f070008;
+        public static final int inline_preferences=0x7f070001;
         /**  Game instructions 
          */
-        public static final int instructions=0x7f07000a;
+        public static final int instructions=0x7f07000b;
         /**  Local lobby title 
          */
-        public static final int local=0x7f070009;
-        public static final int newgame=0x7f070006;
-        public static final int options=0x7f070002;
+        public static final int local=0x7f070002;
+        public static final int newgame=0x7f070009;
+        public static final int options=0x7f070006;
         /**  Preferences 
          */
-        public static final int pref_category=0x7f07000d;
-        public static final int press_color_to_apply=0x7f07000c;
-        public static final int quit=0x7f070007;
-        public static final int rules=0x7f070001;
+        public static final int pref_category=0x7f07000e;
+        public static final int press_color_to_apply=0x7f07000d;
+        public static final int quit=0x7f07000a;
+        public static final int rules=0x7f070005;
         /**  Menu choices 
          */
-        public static final int settings=0x7f070004;
+        public static final int settings=0x7f070007;
         /**  Buttons from top to bottom 
          */
-        public static final int start=0x7f070000;
-        public static final int undo=0x7f070005;
+        public static final int start=0x7f070004;
+        public static final int undo=0x7f070008;
     }
     public static final class style {
         public static final int Theme_Transparent=0x7f080000;

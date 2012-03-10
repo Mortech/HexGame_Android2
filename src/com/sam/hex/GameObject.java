@@ -34,7 +34,7 @@ public class GameObject implements Runnable {
 		}
 		else if(Global.gameType==(byte) 4){
 			player1=new PlayerObject((byte)1);
-			player2=new PlayerObject((byte)2);
+			player2=new LocalPlayerObject((byte)2);
 		}
 		replay();
 		

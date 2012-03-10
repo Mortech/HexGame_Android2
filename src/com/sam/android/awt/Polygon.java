@@ -1,8 +1,5 @@
 package com.sam.android.awt;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
 /**
  * Minimum Polygon class for Android.
  * build off of code given freely to the public domain by Jompe71 from http://www.anddev.org/
