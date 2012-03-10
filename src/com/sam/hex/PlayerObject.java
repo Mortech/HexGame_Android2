@@ -8,7 +8,7 @@ public class PlayerObject implements PlayingEntity {
 	byte team;
 	
 	public PlayerObject(byte i) {
-	this.team=i;	//sets the players team
+	this.team=i;//Set the player's team
 	}
 
 	
@@ -30,7 +30,6 @@ public class PlayerObject implements PlayingEntity {
 		makeMove();
 	}
 	public void makeMove(){
-		GameAction.getPlayerTurn(team); // lets the player make his move
+		GameAction.getPlayerTurn(team);//Have the player make a move
 	}
-
 }

@@ -13,6 +13,7 @@ public class StartUp extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        //First button
         final Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -21,6 +22,7 @@ public class StartUp extends Activity {
             }
         });
         
+        //Second button
         final Button instructionsButton = (Button) findViewById(R.id.instructionsButton);
         instructionsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -29,6 +31,7 @@ public class StartUp extends Activity {
             }
         });
         
+        //Third button
         final Button optionsButton = (Button) findViewById(R.id.optionsButton);
         optionsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

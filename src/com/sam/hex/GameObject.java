@@ -16,11 +16,11 @@ public class GameObject implements Runnable {
 		theGameRunner = new Thread(this, "runningGame"); // (1) Create a new
 		// thread.
 		System.out.println(theGameRunner.getName());
-		if(Global.gameType<2) player1=new PlayerObject((byte)1);
-		else player1=new GameAI((byte)1,(byte)1);// sets player vs Ai
+		if(Global.gameType<2) player1=new PlayerObject((byte)1);//Sets up a human player
+		else player1=new GameAI((byte)1,(byte)1);//Sets up an AI player
 		
-		if((Global.gameType+1)%2>0) player2=new PlayerObject((byte)2);
-		else player2=new GameAI((byte)2,(byte)1);// sets player vs Ai
+		if((Global.gameType+1)%2>0) player2=new PlayerObject((byte)2);//Sets up a human player
+		else player2=new GameAI((byte)2,(byte)1);//Sets up an AI player
 		replay();
 		
 		theGameRunner.start(); // (2) Start the thread.
@@ -75,9 +75,10 @@ public class GameObject implements Runnable {
 		//	if(go && (GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2())){
 			//	go=false;
 		//	}
-				GameAction.checkedFlagReset();
+			GameAction.checkedFlagReset();
 		}
 		
+		//Announce winner (in a toast!)
 		if (GameAction.checkWinPlayer1()){
 			Looper.prepare();
 			Toast.makeText(Global.board.getContext(), Global.playerOneName+" wins!", Toast.LENGTH_SHORT).show();

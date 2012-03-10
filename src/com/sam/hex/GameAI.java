@@ -6,7 +6,7 @@ import android.graphics.Point;
 
 
 public class GameAI implements PlayingEntity { 
-	byte team;// 1 is left-right, 2 is top-down
+	byte team;//1 is left-right, 2 is top-down
 	byte difficalty;
 	byte[][] gameBoard;
 	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
@@ -16,11 +16,9 @@ public class GameAI implements PlayingEntity {
 	public GameAI(byte teamNumberT,byte difficaltyT){
 		team=teamNumberT;
 		difficalty=difficaltyT;
-
 	}
 
 	public void getPlayerTurn(byte[][] gameBoard) { // for net play
-
 		 this.gameBoard=gameBoard;
 		 makeMove();
 	}
@@ -30,7 +28,8 @@ public class GameAI implements PlayingEntity {
 		this.gameBoard=BoardTools.teamGrid();
 		if(Global.difficulty==1)
 			makeMove();
-		else badMove();
+		else 
+			badMove();
 	}
 	
 	private boolean right(){

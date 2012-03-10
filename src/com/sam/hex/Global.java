@@ -16,7 +16,7 @@ public class Global {
 	public static String playerTwoName="Player2";
 	final public static int playerTwoDefalt=Color.RED;
 	public static int playerTwo=Color.RED;
-	public static byte gameType; //0 Human v Human,1 Human v ai, 2 ai v Human, 3 ai v ai;
+	public static byte gameType; //0 Human v Human,1 Human v AI, 2 AI v Human, 3 AI v AI;
 	public static BoardView board;
 	public static ArrayList<Point> moveList=new ArrayList<Point>();
 	public static int difficulty=1;
@@ -39,7 +39,7 @@ public class Global {
 	public static void set(int gS, int wH, int wW, byte AI){
 		set(gS, wH, wW);
 		if (gameType < 4)
-		gameType=AI;
+			gameType=AI;
 	}
 	// public static int windowHeight=200;
 	// public static int windowWidth=400;

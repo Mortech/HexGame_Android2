@@ -1,6 +1,5 @@
 package com.sam.hex;
 
-import android.graphics.Color;
 import android.graphics.Bitmap;
 
 public class BoardTools {
@@ -79,6 +78,7 @@ public class BoardTools {
 			for(RegularPolygonGameObject guy:things)
 				if(guy!=null)guy.setTeam((byte)0);
 	}
+	@SuppressWarnings("unused")
 	public static void setBoard(){
 		for(RegularPolygonGameObject[] things:Global.gamePiece)
 			for(RegularPolygonGameObject guy:things)

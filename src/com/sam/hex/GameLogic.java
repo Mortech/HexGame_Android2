@@ -1,5 +1,5 @@
 package com.sam.hex;
-//should be handled by GameAction CLASS SHOULD NOT EXIST.
+//TODO Merge class into GameAction. This class shouldn't even exist.
 public class GameLogic{
 	private static int[][] gameboard;
 	private static int n;
