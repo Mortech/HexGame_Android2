@@ -55,6 +55,10 @@ public class HexGame extends Activity {
     }
     
     public void initializeNewGame(){
+    	//Stop the old game
+    	if(game!=null)
+    		game.stop();
+    	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	Global.gamePrefs=prefs;
@@ -66,10 +70,6 @@ public class HexGame extends Activity {
     	//Set player colors
     	Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
     	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
-    	
-
-    	if(game!=null)
-    		game.stop();
 
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
@@ -152,7 +152,6 @@ public class HexGame extends Activity {
             return true;
         case R.id.quit:
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        	    
         	    public void onClick(DialogInterface dialog, int which) {
         	        switch (which){
         	        case DialogInterface.BUTTON_POSITIVE:

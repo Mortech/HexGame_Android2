@@ -13,17 +13,32 @@ public class GameObject implements Runnable {
 	boolean go=true;
 
 	public GameObject() {
-		theGameRunner = new Thread(this, "runningGame"); // (1) Create a new
-		// thread.
+		theGameRunner = new Thread(this, "runningGame"); //Create a new thread.
 		System.out.println(theGameRunner.getName());
-		if(Global.gameType<2) player1=new PlayerObject((byte)1);//Sets up a human player
-		else player1=new GameAI((byte)1,(byte)1);//Sets up an AI player
 		
-		if((Global.gameType+1)%2>0) player2=new PlayerObject((byte)2);//Sets up a human player
-		else player2=new GameAI((byte)2,(byte)1);//Sets up an AI player
+		if(Global.gameType==(byte) 0){
+			player1=new PlayerObject((byte)1);
+			player2=new PlayerObject((byte)2);
+		}
+		else if(Global.gameType==(byte) 1){
+			player1=new PlayerObject((byte)1);
+			player2=new GameAI((byte)2,(byte)1);
+		}
+		else if(Global.gameType==(byte) 2){
+			player1=new GameAI((byte)1,(byte)1);
+			player2=new PlayerObject((byte)2);
+		}
+		else if(Global.gameType==(byte) 3){
+			player1=new GameAI((byte)1,(byte)1);
+			player2=new GameAI((byte)2,(byte)1);
+		}
+		else if(Global.gameType==(byte) 4){
+			player1=new PlayerObject((byte)1);
+			player2=new PlayerObject((byte)2);
+		}
 		replay();
 		
-		theGameRunner.start(); // (2) Start the thread.
+		theGameRunner.start(); //Start the thread.
 		
 	}
 	public void replay(){
