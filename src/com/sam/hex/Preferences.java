@@ -21,6 +21,7 @@ public class Preferences extends PreferenceActivity {
             }
         };
         
+        //Change the summary to show the player's name
         Preference p1Pref = findPreference("player1Name");
         p1Pref.setOnPreferenceChangeListener(nameListener);
         Preference p2Pref = findPreference("player2Name");

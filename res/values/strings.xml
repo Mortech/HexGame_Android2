@@ -18,6 +18,9 @@
     <!-- Preference title -->
     <string name="inline_preferences">Settings</string>
     
+    <!-- Local lobby title -->
+    <string name="local">Local Lobby</string>
+    
     <!-- Game instructions -->
     <string name="instructions">Instructions:\n\nPlayer 1, connect left and right!\nPlayer 2, connect top and bottom!</string>
     

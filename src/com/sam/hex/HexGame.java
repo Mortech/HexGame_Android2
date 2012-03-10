@@ -29,15 +29,13 @@ public class HexGame extends Activity {
         	initializeNewGame();//Must be set up immediately
         }
         else{
-        	
         	//Add the touch listener
         	if(game!=null)
         		game.stop();
         	BoardTools.clearBoard();
         	Global.board=new BoardView(this);
         	game=new GameObject();
-    		TouchListener touchListener = new TouchListener();
-            Global.board.setOnTouchListener(touchListener);
+            Global.board.setOnTouchListener(new TouchListener());
             setContentView(Global.board);
         }
     }
@@ -87,15 +85,11 @@ public class HexGame extends Activity {
     	//Set game mode
     	Global.gameType=(byte)Integer.parseInt(prefs.getString("gameModePref", "0"));
 		
-		//Create the game object
-    	
-		
-		
 		//Add the touch listener
-		TouchListener touchListener = new TouchListener();
-        Global.board.setOnTouchListener(touchListener);
+        Global.board.setOnTouchListener(new TouchListener());
         setContentView(Global.board);
         
+        //Create the game object
         game = new GameObject();
     }
     
@@ -107,9 +101,16 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed and we need to run a new game
-    	if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType){
+    	if(Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType && Integer.decode(prefs.getString("gameModePref", "0")) == 4){
+    		//Go to the local lobby
+    		Global.gameType = 4;
+        	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
+        	finish();
+    	}
+    	else if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType){
+    		//Reset the game
     		initializeNewGame();
-    	}	
+    	}
     	else
     	{	
     		//Apply minor changes without stopping the current game
@@ -158,7 +159,6 @@ public class HexGame extends Activity {
         	            //Yes button clicked
         	        	android.os.Process.killProcess(android.os.Process.myPid());
         	            break;
-
         	        case DialogInterface.BUTTON_NEGATIVE:
         	            //No button clicked
         	        	//Do nothing
