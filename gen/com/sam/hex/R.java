@@ -12,12 +12,10 @@ public final class R {
         public static final int aiLabels=0x7f050004;
         public static final int aiValues=0x7f050005;
         public static final int availablePlayers=0x7f050006;
-        /**  <item>Player vs Local Player</item>
-        <item>Player vs Online Player</item> 
+        /**  <item>Player vs Online Player</item> 
          */
         public static final int gameModeArray=0x7f050000;
-        /**  <item>4</item>
-        <item>5</item> 
+        /**  <item>5</item> 
          */
         public static final int gameModeValues=0x7f050001;
         public static final int gameSizeArray=0x7f050002;
