@@ -16,15 +16,20 @@ public class PlayerObject implements PlayingEntity {
 		 this.gameBoard=gameBoard;
 		 makeMove();
 	}
-
-	public boolean getPlayerTurn(Point hex){
-		if (hex!=null && Global.gamePiece[hex.x][hex.y].getTeam() == 0) {
+	
+	public Point getPlayerTurn(Point hex){
+		if (validMove(hex)) {
 			Global.gamePiece[hex.x][hex.y].setTeam(team);
 			Global.moveList.add(hex);
-			return true;
+			return new Point(-1,-1);
 		}
-		return false;
+		return new Point(-1,-1);
 	}
+	
+	public boolean validMove(Point hex){
+		return hex!=null && Global.gamePiece[hex.x][hex.y].getTeam() == 0;
+	}
+	
 	public void getPlayerTurn() {
 		this.gameBoard=BoardTools.teamGrid();
 		makeMove();

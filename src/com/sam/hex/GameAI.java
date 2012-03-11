@@ -22,6 +22,10 @@ public class GameAI implements PlayingEntity {
 		 this.gameBoard=gameBoard;
 		 makeMove();
 	}
+	
+	public Point getPlayerTurn(Point hex) {
+		return new Point(-1,-1);
+	}
 
 	
 	public void getPlayerTurn() { // with out net play

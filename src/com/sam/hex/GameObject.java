@@ -45,8 +45,7 @@ public class GameObject implements Runnable {
 		Global.slowAI=false;
 		for(int i=0; i<Global.moveList.size(); i++){
 			if(Global.moveList.get(i)==null){
-				if(player==1)
-					player1.getPlayerTurn();
+				if(player==1) player1.getPlayerTurn();
 				else player2.getPlayerTurn();
 			}
 			else{	
@@ -74,11 +73,9 @@ public class GameObject implements Runnable {
 		hex=h;
 	}
 	public void run() {
+		//Loop the game
 		while(go){
-		//	if(go && (GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2())){
-			//	go=false;
-			//}
-				GameAction.checkedFlagReset();
+			GameAction.checkedFlagReset();
 			if(go) doStuff();
 			Global.board.postInvalidate();
 			
@@ -87,54 +84,69 @@ public class GameObject implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		//	if(go && (GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2())){
-			//	go=false;
-		//	}
-			GameAction.checkedFlagReset();
 		}
-		
-		//Announce winner (in a toast!)
-		if (GameAction.checkWinPlayer1()){
-			Looper.prepare();
-			Toast.makeText(Global.board.getContext(), Global.playerOneName+" wins!", Toast.LENGTH_SHORT).show();
-			Looper.loop();
-		}
-		if (GameAction.checkWinPlayer2()){
-			Looper.prepare();
-			Toast.makeText(Global.board.getContext(), Global.playerTwoName+" wins!", Toast.LENGTH_SHORT).show();
-			Looper.loop();
-		}
-		
 	}
 	public void doStuff(){
 		if (player == 1) {
 			boolean success=true;
-			if(player1 instanceof PlayerObject)
-				success=((PlayerObject)player1).getPlayerTurn(hex);
+			if(player1 instanceof PlayerObject){
+				success=((PlayerObject)player1).validMove(hex);
+				if(success) player1.getPlayerTurn(hex);
+			}
+			else if(player1 instanceof LocalPlayerObject){
+				//TODO Send this move to the other phone
+				success=player1.getPlayerTurn(Global.moveList.get(Global.moveList.size()-1))!=new Point(-1,-1);
+			}
 			else
 				player1.getPlayerTurn();
 			hex=null;
 			if (success && GameAction.checkWinPlayer1()){
+				announceWinner(player);
 				go=false;
 			}
 			
 			if(success)
 				player = 2;
-			GameAction.checkedFlagReset();
-		} else {
+		}
+		else {
 			boolean success=true;
-			if(player2 instanceof PlayerObject)
-				success=((PlayerObject)player2).getPlayerTurn(hex);
+			if(player2 instanceof PlayerObject){
+				success=((PlayerObject)player2).validMove(hex);
+				if(success) player2.getPlayerTurn(hex);
+			}
+			else if(player2 instanceof LocalPlayerObject){
+				//TODO Send this move to the other phone
+				success=player2.getPlayerTurn(Global.moveList.get(Global.moveList.size()-1))!=new Point(-1,-1);
+			}
 			else
 				player2.getPlayerTurn();
 			hex=null;
 			if (success && GameAction.checkWinPlayer2()){
+				announceWinner(player);
 				go=false;
 			}
 			if(success)
 				player = 1;
-			GameAction.checkedFlagReset();
 		}
+	}
+	
+	private void announceWinner(byte team){
 		Global.board.postInvalidate();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if(team==(byte)0){
+			Looper.prepare();
+			Toast.makeText(Global.board.getContext(), Global.playerOneName+" wins!", Toast.LENGTH_SHORT).show();
+			Looper.loop();
+		}
+		else{
+			Global.board.postInvalidate();
+			Looper.prepare();
+			Toast.makeText(Global.board.getContext(), Global.playerTwoName+" wins!", Toast.LENGTH_SHORT).show();
+			Looper.loop();
+		}
 	}
 }

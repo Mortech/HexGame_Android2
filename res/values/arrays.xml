@@ -5,16 +5,16 @@
         <item>Player vs Com</item>
         <item>Com vs Player</item>
         <item>Com vs Com</item>
-        <!-- <item>Player vs Local Player</item>
-        <item>Player vs Online Player</item> -->
+        <item>Player vs Local Player</item>
+        <!-- <item>Player vs Online Player</item> -->
     </string-array>
     <string-array name="gameModeValues">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
-        <!-- <item>4</item>
-        <item>5</item> -->
+        <item>4</item>
+        <!-- <item>5</item> -->
     </string-array>
     <string-array name="gameSizeArray">
         <item>7x7</item>
