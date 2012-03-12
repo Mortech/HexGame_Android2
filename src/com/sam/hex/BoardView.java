@@ -87,14 +87,14 @@ public class BoardView extends View{
         }
         else{
         	Path left = new Path();
-	        left.moveTo(xOffset, 0);
-	        left.lineTo((float) (Global.windowWidth-xOffset-((n-1)*hrad)), 0);
-	        left.lineTo((float) (Global.windowWidth-2*xOffset-((n-1)*hrad))/2+xOffset, Global.windowHeight/2);
+	        left.moveTo(xOffset-(float)hrad, 0);
+	        left.lineTo(Global.windowWidth-xOffset-((n-1)*(float)hrad), 0);
+	        left.lineTo(Global.windowWidth/2, Global.windowHeight/2);
 	        left.close();
 	        Path right = new Path();
-	        right.moveTo(Global.windowWidth-xOffset, Global.windowHeight);
-	        right.lineTo((float) (xOffset+((n-1)*hrad)), Global.windowHeight);
-	        right.lineTo(Global.windowWidth-xOffset-(Global.windowWidth-2*xOffset-((n-1)*(float)(hrad)))/2, Global.windowHeight/2);
+	        right.moveTo(Global.windowWidth-xOffset+(float)hrad, Global.windowHeight);
+	        right.lineTo(xOffset+((n-1)*(float)hrad), Global.windowHeight);
+	        right.lineTo(Global.windowWidth/2, Global.windowHeight/2);
 	        right.close();
 	        
         	backgroundTopBottom = new ShapeDrawable(new RectShape());

@@ -47,10 +47,12 @@ public class HexGame extends Activity {
 				for (int yc=0; yc<Global.gamePiece[0].length; yc++)
 					if (Global.gamePiece[xc][yc].contains(x, y)) {
 						if(game!=null)game.setPiece(new Point(xc,yc));
-						return true;
+						//Return false. We got our point. (True is used for gestures)
+						return false;
 					}
 			}
-			return true; //or maybe false?
+			//Return false. We got our point. (True is used for gestures)
+			return false;
     	}
     }
     
