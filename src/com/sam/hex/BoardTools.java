@@ -54,9 +54,9 @@ public class BoardTools {
 						+ (cY - cX * slope2)) { // if above line 1 == above line
 					// 2
 					// if((y+x)/(((double)h+(double)w))<.5==((double)h/(double)w>y/x)){
-					background.setPixel((int) x, (int) y, Global.playerOne);
+					background.setPixel((int) x, (int) y, Global.playerOneColor);
 				} else {
-					background.setPixel((int) x, (int) y, Global.playerTwo);
+					background.setPixel((int) x, (int) y, Global.playerTwoColor);
 				}
 				// (((h*w)-h)>y/x)
 			}

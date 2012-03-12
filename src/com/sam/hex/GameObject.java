@@ -137,7 +137,7 @@ public class GameObject implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		if(team==(byte)0){
+		if(team==(byte)1){
 			Looper.prepare();
 			Toast.makeText(Global.board.getContext(), Global.playerOneName+" wins!", Toast.LENGTH_SHORT).show();
 			Looper.loop();

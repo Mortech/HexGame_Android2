@@ -70,8 +70,8 @@ public class HexGame extends Activity {
     	Global.playerTwoName = prefs.getString("player2Name", "Player2");
     	
     	//Set player colors
-    	Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
-    	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
+    	Global.playerOneColor = prefs.getInt("player1Color", Global.playerOneDefaultColor);
+    	Global.playerTwoColor = prefs.getInt("player2Color", Global.playerTwoDefaultColor);
 
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
@@ -116,8 +116,8 @@ public class HexGame extends Activity {
     	else
     	{	
     		//Apply minor changes without stopping the current game
-    		Global.playerOne = prefs.getInt("player1Color", 0xff0000ff);
-	    	Global.playerTwo = prefs.getInt("player2Color", 0xffff0000);
+    		Global.playerOneColor = prefs.getInt("player1Color", Global.playerOneDefaultColor);
+	    	Global.playerTwoColor = prefs.getInt("player2Color", Global.playerTwoDefaultColor);
 	    	Global.playerOneName = prefs.getString("player1Name", "Player1");
 	    	Global.playerTwoName = prefs.getString("player2Name", "Player2");
 	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
