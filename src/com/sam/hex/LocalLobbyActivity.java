@@ -61,8 +61,8 @@ public class LocalLobbyActivity extends Activity {
         	builder.setMessage("Wifi is off. Enable?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
         }
         
-//        MulticastLock mcLock = wm.createMulticastLock("broadcastlock");
-//        mcLock.acquire();
+        MulticastLock mcLock = wm.createMulticastLock("broadcastlock");
+        mcLock.acquire();
     }
     
     private void newPlayerFound(String playerName, String ip){
@@ -76,11 +76,12 @@ public class LocalLobbyActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Toast.makeText(getApplicationContext(), "IP Address: " + ((LocalNetworkObject) playerList.getItemAtPosition(position)).getIP(), Toast.LENGTH_LONG).show();
+				challengeRecieved(playerList.getItemAtPosition(position).toString(),((LocalNetworkObject) playerList.getItemAtPosition(position)).getIP());
 			}
         });
     }
     
-    private void challengeRecieved(String ipAddress){
+    private void challengeRecieved(String name, String ipAddress){
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
     	        switch (which){
@@ -97,6 +98,6 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage("Do you want to play?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+    	builder.setMessage(name+" challenges you. Accept?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
     }
 }

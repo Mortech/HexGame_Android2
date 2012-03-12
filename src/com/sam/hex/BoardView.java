@@ -86,14 +86,25 @@ public class BoardView extends View{
 	        backgroundRight.getPaint().setColor(Global.playerOne);
         }
         else{
+        	Path left = new Path();
+	        left.moveTo(xOffset, 0);
+	        left.lineTo((float) (Global.windowWidth-xOffset-((n-1)*hrad)), 0);
+	        left.lineTo((float) (Global.windowWidth-2*xOffset-((n-1)*hrad))/2+xOffset, Global.windowHeight/2);
+	        left.close();
+	        Path right = new Path();
+	        right.moveTo(Global.windowWidth-xOffset, Global.windowHeight);
+	        right.lineTo((float) (xOffset+((n-1)*hrad)), Global.windowHeight);
+	        right.lineTo(Global.windowWidth-xOffset-(Global.windowWidth-2*xOffset-((n-1)*(float)(hrad)))/2, Global.windowHeight/2);
+	        right.close();
+	        
         	backgroundTopBottom = new ShapeDrawable(new RectShape());
 	        backgroundTopBottom.setBounds(0,0,Global.windowWidth,Global.windowHeight);
 	        backgroundTopBottom.getPaint().setColor(Global.playerOne);
-	        backgroundLeft = new ShapeDrawable(new RectShape());
-	        backgroundLeft.setBounds(xOffset+(int) hrad,0,(int) (Global.gridSize*hrad*2+xOffset-hrad),(int) hrad);
+	        backgroundLeft = new ShapeDrawable(new PathShape(left, Global.windowWidth, Global.windowHeight));
+	        backgroundLeft.setBounds(0,0,Global.windowWidth,Global.windowHeight);
 	        backgroundLeft.getPaint().setColor(Global.playerTwo);
-	        backgroundRight = new ShapeDrawable(new RectShape());
-	        backgroundRight.setBounds(Global.windowWidth-(int) (Global.gridSize*hrad*2+xOffset-hrad),Global.windowHeight-(int) hrad,Global.windowWidth-xOffset-(int) hrad,Global.windowHeight);
+	        backgroundRight = new ShapeDrawable(new PathShape(right, Global.windowWidth, Global.windowHeight));
+	        backgroundRight.setBounds(0,0,Global.windowWidth,Global.windowHeight);
 	        backgroundRight.getPaint().setColor(Global.playerTwo);
         }
         
