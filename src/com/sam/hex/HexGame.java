@@ -73,7 +73,7 @@ public class HexGame extends Activity {
     	//Set player colors
     	Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
     	Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
-
+    	
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
     	Global.difficulty=Integer.decode(prefs.getString("aiPref", "1"));
@@ -90,7 +90,29 @@ public class HexGame extends Activity {
     	//Set game mode
     	Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
     	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
-        
+    	
+    	//Set up player1
+		if(Global.player1Type==(byte) 0){
+			Global.player1=new PlayerObject((byte)1);
+		}
+		else if(Global.player1Type==(byte) 1){
+			Global.player1=new GameAI((byte)1,(byte)1);
+		}
+		
+		//Set up player2
+		if(Global.player2Type==(byte) 0){
+			Global.player2=new PlayerObject((byte)2);
+		}
+		else if(Global.player2Type==(byte) 1){
+			Global.player2=new GameAI((byte)2,(byte)1);
+		}
+		else if(Global.player2Type==(byte) 2){
+			Global.player2=new LocalPlayerObject((byte)2);
+		}
+		else if(Global.player2Type==(byte) 3){
+			Global.player2=new LocalPlayerObject((byte)2);
+		}
+    	
         //Create the game object
         Global.game = new GameObject();
     }
@@ -142,7 +164,7 @@ public class HexGame extends Activity {
         case R.id.undo:
         	if(Global.player1Type==0 || Global.player2Type==0)
         		BoardTools.undo();
-        	if(Global.player1Type!=0 | Global.player2Type!=0)
+        	if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0))
         		BoardTools.undo();
             return true;
         case R.id.newgame:

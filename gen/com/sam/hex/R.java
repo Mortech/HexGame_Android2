@@ -74,9 +74,6 @@ public final class R {
         /**  Main page title 
          */
         public static final int frontpage=0x7f070003;
-        /**  Preference title 
-         */
-        public static final int inline_preferences=0x7f070001;
         /**  Game instructions 
          */
         public static final int instructions=0x7f07000b;
@@ -88,6 +85,9 @@ public final class R {
         /**  Preferences 
          */
         public static final int pref_category=0x7f07000e;
+        /**  Preference title 
+         */
+        public static final int preferences=0x7f070001;
         public static final int press_color_to_apply=0x7f07000d;
         public static final int quit=0x7f07000a;
         public static final int rules=0x7f070005;

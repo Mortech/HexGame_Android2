@@ -1,5 +1,8 @@
 package com.sam.hex;
 
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +66,28 @@ public class LocalLobbyActivity extends Activity {
         
         MulticastLock mcLock = wm.createMulticastLock("broadcastlock");
         mcLock.acquire();
+        
+		try {
+			String message = ("Hello World");
+			
+			//Create a socket and start the communication
+			InetAddress address = InetAddress.getByName("234.235.236.237");
+			int port = 4080;
+			MulticastSocket socket = new MulticastSocket(port);
+			
+			//Join the multicastSocket group
+			socket.joinGroup(address);
+			
+			//Create a packet
+			DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, port);
+			
+			new LocalClientSender(socket,packet);
+	        new LocalClientListener(socket);
+	        
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
     }
     
     private void newPlayerFound(String playerName, String ip){

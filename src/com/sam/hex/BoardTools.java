@@ -21,15 +21,22 @@ public class BoardTools {
 
 	}
 	public static void undo(){
+		//TODO If the game is won, it doesn't properly set the game pieces back to their original colors. Because of that (I think) the game auto-quits because it thinks there's a winner.
 		if(!Global.moveList.isEmpty()){
 			Point lastMove = Global.moveList.get(Global.moveList.size()-1);
+			boolean reset = GameAction.checkWinPlayer1() || GameAction.checkWinPlayer2();
 			
 			if(Global.currentPlayer==(byte)1) Global.player2.undo(lastMove);
 			else Global.player1.undo(lastMove);
 			
 			Global.moveList.remove(Global.moveList.size()-1);
 			Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);
+			
+			//Reset the game if it's already ended
+			if(reset) Global.game = new GameObject();
 		}
+		
+		Global.board.postInvalidate();
 	}
 	public static Bitmap getBackground(int w, int h) {
 		Bitmap background =Bitmap.createBitmap(Global.windowWidth, Global.windowHeight,Bitmap.Config.ARGB_8888); //the background is drawn to this bitmap. 

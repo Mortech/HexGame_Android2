@@ -13,28 +13,6 @@ public class GameObject implements Runnable {
 		theGameRunner = new Thread(this, "runningGame"); //Create a new thread.
 		System.out.println(theGameRunner.getName());
 		
-		//Set up player1
-		if(Global.player1Type==(byte) 0){
-			Global.player1=new PlayerObject((byte)1);
-		}
-		else if(Global.player1Type==(byte) 1){
-			Global.player1=new GameAI((byte)1,(byte)1);
-		}
-		
-		//Set up player2
-		if(Global.player2Type==(byte) 0){
-			Global.player2=new PlayerObject((byte)2);
-		}
-		else if(Global.player2Type==(byte) 1){
-			Global.player2=new GameAI((byte)2,(byte)1);
-		}
-		else if(Global.player2Type==(byte) 2){
-			Global.player2=new LocalPlayerObject((byte)2);
-		}
-		else if(Global.player2Type==(byte) 3){
-			Global.player2=new LocalPlayerObject((byte)2);
-		}
-		
 //		//Decide who goes first
 //		Global.currentPlayer = (byte) (Math.random()*2+1);
 //		if(Global.currentPlayer==(byte)1){
