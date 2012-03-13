@@ -100,6 +100,7 @@ public final class R {
         public static final int undo=0x7f070008;
     }
     public static final class style {
+        public static final int Theme_QuickLoad=0x7f080001;
         public static final int Theme_Transparent=0x7f080000;
     }
     public static final class xml {

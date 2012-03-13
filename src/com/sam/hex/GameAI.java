@@ -2,6 +2,8 @@ package com.sam.hex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import android.graphics.Point;
 
 
@@ -12,10 +14,19 @@ public class GameAI implements PlayingEntity {
 	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
 	List<List<List<Integer>>> pairs = new ArrayList<List<List<Integer>>>();//List of pair-pieces
 	List<AIHistoryObject> history = new ArrayList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
-
-	public GameAI(byte teamNumberT,byte difficaltyT){
-		team=teamNumberT;
-		difficalty=difficaltyT;
+	int diameter = Global.gamePiece.length-1;
+	int rand_a = 0;
+	int rand_b = 0;
+	
+	public GameAI(byte team, byte difficalty){
+		this.team=team;
+		this.difficalty=difficalty;
+		
+		while(rand_a==0 && rand_b==0){
+			rand_a = new Random().nextInt(diameter)-diameter/2;
+			rand_b = new Random().nextInt(diameter)-diameter/2;
+		}
+		System.out.println("Random A is: "+rand_a+" and Random B is: "+rand_b);
 	}
 
 	public void getPlayerTurn(byte[][] gameBoard) {//For net play
@@ -33,6 +44,8 @@ public class GameAI implements PlayingEntity {
 			AIHistoryObject state = new AIHistoryObject(pairs, n, m);
 			history.add(state);
 			makeMove();
+			System.out.println("n equals ["+n[0]+","+n[1]+"]");
+			System.out.println("m equals ["+m[0]+","+m[1]+"]");
 		}
 		else 
 			badMove();
@@ -65,8 +78,6 @@ public class GameAI implements PlayingEntity {
 		/**
 		 * Will's AI
 		 * */
-		System.out.println("n equals ["+n[0]+","+n[1]+"]");
-		System.out.println("m equals ["+m[0]+","+m[1]+"]");
 		int x = 0;
 		int y = 0;
 		if(team==2){
@@ -95,12 +106,12 @@ public class GameAI implements PlayingEntity {
 			
 			return;
 		}
-		else if(gameBoard[mid][mid]!=team && gameBoard[mid+1][mid]==0){
-			n[0] = mid+1;//horizontal
-			n[1] = mid;//vertical
-			m[0] = mid+1;
-			m[1] = mid;
-			sendMove(mid+1,mid);
+		else if(gameBoard[mid][mid]!=team && gameBoard[mid+rand_a][mid+rand_b]==0){
+			n[x] = mid+rand_a;//horizontal
+			n[y] = mid+rand_b;//vertical
+			m[x] = mid+rand_a;
+			m[y] = mid+rand_b;
+			sendMove(mid+rand_a,mid+rand_b);
 
 			return;
 		}
@@ -284,8 +295,8 @@ public class GameAI implements PlayingEntity {
 				return;
 			}
 		}
-		int rand = 0;
-		//rand*=Math.random();
+		int rand = 2;
+		rand*=Math.random();
 		
 		//Extend left if we haven't gone right
 		if(left() && rand==0 && gameBoard[n[x]+1*x-2*y][n[y]+1*y-2*x]==0){

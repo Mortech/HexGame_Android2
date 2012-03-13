@@ -35,14 +35,14 @@ public class GameObject implements Runnable {
 			Global.player2=new LocalPlayerObject((byte)2);
 		}
 		
-		//Decide who goes first
-		Global.currentPlayer = (byte) (Math.random()*2+1);
-		if(Global.currentPlayer==(byte)1 && Global.moveList.size()==0){
-			Toast.makeText(Global.board.getContext(), Global.player1Name+" starts.", Toast.LENGTH_SHORT).show();
-		}
-		else if(Global.currentPlayer==(byte)2 && Global.moveList.size()==0){
-			Toast.makeText(Global.board.getContext(), Global.player2Name+" starts.", Toast.LENGTH_SHORT).show();
-		}
+//		//Decide who goes first
+//		Global.currentPlayer = (byte) (Math.random()*2+1);
+//		if(Global.currentPlayer==(byte)1){
+//			Toast.makeText(Global.board.getContext(), Global.player1Name+" starts.", Toast.LENGTH_SHORT).show();
+//		}
+//		else if(Global.currentPlayer==(byte)2){
+//			Toast.makeText(Global.board.getContext(), Global.player2Name+" starts.", Toast.LENGTH_SHORT).show();
+//		}
 		
 		theGameRunner.start(); //Start the thread.
 	}

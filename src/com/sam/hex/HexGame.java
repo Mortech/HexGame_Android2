@@ -56,6 +56,13 @@ public class HexGame extends Activity {
     	if(Global.game!=null)
     		Global.game.stop();
     	
+    	//Let the thread die
+    	try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
