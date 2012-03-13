@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
         <ListPreference
-            android:title="Game Mode"
-            android:summary="Switch between PvP, PvC, CvP, CvC"
-            android:key="gameModePref"
-            android:defaultValue="0"
-            android:entries="@array/gameModeArray"
-            android:entryValues="@array/gameModeValues" />
-        <ListPreference
             android:title="Game Size"
             android:summary="Pick a size for the gameboard"
             android:key="gameSizePref"
@@ -19,6 +12,13 @@
             android:summary="Name: Player1"
             android:key="player1Name"
             android:defaultValue="Player1" />
+        <ListPreference
+            android:title="Player1's Type"
+            android:summary="Switch between Player and Computer"
+            android:key="player1Type"
+            android:defaultValue="0"
+            android:entries="@array/player1Array"
+            android:entryValues="@array/player1Values" />
         <net.margaritov.preference.colorpicker.ColorPickerPreference
 		    android:title="Player1's Color"
 		    android:summary="Pick a color for Player1"
@@ -29,6 +29,13 @@
             android:summary="Name: Player2"
             android:key="player2Name"
             android:defaultValue="Player2" />
+        <ListPreference
+            android:title="Player2's Type"
+            android:summary="Switch between Player (Same device, local wifi, or internet) and Computer"
+            android:key="player2Type"
+            android:defaultValue="0"
+            android:entries="@array/player2Array"
+            android:entryValues="@array/player2Values" />
         <net.margaritov.preference.colorpicker.ColorPickerPreference
 		    android:title="Player2's Color"
 		    android:summary="Pick a color for Player2"
@@ -41,9 +48,8 @@
             android:defaultValue="1"
             android:entries="@array/aiLabels"
             android:entryValues="@array/aiValues" />
-       <com.sam.hex.setDefaults
-            android:title="Reset Defaults"
-            android:summary="Reset The Defaults"
-            />
-
+       <Preference
+            android:title="Reset to Defaults"
+            android:summary="Reset all settings to their defaults"
+            android:key="resetPref"/>
 </PreferenceScreen>

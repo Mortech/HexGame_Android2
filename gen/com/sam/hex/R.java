@@ -9,17 +9,15 @@ package com.sam.hex;
 
 public final class R {
     public static final class array {
-        public static final int aiLabels=0x7f050004;
-        public static final int aiValues=0x7f050005;
-        public static final int availablePlayers=0x7f050006;
-        /**  <item>Player vs Online Player</item> 
-         */
-        public static final int gameModeArray=0x7f050000;
-        /**  <item>5</item> 
-         */
-        public static final int gameModeValues=0x7f050001;
-        public static final int gameSizeArray=0x7f050002;
-        public static final int gameSizeValues=0x7f050003;
+        public static final int aiLabels=0x7f050006;
+        public static final int aiValues=0x7f050007;
+        public static final int availablePlayers=0x7f050008;
+        public static final int gameSizeArray=0x7f050004;
+        public static final int gameSizeValues=0x7f050005;
+        public static final int player1Array=0x7f050000;
+        public static final int player1Values=0x7f050001;
+        public static final int player2Array=0x7f050002;
+        public static final int player2Values=0x7f050003;
     }
     public static final class attr {
     }

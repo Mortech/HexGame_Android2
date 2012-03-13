@@ -20,13 +20,13 @@ public class StartUpActivity extends Activity {
 
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	gametype = Integer.decode(prefs.getString("gameModePref", "1"));
+    	gametype = Integer.decode(prefs.getString("player2Type", "0"));
         
         //First button
         final Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	if(gametype == 4){
+            	if(gametype == 2){
             		Intent gameActivity = new Intent(getBaseContext(),LocalLobbyActivity.class);
             		startActivity(gameActivity);
             	}
@@ -61,13 +61,13 @@ public class StartUpActivity extends Activity {
     	super.onResume();
 
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	gametype = Integer.decode(prefs.getString("gameModePref", "1"));
+    	gametype = Integer.decode(prefs.getString("player2Type", "0"));
     	
     	//Refresh first button
         final Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	if(gametype == 4){
+            	if(gametype == 2){
             		Intent gameActivity = new Intent(getBaseContext(),LocalLobbyActivity.class);
             		startActivity(gameActivity);
             	}
@@ -77,5 +77,11 @@ public class StartUpActivity extends Activity {
             	}
             }
         });
+        if(Global.moveList.size()==0 || Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type || Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type){
+        	startButton.setText("Start Game");
+    	}
+        else{
+        	startButton.setText("Resume Game");
+        }
     }
 }

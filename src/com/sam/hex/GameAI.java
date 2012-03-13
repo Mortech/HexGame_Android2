@@ -10,30 +10,48 @@ public class GameAI implements PlayingEntity {
 	byte difficalty;
 	byte[][] gameBoard;
 	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	List<List<List<Integer>>> pairs = new ArrayList();//List of pair-pieces
+	List<List<List<Integer>>> pairs = new ArrayList<List<List<Integer>>>();//List of pair-pieces
+	List<AIHistoryObject> history = new ArrayList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
 
 	public GameAI(byte teamNumberT,byte difficaltyT){
 		team=teamNumberT;
 		difficalty=difficaltyT;
 	}
 
-	public void getPlayerTurn(byte[][] gameBoard) { // for net play
+	public void getPlayerTurn(byte[][] gameBoard) {//For net play
 		 this.gameBoard=gameBoard;
 		 makeMove();
 	}
 	
-	public Point getPlayerTurn(Point hex) {
+	public Point getPlayerTurn(Point hex) {//For net play
 		return new Point(-1,-1);
 	}
-
 	
-	public void getPlayerTurn() { // with out net play
+	public void getPlayerTurn() {//Without net play
 		this.gameBoard=BoardTools.teamGrid();
-		if(Global.difficulty==1)
+		if(Global.difficulty==1){
+			AIHistoryObject state = new AIHistoryObject(pairs, n, m);
+			history.add(state);
 			makeMove();
+		}
 		else 
 			badMove();
+	}
+	
+	public void undo(Point hex){
+		Global.gamePiece[hex.x][hex.y].setTeam((byte)0);
+		if(Global.difficulty==1){
+			for(int i=0;i<history.size();i++){
+				AIHistoryObject previousState = history.get(i);
+				System.out.println("Pairs: "+previousState.pairs+" N: "+previousState.n[0]+","+previousState.n[1]+" M: "+previousState.m[0]+","+previousState.m[1]);
+			}
+			
+			AIHistoryObject previousState = history.get(history.size()-1);
+			pairs = previousState.pairs;
+			n = previousState.n;
+			m = previousState.m;
+			history.remove(history.size()-1);
+		}
 	}
 	
 	private boolean right(){
@@ -59,7 +77,6 @@ public class GameAI implements PlayingEntity {
 		}
 		
 		//Sleep to stop instantaneous playing
-		if(Global.slowAI)
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
@@ -74,8 +91,7 @@ public class GameAI implements PlayingEntity {
 			n[1] = mid;//vertical
 			m[0] = mid;
 			m[1] = mid;
-			Global.gamePiece[mid][mid].setTeam(team);
-			sendNull();
+			sendMove(mid,mid);
 			
 			return;
 		}
@@ -84,8 +100,7 @@ public class GameAI implements PlayingEntity {
 			n[1] = mid;//vertical
 			m[0] = mid+1;
 			m[1] = mid;
-			Global.gamePiece[mid+1][mid].setTeam(team);
-			sendNull();
+			sendMove(mid+1,mid);
 
 			return;
 		}
@@ -125,19 +140,13 @@ public class GameAI implements PlayingEntity {
 			System.out.println("Pair listing: "+pairs);
 			if(gameBoard[pairs.get(i).get(0).get(x)][pairs.get(i).get(0).get(y)]==0 || gameBoard[pairs.get(i).get(1).get(x)][pairs.get(i).get(1).get(y)]==0){
 				if(gameBoard[pairs.get(i).get(0).get(x)][pairs.get(i).get(0).get(y)]!=0){
-					System.out.println("Oh no, they played here: "+pairs.get(i).get(0).get(x)+","+pairs.get(i).get(0).get(y));
-					System.out.println("I'll be playing here: "+pairs.get(i).get(1).get(x)+","+pairs.get(i).get(1).get(y));
-					Global.gamePiece[pairs.get(i).get(1).get(x)][pairs.get(i).get(1).get(y)].setTeam(team);
+					sendMove(pairs.get(i).get(1).get(x),pairs.get(i).get(1).get(y));
 					pairs.remove(i);
-					sendNull();
 					return;
 				}
 				else if(gameBoard[pairs.get(i).get(1).get(x)][pairs.get(i).get(1).get(y)]!=0){
-					System.out.println("Oh no, they played here: "+pairs.get(i).get(1).get(x)+","+pairs.get(i).get(1).get(y));
-					System.out.println("I'll be playing here: "+pairs.get(i).get(0).get(x)+","+pairs.get(i).get(0).get(y));
-					Global.gamePiece[pairs.get(i).get(0).get(x)][pairs.get(i).get(0).get(y)].setTeam(team);
+					sendMove(pairs.get(i).get(0).get(x),pairs.get(i).get(0).get(y));
 					pairs.remove(i);
-					sendNull();
 					return;
 				}
 			}
@@ -152,16 +161,14 @@ public class GameAI implements PlayingEntity {
 				m[0] = m[0]+1;
 				m[1] = m[1]-1;
 				
-				Global.gamePiece[m[x]][m[y]].setTeam(team);
-				sendNull();
+				sendMove(m[x],m[y]);
 				return;
 			}
 			else if(gameBoard[m[x]+1*x+0*y][m[y]+1*y+0*x]==0){
 				m[0] = m[0];
 				m[1] = m[1]+1;
 				
-				Global.gamePiece[m[x]][m[y]].setTeam(team);
-				sendNull();
+				sendMove(m[x],m[y]);
 				return;
 			}
 		}
@@ -169,8 +176,7 @@ public class GameAI implements PlayingEntity {
 			m[0] = m[0]+1;
 			m[1] = m[1];
 			
-			Global.gamePiece[m[x]][m[y]].setTeam(team);
-			sendNull();
+			sendMove(m[x],m[y]);
 			return;
 		}
 		//Check if they were sneakier and played behind us
@@ -179,16 +185,14 @@ public class GameAI implements PlayingEntity {
 				n[0] = n[0]-1;
 				n[1] = n[1]+1;
 				
-				Global.gamePiece[n[x]][n[y]].setTeam(team);
-				sendNull();
+				sendMove(n[x],n[y]);
 				return;
 			}
 			else if(gameBoard[n[x]-1*x+0*y][n[y]-1*y+0*x]==0){
 				n[0] = n[0];
 				n[1] = n[1]-1;
 				
-				Global.gamePiece[n[x]][n[y]].setTeam(team);
-				sendNull();
+				sendMove(n[x],n[y]);
 				return;
 			}
 		}
@@ -196,8 +200,7 @@ public class GameAI implements PlayingEntity {
 			n[0] = n[0]-1;
 			n[1] = n[1];
 			
-			Global.gamePiece[n[x]][n[y]].setTeam(team);
-			sendNull();
+			sendMove(n[x],n[y]);
 			return;
 		}
 		
@@ -219,8 +222,7 @@ public class GameAI implements PlayingEntity {
 				n[0] = n[0]-2;
 				n[1] = n[1]+1;
 				
-				Global.gamePiece[n[x]][n[y]].setTeam(team);
-				sendNull();
+				sendMove(n[x],n[y]);
 				return;
 			}
 			else if(gameBoard[n[x]+1*x-2*y][n[y]+1*y-2*x]!=0 && gameBoard[n[x]-1*x-1*y][n[y]-1*y-1*x]==0){
@@ -238,8 +240,7 @@ public class GameAI implements PlayingEntity {
 				n[0] = n[0]-1;
 				n[1] = n[1]-1;
 				
-				Global.gamePiece[n[x]][n[y]].setTeam(team);
-				sendNull();
+				sendMove(n[x],n[y]);
 				return;
 			}
 		}
@@ -261,8 +262,7 @@ public class GameAI implements PlayingEntity {
 				m[0] = m[0]+1;
 				m[1] = m[1]+1;
 				
-				Global.gamePiece[m[x]][m[y]].setTeam(team);
-				sendNull();
+				sendMove(m[x],m[y]);
 				return;
 			}
 			else if(gameBoard[m[x]+1*x+1*y][m[y]+1*y+1*x]!=0 && gameBoard[m[x]-1*x+2*y][m[y]-1*y+2*x]==0){
@@ -280,8 +280,7 @@ public class GameAI implements PlayingEntity {
 				m[0] = m[0]+2;
 				m[1] = m[1]-1;
 				
-				Global.gamePiece[m[x]][m[y]].setTeam(team);
-				sendNull();
+				sendMove(m[x],m[y]);
 				return;
 			}
 		}
@@ -304,8 +303,7 @@ public class GameAI implements PlayingEntity {
 			n[0] = n[0]-2;
 			n[1] = n[1]+1;
 			
-			Global.gamePiece[n[x]][n[y]].setTeam(team);
-			sendNull();
+			sendMove(n[x],n[y]);
 			return;
 		}
 		else if(left() && rand==1 && gameBoard[n[x]-1*x-1*y][n[y]-1*y-1*x]==0){
@@ -323,8 +321,7 @@ public class GameAI implements PlayingEntity {
 			n[0] = n[0]-1;
 			n[1] = n[1]-1;
 			
-			Global.gamePiece[n[x]][n[y]].setTeam(team);
-			sendNull();
+			sendMove(n[x],n[y]);
 			return;
 		}
 		//Extend right if we haven't gone left
@@ -343,8 +340,7 @@ public class GameAI implements PlayingEntity {
 			m[0] = m[0]+2;
 			m[1] = m[1]-1;
 			
-			Global.gamePiece[m[x]][m[y]].setTeam(team);
-			sendNull();
+			sendMove(m[x],m[y]);
 			return;
 		}
 		else if(right() && rand==1 && gameBoard[m[x]+1*x+1*y][m[y]+1*y+1*x]==0){
@@ -362,22 +358,20 @@ public class GameAI implements PlayingEntity {
 			m[0] = m[0]+1;
 			m[1] = m[1]+1;
 			
-			Global.gamePiece[m[x]][m[y]].setTeam(team);
-			sendNull();
+			sendMove(m[x],m[y]);
 			return;
 		}
 		
 		//Fill in the pairs after we've reached both sides of the map
 		if( !left() && !right() && pairs.size() > 0){
 			//Play a random pair
-			Global.gamePiece[pairs.get(0).get(1).get(x)][pairs.get(0).get(1).get(y)].setTeam(team);
-			sendNull();
+			sendMove(pairs.get(0).get(1).get(x),pairs.get(0).get(1).get(y));
 			pairs.remove(0);
 			
 			return;
 		}
 		
-		//pick randomly
+		//Pick randomly
 		int moves=0;
 		for(int a=0; a<gameBoard.length; a++){
 			for(int b=0; b<gameBoard[a].length; b++){
@@ -392,7 +386,6 @@ public class GameAI implements PlayingEntity {
 					moves--;
 				}
 				if(moves==0) {
-					Global.gamePiece[a][b].setTeam(team);
 					sendMove(a,b);
 					moves=-10;
 				}	
@@ -402,8 +395,6 @@ public class GameAI implements PlayingEntity {
 		return;
 	}
 	private void badMove(){
-
-
 		int moves=0;
 		for(int x=0; x<gameBoard.length; x++){
 			for(int y=0; y<gameBoard[x].length; y++){
@@ -426,15 +417,10 @@ public class GameAI implements PlayingEntity {
 
 	}	
 	private void sendMove(int x, int y){
-		if(Global.slowAI){
-			Global.moveList.add(new Point(x,y));
-		}
+		Global.gamePiece[x][y].setTeam(team);
+		Global.moveList.add(new Point(x,y));
 	}
-	private void sendNull(){
-		if(Global.slowAI){
-			Global.moveList.add(null);
-		}
-	}
+	
 	/*  Bah, ignore this for now.
 	private void nickMove(){
 		int[][] moves=new int[gameBoard.length][gameBoard.length];

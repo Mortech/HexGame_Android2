@@ -1,6 +1,7 @@
 package com.sam.hex;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 
 public class BoardTools {
 	static double spaceH; // Horizontal
@@ -20,8 +21,15 @@ public class BoardTools {
 
 	}
 	public static void undo(){
-		if(!Global.moveList.isEmpty())
+		if(!Global.moveList.isEmpty()){
+			Point lastMove = Global.moveList.get(Global.moveList.size()-1);
+			
+			if(Global.currentPlayer==(byte)1) Global.player2.undo(lastMove);
+			else Global.player1.undo(lastMove);
+			
 			Global.moveList.remove(Global.moveList.size()-1);
+			Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);
+		}
 	}
 	public static Bitmap getBackground(int w, int h) {
 		Bitmap background =Bitmap.createBitmap(Global.windowWidth, Global.windowHeight,Bitmap.Config.ARGB_8888); //the background is drawn to this bitmap. 
@@ -54,9 +62,9 @@ public class BoardTools {
 						+ (cY - cX * slope2)) { // if above line 1 == above line
 					// 2
 					// if((y+x)/(((double)h+(double)w))<.5==((double)h/(double)w>y/x)){
-					background.setPixel((int) x, (int) y, Global.playerOneColor);
+					background.setPixel((int) x, (int) y, Global.player1Color);
 				} else {
-					background.setPixel((int) x, (int) y, Global.playerTwoColor);
+					background.setPixel((int) x, (int) y, Global.player2Color);
 				}
 				// (((h*w)-h)>y/x)
 			}

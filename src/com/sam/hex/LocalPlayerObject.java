@@ -6,8 +6,8 @@ public class LocalPlayerObject implements PlayingEntity {
 	byte[][] gameBoard; 
 	byte team;
 	
-	public LocalPlayerObject(byte i) {
-		this.team=i;//Set the player's team
+	public LocalPlayerObject(byte team) {
+		this.team=team;//Set the player's team
 	}
 	
 	//Do not use
@@ -36,5 +36,9 @@ public class LocalPlayerObject implements PlayingEntity {
 	
 	public void makeMove(){
 		GameAction.getPlayerTurn(team);//Have the player make a move
+	}
+	
+	public void undo(Point hex){
+		Global.gamePiece[hex.x][hex.y].setTeam((byte)0);
 	}
 }

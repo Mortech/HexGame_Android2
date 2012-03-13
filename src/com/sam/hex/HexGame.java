@@ -17,9 +17,7 @@ import android.graphics.Point;
 import java.util.ArrayList;
 
 public class HexGame extends Activity {
-	GameObject game;
-
-	//TouchListener touchListener=new TouchListener();
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,24 +27,21 @@ public class HexGame extends Activity {
         	initializeNewGame();//Must be set up immediately
         }
         else{
-        	//Add the touch listener
-        	if(game!=null)
-        		game.stop();
-        	BoardTools.clearBoard();
+        	//Readd the view
         	Global.board=new BoardView(this);
-        	game=new GameObject();
-            Global.board.setOnTouchListener(new TouchListener());
-            setContentView(Global.board);
+        	Global.board.setOnTouchListener(new TouchListener());
+    	    setContentView(Global.board);
         }
     }
+    
     class TouchListener implements OnTouchListener{
     	public boolean onTouch(View v, MotionEvent event){
     		int x = (int)event.getX();
 			int y = (int)event.getY();
-			for (int xc = 0; xc < Global.gamePiece.length; xc++) {
-				for (int yc=0; yc<Global.gamePiece[0].length; yc++)
-					if (Global.gamePiece[xc][yc].contains(x, y)) {
-						if(game!=null)game.setPiece(new Point(xc,yc));
+			for(int xc = 0; xc < Global.gamePiece.length; xc++){
+				for(int yc=0; yc<Global.gamePiece[0].length; yc++)
+					if(Global.gamePiece[xc][yc].contains(x, y)){
+						if(Global.game!=null)Global.game.setPiece(new Point(xc,yc));
 						//Return false. We got our point. (True is used for gestures)
 						return false;
 					}
@@ -58,20 +53,19 @@ public class HexGame extends Activity {
     
     public void initializeNewGame(){
     	//Stop the old game
-    	if(game!=null)
-    		game.stop();
+    	if(Global.game!=null)
+    		Global.game.stop();
     	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	Global.gamePrefs=prefs;
     	
     	//Set player names
-    	Global.playerOneName = prefs.getString("player1Name", "Player1");
-    	Global.playerTwoName = prefs.getString("player2Name", "Player2");
+    	Global.player1Name = prefs.getString("player1Name", "Player1");
+    	Global.player2Name = prefs.getString("player2Name", "Player2");
     	
     	//Set player colors
-    	Global.playerOneColor = prefs.getInt("player1Color", Global.playerOneDefaultColor);
-    	Global.playerTwoColor = prefs.getInt("player2Color", Global.playerTwoDefaultColor);
+    	Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+    	Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
 
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
@@ -79,20 +73,19 @@ public class HexGame extends Activity {
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
     	BoardTools.clearBoard(); 
     	Global.board=new BoardView(this);
+    	Global.board.setOnTouchListener(new TouchListener());
+	    setContentView(Global.board);
     	
     	//Make sure the board is empty and defaults are set
     	Global.moveList=new ArrayList<Point>();
     	BoardTools.setBoard();
     	
     	//Set game mode
-    	Global.gameType=(byte)Integer.parseInt(prefs.getString("gameModePref", "0"));
-		
-		//Add the touch listener
-        Global.board.setOnTouchListener(new TouchListener());
-        setContentView(Global.board);
+    	Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
+    	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
         
         //Create the game object
-        game = new GameObject();
+        Global.game = new GameObject();
     }
     
     @Override
@@ -103,23 +96,23 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed and we need to run a new game
-    	if(Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType && Integer.decode(prefs.getString("gameModePref", "0")) == 4){
+    	if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
     		//Go to the local lobby
-    		Global.gameType = 4;
+    		Global.player2Type = 2;
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
         	finish();
     	}
-    	else if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("gameModePref", "0")) != (int) Global.gameType){
+    	else if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type || Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type){
     		//Reset the game
     		initializeNewGame();
     	}
     	else
-    	{	
+    	{
     		//Apply minor changes without stopping the current game
-    		Global.playerOneColor = prefs.getInt("player1Color", Global.playerOneDefaultColor);
-	    	Global.playerTwoColor = prefs.getInt("player2Color", Global.playerTwoDefaultColor);
-	    	Global.playerOneName = prefs.getString("player1Name", "Player1");
-	    	Global.playerTwoName = prefs.getString("player2Name", "Player2");
+    		Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+	    	Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
+	    	Global.player1Name = prefs.getString("player1Name", "Player1");
+	    	Global.player2Name = prefs.getString("player2Name", "Player2");
 	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
 	    	Global.board.invalidate();
     	}
@@ -131,22 +124,19 @@ public class HexGame extends Activity {
         inflater.inflate(R.layout.menu, menu);
         return true;
     }
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.settings:
-        	Intent settingsActivity = new Intent(getBaseContext(),Preferences.class);
-        	startActivity(settingsActivity);
+        	startActivity(new Intent(getBaseContext(),Preferences.class));
             return true;
         case R.id.undo:
-        	if(game!=null)
-        		game.stop();
-        	BoardTools.clearBoard();
-        	BoardTools.undo();
-        	if(Global.gameType!=0)
+        	if(Global.player1Type==0 || Global.player2Type==0)
         		BoardTools.undo();
-        	game= new GameObject();
+        	if(Global.player1Type!=0 | Global.player2Type!=0)
+        		BoardTools.undo();
             return true;
         case R.id.newgame:
         	initializeNewGame();
