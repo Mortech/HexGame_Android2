@@ -2,7 +2,10 @@ package com.sam.hex;
 
 import android.graphics.Color;
 import android.graphics.Point;
+import android.widget.ArrayAdapter;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Global {
 	public static int gridSize = 7;
@@ -10,6 +13,8 @@ public class Global {
 	public static int windowWidth = 800;
 	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[7][7];
 	public static BoardView board;
+	public static List<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
+	public static ArrayAdapter<LocalNetworkObject> adapter;
 	public static ArrayList<Point> moveList=new ArrayList<Point>();
 	//Game
 	public static byte currentPlayer = 1;

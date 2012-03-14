@@ -13,6 +13,15 @@ public class LocalNetworkObject{
 		return playerName;
 	}
 	
+	public boolean equals(Object e){
+		if(e instanceof LocalNetworkObject){
+			return this.playerName.equals(((LocalNetworkObject) e).playerName) && this.ip.equals(((LocalNetworkObject) e).ip);
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public String getIP(){
 		return ip;
 	}

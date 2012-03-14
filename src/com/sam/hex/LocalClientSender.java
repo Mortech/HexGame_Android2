@@ -7,6 +7,7 @@ public class LocalClientSender implements Runnable {
 	Thread thread;
 	MulticastSocket socket;
 	DatagramPacket packet;
+	boolean run = true;
 
 	public LocalClientSender(MulticastSocket socket, DatagramPacket packet) {
 		this.socket = socket;
@@ -16,7 +17,7 @@ public class LocalClientSender implements Runnable {
 	}
 	
 	public void run() {
-		while(true){
+		while(run){
         	try {
         		socket.send(packet);
         		System.out.println("Sending...");
@@ -25,5 +26,9 @@ public class LocalClientSender implements Runnable {
 				e.printStackTrace();
 			}
         }
+	}
+	
+	public void stop() {
+		run = false;
 	}
 }

@@ -3,16 +3,16 @@ package com.sam.hex;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -21,7 +21,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class LocalLobbyActivity extends Activity {
-	private List<LocalNetworkObject> values = new ArrayList<LocalNetworkObject>();
+	private LocalClientListener listener = null;
+	private LocalClientSender sender = null;
+    final Handler handler = new Handler();
+    final Runnable updateResults = new Runnable() {
+        public void run() {
+            updateResultsInUi();
+        }
+    };
+    private boolean run = true;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -29,11 +37,17 @@ public class LocalLobbyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.locallobby);
         
-        newPlayerFound("Sean", "192.168.1.1");
-        newPlayerFound("Will", "192.168.1.2");
-        newPlayerFound("Sam", "192.168.1.3");
+        final ListView lobby = (ListView) findViewById(R.id.players);
+        Global.adapter = new ArrayAdapter<LocalNetworkObject>(this,android.R.layout.simple_list_item_1, Global.localObjects);
+        lobby.setAdapter(Global.adapter);
         
-        //TODO Create a thread that loops, looking for players to add
+        lobby.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Toast.makeText(getApplicationContext(), "IP Address: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP(), Toast.LENGTH_LONG).show();
+				challengeRecieved(lobby.getItemAtPosition(position).toString(),((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP());
+			}
+        });
         
         //TODO Create a listener that runs challengeRecieved() if someone calls us
     }
@@ -67,8 +81,11 @@ public class LocalLobbyActivity extends Activity {
         MulticastLock mcLock = wm.createMulticastLock("broadcastlock");
         mcLock.acquire();
         
+        WifiInfo wifiInfo = wm.getConnectionInfo();
+        String ipAddress = String.format("%d.%d.%d.%d",(wifiInfo.getIpAddress() & 0xff),(wifiInfo.getIpAddress() >> 8 & 0xff),(wifiInfo.getIpAddress() >> 16 & 0xff),(wifiInfo.getIpAddress() >> 24 & 0xff));
+        
 		try {
-			String message = ("Hello World");
+			String message = ("Let's play Hex. Player: "+Global.player1Name+" IP Address: "+ipAddress);
 			
 			//Create a socket and start the communication
 			InetAddress address = InetAddress.getByName("234.235.236.237");
@@ -81,8 +98,8 @@ public class LocalLobbyActivity extends Activity {
 			//Create a packet
 			DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, port);
 			
-			new LocalClientSender(socket,packet);
-	        new LocalClientListener(socket);
+			sender=new LocalClientSender(socket,packet);
+	        listener=new LocalClientListener(socket);
 	        
 		}
 		catch (Exception e) {
@@ -90,18 +107,54 @@ public class LocalLobbyActivity extends Activity {
 		}
     }
     
-    private void newPlayerFound(String playerName, String ip){
-    	values.add(new LocalNetworkObject(playerName, ip));
+    @Override
+    public void onStop(){
+    	super.onStop();
     	
-    	final ListView playerList = (ListView) findViewById(R.id.players);
-        ArrayAdapter<LocalNetworkObject> adapter = new ArrayAdapter<LocalNetworkObject>(this,android.R.layout.simple_list_item_1, values);
-        playerList.setAdapter(adapter);
+    	run = false;
+		sender.stop();
+        listener.stop();
+    }
+    
+    protected void localClientListener(MulticastSocket msocket) {
+    	final MulticastSocket socket = msocket;
+        Thread t = new Thread() {
+            public void run() {
+            	//Listen for other players
+        		byte[] data = new byte[1024];
+        	    while(run)
+        	    {
+        	    	try {
+        	    		DatagramPacket packet = new DatagramPacket(data, data.length);
+        	    		socket.receive(packet);
+        	    		String message = new String(data, 0 , packet.getLength());
+                		System.out.println(message);
+                		if(!Global.localObjects.contains(new LocalNetworkObject(message, message))){
+//            			Global.localObjects.add(new LocalNetworkObject(message.split("Player: ", 1)[1], message.split("IP Address: ")[message.split("IP Address: ").length-1]));
+                			Global.localObjects.add(new LocalNetworkObject(message, message));
+                			handler.post(updateResults);
+                		}
+        			} catch (Exception e) {
+        				e.printStackTrace();
+        			}
+        	    }
+            }
+        };
+        t.start();
+    }
+    
+    public void newPlayerFound(String playerName, String ip){
+    	Global.localObjects.add(new LocalNetworkObject(playerName, ip));
+    	
+    	final ListView lobby = (ListView) findViewById(R.id.players);
+        ArrayAdapter<LocalNetworkObject> adapter = new ArrayAdapter<LocalNetworkObject>(this,android.R.layout.simple_list_item_1, Global.localObjects);
+        lobby.setAdapter(adapter);
         
-        playerList.setOnItemClickListener(new OnItemClickListener() {
+        lobby.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(getApplicationContext(), "IP Address: " + ((LocalNetworkObject) playerList.getItemAtPosition(position)).getIP(), Toast.LENGTH_LONG).show();
-				challengeRecieved(playerList.getItemAtPosition(position).toString(),((LocalNetworkObject) playerList.getItemAtPosition(position)).getIP());
+				Toast.makeText(getApplicationContext(), "IP Address: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP(), Toast.LENGTH_LONG).show();
+				challengeRecieved(lobby.getItemAtPosition(position).toString(),((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP());
 			}
         });
     }
@@ -124,5 +177,19 @@ public class LocalLobbyActivity extends Activity {
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setMessage(name+" challenges you. Accept?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+    }
+    
+    private void updateResultsInUi(){
+    	final ListView lobby = (ListView) findViewById(R.id.players);
+        ArrayAdapter<LocalNetworkObject> adapter = new ArrayAdapter<LocalNetworkObject>(this,android.R.layout.simple_list_item_1, Global.localObjects);
+        lobby.setAdapter(adapter);
+        
+        lobby.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Toast.makeText(getApplicationContext(), "IP Address: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP(), Toast.LENGTH_LONG).show();
+				challengeRecieved(lobby.getItemAtPosition(position).toString(),((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP());
+			}
+        });
     }
 }
