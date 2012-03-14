@@ -1,5 +1,7 @@
 package com.sam.hex;
 
+import com.sam.hex.lan.LocalPlayerObject;
+
 import android.graphics.Point;
 import android.os.Looper;
 import android.widget.Toast;

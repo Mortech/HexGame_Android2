@@ -6,6 +6,8 @@ import android.graphics.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sam.hex.lan.LocalNetworkObject;
+
 public class Global {
 	public static int gridSize = 7;
 	public static int windowHeight = 600;

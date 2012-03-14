@@ -16,6 +16,9 @@ import android.view.View.OnTouchListener;
 import android.graphics.Point;
 import java.util.ArrayList;
 
+import com.sam.hex.lan.LocalLobbyActivity;
+import com.sam.hex.lan.LocalPlayerObject;
+
 public class HexGame extends Activity {
 	
     /** Called when the activity is first created. */
@@ -53,15 +56,15 @@ public class HexGame extends Activity {
     
     public void initializeNewGame(){
     	//Stop the old game
-    	if(Global.game!=null)
+    	if(Global.game!=null){
     		Global.game.stop();
-    	
-    	//Let the thread die
-    	try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+    		//Let the thread die
+	    	try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
     	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -92,26 +95,14 @@ public class HexGame extends Activity {
     	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
     	
     	//Set up player1
-		if(Global.player1Type==(byte) 0){
-			Global.player1=new PlayerObject((byte)1);
-		}
-		else if(Global.player1Type==(byte) 1){
-			Global.player1=new GameAI((byte)1,(byte)1);
-		}
+		if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
+		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1,(byte)1);
 		
 		//Set up player2
-		if(Global.player2Type==(byte) 0){
-			Global.player2=new PlayerObject((byte)2);
-		}
-		else if(Global.player2Type==(byte) 1){
-			Global.player2=new GameAI((byte)2,(byte)1);
-		}
-		else if(Global.player2Type==(byte) 2){
-			Global.player2=new LocalPlayerObject((byte)2);
-		}
-		else if(Global.player2Type==(byte) 3){
-			Global.player2=new LocalPlayerObject((byte)2);
-		}
+		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
+		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
+		else if(Global.player2Type==(byte) 2) Global.player2=new LocalPlayerObject((byte)2);
+		else if(Global.player2Type==(byte) 3) Global.player2=new LocalPlayerObject((byte)2);
     	
         //Create the game object
         Global.game = new GameObject();

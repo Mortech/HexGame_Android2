@@ -30,17 +30,17 @@ public final class R {
         public static final int imageView1=0x7f090007;
         public static final int instructionsButton=0x7f090009;
         public static final int new_color_panel=0x7f090002;
-        public static final int newgame=0x7f09000d;
+        public static final int newgame=0x7f09000c;
         public static final int old_color_panel=0x7f090001;
         public static final int optionsButton=0x7f09000a;
         public static final int players=0x7f090005;
         public static final int quit=0x7f09000e;
         public static final int rules=0x7f090003;
-        public static final int settings=0x7f09000b;
+        public static final int settings=0x7f09000d;
         public static final int startButton=0x7f090008;
         public static final int textView1=0x7f090006;
         public static final int title=0x7f090004;
-        public static final int undo=0x7f09000c;
+        public static final int undo=0x7f09000b;
     }
     public static final class integer {
         public static final int COLOR_BLACK=0x7f060000;
