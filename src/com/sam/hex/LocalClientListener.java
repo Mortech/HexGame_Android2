@@ -3,13 +3,19 @@ package com.sam.hex;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 
+import android.os.Handler;
+
 public class LocalClientListener implements Runnable {
 	Thread thread;
-	MulticastSocket socket;
 	boolean run = true;
+	MulticastSocket socket;
+	Handler handler;
+	Runnable updateUI;
 	
-	public LocalClientListener(MulticastSocket socket) {
+	public LocalClientListener(MulticastSocket socket, Handler handler, Runnable updateUI) {
 		this.socket = socket;
+		this.handler = handler;
+		this.updateUI = updateUI;
 		thread = new Thread(this, "LANscan"); //Create a new thread.
 		thread.start(); //Start the thread.
 	}
@@ -26,9 +32,9 @@ public class LocalClientListener implements Runnable {
         		System.out.println(message);
         		String[] mes = message.split("(Player: )|(IP Address: )",3);
         		LocalNetworkObject lno = new LocalNetworkObject(mes[1],mes[2]);
-        		if(!Global.localObjects.contains(lno)){
+        		if(!Global.localObjects.contains(lno)){/**Removed for the time being for testing conditions TODO Readd this*/ //&& !lno.getIP().equals(Global.LANipAddress)){
         			Global.localObjects.add(lno);
-        			Global.adapter.notifyDataSetChanged();
+        			handler.post(updateUI);
         		}
 			} catch (Exception e) {
 				e.printStackTrace();

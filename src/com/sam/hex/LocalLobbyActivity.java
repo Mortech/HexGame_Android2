@@ -3,6 +3,7 @@ package com.sam.hex;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,6 +22,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class LocalLobbyActivity extends Activity {
+	WifiManager wm;
+	MulticastLock mcLock;
 	private LocalClientListener listener = null;
 	private LocalClientSender sender = null;
     final Handler handler = new Handler();
@@ -29,7 +32,6 @@ public class LocalLobbyActivity extends Activity {
             updateResultsInUi();
         }
     };
-    private boolean run = true;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -37,17 +39,8 @@ public class LocalLobbyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.locallobby);
         
-        final ListView lobby = (ListView) findViewById(R.id.players);
-        Global.adapter = new ArrayAdapter<LocalNetworkObject>(this,android.R.layout.simple_list_item_1, Global.localObjects);
-        lobby.setAdapter(Global.adapter);
-        
-        lobby.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(getApplicationContext(), "IP Address: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP(), Toast.LENGTH_LONG).show();
-				challengeRecieved(lobby.getItemAtPosition(position).toString(),((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP());
-			}
-        });
+        wm = (WifiManager) getSystemService(WIFI_SERVICE);
+        mcLock = wm.createMulticastLock("broadcastlock");
         
         //TODO Create a listener that runs challengeRecieved() if someone calls us
     }
@@ -55,8 +48,6 @@ public class LocalLobbyActivity extends Activity {
     @Override
     public void onResume(){
     	super.onResume();
-    	
-    	final WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
 
         if (!wm.isWifiEnabled()) {
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -78,28 +69,26 @@ public class LocalLobbyActivity extends Activity {
         	builder.setMessage("Wifi is off. Enable?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
         }
         
-        MulticastLock mcLock = wm.createMulticastLock("broadcastlock");
         mcLock.acquire();
         
         WifiInfo wifiInfo = wm.getConnectionInfo();
-        String ipAddress = String.format("%d.%d.%d.%d",(wifiInfo.getIpAddress() & 0xff),(wifiInfo.getIpAddress() >> 8 & 0xff),(wifiInfo.getIpAddress() >> 16 & 0xff),(wifiInfo.getIpAddress() >> 24 & 0xff));
+        Global.LANipAddress = String.format("%d.%d.%d.%d",(wifiInfo.getIpAddress() & 0xff),(wifiInfo.getIpAddress() >> 8 & 0xff),(wifiInfo.getIpAddress() >> 16 & 0xff),(wifiInfo.getIpAddress() >> 24 & 0xff));
         
 		try {
-			String message = ("Let's play Hex. Player: "+Global.player1Name+" IP Address: "+ipAddress);
-			
-			//Create a socket and start the communication
+			//Create a socket
 			InetAddress address = InetAddress.getByName("234.235.236.237");
 			int port = 4080;
 			MulticastSocket socket = new MulticastSocket(port);
-			
-			//Join the multicastSocket group
 			socket.joinGroup(address);
 			
 			//Create a packet
+			String message = ("Let's play Hex. Player: "+Global.player1Name+" IP Address: "+Global.LANipAddress);
 			DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, port);
 			
+			//Start sending
 			sender=new LocalClientSender(socket,packet);
-	        listener=new LocalClientListener(socket);
+			//Start listening
+	        listener=new LocalClientListener(socket, handler, updateResults);
 	        
 		}
 		catch (Exception e) {
@@ -111,36 +100,11 @@ public class LocalLobbyActivity extends Activity {
     public void onStop(){
     	super.onStop();
     	
-    	run = false;
 		sender.stop();
         listener.stop();
-    }
-    
-    protected void localClientListener(MulticastSocket msocket) {
-    	final MulticastSocket socket = msocket;
-        Thread t = new Thread() {
-            public void run() {
-            	//Listen for other players
-        		byte[] data = new byte[1024];
-        	    while(run)
-        	    {
-        	    	try {
-        	    		DatagramPacket packet = new DatagramPacket(data, data.length);
-        	    		socket.receive(packet);
-        	    		String message = new String(data, 0 , packet.getLength());
-                		System.out.println(message);
-                		if(!Global.localObjects.contains(new LocalNetworkObject(message, message))){
-//            			Global.localObjects.add(new LocalNetworkObject(message.split("Player: ", 1)[1], message.split("IP Address: ")[message.split("IP Address: ").length-1]));
-                			Global.localObjects.add(new LocalNetworkObject(message, message));
-                			handler.post(updateResults);
-                		}
-        			} catch (Exception e) {
-        				e.printStackTrace();
-        			}
-        	    }
-            }
-        };
-        t.start();
+        mcLock.release();
+        
+        Global.localObjects = new ArrayList<LocalNetworkObject>();
     }
     
     public void newPlayerFound(String playerName, String ip){
