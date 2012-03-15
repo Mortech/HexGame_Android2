@@ -40,7 +40,7 @@ public class MulticastListener implements Runnable {
 	    		if(message.contains("Let's play Hex.")){
 	    			String name = message.substring(20);
 	        		LocalNetworkObject lno = new LocalNetworkObject(name,address);
-	        		if(!Global.localObjects.contains(lno)){/**Removed for the time being for testing conditions TODO Readd this*/ //&& !lno.getIP().equals(Global.LANipAddress)){
+	        		if(!Global.localObjects.contains(lno)){/**Removed for the time being for testing conditions TODO Readd this*/ //&& !lno.getIP().replaceAll("\\D","").equals(Global.LANipAddress.replaceAll("\\D",""))){
 	        			Global.localObjects.add(lno);
 	        		}
 	        		handler.post(updateUI);

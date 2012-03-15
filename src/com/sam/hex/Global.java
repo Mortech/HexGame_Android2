@@ -15,6 +15,7 @@ public class Global {
 	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[7][7];
 	public static BoardView board;
 	public static List<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
+	public static LocalNetworkObject localPlayer;
 	public static String LANipAddress;
 	public static ArrayList<Point> moveList=new ArrayList<Point>();
 	//Game
@@ -29,27 +30,27 @@ public class Global {
 	public static PlayingEntity player1;
 	public static String player1Name="Player1";
 	public static byte player1Type=0;//0 Human, 1 AI
-	public static int player1Color=Color.BLUE;
 	final public static int player1DefaultColor=Color.BLUE;
+	public static int player1Color=player1DefaultColor;
 	
 	//Player 2
 	public static PlayingEntity player2;
 	public static String player2Name="Player2";
 	public static byte player2Type=0;//0 Human, 1 AI, 2 Local Human, 3 Internet Human;
-	public static int player2Color=Color.RED;
 	final public static int player2DefaultColor=Color.RED;
+	public static int player2Color=player2DefaultColor;
 	
-	public static void set(int gS, int wH, int wW) {
-		if (gS > 0)
-			gridSize = gS;
-		if (wH > 10)
-			windowHeight = wH;
-		if (wW > 10)
-			windowWidth = wW;
+	public static void set(int gridSize, int windowHeight, int windowWidth) {
+		if (gridSize > 0)
+			Global.gridSize = gridSize;
+		if (windowHeight > 10)
+			Global.windowHeight = windowHeight;
+		if (windowWidth > 10)
+			Global.windowWidth = windowWidth;
 		gamePiece = new RegularPolygonGameObject[gridSize][gridSize];
 	}
-	public static void set(int gS, int wH, int wW, byte p1, byte p2){
-		set(gS, wH, wW);
+	public static void set(int gridSize, int windowHeight, int windowWidth, byte p1, byte p2){
+		set(gridSize, windowHeight, windowWidth);
 		if(p1>=0 && p1<=2) player1Type=p1;
 		if(p1>=0 && p1<=4) player2Type=p2;
 	}

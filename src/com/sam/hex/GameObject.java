@@ -14,16 +14,7 @@ public class GameObject implements Runnable {
 	public GameObject() {
 		theGameRunner = new Thread(this, "runningGame"); //Create a new thread.
 		System.out.println(theGameRunner.getName());
-		
-//		//Decide who goes first
-//		Global.currentPlayer = (byte) (Math.random()*2+1);
-//		if(Global.currentPlayer==(byte)1){
-//			Toast.makeText(Global.board.getContext(), Global.player1Name+" starts.", Toast.LENGTH_SHORT).show();
-//		}
-//		else if(Global.currentPlayer==(byte)2){
-//			Toast.makeText(Global.board.getContext(), Global.player2Name+" starts.", Toast.LENGTH_SHORT).show();
-//		}
-		
+		HexGame.gameRunning = true;
 		theGameRunner.start(); //Start the thread.
 	}
 	
@@ -66,6 +57,7 @@ public class GameObject implements Runnable {
 				Global.player1.getPlayerTurn();
 			hex=null;
 			if (success && GameAction.checkWinPlayer1()){
+				HexGame.gameRunning = false;
 				announceWinner(Global.currentPlayer);
 				go=false;
 			}
@@ -87,6 +79,7 @@ public class GameObject implements Runnable {
 				Global.player2.getPlayerTurn();
 			hex=null;
 			if (success && GameAction.checkWinPlayer2()){
+				HexGame.gameRunning = false;
 				announceWinner(Global.currentPlayer);
 				go=false;
 			}

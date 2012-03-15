@@ -20,6 +20,7 @@ import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
 
 public class HexGame extends Activity {
+	public static boolean gameRunning = true;
 	
     /** Called when the activity is first created. */
     @Override
@@ -69,9 +70,14 @@ public class HexGame extends Activity {
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
+    	//Set game mode
+    	Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
+    	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
+    	
     	//Set player names
     	Global.player1Name = prefs.getString("player1Name", "Player1");
-    	Global.player2Name = prefs.getString("player2Name", "Player2");
+    	if(Global.player1 instanceof LocalPlayerObject) Global.player2Name = Global.localPlayer.toString();
+    	else Global.player2Name = prefs.getString("player2Name", "Player2");
     	
     	//Set player colors
     	Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
@@ -89,10 +95,6 @@ public class HexGame extends Activity {
     	//Make sure the board is empty and defaults are set
     	Global.moveList=new ArrayList<Point>();
     	BoardTools.setBoard();
-    	
-    	//Set game mode
-    	Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
-    	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
     	
     	//Set up player1
 		if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
@@ -116,7 +118,10 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed and we need to run a new game
-    	if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
+    	if(!gameRunning){
+    		initializeNewGame();
+    	}
+    	else if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
     		//Go to the local lobby
     		Global.player2Type = 2;
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
@@ -168,6 +173,7 @@ public class HexGame extends Activity {
         	        switch (which){
         	        case DialogInterface.BUTTON_POSITIVE:
         	            //Yes button clicked
+        	        	gameRunning = false;
         	        	android.os.Process.killProcess(android.os.Process.myPid());
         	            break;
         	        case DialogInterface.BUTTON_NEGATIVE:

@@ -127,8 +127,8 @@ public class LocalLobbyActivity extends Activity {
     }
     
     @Override
-    public void onStop(){
-    	super.onStop();
+    public void onPause(){
+    	super.onPause();
     	
     	//Kill our threads
 		sender.stop();
@@ -168,13 +168,28 @@ public class LocalLobbyActivity extends Activity {
     	builder.setMessage("Do you want to challenge "+lno.toString()+"?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
     }
     
-    private void challengeRecieved(LocalNetworkObject lno){
+    private void challengeRecieved(final LocalNetworkObject lno){
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
+    	        	Global.localPlayer = lno;
+    	        	HexGame.gameRunning = false;
+    	        	int firstMove = (int) (Math.random()*2);
+    	        	try{
+	    	        	DatagramSocket socket = new DatagramSocket();
+	    	        	String message;
+	    	        	if(firstMove==0) message = "I'll go first.";
+	    	        	else message = "You'll go first";
+	    	        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), lno.ip);
+	    	        	socket.send(packet);
+    	        	}
+    	        	catch(Exception e){
+    	        		e.getStackTrace();
+    	        	}
     	        	startActivity(new Intent(getBaseContext(),HexGame.class));
+    	        	finish();
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
