@@ -1,10 +1,12 @@
 package com.sam.hex.lan;
 
+import java.net.InetSocketAddress;
+
 public class LocalNetworkObject{
 	String playerName;
-	String ip;
+	InetSocketAddress ip;
 	
-	public LocalNetworkObject(String name, String ip) {
+	public LocalNetworkObject(String name, InetSocketAddress ip) {
 		this.playerName = name;
 		this.ip = ip;
 	}
@@ -23,6 +25,6 @@ public class LocalNetworkObject{
 	}
 	
 	public String getIP(){
-		return ip;
+		return ip.getHostName();
 	}
 }

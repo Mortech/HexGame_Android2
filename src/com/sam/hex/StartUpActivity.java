@@ -56,10 +56,6 @@ public class StartUpActivity extends Activity {
             	startActivity(settingsActivity);
             }
         });
-        
-        //Set player names
-    	Global.player1Name = prefs.getString("player1Name", "Player1");
-    	Global.player2Name = prefs.getString("player2Name", "Player2");
     }
     
     @Override
