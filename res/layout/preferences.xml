@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="preferences">
         <ListPreference
             android:title="Game Size"
-            android:summary="Pick a size for the gameboard"
+            android:summary="Pick a size for the gameboard (Current: 7x7)"
             android:key="gameSizePref"
             android:defaultValue="7"
             android:entries="@array/gameSizeArray"
             android:entryValues="@array/gameSizeValues" />
+        <EditTextPreference
+            android:title="Custom Game Size"
+            android:summary="Type what size game you'd like"
+            android:key="customGameSizePref"
+            android:defaultValue="7" />
         <EditTextPreference
             android:title="Player1's Name"
             android:summary="Name: Player1"

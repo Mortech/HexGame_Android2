@@ -70,6 +70,9 @@ public class HexGame extends Activity {
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
+    	//Return to the first player
+    	Global.currentPlayer = 1;
+    	
     	//Set game mode
     	Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
     	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
@@ -85,6 +88,8 @@ public class HexGame extends Activity {
     	
     	//Create our board
     	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    	if(Global.gridSize==0) Global.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
+    	if(Global.gridSize<=0) Global.gridSize=1;
     	Global.difficulty=Integer.decode(prefs.getString("aiPref", "1"));
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
     	BoardTools.clearBoard(); 

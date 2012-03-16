@@ -50,7 +50,16 @@ public class LocalLobbyActivity extends Activity {
     };
     final Runnable challenger = new Runnable() {
         public void run() {
-        	challengeRecieved(lno);
+        	challengeRecieved(LocalLobbyActivity.lno);
+        }
+    };
+    final Runnable startGame = new Runnable() {
+        public void run() {
+        	Global.localPlayer = LocalLobbyActivity.lno;
+        	Global.localPlayer.firstMove = false;
+        	HexGame.gameRunning = false;
+        	startActivity(new Intent(getBaseContext(),HexGame.class));
+        	finish();
         }
     };
 	
@@ -64,7 +73,7 @@ public class LocalLobbyActivity extends Activity {
         mcLock = wm.createMulticastLock("broadcastlock");
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
-        broadcastReceiver = new WifiBroadcastReceiver(handler, updateResults, challenger, listener, sender, wm);
+        broadcastReceiver = new WifiBroadcastReceiver(handler, updateResults, challenger, startGame, listener, sender, wm);
     }
     
     @Override
@@ -108,6 +117,8 @@ public class LocalLobbyActivity extends Activity {
 			int port = 4080;
 			MulticastSocket socket = new MulticastSocket(port);
 			socket.joinGroup(address);
+			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
+			//socket.setLoopbackMode(true);
 			
 			//Create a packet
 			String message = ("Let's play Hex. I'm "+Global.player1Name);
@@ -116,7 +127,7 @@ public class LocalLobbyActivity extends Activity {
 			//Start sending
 			sender=new MulticastSender(socket,packet);
 			//Start listening
-	        listener=new MulticastListener(socket, handler, updateResults, challenger);
+	        listener=new MulticastListener(socket, handler, updateResults, challenger, startGame);
 		}
         catch (Exception e) {
 			System.out.println(e);
@@ -131,8 +142,11 @@ public class LocalLobbyActivity extends Activity {
     	super.onPause();
     	
     	//Kill our threads
-		sender.stop();
-        listener.stop();
+		try{
+			sender.stop();
+			listener.stop();
+		}
+		catch(Exception e){}
         mcLock.release();
         unregisterReceiver(broadcastReceiver);
         
@@ -146,6 +160,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
+    	        	LocalLobbyActivity.lno = lno;
     	        	try{
 	    	        	DatagramSocket socket = new DatagramSocket();
 	    	        	String message = Global.player1Name+" challenges you.";
@@ -176,18 +191,16 @@ public class LocalLobbyActivity extends Activity {
     	            //Yes button clicked
     	        	Global.localPlayer = lno;
     	        	HexGame.gameRunning = false;
-    	        	int firstMove = (int) (Math.random()*2);
     	        	try{
 	    	        	DatagramSocket socket = new DatagramSocket();
-	    	        	String message;
-	    	        	if(firstMove==0) message = "I'll go first.";
-	    	        	else message = "You'll go first";
+	    	        	String message = "It's on!";
 	    	        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), lno.ip);
 	    	        	socket.send(packet);
     	        	}
     	        	catch(Exception e){
     	        		e.getStackTrace();
     	        	}
+    	        	Global.localPlayer.firstMove = true;
     	        	startActivity(new Intent(getBaseContext(),HexGame.class));
     	        	finish();
     	            break;

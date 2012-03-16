@@ -40,6 +40,7 @@ public class GameObject implements Runnable {
 				e.printStackTrace();
 			}
 		}
+		HexGame.gameRunning = false;
 	}
 	
 	public void doStuff(){
@@ -57,7 +58,6 @@ public class GameObject implements Runnable {
 				Global.player1.getPlayerTurn();
 			hex=null;
 			if (success && GameAction.checkWinPlayer1()){
-				HexGame.gameRunning = false;
 				announceWinner(Global.currentPlayer);
 				go=false;
 			}
@@ -79,7 +79,6 @@ public class GameObject implements Runnable {
 				Global.player2.getPlayerTurn();
 			hex=null;
 			if (success && GameAction.checkWinPlayer2()){
-				HexGame.gameRunning = false;
 				announceWinner(Global.currentPlayer);
 				go=false;
 			}

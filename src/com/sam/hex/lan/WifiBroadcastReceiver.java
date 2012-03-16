@@ -18,14 +18,16 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	Handler handler;
 	Runnable updateResults;
 	Runnable challenger;
+	Runnable startGame;
 	MulticastListener listener;
 	MulticastSender sender;
 	WifiManager wm;
 	
-	public WifiBroadcastReceiver(Handler handler, Runnable updateResults, Runnable challenger, MulticastListener listener, MulticastSender sender, WifiManager wm) {
+	public WifiBroadcastReceiver(Handler handler, Runnable updateResults, Runnable challenger, Runnable startGame, MulticastListener listener, MulticastSender sender, WifiManager wm) {
 		this.handler = handler;
 		this.updateResults = updateResults;
 		this.challenger = challenger;
+		this.startGame = startGame;
 		this.listener = listener;
 		this.sender = sender;
 		this.wm = wm;
@@ -65,7 +67,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 					//Start sending
 					sender=new MulticastSender(socket,packet);
 					//Start listening
-			        listener=new MulticastListener(socket, handler, updateResults, challenger);
+			        listener=new MulticastListener(socket, handler, updateResults, challenger, startGame);
 				}
 				catch (Exception e) {
 					System.out.println(e);

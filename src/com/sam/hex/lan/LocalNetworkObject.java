@@ -2,23 +2,17 @@ package com.sam.hex.lan;
 
 import java.net.InetSocketAddress;
 
-import android.graphics.Color;
+import com.sam.hex.Global;
 
 public class LocalNetworkObject{
 	String playerName;
-	Color playerColor;
-	int gridSize;
+	int playerColor=Global.player2DefaultColor;
+	int gridSize = 0;
 	InetSocketAddress ip;
+	boolean firstMove = false;
 	
 	public LocalNetworkObject(String name, InetSocketAddress ip) {
 		this.playerName = name;
-		this.ip = ip;
-	}
-	
-	public LocalNetworkObject(String name, Color playerColor, int gridSize, InetSocketAddress ip) {
-		this.playerName = name;
-		this.playerColor = playerColor;
-		this.gridSize = gridSize;
 		this.ip = ip;
 	}
 	
