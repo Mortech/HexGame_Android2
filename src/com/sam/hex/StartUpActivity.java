@@ -72,7 +72,11 @@ public class StartUpActivity extends Activity {
             	}
             }
         });
-        if(!HexGame.gameRunning || Global.moveList.size()==0 || Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type || Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type){
+        if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty 
+    			|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    			|| Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize 
+    			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
+    			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type){
         	startButton.setText("Start Game");
     	}
         else{

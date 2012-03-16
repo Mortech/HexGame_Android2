@@ -29,14 +29,26 @@ public class BoardTools {
 			else Global.player1.undo(lastMove);
 			
 			Global.moveList.remove(Global.moveList.size()-1);
-			Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);
-			
+			System.out.println(HexGame.gameRunning);
 			//Reset the game if it's already ended
 			if(!HexGame.gameRunning){
 				GameAction.checkedFlagReset();
+				for(int x=0;x<Global.gridSize;x++){
+    				for(int y=0;y<Global.gridSize;y++){
+    					System.out.println(Global.gamePiece[x][y].getTeam());
+    					if(Global.gamePiece[x][y].getTeam()==(byte)1){
+    						Global.gamePiece[x][y].setColor(Global.player1Color);
+    					}
+    					else if(Global.gamePiece[x][y].getTeam()==(byte)2){
+    						Global.gamePiece[x][y].setColor(Global.player2Color);
+    					}
+    				}
+    			}
 				HexGame.gameRunning=true;
 				Global.game = new GameObject();
 			}
+			
+			Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);
 		}
 		
 		Global.board.postInvalidate();

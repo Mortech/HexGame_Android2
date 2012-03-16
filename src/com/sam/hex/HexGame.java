@@ -132,18 +132,39 @@ public class HexGame extends Activity {
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
         	finish();
     	}
-    	else if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty || Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize || Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type || Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type){
+    	else if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty 
+    			|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    			|| Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize 
+    			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
+    			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type){
     		//Reset the game
     		initializeNewGame();
     	}
     	else
     	{
     		//Apply minor changes without stopping the current game
-    		Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
-	    	Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
+    		if(Global.player1Color != prefs.getInt("player1Color", Global.player1DefaultColor)){
+    			for(int x=0;x<Global.gridSize;x++){
+    				for(int y=0;y<Global.gridSize;y++){
+    					if(Global.gamePiece[x][y].getColor()==Global.player1Color){
+    						Global.gamePiece[x][y].setColor(prefs.getInt("player1Color", Global.player1DefaultColor));
+    					}
+    				}
+    			}
+    			Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+    		}
+    		if(Global.player2Color != prefs.getInt("player2Color", Global.player2DefaultColor)){
+    			for(int x=0;x<Global.gridSize;x++){
+    				for(int y=0;y<Global.gridSize;y++){
+    					if(Global.gamePiece[x][y].getColor()==Global.player2Color){
+    						Global.gamePiece[x][y].setColor(prefs.getInt("player2Color", Global.player2DefaultColor));
+    					}
+    				}
+    			}
+    			Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
+    		}
 	    	Global.player1Name = prefs.getString("player1Name", "Player1");
 	    	Global.player2Name = prefs.getString("player2Name", "Player2");
-	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
 	    	Global.board.invalidate();
     	}
     }
