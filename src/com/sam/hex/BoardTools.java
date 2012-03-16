@@ -46,6 +46,7 @@ public class BoardTools {
     			}
 				HexGame.gameRunning=true;
 				Global.game = new GameObject();
+				Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);
 			}
 			
 			Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);

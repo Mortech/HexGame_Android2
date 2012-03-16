@@ -40,7 +40,6 @@ public class GameObject implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		HexGame.gameRunning = false;
 	}
 	
 	public void doStuff(){
@@ -88,6 +87,7 @@ public class GameObject implements Runnable {
 	}
 	
 	private void announceWinner(byte team){
+		HexGame.gameRunning = false;
 		Global.board.postInvalidate();
 		try {
 			Thread.sleep(100);
