@@ -3,7 +3,7 @@ package com.sam.hex;
 import android.graphics.Color;
 import android.graphics.Point;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.sam.hex.lan.LocalNetworkObject;
@@ -14,10 +14,10 @@ public class Global {
 	public static int windowWidth = 800;
 	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[7][7];
 	public static BoardView board;
-	public static List<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
+	public static List<LocalNetworkObject> localObjects = new LinkedList<LocalNetworkObject>();
 	public static LocalNetworkObject localPlayer;
 	public static String LANipAddress;
-	public static ArrayList<Point> moveList=new ArrayList<Point>();
+	public static LinkedList<Point> moveList=new LinkedList<Point>();
 	//Game
 	public static byte currentPlayer = 1;
 	public static GameObject game;

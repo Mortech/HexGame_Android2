@@ -17,4 +17,8 @@ public class AIHistoryObject{
 		this.m[0] = m[0];
 		this.m[1] = m[1];
 	}
+	
+	public String toString(){
+		return pairs.toString()+" : "+n.toString()+" : "+m.toString();
+	}
 }

@@ -16,7 +16,11 @@ public final class R {
         public static final int gameSizeValues=0x7f050005;
         public static final int player1Array=0x7f050000;
         public static final int player1Values=0x7f050001;
+        /**  <item>Online Player</item> 
+         */
         public static final int player2Array=0x7f050002;
+        /**  <item>3</item> 
+         */
         public static final int player2Values=0x7f050003;
     }
     public static final class attr {
@@ -100,6 +104,8 @@ public final class R {
         public static final int undo=0x7f070008;
     }
     public static final class style {
+        /**  <item name="android:windowIsFloating">true</item> 
+         */
         public static final int Theme_QuickLoad=0x7f080001;
         public static final int Theme_Transparent=0x7f080000;
     }

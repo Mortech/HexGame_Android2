@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.graphics.Point;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
@@ -98,7 +98,7 @@ public class HexGame extends Activity {
 	    setContentView(Global.board);
     	
     	//Make sure the board is empty and defaults are set
-    	Global.moveList=new ArrayList<Point>();
+    	Global.moveList=new LinkedList<Point>();
     	BoardTools.setBoard();
     	
     	//Set up player1
@@ -134,7 +134,7 @@ public class HexGame extends Activity {
     	}
     	else if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty 
     			|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
-    			|| Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize 
+    			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
     			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type){
     		//Reset the game

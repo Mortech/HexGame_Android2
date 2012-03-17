@@ -29,7 +29,6 @@ public class BoardTools {
 			else Global.player1.undo(lastMove);
 			
 			Global.moveList.remove(Global.moveList.size()-1);
-			System.out.println(HexGame.gameRunning);
 			//Reset the game if it's already ended
 			if(!HexGame.gameRunning){
 				GameAction.checkedFlagReset();

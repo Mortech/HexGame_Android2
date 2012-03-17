@@ -1,6 +1,6 @@
 package com.sam.hex;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -12,9 +12,8 @@ public class GameAI implements PlayingEntity {
 	byte difficalty;
 	byte[][] gameBoard;
 	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
-	List<List<List<Integer>>> pairs = new ArrayList<List<List<Integer>>>();//List of pair-pieces
-	List<AIHistoryObject> history = new ArrayList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
-	int diameter = Global.gamePiece.length-1;
+	List<List<List<Integer>>> pairs = new LinkedList<List<List<Integer>>>();//List of pair-pieces
+	List<AIHistoryObject> history = new LinkedList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
 	int rand_a = 0;
 	int rand_b = 0;
 	
@@ -23,10 +22,9 @@ public class GameAI implements PlayingEntity {
 		this.difficalty=difficalty;
 		
 		while(rand_a==0 && rand_b==0){
-			rand_a = new Random().nextInt(diameter)-diameter/2;
-			rand_b = new Random().nextInt(diameter)-diameter/2;
+			rand_a = new Random().nextInt(3)-1;
+			rand_b = new Random().nextInt(3)-1;
 		}
-		System.out.println("Random A is: "+rand_a+" and Random B is: "+rand_b);
 	}
 
 	public void getPlayerTurn(byte[][] gameBoard) {//For net play
@@ -44,8 +42,6 @@ public class GameAI implements PlayingEntity {
 			AIHistoryObject state = new AIHistoryObject(pairs, n, m);
 			history.add(state);
 			makeMove();
-			System.out.println("n equals ["+n[0]+","+n[1]+"]");
-			System.out.println("m equals ["+m[0]+","+m[1]+"]");
 		}
 		else 
 			badMove();
@@ -58,7 +54,6 @@ public class GameAI implements PlayingEntity {
 				AIHistoryObject previousState = history.get(i);
 				System.out.println("Pairs: "+previousState.pairs+" N: "+previousState.n[0]+","+previousState.n[1]+" M: "+previousState.m[0]+","+previousState.m[1]);
 			}
-			
 			AIHistoryObject previousState = history.get(history.size()-1);
 			pairs = previousState.pairs;
 			n = previousState.n;
@@ -118,9 +113,9 @@ public class GameAI implements PlayingEntity {
 		
 		//Add the edges as pairs after we've reached both sides of the map
 		if(n[0]-1 == 0){
-			List<List<Integer>> pair = new ArrayList<List<Integer>>();
-			List<Integer> cord1 = new ArrayList<Integer>();
-			List<Integer> cord2 = new ArrayList<Integer>();
+			List<List<Integer>> pair = new LinkedList<List<Integer>>();
+			List<Integer> cord1 = new LinkedList<Integer>();
+			List<Integer> cord2 = new LinkedList<Integer>();
 			cord1.add(n[0]-1);
 			cord1.add(n[1]);
 			pair.add(cord1);
@@ -132,9 +127,9 @@ public class GameAI implements PlayingEntity {
 			n[0] = n[0]-1;
 		}
 		if(m[0]+1 == gameBoard.length-1){
-			List<List<Integer>> pair = new ArrayList<List<Integer>>();
-			List<Integer> cord1 = new ArrayList<Integer>();
-			List<Integer> cord2 = new ArrayList<Integer>();
+			List<List<Integer>> pair = new LinkedList<List<Integer>>();
+			List<Integer> cord1 = new LinkedList<Integer>();
+			List<Integer> cord2 = new LinkedList<Integer>();
 			cord1.add(m[0]+1);
 			cord1.add(m[1]);
 			pair.add(cord1);
@@ -219,9 +214,9 @@ public class GameAI implements PlayingEntity {
 		//Check if we should extend to the left
 		if(left()){
 			if(gameBoard[n[x]-1*x-1*y][n[y]-1*y-1*x]!=0 && gameBoard[n[x]+1*x-2*y][n[y]+1*y-2*x]==0){
-				List<List<Integer>> pair = new ArrayList<List<Integer>>();
-				List<Integer> cord1 = new ArrayList<Integer>();
-				List<Integer> cord2 = new ArrayList<Integer>();
+				List<List<Integer>> pair = new LinkedList<List<Integer>>();
+				List<Integer> cord1 = new LinkedList<Integer>();
+				List<Integer> cord2 = new LinkedList<Integer>();
 				cord1.add(n[0]-1);
 				cord1.add(n[1]);
 				pair.add(cord1);
@@ -237,9 +232,9 @@ public class GameAI implements PlayingEntity {
 				return;
 			}
 			else if(gameBoard[n[x]+1*x-2*y][n[y]+1*y-2*x]!=0 && gameBoard[n[x]-1*x-1*y][n[y]-1*y-1*x]==0){
-				List<List<Integer>> pair = new ArrayList<List<Integer>>();
-				List<Integer> cord1 = new ArrayList<Integer>();
-				List<Integer> cord2 = new ArrayList<Integer>();
+				List<List<Integer>> pair = new LinkedList<List<Integer>>();
+				List<Integer> cord1 = new LinkedList<Integer>();
+				List<Integer> cord2 = new LinkedList<Integer>();
 				cord1.add(n[0]);
 				cord1.add(n[1]-1);
 				pair.add(cord1);
@@ -259,9 +254,9 @@ public class GameAI implements PlayingEntity {
 		//Check if we should extend to the right
 		if(right()){
 			if(gameBoard[m[x]-1*x+2*y][m[y]-1*y+2*x]!=0 && gameBoard[m[x]+1*x+1*y][m[y]+1*y+1*x]==0){
-				List<List<Integer>> pair = new ArrayList<List<Integer>>();
-				List<Integer> cord1 = new ArrayList<Integer>();
-				List<Integer> cord2 = new ArrayList<Integer>();
+				List<List<Integer>> pair = new LinkedList<List<Integer>>();
+				List<Integer> cord1 = new LinkedList<Integer>();
+				List<Integer> cord2 = new LinkedList<Integer>();
 				cord1.add(m[0]+1);
 				cord1.add(m[1]);
 				pair.add(cord1);
@@ -277,9 +272,9 @@ public class GameAI implements PlayingEntity {
 				return;
 			}
 			else if(gameBoard[m[x]+1*x+1*y][m[y]+1*y+1*x]!=0 && gameBoard[m[x]-1*x+2*y][m[y]-1*y+2*x]==0){
-				List<List<Integer>> pair = new ArrayList<List<Integer>>();
-				List<Integer> cord1 = new ArrayList<Integer>();
-				List<Integer> cord2 = new ArrayList<Integer>();
+				List<List<Integer>> pair = new LinkedList<List<Integer>>();
+				List<Integer> cord1 = new LinkedList<Integer>();
+				List<Integer> cord2 = new LinkedList<Integer>();
 				cord1.add(m[0]+1);
 				cord1.add(m[1]);
 				pair.add(cord1);
@@ -300,9 +295,9 @@ public class GameAI implements PlayingEntity {
 		
 		//Extend left if we haven't gone right
 		if(left() && rand==0 && gameBoard[n[x]+1*x-2*y][n[y]+1*y-2*x]==0){
-			List<List<Integer>> pair = new ArrayList<List<Integer>>();
-			List<Integer> cord1 = new ArrayList<Integer>();
-			List<Integer> cord2 = new ArrayList<Integer>();
+			List<List<Integer>> pair = new LinkedList<List<Integer>>();
+			List<Integer> cord1 = new LinkedList<Integer>();
+			List<Integer> cord2 = new LinkedList<Integer>();
 			cord1.add(n[0]-1);
 			cord1.add(n[1]);
 			pair.add(cord1);
@@ -318,9 +313,9 @@ public class GameAI implements PlayingEntity {
 			return;
 		}
 		else if(left() && rand==1 && gameBoard[n[x]-1*x-1*y][n[y]-1*y-1*x]==0){
-			List<List<Integer>> pair = new ArrayList<List<Integer>>();
-			List<Integer> cord1 = new ArrayList<Integer>();
-			List<Integer> cord2 = new ArrayList<Integer>();
+			List<List<Integer>> pair = new LinkedList<List<Integer>>();
+			List<Integer> cord1 = new LinkedList<Integer>();
+			List<Integer> cord2 = new LinkedList<Integer>();
 			cord1.add(n[0]);
 			cord1.add(n[1]-1);
 			pair.add(cord1);
@@ -337,9 +332,9 @@ public class GameAI implements PlayingEntity {
 		}
 		//Extend right if we haven't gone left
 		if(right() && rand==0 && gameBoard[m[x]-1*x+2*y][m[y]-1*y+2*x]==0){
-			List<List<Integer>> pair = new ArrayList<List<Integer>>();
-			List<Integer> cord1 = new ArrayList<Integer>();
-			List<Integer> cord2 = new ArrayList<Integer>();
+			List<List<Integer>> pair = new LinkedList<List<Integer>>();
+			List<Integer> cord1 = new LinkedList<Integer>();
+			List<Integer> cord2 = new LinkedList<Integer>();
 			cord1.add(m[0]+1);
 			cord1.add(m[1]);
 			pair.add(cord1);
@@ -355,9 +350,9 @@ public class GameAI implements PlayingEntity {
 			return;
 		}
 		else if(right() && rand==1 && gameBoard[m[x]+1*x+1*y][m[y]+1*y+1*x]==0){
-			List<List<Integer>> pair = new ArrayList<List<Integer>>();
-			List<Integer> cord1 = new ArrayList<Integer>();
-			List<Integer> cord2 = new ArrayList<Integer>();
+			List<List<Integer>> pair = new LinkedList<List<Integer>>();
+			List<Integer> cord1 = new LinkedList<Integer>();
+			List<Integer> cord2 = new LinkedList<Integer>();
 			cord1.add(m[0]+1);
 			cord1.add(m[1]);
 			pair.add(cord1);
