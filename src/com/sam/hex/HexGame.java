@@ -20,14 +20,14 @@ import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
 
 public class HexGame extends Activity {
-	public static boolean gameRunning = true;
+	public static boolean startNewGame = true;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if(Global.gamePiece[0][0]==null){
+        if(HexGame.startNewGame){
         	initializeNewGame();//Must be set up immediately
         }
         else{
@@ -56,6 +56,8 @@ public class HexGame extends Activity {
     }
     
     public void initializeNewGame(){
+    	startNewGame = false;
+    	
     	//Stop the old game
     	if(Global.game!=null){
     		Global.game.stop();
@@ -123,7 +125,7 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed and we need to run a new game
-    	if(!gameRunning){
+    	if(HexGame.startNewGame){
     		initializeNewGame();
     	}
     	else if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
@@ -199,7 +201,7 @@ public class HexGame extends Activity {
         	        switch (which){
         	        case DialogInterface.BUTTON_POSITIVE:
         	            //Yes button clicked
-        	        	gameRunning = false;
+        	        	Global.gameRunning = false;
         	        	android.os.Process.killProcess(android.os.Process.myPid());
         	            break;
         	        case DialogInterface.BUTTON_NEGATIVE:
@@ -216,5 +218,20 @@ public class HexGame extends Activity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+    
+    @Override
+    public void onPause(){
+    	super.onPause();
+    	
+    	//If the board's empty, just trigger "startNewGame"
+    	for(int x=0;x<Global.gridSize;x++){
+			for(int y=0;y<Global.gridSize;y++){
+				if(Global.gamePiece[x][y].getTeam()==(byte)1 || Global.gamePiece[x][y].getTeam()==(byte)2){
+					return;
+				}
+			}
+		}
+    	HexGame.startNewGame=true;
     }
 }

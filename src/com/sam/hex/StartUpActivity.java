@@ -26,7 +26,7 @@ public class StartUpActivity extends Activity {
         final Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	if(Integer.parseInt(prefs.getString("player2Type", "0")) == (byte)2 && !(Global.player2Type == (byte)2 && HexGame.gameRunning)){
+            	if(Integer.parseInt(prefs.getString("player2Type", "0")) == (byte)2 && !(Global.player2Type == (byte)2 && Global.gameRunning)){
             		startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
             	}
             	else{
@@ -64,7 +64,7 @@ public class StartUpActivity extends Activity {
         final Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	if(Integer.parseInt(prefs.getString("player2Type", "0")) == (byte)2 && !(Global.player2Type == (byte)2 && HexGame.gameRunning)){
+            	if(Integer.parseInt(prefs.getString("player2Type", "0")) == (byte)2 && !(Global.player2Type == (byte)2 && Global.gameRunning)){
                 	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
             	}
             	else{
@@ -77,7 +77,7 @@ public class StartUpActivity extends Activity {
     			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
     			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type
-    			|| !HexGame.gameRunning){
+    			|| HexGame.startNewGame){
         	startButton.setText("Start Game");
     	}
         else{

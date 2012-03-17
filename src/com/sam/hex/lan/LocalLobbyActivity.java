@@ -57,7 +57,7 @@ public class LocalLobbyActivity extends Activity {
         public void run() {
         	Global.localPlayer = LocalLobbyActivity.lno;
         	Global.localPlayer.firstMove = false;
-        	HexGame.gameRunning = false;
+        	HexGame.startNewGame = true;
         	startActivity(new Intent(getBaseContext(),HexGame.class));
         	finish();
         }
@@ -190,7 +190,7 @@ public class LocalLobbyActivity extends Activity {
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
     	        	Global.localPlayer = lno;
-    	        	HexGame.gameRunning = false;
+    	        	HexGame.startNewGame = true;
     	        	try{
 	    	        	DatagramSocket socket = new DatagramSocket();
 	    	        	String message = "It's on!";

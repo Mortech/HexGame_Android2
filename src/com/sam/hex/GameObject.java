@@ -14,7 +14,7 @@ public class GameObject implements Runnable {
 	public GameObject() {
 		theGameRunner = new Thread(this, "runningGame"); //Create a new thread.
 		System.out.println(theGameRunner.getName());
-		HexGame.gameRunning = true;
+		Global.gameRunning = true;
 		theGameRunner.start(); //Start the thread.
 	}
 	
@@ -87,7 +87,7 @@ public class GameObject implements Runnable {
 	}
 	
 	private void announceWinner(byte team){
-		HexGame.gameRunning = false;
+		Global.gameRunning = false;
 		Global.board.postInvalidate();
 		try {
 			Thread.sleep(100);

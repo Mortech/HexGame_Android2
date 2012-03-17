@@ -21,7 +21,6 @@ public class BoardTools {
 
 	}
 	public static void undo(){
-		//TODO If the game is won, it doesn't properly set the game pieces back to their original colors. Because of that (I think) the game auto-quits because it thinks there's a winner.
 		if(!Global.moveList.isEmpty()){
 			Point lastMove = Global.moveList.get(Global.moveList.size()-1);
 			
@@ -30,11 +29,10 @@ public class BoardTools {
 			
 			Global.moveList.remove(Global.moveList.size()-1);
 			//Reset the game if it's already ended
-			if(!HexGame.gameRunning){
+			if(!Global.gameRunning){
 				GameAction.checkedFlagReset();
 				for(int x=0;x<Global.gridSize;x++){
     				for(int y=0;y<Global.gridSize;y++){
-    					System.out.println(Global.gamePiece[x][y].getTeam());
     					if(Global.gamePiece[x][y].getTeam()==(byte)1){
     						Global.gamePiece[x][y].setColor(Global.player1Color);
     					}
@@ -43,9 +41,11 @@ public class BoardTools {
     					}
     				}
     			}
-				HexGame.gameRunning=true;
+				Global.gameRunning=true;
 				Global.game = new GameObject();
 				Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);
+				if(Global.currentPlayer==(byte)1) Global.player2.undo(lastMove);
+				else Global.player1.undo(lastMove);
 			}
 			
 			Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);

@@ -21,6 +21,7 @@ public class Global {
 	//Game
 	public static byte currentPlayer = 1;
 	public static GameObject game;
+	public static boolean gameRunning = false;
 	
 	//AI
 	public static int difficulty=1;

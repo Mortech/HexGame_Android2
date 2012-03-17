@@ -45,15 +45,16 @@ public class GameAI implements PlayingEntity {
 		}
 		else 
 			badMove();
+		System.out.println("---");
+		for(int i=0;i<history.size();i++){
+			AIHistoryObject previousState = history.get(i);
+			System.out.println("Pairs: "+previousState.pairs+" N: "+previousState.n[0]+","+previousState.n[1]+" M: "+previousState.m[0]+","+previousState.m[1]);
+		}
 	}
 	
 	public void undo(Point hex){
 		Global.gamePiece[hex.x][hex.y].setTeam((byte)0);
 		if(Global.difficulty==1){
-			for(int i=0;i<history.size();i++){
-				AIHistoryObject previousState = history.get(i);
-				System.out.println("Pairs: "+previousState.pairs+" N: "+previousState.n[0]+","+previousState.n[1]+" M: "+previousState.m[0]+","+previousState.m[1]);
-			}
 			AIHistoryObject previousState = history.get(history.size()-1);
 			pairs = previousState.pairs;
 			n = previousState.n;
@@ -143,7 +144,6 @@ public class GameAI implements PlayingEntity {
 		
 		//Check if one of our pairs is being attacked, and fill in the alternate if so
 		for(int i=0; i<pairs.size(); i++){
-			System.out.println("Pair listing: "+pairs);
 			if(gameBoard[pairs.get(i).get(0).get(x)][pairs.get(i).get(0).get(y)]==0 || gameBoard[pairs.get(i).get(1).get(x)][pairs.get(i).get(1).get(y)]==0){
 				if(gameBoard[pairs.get(i).get(0).get(x)][pairs.get(i).get(0).get(y)]!=0){
 					sendMove(pairs.get(i).get(1).get(x),pairs.get(i).get(1).get(y));
