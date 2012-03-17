@@ -28,7 +28,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class LocalLobbyActivity extends Activity {
 	WifiManager wm;
@@ -224,7 +223,6 @@ public class LocalLobbyActivity extends Activity {
         lobby.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(getApplicationContext(), "IP Address: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP(), Toast.LENGTH_LONG).show();
 				challengeSent((LocalNetworkObject) lobby.getItemAtPosition(position));
 			}
         });

@@ -145,6 +145,8 @@ public class HexGame extends Activity {
     	else
     	{
     		//Apply minor changes without stopping the current game
+    		
+    		//Reset the colors for every piece
     		if(Global.player1Color != prefs.getInt("player1Color", Global.player1DefaultColor)){
     			for(int x=0;x<Global.gridSize;x++){
     				for(int y=0;y<Global.gridSize;y++){
@@ -165,8 +167,15 @@ public class HexGame extends Activity {
     			}
     			Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
     		}
+    		
+    		//Reset the players names
 	    	Global.player1Name = prefs.getString("player1Name", "Player1");
 	    	Global.player2Name = prefs.getString("player2Name", "Player2");
+	    	
+	    	//Reset the background colors
+	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
+	    	
+	    	//Apply everything
 	    	Global.board.invalidate();
     	}
     }
