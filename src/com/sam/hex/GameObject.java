@@ -35,7 +35,10 @@ public class GameObject implements Runnable {
 			Global.board.postInvalidate();
 			
 			try {
-				Thread.sleep(100);
+				for(int i=0;i<10;i++){
+        			Thread.sleep(10);
+        			if(!go) break;
+        		}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

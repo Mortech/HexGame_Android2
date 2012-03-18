@@ -184,16 +184,10 @@ public class HexGame extends Activity {
         	startActivity(new Intent(getBaseContext(),Preferences.class));
             return true;
         case R.id.undo:
-        	//TODO Ask other player if it's okay to undo
-        	if(Global.player1Type==0 || Global.player2Type==0)
-        		BoardTools.undo();
-        	if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0))
-        		BoardTools.undo();
+        	undo();
             return true;
         case R.id.newgame:
-        	//TODO Ask other player if they'd like to play a new game
-        	initializeNewGame();
-        	Global.board.invalidate();
+        	newGame();
             return true;
         case R.id.quit:
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -237,13 +231,16 @@ public class HexGame extends Activity {
     
     private void stopGame(){
     	if(Global.game!=null){
+    		Global.gameRunning=false;
     		Global.game.stop();
     		//Let the thread die
 	    	try {
-				Thread.sleep(110);
-			} catch (InterruptedException e) {
+				Thread.sleep(100);
+			}
+	    	catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+	    	Global.gameRunning=true;
     	}
     }
     
@@ -338,6 +335,30 @@ public class HexGame extends Activity {
     		//Playing on the same phone
     		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
     		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
+    	}
+    }
+    
+    private void undo(){
+    	//TODO Ask other player if it's okay to undo
+    	if(Global.player1 instanceof LocalPlayerObject || Global.player2 instanceof LocalPlayerObject){
+    		//Request permission
+    	}
+    	else{
+    		if(Global.player1Type==0 || Global.player2Type==0)
+	    		BoardTools.undo();
+	    	if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0))
+	    		BoardTools.undo();
+    	}
+    }
+    
+    private void newGame(){
+    	//TODO Ask other player if they'd like to play a new game
+    	if(Global.player1 instanceof LocalPlayerObject || Global.player2 instanceof LocalPlayerObject){
+    		//Request permission
+    	}
+    	else{
+    		initializeNewGame();
+    		Global.board.invalidate();
     	}
     }
 }
