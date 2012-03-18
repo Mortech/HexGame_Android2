@@ -55,19 +55,11 @@ public class HexGame extends Activity {
     	}
     }
     
-    public void initializeNewGame(){
+    private void initializeNewGame(){
     	startNewGame = false;
     	
     	//Stop the old game
-    	if(Global.game!=null){
-    		Global.game.stop();
-    		//Let the thread die
-	    	try {
-				Thread.sleep(110);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
+    	stopGame();
     	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -80,18 +72,13 @@ public class HexGame extends Activity {
     	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
     	
     	//Set player names
-    	Global.player1Name = prefs.getString("player1Name", "Player1");
-    	if(Global.player1 instanceof LocalPlayerObject) Global.player2Name = Global.localPlayer.toString();
-    	else Global.player2Name = prefs.getString("player2Name", "Player2");
+    	setNames(prefs);
     	
     	//Set player colors
-    	Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
-    	Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
+    	setColors(prefs);
     	
     	//Create our board
-    	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
-    	if(Global.gridSize==0) Global.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
-    	if(Global.gridSize<=0) Global.gridSize=1;
+    	setGrid(prefs);
     	Global.difficulty=Integer.decode(prefs.getString("aiPref", "1"));
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
     	BoardTools.clearBoard(); 
@@ -104,14 +91,10 @@ public class HexGame extends Activity {
     	BoardTools.setBoard();
     	
     	//Set up player1
-		if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
-		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1,(byte)1);
+		setPlayer1();
 		
 		//Set up player2
-		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
-		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
-		else if(Global.player2Type==(byte) 2) Global.player2=new LocalPlayerObject((byte)2);
-		else if(Global.player2Type==(byte) 3) Global.player2=new LocalPlayerObject((byte)2);
+		setPlayer2();
     	
         //Create the game object
         Global.game = new GameObject();
@@ -134,6 +117,13 @@ public class HexGame extends Activity {
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
         	finish();
     	}
+    	else if(Integer.decode(prefs.getString("player2Type", "0")) == 2){
+    		//TODO If player1's color changed, send to other player
+    		
+    		//TODO If player1's name changed, send to other player
+    		
+    		//TODO Otherwise, if grid size changed, player1 or player2 type changed, go to lobby
+    	}
     	else if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty 
     			|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
     			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
@@ -142,8 +132,7 @@ public class HexGame extends Activity {
     		//Reset the game
     		initializeNewGame();
     	}
-    	else
-    	{
+    	else{
     		//Apply minor changes without stopping the current game
     		
     		//Reset the colors for every piece
@@ -195,12 +184,14 @@ public class HexGame extends Activity {
         	startActivity(new Intent(getBaseContext(),Preferences.class));
             return true;
         case R.id.undo:
+        	//TODO Ask other player if it's okay to undo
         	if(Global.player1Type==0 || Global.player2Type==0)
         		BoardTools.undo();
         	if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0))
         		BoardTools.undo();
             return true;
         case R.id.newgame:
+        	//TODO Ask other player if they'd like to play a new game
         	initializeNewGame();
         	Global.board.invalidate();
             return true;
@@ -242,5 +233,111 @@ public class HexGame extends Activity {
 			}
 		}
     	HexGame.startNewGame=true;
+    }
+    
+    private void stopGame(){
+    	if(Global.game!=null){
+    		Global.game.stop();
+    		//Let the thread die
+	    	try {
+				Thread.sleep(110);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
+    }
+    
+    private void setNames(SharedPreferences prefs){
+    	if(Global.player2Type==(byte)2){
+    		//Playing over LAN
+    		if(Global.localPlayer.firstMove){
+    			Global.player1Name = Global.localPlayer.playerName;
+        		Global.player2Name = prefs.getString("player1Name", "Player1");
+    		}
+    		else{
+    			Global.player1Name = prefs.getString("player1Name", "Player1");
+        		Global.player2Name = Global.localPlayer.playerName;
+    		}
+    	}
+    	else{
+    		//Playing on the same phone
+    		Global.player1Name = prefs.getString("player1Name", "Player1");
+    		Global.player2Name = prefs.getString("player2Name", "Player2");
+    	}
+    }
+    
+    private void setColors(SharedPreferences prefs){
+    	if(Global.player2Type==(byte)2){
+    		//Playing over LAN
+    		if(Global.localPlayer.firstMove){
+    			Global.player1Color = Global.localPlayer.playerColor;
+        		Global.player2Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+    		}
+    		else{
+    			Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+        		Global.player2Color = Global.localPlayer.playerColor;
+    		}
+    	}
+    	else{
+    		//Playing on the same phone
+    		Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+    		Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
+    	}
+    }
+    
+    private void setGrid(SharedPreferences prefs){
+    	if(Global.player2Type==(byte)2){
+    		//Playing over LAN
+    		if(Global.localPlayer.firstMove){
+    			Global.gridSize=Global.localPlayer.gridSize;
+    		}
+    		else{
+    			Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    		}
+    	}
+    	else{
+    		//Playing on the same phone
+    		Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    		if(Global.gridSize==0) Global.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
+    	}
+    	
+    	//We don't want 0x0 games
+    	if(Global.gridSize<=0) Global.gridSize=1;
+    }
+    
+    private void setPlayer1(){
+    	if(Global.player2Type==(byte)2){
+    		//Playing over LAN
+    		if(Global.localPlayer.firstMove){
+    			Global.player1=new LocalPlayerObject((byte)1);
+    		}
+    		else{
+    			if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
+        		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1,(byte)1);
+    		}
+    	}
+    	else{
+    		//Playing on the same phone
+    		if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
+    		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1,(byte)1);
+    	}
+    }
+    
+    private void setPlayer2(){
+    	if(Global.player2Type==(byte)2){
+    		//Playing over LAN
+    		if(Global.localPlayer.firstMove){
+    			if(Global.player1Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
+    			else if(Global.player1Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
+    		}
+    		else{
+    			Global.player2=new LocalPlayerObject((byte)2);
+    		}
+    	}
+    	else{
+    		//Playing on the same phone
+    		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
+    		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
+    	}
     }
 }

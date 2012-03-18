@@ -23,11 +23,15 @@ import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class LocalLobbyActivity extends Activity {
 	WifiManager wm;
@@ -36,7 +40,7 @@ public class LocalLobbyActivity extends Activity {
 	IntentFilter intentFilter;
 	MulticastListener listener;
 	MulticastSender sender;
-	public static LocalNetworkObject lno;
+	public static LocalNetworkObject lno = new LocalNetworkObject("", null);
 	private List<LocalNetworkObject> players = new ArrayList<LocalNetworkObject>();
     final Handler handler = new Handler();
     final Runnable updateResults = new Runnable() {
@@ -55,7 +59,6 @@ public class LocalLobbyActivity extends Activity {
     final Runnable startGame = new Runnable() {
         public void run() {
         	Global.localPlayer = LocalLobbyActivity.lno;
-        	Global.localPlayer.firstMove = false;
         	HexGame.startNewGame = true;
         	startActivity(new Intent(getBaseContext(),HexGame.class));
         	finish();
@@ -73,15 +76,28 @@ public class LocalLobbyActivity extends Activity {
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
         broadcastReceiver = new WifiBroadcastReceiver(handler, updateResults, challenger, startGame, listener, sender, wm);
+        
+        final Button ipButton = (Button) findViewById(R.id.customIP);
+        ipButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	customIP();
+            }
+        });
     }
     
     @Override
     public void onResume(){
     	super.onResume();
     	
-    	//Set player's name
+    	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+    	//Set player's name, color, grid size
     	Global.player1Name = prefs.getString("player1Name", "Player1");
+    	Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+    	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    	if(Global.gridSize==0) Global.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
+    	if(Global.gridSize<=0) Global.gridSize=1;
     	
         if (!wm.isWifiEnabled()) {
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -117,7 +133,7 @@ public class LocalLobbyActivity extends Activity {
 			MulticastSocket socket = new MulticastSocket(port);
 			socket.joinGroup(address);
 			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
-			//socket.setLoopbackMode(true);
+			socket.setLoopbackMode(true);
 			
 			//Create a packet
 			String message = ("Let's play Hex. I'm "+Global.player1Name);
@@ -162,9 +178,10 @@ public class LocalLobbyActivity extends Activity {
     	        	LocalLobbyActivity.lno = lno;
     	        	try{
 	    	        	DatagramSocket socket = new DatagramSocket();
-	    	        	String message = Global.player1Name+" challenges you.";
-	    	        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), lno.ip);
+	    	        	String message = Global.player1Name+" challenges you. Grid size: "+Global.gridSize;
+	    	        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), lno.ip,4080);
 	    	        	socket.send(packet);
+	    	        	socket.close();
     	        	}
     	        	catch(Exception e){
     	        		e.getStackTrace();
@@ -188,20 +205,16 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	Global.localPlayer = lno;
-    	        	HexGame.startNewGame = true;
     	        	try{
 	    	        	DatagramSocket socket = new DatagramSocket();
-	    	        	String message = "It's on!";
-	    	        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), lno.ip);
+	    	        	String message = "It's on! My color's "+Global.player1Color;
+	    	        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), lno.ip,4080);
 	    	        	socket.send(packet);
+	    	        	socket.close();
     	        	}
     	        	catch(Exception e){
     	        		e.getStackTrace();
     	        	}
-    	        	Global.localPlayer.firstMove = true;
-    	        	startActivity(new Intent(getBaseContext(),HexGame.class));
-    	        	finish();
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -223,8 +236,35 @@ public class LocalLobbyActivity extends Activity {
         lobby.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Toast.makeText(getApplicationContext(), "IP Address: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).getIP()+" Grid size: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).gridSize+" Color: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).playerColor+" First move?: " + ((LocalNetworkObject) lobby.getItemAtPosition(position)).firstMove, Toast.LENGTH_LONG).show();
 				challengeSent((LocalNetworkObject) lobby.getItemAtPosition(position));
 			}
         });
+    }
+    
+    private void customIP(){
+    	final EditText editText = new EditText(this);
+    	editText.setInputType(InputType.TYPE_CLASS_PHONE);
+    	final AlertDialog.Builder sent = new AlertDialog.Builder(this);
+        sent.setPositiveButton("Ok", null);
+    	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+    	    public void onClick(DialogInterface dialog, int which) {
+    	    	try {
+					InetAddress local = InetAddress.getByName(editText.getText().toString());
+					LocalLobbyActivity.lno.ip = local;
+					DatagramSocket socket = new DatagramSocket();
+    	        	String message = Global.player1Name+" challenges you. Grid size: "+Global.gridSize;
+    	        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), lno.ip,4080);
+    	        	socket.send(packet);
+    	        	socket.close();
+					sent.setMessage("Challenge sent").show();
+				} catch (Exception e) {
+					sent.setMessage("Challenge failed").show();
+				}
+    	    }
+    	};
+    	
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setMessage("Your ip address is: "+Global.LANipAddress).setView(editText).setPositiveButton("Enter", dialogClickListener).show();
     }
 }

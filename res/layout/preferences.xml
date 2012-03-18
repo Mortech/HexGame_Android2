@@ -13,49 +13,58 @@
             android:summary="Type what size game you'd like"
             android:key="customGameSizePref"
             android:defaultValue="7" />
-        <EditTextPreference
-            android:title="Player1's Name"
-            android:summary="Name: Player1"
-            android:key="player1Name"
-            android:defaultValue="Player1" />
-        <ListPreference
-            android:title="Player1's Type"
-            android:summary="Switch between Player and Computer"
-            android:key="player1Type"
-            android:defaultValue="0"
-            android:entries="@array/player1Array"
-            android:entryValues="@array/player1Values" />
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
-		    android:title="Player1's Color"
-		    android:summary="Pick a color for Player1"
-		    android:key="player1Color"
-		    android:defaultValue="@integer/COLOR_BLUE" />
-        <EditTextPreference
-            android:title="Player2's Name"
-            android:summary="Name: Player2"
-            android:key="player2Name"
-            android:defaultValue="Player2" />
-        <ListPreference
-            android:title="Player2's Type"
-            android:summary="Switch between Player (Same device, local wifi, or internet) and Computer"
-            android:key="player2Type"
-            android:defaultValue="0"
-            android:entries="@array/player2Array"
-            android:entryValues="@array/player2Values" />
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
-		    android:title="Player2's Color"
-		    android:summary="Pick a color for Player2"
-		    android:key="player2Color"
-		    android:defaultValue="@integer/COLOR_RED" />
-        <ListPreference
-            android:title="Difficulty"
-            android:summary="Set AI intelligence"
-            android:key="aiPref"
-            android:defaultValue="1"
-            android:entries="@array/aiLabels"
-            android:entryValues="@array/aiValues" />
-       <Preference
-            android:title="Reset to Defaults"
-            android:summary="Reset all settings to their defaults"
-            android:key="resetPref"/>
+        <PreferenceCategory
+                android:title=" ">
+	        <EditTextPreference
+	            android:title="Player1's Name"
+	            android:summary="Name: Player1"
+	            android:key="player1Name"
+	            android:defaultValue="Player1" />
+	        <ListPreference
+	            android:title="Player1's Type"
+	            android:summary="Switch between Player and Computer"
+	            android:key="player1Type"
+	            android:defaultValue="0"
+	            android:entries="@array/player1Array"
+	            android:entryValues="@array/player1Values" />
+	        <net.margaritov.preference.colorpicker.ColorPickerPreference
+			    android:title="Player1's Color"
+			    android:summary="Pick a color for Player1"
+			    android:key="player1Color"
+			    android:defaultValue="@integer/COLOR_BLUE" />
+	    </PreferenceCategory>
+	    <PreferenceCategory
+                android:title=" ">
+	        <EditTextPreference
+	            android:title="Player2's Name"
+	            android:summary="Name: Player2"
+	            android:key="player2Name"
+	            android:defaultValue="Player2" />
+	        <ListPreference
+	            android:title="Player2's Type"
+	            android:summary="Switch between Player (Same device, local wifi, or internet) and Computer"
+	            android:key="player2Type"
+	            android:defaultValue="0"
+	            android:entries="@array/player2Array"
+	            android:entryValues="@array/player2Values" />
+	        <net.margaritov.preference.colorpicker.ColorPickerPreference
+			    android:title="Player2's Color"
+			    android:summary="Pick a color for Player2"
+			    android:key="player2Color"
+			    android:defaultValue="@integer/COLOR_RED" />
+	    </PreferenceCategory>
+	    <PreferenceCategory
+                android:title=" ">
+	        <ListPreference
+	            android:title="Difficulty"
+	            android:summary="Set AI intelligence"
+	            android:key="aiPref"
+	            android:defaultValue="1"
+	            android:entries="@array/aiLabels"
+	            android:entryValues="@array/aiValues" />
+	       <Preference
+	            android:title="Reset to Defaults"
+	            android:summary="Reset all settings to their defaults"
+	            android:key="resetPref"/>
+	    </PreferenceCategory>
 </PreferenceScreen>

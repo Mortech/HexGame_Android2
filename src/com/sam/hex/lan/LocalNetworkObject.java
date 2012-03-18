@@ -1,17 +1,17 @@
 package com.sam.hex.lan;
 
-import java.net.InetSocketAddress;
+import java.net.InetAddress;
 
 import com.sam.hex.Global;
 
 public class LocalNetworkObject{
-	String playerName;
-	int playerColor=Global.player2DefaultColor;
-	int gridSize = 0;
-	InetSocketAddress ip;
-	boolean firstMove = false;
+	public String playerName;
+	public int playerColor=Global.player2DefaultColor;
+	public int gridSize = 0;
+	public InetAddress ip;
+	public boolean firstMove = false;
 	
-	public LocalNetworkObject(String name, InetSocketAddress ip) {
+	public LocalNetworkObject(String name, InetAddress ip) {
 		this.playerName = name;
 		this.ip = ip;
 	}

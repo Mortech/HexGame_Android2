@@ -1,7 +1,8 @@
 package com.sam.hex.lan;
 
 import java.net.DatagramPacket;
-import java.net.InetSocketAddress;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import com.sam.hex.Global;
@@ -38,35 +39,62 @@ public class MulticastListener implements Runnable {
 	    		socket.receive(packet);
 	    		String message = new String(data, 0, packet.getLength());
 	    		System.out.println(message);
-	    		System.out.println(packet.getAddress().getHostName());
-	    		InetSocketAddress address = (InetSocketAddress) packet.getSocketAddress();        		
+	    		InetAddress address = packet.getAddress();        		
         		
 	    		if(message.contains("Let's play Hex.")){
-	    			String name = message.substring(20);
+	    			//Full message looks like: Let's play Hex. I'm _playername_
+	    			String name = message.substring(20);//Grab the name from the end of the message
 	        		LocalNetworkObject lno = new LocalNetworkObject(name,address);
 	        		if(!Global.localObjects.contains(lno)){
 	        			Global.localObjects.add(lno);
 	        		}
 	        		handler.post(updateUI);
 	    		}
-	    		else if(message.contains("challenges you.")){
+	    		else if(message.contains("challenges you. Grid size: ")){
+	    			boolean flag = true;
 	    			for(int i=0;i<Global.localObjects.size();i++){
-	        			if(Global.localObjects.get(i).ip.getHostName().equals(address.getHostName())){
+	        			if(Global.localObjects.get(i).ip.equals(address)){
+	        				flag = false;
 	        				LocalLobbyActivity.lno = Global.localObjects.get(i);
+	        				LocalLobbyActivity.lno.firstMove = true;
+	        				//Full message looks like: _playername_ challenges you. Grid size: _gridsize_
+	        				LocalLobbyActivity.lno.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));//Grab the grid size from the end of the message
 	        				handler.post(challenger);
 	        				break;
 	        			}
 	        		}
+	    			if(flag){
+	    				LocalLobbyActivity.lno.playerName = message.substring(0, message.lastIndexOf(" challenges you"));
+	    				LocalLobbyActivity.lno.firstMove = true;
+	    				LocalLobbyActivity.lno.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));
+	    				handler.post(challenger);
+	    			}
 	    		}
-	    		else if(message.equals("It's on!") && LocalLobbyActivity.lno.ip.equals(address)){
+	    		else if(message.contains("It's on! My color's ") && LocalLobbyActivity.lno.ip.equals(address)){
+	    			//Full message looks like: It's on! My color's _playercolor_
+	    			LocalLobbyActivity.lno.playerColor = Integer.decode(message.substring(20));//Grab the color from the end of the message
+	    			
+	    			//Send our color over
+	    			try{
+	    	        	DatagramSocket replySocket = new DatagramSocket();
+	    	        	String reply = "My color is "+Global.player1Color;
+	    	        	DatagramPacket replyPacket = new DatagramPacket(reply.getBytes(), reply.length(), LocalLobbyActivity.lno.ip,4080);
+	    	        	replySocket.send(replyPacket);
+	    	        	replySocket.close();
+    	        	}
+    	        	catch(Exception e){
+    	        		e.getStackTrace();
+    	        	}
+	    			
 	    			handler.post(startGame);
     				break;
 	    		}
-	    		else if(message.equals("My color is") && Global.localPlayer.ip.equals(address)){
-	    			Global.localPlayer.playerColor = Color.parseColor(message.substring(12));
-	    		}
-	    		else if(message.equals("My gridsize is") && LocalLobbyActivity.lno.ip.equals(address)){
-	    			Global.localPlayer.gridSize = Integer.decode(message.substring(15));
+	    		else if(message.contains("My color is ") && LocalLobbyActivity.lno.ip.equals(address)){
+	    			//Full message looks like: My color is _playercolor_
+	    			Global.localPlayer.playerColor = Color.parseColor(message.substring(12));//Grab the color from the end of the message
+	    			
+	    			handler.post(startGame);
+	    			break;
 	    		}
 			}
 	    	catch (Exception e) {

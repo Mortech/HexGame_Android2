@@ -1,5 +1,6 @@
 package com.sam.hex;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +13,7 @@ public class GameAI implements PlayingEntity {
 	byte difficalty;
 	byte[][] gameBoard;
 	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
-	List<List<List<Integer>>> pairs = new LinkedList<List<List<Integer>>>();//List of pair-pieces
+	List<List<List<Integer>>> pairs = new ArrayList<List<List<Integer>>>();//List of pair-pieces
 	List<AIHistoryObject> history = new LinkedList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
 	int rand_a = 0;
 	int rand_b = 0;

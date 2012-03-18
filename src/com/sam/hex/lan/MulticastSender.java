@@ -21,7 +21,7 @@ public class MulticastSender implements Runnable {
         	try {
         		socket.send(packet);
         		System.out.println("Sending...");
-        		for(int i=0;i<10;i++){
+        		for(int i=0;i<15;i++){
         			Thread.sleep(500);
         			if(!run) break;
         		}
