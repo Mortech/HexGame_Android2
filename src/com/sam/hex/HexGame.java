@@ -2,6 +2,7 @@ package com.sam.hex;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,8 +15,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.graphics.Point;
+
 import java.util.LinkedList;
 
+import com.sam.hex.lan.LANMessage;
 import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
 
@@ -103,32 +106,46 @@ public class HexGame extends Activity {
     @Override
     public void onResume(){
     	super.onResume();
+    	System.out.println("Resuming");
     	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed and we need to run a new game
-    	if(HexGame.startNewGame){
-    		initializeNewGame();
-    	}
-    	else if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
+    	if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
     		//Go to the local lobby
     		Global.player2Type = 2;
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
         	finish();
     	}
     	else if(Integer.decode(prefs.getString("player2Type", "0")) == 2){
-    		//TODO If player1's color changed, send to other player
+    		//We're in an existing local game
     		
-    		//TODO If player1's name changed, send to other player
+    		//Check if the color changed
+    		if(Global.player1 instanceof PlayerObject && Global.player1Color != prefs.getInt("player1Color", Global.player1DefaultColor)){
+    			setColors(prefs);
+    			new LANMessage("I changed my color to "+Global.player1Color, Global.localPlayer.ip, 4080);
+    		}
+    		else if(Global.player2 instanceof PlayerObject && Global.player2Color != prefs.getInt("player2Color", Global.player2DefaultColor)){
+    			setColors(prefs);
+    			new LANMessage("I changed my color to "+Global.player2Color, Global.localPlayer.ip, 4080);
+    		}
     		
-    		//TODO Otherwise, if grid size changed, player1 or player2 type changed, go to lobby
+    		//Check if the name changed
+    		if(Global.player1 instanceof PlayerObject && !Global.player1Name.equals(prefs.getString("player1Name", Global.player1Name))){
+    			setNames(prefs);
+    			new LANMessage("I changed my name to "+Global.player1Name, Global.localPlayer.ip, 4080);
+    		}
+    		else if(Global.player2 instanceof PlayerObject && !Global.player2Name.equals(prefs.getString("player2Name", Global.player2Name))){
+    			setNames(prefs);
+    			new LANMessage("I changed my name to "+Global.player2Name, Global.localPlayer.ip, 4080);
+    		}
+    		Global.board.invalidate();
     	}
-    	else if(Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty 
-    			|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
-    			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
-    			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
-    			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type){
+    	else if(HexGame.startNewGame){
+    		initializeNewGame();
+    	}
+    	else if(somethingChanged(prefs)){
     		//Reset the game
     		initializeNewGame();
     	}
@@ -158,8 +175,7 @@ public class HexGame extends Activity {
     		}
     		
     		//Reset the players names
-	    	Global.player1Name = prefs.getString("player1Name", "Player1");
-	    	Global.player2Name = prefs.getString("player2Name", "Player2");
+	    	setNames(prefs);
 	    	
 	    	//Reset the background colors
 	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
@@ -244,7 +260,11 @@ public class HexGame extends Activity {
     	}
     }
     
-    private void setNames(SharedPreferences prefs){
+    /**
+     * Refreshes both player's names
+     * Does not invalidate the board
+     * */
+    public static void setNames(SharedPreferences prefs){
     	if(Global.player2Type==(byte)2){
     		//Playing over LAN
     		if(Global.localPlayer.firstMove){
@@ -263,7 +283,11 @@ public class HexGame extends Activity {
     	}
     }
     
-    private void setColors(SharedPreferences prefs){
+    /**
+     * Refreshes both player's colors
+     * Does not invalidate the board
+     * */
+    public static void setColors(SharedPreferences prefs){
     	if(Global.player2Type==(byte)2){
     		//Playing over LAN
     		if(Global.localPlayer.firstMove){
@@ -360,5 +384,23 @@ public class HexGame extends Activity {
     		initializeNewGame();
     		Global.board.invalidate();
     	}
+    }
+    
+    /**
+     * Returns the context for the current game
+     * */
+    public static Context getContext(){
+    	return Global.board.getContext();
+    }
+    
+    /**
+     * Returns true if a major setting was changed
+     * */
+    public static boolean somethingChanged(SharedPreferences prefs){
+    	return Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty 
+    			|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
+    			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
+    			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;
     }
 }

@@ -63,48 +63,66 @@ public final class R {
         public static final int preferences=0x7f030005;
     }
     public static final class string {
+        public static final int aiSummary=0x7f070011;
+        public static final int aiTitle=0x7f070010;
         /**  Application name 
          */
         public static final int app_name=0x7f070000;
-        public static final int color1_summary=0x7f070011;
-        public static final int color1_title=0x7f070010;
-        public static final int color2_summary=0x7f070013;
-        public static final int color2_title=0x7f070012;
-        public static final int color3_summary=0x7f070015;
-        public static final int color3_title=0x7f070014;
-        public static final int color4_summary=0x7f070017;
-        public static final int color4_title=0x7f070016;
-        public static final int customIP=0x7f070003;
+        public static final int color1_summary=0x7f070023;
+        public static final int color1_title=0x7f070022;
+        public static final int color2_summary=0x7f070025;
+        public static final int color2_title=0x7f070024;
+        public static final int color3_summary=0x7f070027;
+        public static final int color3_title=0x7f070026;
+        public static final int color4_summary=0x7f070029;
+        public static final int color4_title=0x7f070028;
+        public static final int customIP=0x7f070015;
         /**  Color Picker 
          */
-        public static final int dialog_color_picker=0x7f07000d;
+        public static final int dialog_color_picker=0x7f07001f;
         /**  Main page 
          */
-        public static final int frontpage=0x7f070004;
+        public static final int frontpage=0x7f070016;
+        public static final int gameSizeSummary=0x7f070003;
+        public static final int gameSizeTitle=0x7f070002;
         /**  Game instructions 
          */
-        public static final int instructions=0x7f07000c;
+        public static final int instructions=0x7f07001e;
         /**  Local lobby 
          */
-        public static final int local=0x7f070002;
-        public static final int newgame=0x7f07000a;
-        public static final int options=0x7f070007;
+        public static final int local=0x7f070014;
+        public static final int newgame=0x7f07001c;
+        public static final int options=0x7f070019;
+        public static final int player1ColorSummary=0x7f070009;
+        public static final int player1ColorTitle=0x7f070008;
+        public static final int player1NameSummary=0x7f070005;
+        public static final int player1NameTitle=0x7f070004;
+        public static final int player1TypeSummary=0x7f070007;
+        public static final int player1TypeTitle=0x7f070006;
+        public static final int player2ColorSummary=0x7f07000f;
+        public static final int player2ColorTitle=0x7f07000e;
+        public static final int player2NameSummary=0x7f07000b;
+        public static final int player2NameTitle=0x7f07000a;
+        public static final int player2TypeSummary=0x7f07000d;
+        public static final int player2TypeTitle=0x7f07000c;
         /**  Preferences 
          */
-        public static final int pref_category=0x7f07000f;
+        public static final int pref_category=0x7f070021;
         /**  Preferences 
          */
         public static final int preferences=0x7f070001;
-        public static final int press_color_to_apply=0x7f07000e;
-        public static final int quit=0x7f07000b;
-        public static final int rules=0x7f070006;
+        public static final int press_color_to_apply=0x7f070020;
+        public static final int quit=0x7f07001d;
+        public static final int resetSummary=0x7f070013;
+        public static final int resetTitle=0x7f070012;
+        public static final int rules=0x7f070018;
         /**  Menu choices 
          */
-        public static final int settings=0x7f070008;
+        public static final int settings=0x7f07001a;
         /**  Buttons from top to bottom 
          */
-        public static final int start=0x7f070005;
-        public static final int undo=0x7f070009;
+        public static final int start=0x7f070017;
+        public static final int undo=0x7f07001b;
     }
     public static final class style {
         /**  <item name="android:windowIsFloating">true</item> 

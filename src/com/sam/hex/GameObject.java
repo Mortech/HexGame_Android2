@@ -53,8 +53,8 @@ public class GameObject implements Runnable {
 				if(success) Global.player1.getPlayerTurn(hex);
 			}
 			else if(Global.player1 instanceof LocalPlayerObject){
-				//TODO Send this move to the other phone
-				success=Global.player1.getPlayerTurn(Global.moveList.get(Global.moveList.size()-1))!=new Point(-1,-1);
+				if(Global.moveList.size()>0) success=!Global.player1.getPlayerTurn(Global.moveList.get(Global.moveList.size()-1)).equals(new Point(-1,-1));
+				else success=!Global.player1.getPlayerTurn(new Point(-1,-1)).equals(new Point(-1,-1));
 			}
 			else
 				Global.player1.getPlayerTurn();
@@ -74,8 +74,8 @@ public class GameObject implements Runnable {
 				if(success) Global.player2.getPlayerTurn(hex);
 			}
 			else if(Global.player2 instanceof LocalPlayerObject){
-				//TODO Send this move to the other phone
-				success=Global.player2.getPlayerTurn(Global.moveList.get(Global.moveList.size()-1))!=new Point(-1,-1);
+				if(Global.moveList.size()>0) success=Global.player2.getPlayerTurn(Global.moveList.get(Global.moveList.size()-1))!=new Point(-1,-1);
+				else success=Global.player2.getPlayerTurn(new Point(-1,-1))!=new Point(-1,-1);
 			}
 			else
 				Global.player2.getPlayerTurn();

@@ -1,7 +1,6 @@
 package com.sam.hex.lan;
 
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
@@ -75,16 +74,7 @@ public class MulticastListener implements Runnable {
 	    			LocalLobbyActivity.lno.playerColor = Integer.decode(message.substring(20));//Grab the color from the end of the message
 	    			
 	    			//Send our color over
-	    			try{
-	    	        	DatagramSocket replySocket = new DatagramSocket();
-	    	        	String reply = "My color is "+Global.player1Color;
-	    	        	DatagramPacket replyPacket = new DatagramPacket(reply.getBytes(), reply.length(), LocalLobbyActivity.lno.ip,4080);
-	    	        	replySocket.send(replyPacket);
-	    	        	replySocket.close();
-    	        	}
-    	        	catch(Exception e){
-    	        		e.getStackTrace();
-    	        	}
+	    			new LANMessage("My color is "+Global.player1Color, LocalLobbyActivity.lno.ip, 4080);
 	    			
 	    			handler.post(startGame);
     				break;
