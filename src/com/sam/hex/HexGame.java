@@ -1,29 +1,19 @@
 package com.sam.hex;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.EditText;
 import android.graphics.Point;
 
 import com.sam.hex.lan.LANMessage;
@@ -32,6 +22,7 @@ import com.sam.hex.lan.LocalPlayerObject;
 
 public class HexGame extends Activity {
 	public static boolean startNewGame = true;
+	public static boolean replay = false;
 	
     /** Called when the activity is first created. */
     @Override
@@ -119,7 +110,11 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed and we need to run a new game
-    	if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
+    	if(replay){
+    		replay = false;
+    		replay();
+    	}
+    	else if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
     		//Go to the local lobby
     		Global.player2Type = 2;
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
@@ -216,7 +211,7 @@ public class HexGame extends Activity {
         	replay();
             return true;
         case R.id.loadReplay:
-        	showInputDialog("Enter the filename of a saved game");
+        	startActivity(new Intent(getBaseContext(),FileExplore.class));
             return true;
         case R.id.quit:
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -423,59 +418,5 @@ public class HexGame extends Activity {
     	    Global.currentPlayer=(Global.currentPlayer%2)+1;
     		new Thread(new Replay(), "replay").start();
     	}
-    }
-    
-    private void load(String fileName){
-    	try {
-    		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
-			if(file!=null){
-				FileInputStream saveFile = new FileInputStream(file);
-				ObjectInputStream restore = new ObjectInputStream(saveFile);
-				SavedGameObject savedGame = (SavedGameObject) restore.readObject();
-				Global.player1Color = savedGame.player1Color;
-				Global.player2Color = savedGame.player2Color;
-				Global.player1Name = savedGame.player1Name;
-				Global.player2Name = savedGame.player2Name;
-				Global.moveList = savedGame.moveList;
-				Global.gridSize = savedGame.gridSize;
-				Global.moveNumber = 2;
-				restore.close();
-				
-				Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
-				Global.board.invalidate();
-				
-				replay();
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}	
-    }
-    
-	public void showInputDialog(final String message){
-        final EditText editText = new EditText(Global.board.getContext());
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-        AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-        builder     
-        .setTitle(message)
-        .setView(editText)
-        .setPositiveButton("OK", new OnClickListener(){
-    		@Override
-    		public void onClick(DialogInterface dialog, int which) {
-    			String fileName = editText.getText().toString();
-    			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
-    			String filePath = file.getPath();
-    			if(!filePath.toLowerCase().endsWith(".rhex")){
-    			    file = new File(filePath + ".rhex");
-    			}
-    			if(!file.exists()) showInputDialog("That file doesnt exist");
-    			else load(fileName);
-    		}
-        })
-        .setNegativeButton("Cancel", null)
-        .show();
     }
 }
