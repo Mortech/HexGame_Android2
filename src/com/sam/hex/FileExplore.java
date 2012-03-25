@@ -220,6 +220,7 @@ public class FileExplore extends Activity {
 								Global.board.invalidate();
 								
 								HexGame.replay = true;
+								HexGame.startNewGame = false;
 								startActivity(new Intent(getBaseContext(),HexGame.class));
 					        	finish();
 							}
