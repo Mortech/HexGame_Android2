@@ -36,6 +36,7 @@ import com.sam.hex.lan.LocalPlayerObject;
 public class HexGame extends Activity {
 	public static boolean startNewGame = true;
 	public static boolean replay = false;
+	public static boolean replayRunning = false;
 	
     /** Called when the activity is first created. */
     @Override
@@ -111,7 +112,7 @@ public class HexGame extends Activity {
 		setPlayer2();
     	
         //Create the game object
-        Global.game = new GameObject();
+        Global.game = new GameObject(); 
     }
     
     @Override
@@ -126,6 +127,9 @@ public class HexGame extends Activity {
     	if(replay){
     		replay = false;
     		replay();
+    	}
+    	else if(replayRunning){
+    		//Do nothing
     	}
     	else if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
     		//Go to the local lobby
@@ -432,6 +436,7 @@ public class HexGame extends Activity {
     	Global.board.setOnTouchListener(new TouchListener());
 	    setContentView(Global.board);
 	    Global.currentPlayer=(Global.currentPlayer%2)+1;
+	    replayRunning = true;
 		new Thread(new Replay(), "replay").start();
     }
     

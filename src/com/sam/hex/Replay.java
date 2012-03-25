@@ -23,5 +23,6 @@ public class Replay implements Runnable {
 		Global.board.postInvalidate();
 		GameAction.hex=null;
 		new GameObject();
+		HexGame.replayRunning=false;
 	}
 }
