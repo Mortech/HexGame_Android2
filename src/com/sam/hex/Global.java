@@ -1,11 +1,8 @@
 package com.sam.hex;
 
 import android.graphics.Color;
-import android.graphics.Point;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import com.sam.hex.lan.LocalNetworkObject;
 
@@ -15,18 +12,16 @@ public class Global {
 	public static int windowWidth = 800;
 	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[7][7];
 	public static BoardView board;
-	public static List<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
+	public static ArrayList<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
 	public static LocalNetworkObject localPlayer;
 	public static String LANipAddress;
-	public static LinkedList<Point> moveList=new LinkedList<Point>();
+	
 	//Game
-	public static byte currentPlayer = 1;
+	public static int currentPlayer = 1;
 	public static GameObject game;
 	public static boolean gameRunning = false;
-	
-	//AI
-	public static int difficulty=1;
-	public static boolean slowAI=true;
+	public static int moveNumber = 1;
+	public static MoveList moveList = new MoveList();
 	
 	//Player 1
 	public static PlayingEntity player1;

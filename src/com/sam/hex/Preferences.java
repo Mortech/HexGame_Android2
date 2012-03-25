@@ -24,6 +24,8 @@ public class Preferences extends PreferenceActivity {
 	EditTextPreference customGridPref;
 	PreferenceScreen screen;
 	Preference gridPref;
+	Preference replayPref;
+	Preference loadReplayPref;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {

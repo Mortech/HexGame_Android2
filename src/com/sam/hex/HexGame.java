@@ -1,22 +1,30 @@
 package com.sam.hex;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.EditText;
 import android.graphics.Point;
-
-import java.util.LinkedList;
 
 import com.sam.hex.lan.LANMessage;
 import com.sam.hex.lan.LocalLobbyActivity;
@@ -48,7 +56,7 @@ public class HexGame extends Activity {
 			for(int xc = 0; xc < Global.gamePiece.length; xc++){
 				for(int yc=0; yc<Global.gamePiece[0].length; yc++)
 					if(Global.gamePiece[xc][yc].contains(x, y)){
-						if(Global.game!=null)Global.game.setPiece(new Point(xc,yc));
+						if(Global.game!=null)GameAction.setPiece(new Point(xc,yc));
 						//Return false. We got our point. (True is used for gestures)
 						return false;
 					}
@@ -82,16 +90,15 @@ public class HexGame extends Activity {
     	
     	//Create our board
     	setGrid(prefs);
-    	Global.difficulty=Integer.decode(prefs.getString("aiPref", "1"));
+    	GameAction.hex = null;
+    	Global.moveNumber = 1;
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
-    	BoardTools.clearBoard(); 
     	Global.board=new BoardView(this);
     	Global.board.setOnTouchListener(new TouchListener());
 	    setContentView(Global.board);
     	
     	//Make sure the board is empty and defaults are set
-    	Global.moveList=new LinkedList<Point>();
-    	BoardTools.setBoard();
+    	Global.moveList=new MoveList();
     	
     	//Set up player1
 		setPlayer1();
@@ -205,6 +212,12 @@ public class HexGame extends Activity {
         case R.id.newgame:
         	newGame();
             return true;
+        case R.id.replay:
+        	replay();
+            return true;
+        case R.id.loadReplay:
+        	showInputDialog("Enter the filename of a saved game");
+            return true;
         case R.id.quit:
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
         	    public void onClick(DialogInterface dialog, int which) {
@@ -251,7 +264,7 @@ public class HexGame extends Activity {
     		Global.game.stop();
     		//Let the thread die
 	    	try {
-				Thread.sleep(100);
+				Thread.sleep(110);
 			}
 	    	catch (InterruptedException e) {
 				e.printStackTrace();
@@ -370,8 +383,6 @@ public class HexGame extends Activity {
     	else{
     		if(Global.player1Type==0 || Global.player2Type==0)
 	    		BoardTools.undo();
-	    	if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0))
-	    		BoardTools.undo();
     	}
     }
     
@@ -397,10 +408,74 @@ public class HexGame extends Activity {
      * Returns true if a major setting was changed
      * */
     public static boolean somethingChanged(SharedPreferences prefs){
-    	return Integer.decode(prefs.getString("aiPref", "1")) != Global.difficulty 
-    			|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    	return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
     			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
     			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;
+    }
+    
+    private void replay(){
+    	if(Global.moveNumber>1){
+    		Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
+    		Global.board=new BoardView(this);
+        	Global.board.setOnTouchListener(new TouchListener());
+    	    setContentView(Global.board);
+    	    Global.currentPlayer=(Global.currentPlayer%2)+1;
+    		new Thread(new Replay(), "replay").start();
+    	}
+    }
+    
+    private void load(String fileName){
+    	try {
+    		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
+			if(file!=null){
+				FileInputStream saveFile = new FileInputStream(file);
+				ObjectInputStream restore = new ObjectInputStream(saveFile);
+				SavedGameObject savedGame = (SavedGameObject) restore.readObject();
+				Global.player1Color = savedGame.player1Color;
+				Global.player2Color = savedGame.player2Color;
+				Global.player1Name = savedGame.player1Name;
+				Global.player2Name = savedGame.player2Name;
+				Global.moveList = savedGame.moveList;
+				Global.gridSize = savedGame.gridSize;
+				Global.moveNumber = 2;
+				restore.close();
+				
+				Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
+				Global.board.invalidate();
+				
+				replay();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}	
+    }
+    
+	public void showInputDialog(final String message){
+        final EditText editText = new EditText(Global.board.getContext());
+        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
+        builder     
+        .setTitle(message)
+        .setView(editText)
+        .setPositiveButton("OK", new OnClickListener(){
+    		@Override
+    		public void onClick(DialogInterface dialog, int which) {
+    			String fileName = editText.getText().toString();
+    			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
+    			String filePath = file.getPath();
+    			if(!filePath.toLowerCase().endsWith(".rhex")){
+    			    file = new File(filePath + ".rhex");
+    			}
+    			if(!file.exists()) showInputDialog("That file doesnt exist");
+    			else load(fileName);
+    		}
+        })
+        .setNegativeButton("Cancel", null)
+        .show();
     }
 }

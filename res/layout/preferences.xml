@@ -53,13 +53,6 @@
 	    </PreferenceCategory>
 	    <PreferenceCategory
                 android:title=" ">
-	        <ListPreference
-	            android:title="@string/aiTitle"
-	            android:summary="@string/aiSummary"
-	            android:key="aiPref"
-	            android:defaultValue="1"
-	            android:entries="@array/aiLabels"
-	            android:entryValues="@array/aiValues" />
 	       <Preference
 	            android:title="@string/resetTitle"
 	            android:summary="@string/resetSummary"

@@ -6,7 +6,7 @@ public class GameAction {
 	private static int[][] gameboard;
 	private static int n;
 	private static Point[][] polyXY;
-	private static RegularPolygonGameObject hex;
+	public static Point hex;
 
 	public static boolean checkWinPlayer1() {
 		for (int i = 0; i < Global.gridSize; i++) {
@@ -42,65 +42,9 @@ public class GameAction {
 			}
 		}
 	}
-/*	public static void updateBoard() { //should be handled in boardview
-		if (HexGameWindow.cPolygons.getWidth() != Global.windowWidth
-				|| HexGameWindow.cPolygons.getHeight() != Global.windowHeight) {
-			fullUpdateBoard();
-		}
-
-		HexGameWindow.cPolygons.revalidate();
-		HexGameWindow.cPolygons.repaint();
-
-	}
-
-	public static void fullUpdateBoard() { //should be handled in boardview
-		Global.windowWidth = HexGameWindow.cPolygons.getWidth();
-		Global.windowHeight = HexGameWindow.cPolygons.getHeight();
-		double radius;
-		RegularPolygonGameObject[][] gamePeace = Global.gamePiece;
-		radius = BoardTools.radiusCalculator(Global.windowWidth,
-				Global.windowHeight, Global.gridSize);
-		// radius = BoardTools.radiusCalculator(400,400, 7);
-		double hrad = radius * Math.sqrt(3) / 2; // Horizontal radius
-		int yOffset = (int) ((HexGameWindow.cPolygons.getHeight() - ((3 * radius / 2)
-				* (gamePeace[0].length - 1) + 2 * radius)) / 2);
-		int xOffset = (int) ((HexGameWindow.cPolygons.getWidth() - (hrad
-				* gamePeace.length * 2 + hrad * (gamePeace[0].length - 1))) / 2);
-
-		for (int xc = 0; xc < Global.gamePiece.length; xc++) {
-			for (int yc = 0; yc < gamePeace[0].length; yc++)
-				gamePeace[xc][yc].update((hrad + yc * hrad + 2 * hrad * xc)
-						+ xOffset, (1.5 * radius * yc + radius) + yOffset,
-						radius, 6, Math.PI / 2);
-		}
-
-		BoardTools.setBackground(Global.windowWidth, Global.windowHeight);
-		HexGameWindow.cPolygons.revalidate();
-		HexGameWindow.cPolygons.repaint();
-
-	}*/
-
-	public static void setPiece(RegularPolygonGameObject h) {
-		hex = h;
-	}
-
-	public static void getPlayerTurn(byte team) {
-		while (true) {
-			while (hex == null) {
-				try {
-					Thread.sleep(100);
-				} 
-				catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			if (hex.getTeam() == 0) {
-				hex.setTeam(team);
-				hex = null;
-				break;
-			}
-			hex = null;
-		}
+	
+	public static void setPiece(Point p) {
+		hex = p;
 	}
 	
 	public void setGame(int m){
@@ -115,22 +59,35 @@ public class GameAction {
 		polyXY = new Point[n][n];
 	}
 	
-	public boolean makeMove(int X, int Y, int team){
-    	for(int i=getN()-1;i>-1;i--){
-    		for(int j=getN()-1;j>-1;j--){
-    			if(X>getPolyXY()[i][j].x && Y>getPolyXY()[i][j].y){
-    				if(gameboard[i][j]==0){
-    					gameboard[i][j] = team;
-    					return true;
-    				}
-    				else{
-    					return false;
-    				}
-    			}
-    		}
-    	}
-    	return false;
-    }
+	private static void setTeam(byte t,int x,int y) {
+		Global.moveList.makeMove(x, y, t);
+		Global.gamePiece[x][y].setTeam(t);
+	}
+	
+	public static boolean makeMove(PlayingEntity player, byte team, Point hex){
+		if(Global.gamePiece[hex.x][hex.y].getTeam() == 0){
+			setTeam(team,hex.x,hex.y);
+			return true;
+		}
+		return false;
+	}
+	
+//	public boolean makeMove(int X, int Y, int team){
+//    	for(int i=getN()-1;i>-1;i--){
+//    		for(int j=getN()-1;j>-1;j--){
+//    			if(X>getPolyXY()[i][j].x && Y>getPolyXY()[i][j].y){
+//    				if(gameboard[i][j]==0){
+//    					gameboard[i][j] = team;
+//    					return true;
+//    				}
+//    				else{
+//    					return false;
+//    				}
+//    			}
+//    		}
+//    	}
+//    	return false;
+//    }
 	
 	public int getN(){
 		return n;

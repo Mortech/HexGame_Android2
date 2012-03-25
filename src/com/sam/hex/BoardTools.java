@@ -21,34 +21,37 @@ public class BoardTools {
 
 	}
 	public static void undo(){
-		if(!Global.moveList.isEmpty()){
-			Point lastMove = Global.moveList.get(Global.moveList.size()-1);
+		if(Global.moveNumber!=1){
+			GameAction.checkedFlagReset();
 			
-			if(Global.currentPlayer==(byte)1) Global.player2.undo(lastMove);
-			else Global.player1.undo(lastMove);
+			Move lastMove = Global.moveList.thisMove;
+			Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+			Global.moveList = Global.moveList.nextMove;
 			
-			Global.moveList.remove(Global.moveList.size()-1);
-			//Reset the game if it's already ended
-			if(!Global.gameRunning){
-				GameAction.checkedFlagReset();
-				for(int x=0;x<Global.gridSize;x++){
-    				for(int y=0;y<Global.gridSize;y++){
-    					if(Global.gamePiece[x][y].getTeam()==(byte)1){
-    						Global.gamePiece[x][y].setColor(Global.player1Color);
-    					}
-    					else if(Global.gamePiece[x][y].getTeam()==(byte)2){
-    						Global.gamePiece[x][y].setColor(Global.player2Color);
-    					}
-    				}
-    			}
-				Global.gameRunning=true;
-				Global.game = new GameObject();
-				Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);
-				if(Global.currentPlayer==(byte)1) Global.player2.undo(lastMove);
-				else Global.player1.undo(lastMove);
+			if(Global.currentPlayer==1) Global.player2.undo(new Point(lastMove.getX(), lastMove.getY()));
+			else Global.player1.undo(new Point(lastMove.getX(), lastMove.getY()));
+			
+			if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0)){
+				lastMove = Global.moveList.thisMove;
+				Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+				Global.moveList = Global.moveList.nextMove;
+				
+				Global.currentPlayer = (Global.currentPlayer%2)+1;
+				
+				if(Global.currentPlayer==1) Global.player2.undo(new Point(lastMove.getX(), lastMove.getY()));
+				else Global.player1.undo(new Point(lastMove.getX(), lastMove.getY()));
 			}
 			
-			Global.currentPlayer=(byte) ((Global.currentPlayer%2)+1);
+			GameAction.hex = new Point(-1,-1);
+			
+			//Reset the game if it's already ended
+			if(!Global.gameRunning){
+				GameAction.hex = null;
+				Global.moveList.replay(0);
+				
+				Global.gameRunning=true;
+				Global.game = new GameObject();
+			}
 		}
 		
 		Global.board.postInvalidate();

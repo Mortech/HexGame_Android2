@@ -39,29 +39,17 @@ public class GameAI implements PlayingEntity {
 	
 	public void getPlayerTurn() {//Without net play
 		this.gameBoard=BoardTools.teamGrid();
-		if(Global.difficulty==1){
-			AIHistoryObject state = new AIHistoryObject(pairs, n, m);
-			history.add(state);
-			makeMove();
-		}
-		else 
-			badMove();
-		System.out.println("---");
-		for(int i=0;i<history.size();i++){
-			AIHistoryObject previousState = history.get(i);
-			System.out.println("Pairs: "+previousState.pairs+" N: "+previousState.n[0]+","+previousState.n[1]+" M: "+previousState.m[0]+","+previousState.m[1]);
-		}
+		AIHistoryObject state = new AIHistoryObject(pairs, n, m);
+		history.add(state);
+		makeMove();
 	}
 	
 	public void undo(Point hex){
-		Global.gamePiece[hex.x][hex.y].setTeam((byte)0);
-		if(Global.difficulty==1){
-			AIHistoryObject previousState = history.get(history.size()-1);
-			pairs = previousState.pairs;
-			n = previousState.n;
-			m = previousState.m;
-			history.remove(history.size()-1);
-		}
+		AIHistoryObject previousState = history.get(history.size()-1);
+		pairs = previousState.pairs;
+		n = previousState.n;
+		m = previousState.m;
+		history.remove(history.size()-1);
 	}
 	
 	private boolean right(){
@@ -407,31 +395,9 @@ public class GameAI implements PlayingEntity {
 		
 		return;
 	}
-	private void badMove(){
-		int moves=0;
-		for(int x=0; x<gameBoard.length; x++){
-			for(int y=0; y<gameBoard[x].length; y++){
-				if(gameBoard[x][y]==0) moves++;
-			}
-		}
-		moves*=Math.random();
-		moves++;
-		for(int x=0; x<gameBoard.length; x++)
-			for(int y=0; y<gameBoard[x].length; y++){
-				if(gameBoard[x][y]==0) {
-					moves--;
-				}
-				if(moves==0) {
-					Global.gamePiece[x][y].setTeam(team);
-					sendMove(x,y);
-					moves=-10;
-				}	
-			}
-
-	}	
+	
 	private void sendMove(int x, int y){
-		Global.gamePiece[x][y].setTeam(team);
-		Global.moveList.add(new Point(x,y));
+		GameAction.makeMove(this, team, new Point(x,y));
 	}
 	
 	/*  Bah, ignore this for now.

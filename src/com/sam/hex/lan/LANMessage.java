@@ -9,7 +9,7 @@ public class LANMessage{
 	public LANMessage(String message, InetAddress ip, int port) {
 		try{
         	DatagramSocket socket = new DatagramSocket();
-        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), LocalLobbyActivity.lno.ip, port);
+        	DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), ip, port);
         	socket.send(packet);
         	socket.close();
     	}
