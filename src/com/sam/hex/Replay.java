@@ -5,16 +5,15 @@ public class Replay implements Runnable {
 	@Override
 	public void run() {
 		if(Global.game!=null){
-    		Global.gameRunning=false;
+    		Global.gameOver=true;
     		Global.game.stop();
     		//Let the thread die
 	    	try {
-				Thread.sleep(110);
-			}
-	    	catch (InterruptedException e) {
+				Global.gameThread.join();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-	    	Global.gameRunning=true;
+	    	Global.gameOver=false;
     	}
 		Global.moveList.replay(900);
 		HexGame.replayRunning=false;

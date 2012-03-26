@@ -242,7 +242,7 @@ public class HexGame extends Activity {
         	        switch (which){
         	        case DialogInterface.BUTTON_POSITIVE:
         	            //Yes button clicked
-        	        	Global.gameRunning = false;
+        	        	Global.gameOver = true;
         	        	android.os.Process.killProcess(android.os.Process.myPid());
         	            break;
         	        case DialogInterface.BUTTON_NEGATIVE:
@@ -278,16 +278,15 @@ public class HexGame extends Activity {
     
     private void stopGame(){
     	if(Global.game!=null){
-    		Global.gameRunning=false;
+    		Global.gameOver=true;
     		Global.game.stop();
     		//Let the thread die
 	    	try {
-				Thread.sleep(110);
-			}
-	    	catch (InterruptedException e) {
+				Global.gameThread.join();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-	    	Global.gameRunning=true;
+	    	Global.gameOver=false;
     	}
     }
     

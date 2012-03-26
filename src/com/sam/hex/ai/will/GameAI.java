@@ -49,7 +49,7 @@ public class GameAI implements PlayingEntity {
 		makeMove();
 	}
 	
-	public void undo(Point hex){
+	public void undoCalled(){
 		AIHistoryObject previousState = history.get(history.size()-1);
 		pairs = previousState.pairs;
 		n = previousState.n;
@@ -81,7 +81,7 @@ public class GameAI implements PlayingEntity {
 		try {
 			for(int i=0;i<10;i++){
     			Thread.sleep(50);
-    			if(!Global.gameRunning) break;
+    			if(Global.gameOver) break;
     		}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

@@ -28,8 +28,8 @@ public class BoardTools {
 			Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 			Global.moveList = Global.moveList.nextMove;
 			
-			if(Global.currentPlayer==1) Global.player2.undo(new Point(lastMove.getX(), lastMove.getY()));
-			else Global.player1.undo(new Point(lastMove.getX(), lastMove.getY()));
+			if(Global.currentPlayer==1) Global.player2.undoCalled();
+			else Global.player1.undoCalled();
 			
 			if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0)){
 				lastMove = Global.moveList.thisMove;
@@ -38,18 +38,18 @@ public class BoardTools {
 				
 				Global.currentPlayer = (Global.currentPlayer%2)+1;
 				
-				if(Global.currentPlayer==1) Global.player2.undo(new Point(lastMove.getX(), lastMove.getY()));
-				else Global.player1.undo(new Point(lastMove.getX(), lastMove.getY()));
+				if(Global.currentPlayer==1) Global.player2.undoCalled();
+				else Global.player1.undoCalled();
 			}
 			
 			GameAction.hex = new Point(-1,-1);
 			
 			//Reset the game if it's already ended
-			if(!Global.gameRunning){
+			if(Global.gameOver){
 				GameAction.hex = null;
 				Global.moveList.replay(0);
 				
-				Global.gameRunning=true;
+				Global.gameOver=false;
 				Global.game = new GameObject();
 			}
 		}

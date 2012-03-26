@@ -4,14 +4,12 @@ import android.os.Looper;
 import android.widget.Toast;
 
 public class GameObject implements Runnable {
-	Thread theGameRunner;
 	boolean go=true;
 
 	public GameObject() {
-		theGameRunner = new Thread(this, "runningGame"); //Create a new thread.
-		System.out.println(theGameRunner.getName());
-		Global.gameRunning = true;
-		theGameRunner.start(); //Start the thread.
+		Global.gameThread = new Thread(this, "runningGame"); //Create a new thread.
+		Global.gameOver = false;
+		Global.gameThread.start(); //Start the thread.
 	}
 	
 	public void stop(){
@@ -46,7 +44,7 @@ public class GameObject implements Runnable {
 	}
 	
 	public static void announceWinner(int team){
-		Global.gameRunning = false;
+		Global.gameOver = true;
 		Global.board.postInvalidate();
 		try {
 			Thread.sleep(100);

@@ -21,7 +21,7 @@ public class PlayerObject implements PlayingEntity {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(!Global.gameRunning) break looper;
+				if(Global.gameOver) break looper;
 			}
 			if (hex.equals(new Point(-1,-1))){
 				GameAction.hex = null;
@@ -36,6 +36,6 @@ public class PlayerObject implements PlayingEntity {
 		}
 	}
 	
-	public void undo(Point hex){
+	public void undoCalled(){
 	}
 }

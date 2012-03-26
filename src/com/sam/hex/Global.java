@@ -19,7 +19,8 @@ public class Global {
 	//Game
 	public static int currentPlayer = 1;
 	public static GameObject game;
-	public static boolean gameRunning = false;
+	public static Thread gameThread;
+	public static boolean gameOver = false;
 	public static int moveNumber = 1;
 	public static MoveList moveList = new MoveList();
 	
