@@ -39,6 +39,7 @@ public class HexGame extends Activity {
 	public static boolean startNewGame = true;
 	public static boolean replay = false;
 	public static boolean replayRunning = false;
+	public static String fileName;
 	
     /** Called when the activity is first created. */
     @Override
@@ -434,40 +435,54 @@ public class HexGame extends Activity {
     }
     
     private void saveGame(String fileName){
-		createDirIfNoneExists(File.separator + "Hex" + File.separator);
-		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
-		if(file!=null){
-			String filePath = file.getPath();
-			if(!filePath.toLowerCase().endsWith(".rhex")){
-			    file = new File(filePath + ".rhex");
-			}
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			if(file.exists()){
+    	Thread saving = new Thread(new ThreadGroup("Save"), new save(), "saving", 200000);
+		saving.start();
+		try {
+			saving.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		showSavedDialog("Saved!");
+	}
+    
+    class save implements Runnable{
+
+		@Override
+		public void run() {
+			createDirIfNoneExists(File.separator + "Hex" + File.separator);
+			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
+			if(file!=null){
+				String filePath = file.getPath();
+				if(!filePath.toLowerCase().endsWith(".rhex")){
+				    file = new File(filePath + ".rhex");
+				}
 				try {
-			    	OutputStream fo = new FileOutputStream(file);
-			    	
-			    	SavedGameObject savedGame = new SavedGameObject(Global.player1Color, Global.player2Color, Global.player1Name, Global.player2Name, Global.moveList, Global.gridSize);
-			    	ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-			    	ObjectOutputStream oStream = new ObjectOutputStream(bStream);
-					oStream.writeObject(savedGame);
-					byte[] data = bStream.toByteArray();
-					
-				    fo.write(data);
-				    fo.close();
-				    
-				    showSavedDialog("Saved!");
+					file.createNewFile();
 				} catch (IOException e) {
 					e.printStackTrace();
-					showSavedDialog("Couldn't save.");
+				}
+				
+				if(file.exists()){
+					try {
+				    	OutputStream fo = new FileOutputStream(file);
+				    	
+				    	SavedGameObject savedGame = new SavedGameObject(Global.player1Color, Global.player2Color, Global.player1Name, Global.player2Name, Global.moveList, Global.gridSize);
+				    	ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+				    	ObjectOutputStream oStream = new ObjectOutputStream(bStream);
+						oStream.writeObject(savedGame);
+						byte[] data = bStream.toByteArray();
+						
+					    fo.write(data);
+					    fo.close();
+					    
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
-	}
+    	
+    }
 	
 	public static boolean createDirIfNoneExists(String path) {
 	    boolean ret = true;
@@ -494,7 +509,7 @@ public class HexGame extends Activity {
         .setPositiveButton("OK", new OnClickListener(){
     		@Override
     		public void onClick(DialogInterface dialog, int which) {
-    			String fileName = editText.getText().toString();
+    			fileName = editText.getText().toString();
     			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
     			String filePath = file.getPath();
     			if(!filePath.toLowerCase().endsWith(".rhex")){

@@ -2,9 +2,7 @@ package com.sam.hex;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
@@ -201,36 +199,15 @@ public class FileExplore extends Activity {
 					}
 					// File picked
 					else {
+						Thread loading = new Thread(new ThreadGroup("Load"), new load(), "loading", 200000);
+						loading.start();
 						try {
-				    		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + chosenFile);
-							if(file!=null){
-								FileInputStream saveFile = new FileInputStream(file);
-								ObjectInputStream restore = new ObjectInputStream(saveFile);
-								SavedGameObject savedGame = (SavedGameObject) restore.readObject();
-								Global.player1Color = savedGame.player1Color;
-								Global.player2Color = savedGame.player2Color;
-								Global.player1Name = savedGame.player1Name;
-								Global.player2Name = savedGame.player2Name;
-								Global.moveList = savedGame.moveList;
-								Global.gridSize = savedGame.gridSize;
-								Global.moveNumber = 2;
-								restore.close();
-								
-								Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
-								Global.board.invalidate();
-								
-								HexGame.replay = true;
-								HexGame.startNewGame = false;
-								startActivity(new Intent(getBaseContext(),HexGame.class));
-					        	finish();
-							}
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						} catch (ClassNotFoundException e) {
+							loading.join();
+						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+						startActivity(new Intent(getBaseContext(),HexGame.class));
+			        	finish();
 					}
 				}
 			});
@@ -238,5 +215,37 @@ public class FileExplore extends Activity {
 		}
 		dialog = builder.show();
 		return dialog;
+	}
+	
+	class load implements Runnable{
+
+		@Override
+		public void run() {
+			try {
+	    		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + chosenFile);
+	    		if(file!=null){
+					FileInputStream saveFile = new FileInputStream(file);
+					ObjectInputStream restore = new ObjectInputStream(saveFile);
+					SavedGameObject savedGame = (SavedGameObject) restore.readObject();
+					Global.player1Color = savedGame.player1Color;
+					Global.player2Color = savedGame.player2Color;
+					Global.player1Name = savedGame.player1Name;
+					Global.player2Name = savedGame.player2Name;
+					Global.moveList = savedGame.moveList;
+					Global.gridSize = savedGame.gridSize;
+					Global.moveNumber = 2;
+					restore.close();
+					
+					Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
+					Global.board.postInvalidate();
+					
+					HexGame.replay = true;
+					HexGame.startNewGame = false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }
