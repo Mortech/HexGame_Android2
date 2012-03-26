@@ -108,8 +108,11 @@ public class Preferences extends PreferenceActivity {
         .setPositiveButton("OK", new OnClickListener(){
     		@Override
     		public void onClick(DialogInterface dialog, int which) {
-    			settings.edit().putString("customGameSizePref", editText.getText().toString()).commit();
-    			gridPref.setSummary("Pick a size for the gameboard (Current: "+settings.getString("customGameSizePref", "7")+"x"+settings.getString("customGameSizePref", "7")+")");
+    			String input = editText.getText().toString();
+    			if(input.matches("[0-9]|[1-5][0-9]")){
+    				settings.edit().putString("customGameSizePref", editText.getText().toString()).commit();
+    				gridPref.setSummary("Pick a size for the gameboard (Current: "+settings.getString("customGameSizePref", "7")+"x"+settings.getString("customGameSizePref", "7")+")");
+    			}
     		}
         })
         .setNegativeButton("Cancel", null)

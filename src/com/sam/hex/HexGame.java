@@ -29,6 +29,8 @@ import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.graphics.Point;
 
+import com.sam.hex.ai.bee.BeeGameAI;
+import com.sam.hex.ai.will.GameAI;
 import com.sam.hex.lan.LANMessage;
 import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
@@ -370,6 +372,7 @@ public class HexGame extends Activity {
     		//Playing on the same phone
     		if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
     		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1,(byte)1);
+    		else if(Global.player1Type==(byte) 4) Global.player1=new BeeGameAI(1);
     	}
     }
     
@@ -388,6 +391,7 @@ public class HexGame extends Activity {
     		//Playing on the same phone
     		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
     		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
+    		else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(2);
     	}
     }
     
