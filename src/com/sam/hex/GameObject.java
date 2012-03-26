@@ -4,7 +4,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 public class GameObject implements Runnable {
-	boolean go=true;
+	public boolean go=true;
 
 	public GameObject() {
 		Global.gameThread = new Thread(this, "runningGame"); //Create a new thread.
@@ -22,8 +22,8 @@ public class GameObject implements Runnable {
 			if (Global.currentPlayer == 1) {
 				Global.player1.getPlayerTurn();
 				if (GameAction.checkWinPlayer1()){
-					announceWinner(1);
 					go=false;
+					announceWinner(1);
 				}
 				
 				Global.currentPlayer=(Global.currentPlayer%2)+1;
@@ -31,8 +31,8 @@ public class GameObject implements Runnable {
 			else {
 				Global.player2.getPlayerTurn();
 				if (GameAction.checkWinPlayer2()){
-					announceWinner(2);
 					go=false;
+					announceWinner(2);
 				}
 				
 				Global.currentPlayer=(Global.currentPlayer%2)+1;
@@ -41,6 +41,8 @@ public class GameObject implements Runnable {
 			Global.moveNumber++;
 			Global.board.postInvalidate();
 		}
+		
+		System.out.println("Thread died");
 	}
 	
 	public static void announceWinner(int team){

@@ -708,11 +708,19 @@ public class BeeGameAI implements PlayingEntity
 
 
 	@Override
-	public void undoCalled() {
+	public boolean undoCalled() {
 		AIHistoryObject previousState = history.get(history.size()-1);
 		pieces = previousState.pieces;
 		lookUpTable = previousState.lookUpTable;
 		history.remove(history.size()-1);
+		
+		return true;
+	}
+
+
+	@Override
+	public boolean newgameCalled() {
+		return true;
 	}
 }
 

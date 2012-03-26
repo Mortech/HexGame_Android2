@@ -277,7 +277,7 @@ public class HexGame extends Activity {
     }
     
     private void stopGame(){
-    	if(Global.game!=null){
+    	if(Global.game!=null && Global.game.go){
     		Global.gameOver=true;
     		Global.game.stop();
     		//Let the thread die
@@ -395,22 +395,12 @@ public class HexGame extends Activity {
     }
     
     private void undo(){
-    	//TODO Ask other player if it's okay to undo
-    	if(Global.player1 instanceof LocalPlayerObject || Global.player2 instanceof LocalPlayerObject){
-    		//Request permission
-    	}
-    	else{
-    		if(Global.player1Type==0 || Global.player2Type==0)
+    	if(Global.player1Type==0 || Global.player2Type==0)
 	    		BoardTools.undo();
-    	}
     }
     
     private void newGame(){
-    	//TODO Ask other player if they'd like to play a new game
-    	if(Global.player1 instanceof LocalPlayerObject || Global.player2 instanceof LocalPlayerObject){
-    		//Request permission
-    	}
-    	else{
+    	if(Global.player1.newgameCalled() && Global.player2.newgameCalled()){
     		initializeNewGame();
     		Global.board.invalidate();
     	}

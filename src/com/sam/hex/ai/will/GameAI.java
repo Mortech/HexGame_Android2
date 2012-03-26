@@ -49,12 +49,14 @@ public class GameAI implements PlayingEntity {
 		makeMove();
 	}
 	
-	public void undoCalled(){
+	public boolean undoCalled(){
 		AIHistoryObject previousState = history.get(history.size()-1);
 		pairs = previousState.pairs;
 		n = previousState.n;
 		m = previousState.m;
 		history.remove(history.size()-1);
+		
+		return true;
 	}
 	
 	private boolean right(){
@@ -403,6 +405,11 @@ public class GameAI implements PlayingEntity {
 	
 	private void sendMove(int x, int y){
 		GameAction.makeMove(this, team, new Point(x,y));
+	}
+
+	@Override
+	public boolean newgameCalled() {
+		return true;
 	}
 	
 	/*  Bah, ignore this for now.

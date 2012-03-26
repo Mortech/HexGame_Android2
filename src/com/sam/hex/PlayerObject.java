@@ -36,6 +36,11 @@ public class PlayerObject implements PlayingEntity {
 		}
 	}
 	
-	public void undoCalled(){
+	public boolean undoCalled(){
+		return true;
+	}
+
+	public boolean newgameCalled() {
+		return true;
 	}
 }

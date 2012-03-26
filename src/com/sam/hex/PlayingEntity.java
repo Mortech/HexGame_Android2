@@ -9,5 +9,6 @@ package com.sam.hex;
  */
 public interface PlayingEntity {
 	public void getPlayerTurn();
-	public void undoCalled();
+	public boolean undoCalled();
+	public boolean newgameCalled();
 }
