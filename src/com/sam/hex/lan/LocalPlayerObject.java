@@ -1,9 +1,6 @@
 package com.sam.hex.lan;
 
-import com.sam.hex.Global;
 import com.sam.hex.PlayingEntity;
-
-import android.graphics.Point;
 
 public class LocalPlayerObject implements PlayingEntity {
 	byte[][] gameBoard; 
@@ -36,7 +33,6 @@ public class LocalPlayerObject implements PlayingEntity {
 		
 	}
 	
-	public void undo(Point hex){
-		Global.gamePiece[hex.x][hex.y].setTeam((byte)0);
+	public void undoCalled(){
 	}
 }
