@@ -19,8 +19,6 @@
     <string name="player2TypeSummary">Switch between Player and Computer</string>
     <string name="player2ColorTitle">Player2\'s Color</string>
     <string name="player2ColorSummary">Pick a color for Player2</string>
-    <string name="aiTitle">Difficulty</string>
-    <string name="aiSummary">Set AI intelligence</string>
     <string name="replayTitle">Replay</string>
     <string name="replaySummary">Replay the current game</string>
     <string name="loadReplayTitle">Load a Replay</string>
@@ -44,7 +42,8 @@
     <string name="undo">Undo</string>
     <string name="newgame">New Game</string>
     <string name="replay">Replay</string>
-    <string name="loadReplay">Load Replay</string>
+    <string name="loadReplay">Load</string>
+    <string name="saveReplay">Save</string>
     <string name="settings">Settings</string>
     <string name="quit">Quit</string>
     

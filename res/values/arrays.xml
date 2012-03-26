@@ -2,23 +2,27 @@
 <resources>
     <string-array name="player1Array">
         <item>Human</item>
-        <item>Computer</item>
+        <item>Computer (Kinda simple)</item>
+        <item>Computer (Kinda hard)</item>
     </string-array>
     <string-array name="player1Values">
         <item>0</item>
         <item>1</item>
+        <item>4</item>
     </string-array>
     <string-array name="player2Array">
         <item>Human</item>
-        <item>Computer</item>
+        <item>Computer (Kinda simple)</item>
         <item>Local Network Player</item>
         <!-- <item>Online Player</item> -->
+        <item>Computer (Kinda hard)</item>
     </string-array>
     <string-array name="player2Values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <!-- <item>3</item> -->
+        <item>4</item>
     </string-array>
     <string-array name="gameSizeArray">
         <item>7x7</item>
