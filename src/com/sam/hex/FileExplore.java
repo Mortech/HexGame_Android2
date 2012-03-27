@@ -233,11 +233,8 @@ public class FileExplore extends Activity {
 					Global.player2Name = savedGame.player2Name;
 					Global.moveList = savedGame.moveList;
 					Global.gridSize = savedGame.gridSize;
-					Global.moveNumber = 2;
+					Global.moveNumber = savedGame.moveNumber;
 					restore.close();
-					
-					Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
-					Global.board.postInvalidate();
 					
 					HexGame.replay = true;
 					HexGame.startNewGame = false;

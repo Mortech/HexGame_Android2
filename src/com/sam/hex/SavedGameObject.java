@@ -10,13 +10,15 @@ public class SavedGameObject implements Serializable{
 		public String player2Name;
 		public MoveList moveList;
 		public int gridSize;
+		public int moveNumber;
 		
-		SavedGameObject(int p1Color, int p2Color, String p1Name, String p2Name, MoveList moves, int grid){
-			player1Color = p1Color;
-			player2Color = p2Color;
-			player1Name = p1Name;
-			player2Name = p2Name;
-			moveList = moves;
-			gridSize = grid;
+		SavedGameObject(int player1Color, int player2Color, String player1Name, String player2Name, MoveList moveList, int grid, int moveNumber){
+			this.player1Color = player1Color;
+			this.player2Color = player2Color;
+			this.player1Name = player1Name;
+			this.player2Name = player2Name;
+			this.moveList = moveList;
+			this.gridSize = grid;
+			this.moveNumber = moveNumber;
 		}
 	}

@@ -107,6 +107,7 @@ public class HexGame extends Activity {
     	
     	//Make sure the board is empty and defaults are set
     	Global.moveList=new MoveList();
+    	replayRunning=false;
     	
     	//Set up player1
 		setPlayer1();
@@ -127,12 +128,12 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Check if settings were changed and we need to run a new game
-    	if(replay){
+    	 if(replayRunning){
+     		//Do nothing
+     	}
+    	 else if(replay){
     		replay = false;
     		replay();
-    	}
-    	else if(replayRunning){
-    		//Do nothing
     	}
     	else if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
     		//Go to the local lobby
@@ -466,7 +467,7 @@ public class HexGame extends Activity {
 					try {
 				    	OutputStream fo = new FileOutputStream(file);
 				    	
-				    	SavedGameObject savedGame = new SavedGameObject(Global.player1Color, Global.player2Color, Global.player1Name, Global.player2Name, Global.moveList, Global.gridSize);
+				    	SavedGameObject savedGame = new SavedGameObject(Global.player1Color, Global.player2Color, Global.player1Name, Global.player2Name, Global.moveList, Global.gridSize, Global.moveNumber);
 				    	ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 				    	ObjectOutputStream oStream = new ObjectOutputStream(bStream);
 						oStream.writeObject(savedGame);
