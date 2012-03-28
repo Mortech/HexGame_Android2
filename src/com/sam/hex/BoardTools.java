@@ -1,7 +1,6 @@
 package com.sam.hex;
 
 import android.graphics.Bitmap;
-import android.graphics.Point;
 
 public class BoardTools {
 	static double spaceH; // Horizontal
@@ -20,42 +19,7 @@ public class BoardTools {
 		return spaceH;
 
 	}
-	public static void undo(){
-		if(Global.moveNumber!=1){
-			GameAction.checkedFlagReset();
-			
-			Move lastMove = Global.moveList.thisMove;
-			Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-			Global.moveList = Global.moveList.nextMove;
-			
-			if(Global.currentPlayer==1) Global.player2.undoCalled();
-			else Global.player1.undoCalled();
-			
-			if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0)){
-				lastMove = Global.moveList.thisMove;
-				Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-				Global.moveList = Global.moveList.nextMove;
-				
-				Global.currentPlayer = (Global.currentPlayer%2)+1;
-				
-				if(Global.currentPlayer==1) Global.player2.undoCalled();
-				else Global.player1.undoCalled();
-			}
-			
-			GameAction.hex = new Point(-1,-1);
-			
-			//Reset the game if it's already ended
-			if(Global.gameOver){
-				GameAction.hex = null;
-				Global.moveList.replay(0);
-				
-				Global.gameOver=false;
-				Global.game = new GameObject();
-			}
-		}
-		
-		Global.board.postInvalidate();
-	}
+	
 	public static Bitmap getBackground(int w, int h) {
 		Bitmap background =Bitmap.createBitmap(Global.windowWidth, Global.windowHeight,Bitmap.Config.ARGB_8888); //the background is drawn to this bitmap. 
 		RegularPolygonGameObject[][] gamePeace = Global.gamePiece;

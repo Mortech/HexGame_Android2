@@ -3,9 +3,6 @@ package com.sam.hex;
 import android.graphics.Point;
 
 public class GameAction {
-	private static int[][] gameboard;
-	private static int n;
-	private static Point[][] polyXY;
 	public static Point hex;
 
 	public static boolean checkWinPlayer1() {
@@ -47,18 +44,6 @@ public class GameAction {
 		hex = p;
 	}
 	
-	public void setGame(int m){
-		n=m;
-		gameboard = new int[n][n];
-		for(int i=0;i<n;i++){
-			for(int j=0;j<n;j++){
-				gameboard[i][j]=0;
-			}
-		}
-		
-		polyXY = new Point[n][n];
-	}
-	
 	private static void setTeam(byte t,int x,int y) {
 		Global.moveList.makeMove(x, y, t);
 		Global.gamePiece[x][y].setTeam(t);
@@ -72,36 +57,42 @@ public class GameAction {
 		return false;
 	}
 	
-//	public boolean makeMove(int X, int Y, int team){
-//    	for(int i=getN()-1;i>-1;i--){
-//    		for(int j=getN()-1;j>-1;j--){
-//    			if(X>getPolyXY()[i][j].x && Y>getPolyXY()[i][j].y){
-//    				if(gameboard[i][j]==0){
-//    					gameboard[i][j] = team;
-//    					return true;
-//    				}
-//    				else{
-//    					return false;
-//    				}
-//    			}
-//    		}
-//    	}
-//    	return false;
-//    }
-	
-	public int getN(){
-		return n;
-	}
-	
-	public int[][] getGameboard(){
-		return gameboard;
-	}
-	
-	public Point[][] getPolyXY(){
-		return polyXY;
-	}
-	
-	public void setPolyXY(int x, int y, Point cord){
-		polyXY[x][y] = cord;
+	public static void undo(){
+		if(Global.moveNumber!=1){
+			GameAction.checkedFlagReset();
+			
+			Move lastMove = Global.moveList.thisMove;
+			Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+			Global.moveList = Global.moveList.nextMove;
+			
+			if(Global.currentPlayer==1) Global.player2.undoCalled();
+			else Global.player1.undoCalled();
+			
+			if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0)){
+				lastMove = Global.moveList.thisMove;
+				Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+				Global.moveList = Global.moveList.nextMove;
+				
+				Global.currentPlayer = (Global.currentPlayer%2)+1;
+				
+				if(Global.currentPlayer==1) Global.player2.undoCalled();
+				else Global.player1.undoCalled();
+			}
+			
+			GameAction.hex = new Point(-1,-1);
+			Global.moveNumber--;
+			
+			//Reset the game if it's already ended
+			if(Global.gameOver){
+				GameAction.hex = null;
+				Global.moveList.replay(0);
+				Global.currentPlayer = (Global.currentPlayer%2)+1;
+				
+				Global.gameOver=false;
+				Global.game = new GameObject();
+			}
+		}
+		
+		Global.board.postInvalidate();
 	}
 }

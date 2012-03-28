@@ -1,4 +1,9 @@
-package com.sam.hex;
+package com.sam.hex.replay;
+
+import com.sam.hex.GameAction;
+import com.sam.hex.GameObject;
+import com.sam.hex.Global;
+import com.sam.hex.HexGame;
 
 public class Replay implements Runnable {
 
@@ -17,8 +22,8 @@ public class Replay implements Runnable {
     	}
 		Global.moveList.replay(900);
 		GameAction.checkedFlagReset();
-		if(GameAction.checkWinPlayer1()){Global.currentPlayer=(Global.currentPlayer%2)+1; GameObject.announceWinner(1); return;}
-		if(GameAction.checkWinPlayer2()){Global.currentPlayer=(Global.currentPlayer%2)+1; GameObject.announceWinner(2); return;}
+		if(HexGame.replayRunning)if(GameAction.checkWinPlayer1()){Global.currentPlayer=(Global.currentPlayer%2)+1; GameObject.announceWinner(1); return;}
+		if(HexGame.replayRunning)if(GameAction.checkWinPlayer2()){Global.currentPlayer=(Global.currentPlayer%2)+1; GameObject.announceWinner(2); return;}
 		Global.board.postInvalidate();
 		GameAction.hex=null;
 		new GameObject();

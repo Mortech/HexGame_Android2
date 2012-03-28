@@ -1,4 +1,6 @@
-package com.sam.hex;
+package com.sam.hex.startup;
+
+import com.sam.hex.R;
 
 import android.app.Activity;
 import android.os.Bundle;

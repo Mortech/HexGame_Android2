@@ -48,7 +48,7 @@ public class MoveList implements Serializable {
 		if (thisMove==null) return;
 		if (nextMove!=null) nextMove.replay(time);
 		try {
-			Thread.sleep(time);
+			if(HexGame.replayRunning) Thread.sleep(time);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

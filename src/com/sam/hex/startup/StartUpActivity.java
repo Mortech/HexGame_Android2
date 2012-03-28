@@ -1,5 +1,9 @@
-package com.sam.hex;
+package com.sam.hex.startup;
 
+import com.sam.hex.Global;
+import com.sam.hex.HexGame;
+import com.sam.hex.Preferences;
+import com.sam.hex.R;
 import com.sam.hex.lan.LocalLobbyActivity;
 
 import android.app.Activity;

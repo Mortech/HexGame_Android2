@@ -1,32 +1,18 @@
 package com.sam.hex;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.EditText;
 import android.graphics.Point;
 
 import com.sam.hex.ai.bee.BeeGameAI;
@@ -34,12 +20,14 @@ import com.sam.hex.ai.will.GameAI;
 import com.sam.hex.lan.LANMessage;
 import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
+import com.sam.hex.replay.FileExplore;
+import com.sam.hex.replay.Replay;
+import com.sam.hex.replay.Save;
 
 public class HexGame extends Activity {
 	public static boolean startNewGame = true;
 	public static boolean replay = false;
 	public static boolean replayRunning = false;
-	public static String fileName;
 	
     /** Called when the activity is first created. */
     @Override
@@ -220,6 +208,7 @@ public class HexGame extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.settings:
+        	replayRunning = false;
         	startActivity(new Intent(getBaseContext(),Preferences.class));
             return true;
         case R.id.undo:
@@ -236,7 +225,8 @@ public class HexGame extends Activity {
         	finish();
             return true;
         case R.id.saveReplay:
-        	showSavingDialog();
+        	Save save = new Save();
+        	save.showSavingDialog();
         	return true;
         case R.id.quit:
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -268,14 +258,7 @@ public class HexGame extends Activity {
     	super.onPause();
     	
     	//If the board's empty, just trigger "startNewGame"
-    	for(int x=0;x<Global.gridSize;x++){
-			for(int y=0;y<Global.gridSize;y++){
-				if(Global.gamePiece[x][y].getTeam()==(byte)1 || Global.gamePiece[x][y].getTeam()==(byte)2){
-					return;
-				}
-			}
-		}
-    	HexGame.startNewGame=true;
+    	if(Global.moveNumber==1) HexGame.startNewGame=true;
     }
     
     private void stopGame(){
@@ -398,21 +381,22 @@ public class HexGame extends Activity {
     
     private void undo(){
     	if(Global.player1Type==0 || Global.player2Type==0)
-	    		BoardTools.undo();
+	    		GameAction.undo();
     }
     
     private void newGame(){
     	if(Global.player1.newgameCalled() && Global.player2.newgameCalled()){
+    		if(replayRunning){
+    			replayRunning = false;
+    			try {
+					replayThread.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+    		}
     		initializeNewGame();
     		Global.board.invalidate();
     	}
-    }
-    
-    /**
-     * Returns the context for the current game
-     * */
-    public static Context getContext(){
-    	return Global.board.getContext();
     }
     
     /**
@@ -425,6 +409,7 @@ public class HexGame extends Activity {
     			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;
     }
     
+    Thread replayThread;
     private void replay(){
 		Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
 		Global.board=new BoardView(this);
@@ -432,102 +417,7 @@ public class HexGame extends Activity {
 	    setContentView(Global.board);
 	    Global.currentPlayer=(Global.currentPlayer%2)+1;
 	    replayRunning = true;
-		new Thread(new Replay(), "replay").start();
+		replayThread = new Thread(new Replay(), "replay");
+		replayThread.start();
     }
-    
-    private void saveGame(String fileName){
-    	Thread saving = new Thread(new ThreadGroup("Save"), new save(), "saving", 200000);
-		saving.start();
-		try {
-			saving.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		showSavedDialog("Saved!");
-	}
-    
-    class save implements Runnable{
-
-		@Override
-		public void run() {
-			createDirIfNoneExists(File.separator + "Hex" + File.separator);
-			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
-			if(file!=null){
-				String filePath = file.getPath();
-				if(!filePath.toLowerCase().endsWith(".rhex")){
-				    file = new File(filePath + ".rhex");
-				}
-				try {
-					file.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				if(file.exists()){
-					try {
-				    	OutputStream fo = new FileOutputStream(file);
-				    	
-				    	SavedGameObject savedGame = new SavedGameObject(Global.player1Color, Global.player2Color, Global.player1Name, Global.player2Name, Global.moveList, Global.gridSize, Global.moveNumber);
-				    	ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-				    	ObjectOutputStream oStream = new ObjectOutputStream(bStream);
-						oStream.writeObject(savedGame);
-						byte[] data = bStream.toByteArray();
-						
-					    fo.write(data);
-					    fo.close();
-					    
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-    	
-    }
-	
-	public static boolean createDirIfNoneExists(String path) {
-	    boolean ret = true;
-
-	    File file = new File(Environment.getExternalStorageDirectory(), path);
-	    if (!file.exists()) {
-	        if (!file.mkdirs()) {
-	            ret = false;
-	        }
-	    }
-	    return ret;
-	}
-	
-	private void showSavingDialog(){
-        final EditText editText = new EditText(Global.board.getContext());
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-        editText.setText(dateFormat.format(date) + "");
-        AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-        builder     
-        .setTitle("Enter a filename")
-        .setView(editText)
-        .setPositiveButton("OK", new OnClickListener(){
-    		@Override
-    		public void onClick(DialogInterface dialog, int which) {
-    			fileName = editText.getText().toString();
-    			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
-    			String filePath = file.getPath();
-    			if(!filePath.toLowerCase().endsWith(".rhex")){
-    			    file = new File(filePath + ".rhex");
-    			}
-    			saveGame(fileName);
-    		}
-        })
-        .setNegativeButton("Cancel", null)
-        .show();
-    }
-	
-	private void showSavedDialog(String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-        builder     
-        .setTitle(message)
-        .setNeutralButton("Okay", null)
-        .show();
-    } 
 }

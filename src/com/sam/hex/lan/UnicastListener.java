@@ -24,7 +24,7 @@ public class UnicastListener implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		prefs = PreferenceManager.getDefaultSharedPreferences(HexGame.getContext());
+		prefs = PreferenceManager.getDefaultSharedPreferences(Global.board.getContext());
 		thread = new Thread(this, "LANscan"); //Create a new thread.
 		thread.start(); //Start the thread.
 	}

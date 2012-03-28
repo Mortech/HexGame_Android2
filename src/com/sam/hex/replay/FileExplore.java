@@ -1,10 +1,11 @@
-package com.sam.hex;
+package com.sam.hex.replay;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
+
+import com.sam.hex.HexGame;
+import com.sam.hex.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,7 +34,7 @@ public class FileExplore extends Activity {
 	
 	private Item[] fileList;
 	private File path = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator);
-	private String chosenFile;
+	public static String chosenFile;
 	private static final int DIALOG_LOAD_FILE = 1000;
 	
 	ListAdapter adapter;
@@ -199,7 +200,7 @@ public class FileExplore extends Activity {
 					}
 					// File picked
 					else {
-						Thread loading = new Thread(new ThreadGroup("Load"), new load(), "loading", 200000);
+						Thread loading = new Thread(new ThreadGroup("Load"), new Load(), "loading", 200000);
 						loading.start();
 						try {
 							loading.join();
@@ -215,34 +216,5 @@ public class FileExplore extends Activity {
 		}
 		dialog = builder.show();
 		return dialog;
-	}
-	
-	class load implements Runnable{
-
-		@Override
-		public void run() {
-			try {
-	    		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + chosenFile);
-	    		if(file!=null){
-					FileInputStream saveFile = new FileInputStream(file);
-					ObjectInputStream restore = new ObjectInputStream(saveFile);
-					SavedGameObject savedGame = (SavedGameObject) restore.readObject();
-					Global.player1Color = savedGame.player1Color;
-					Global.player2Color = savedGame.player2Color;
-					Global.player1Name = savedGame.player1Name;
-					Global.player2Name = savedGame.player2Name;
-					Global.moveList = savedGame.moveList;
-					Global.gridSize = savedGame.gridSize;
-					Global.moveNumber = savedGame.moveNumber;
-					restore.close();
-					
-					HexGame.replay = true;
-					HexGame.startNewGame = false;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
 	}
 }
