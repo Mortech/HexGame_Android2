@@ -61,25 +61,64 @@ public class GameAction {
 		if(Global.moveNumber!=1){
 			GameAction.checkedFlagReset();
 			
+			//Remove the piece from the board and the movelist
 			Move lastMove = Global.moveList.thisMove;
 			Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 			Global.moveList = Global.moveList.nextMove;
 			
-			if(Global.currentPlayer==1) Global.player2.undoCalled();
-			else Global.player1.undoCalled();
+			//Determine who is (locally) a human
+			boolean p1 = Global.player1 instanceof PlayerObject;
+			boolean p2 = Global.player2 instanceof PlayerObject;
 			
-			if((Global.player1Type!=0 || Global.player2Type!=0) && !(Global.player1Type!=0 && Global.player2Type!=0)){
-				lastMove = Global.moveList.thisMove;
-				Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-				Global.moveList = Global.moveList.nextMove;
+			if(Global.currentPlayer==1 && p1){
+				Global.player2.undoCalled();
 				
-				Global.currentPlayer = (Global.currentPlayer%2)+1;
+				//If the other person isn't a (local) human
+				if(!p2){
+					//Undo again
+					if(Global.moveNumber>2){
+						lastMove = Global.moveList.thisMove;
+						Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+						Global.moveList = Global.moveList.nextMove;
+						
+						Global.moveNumber--;
+					}
+					
+					Global.player1.undoCalled();
+				}
+				else{
+					//Otherwise, cede the turn to the other player
+					GameAction.hex = new Point(-1,-1);
+				}
+			}
+			else if(Global.currentPlayer==1 && !p1){
+				Global.player1.undoCalled();
+			}
+			else if(Global.currentPlayer==2 && p2){
+				Global.player1.undoCalled();
 				
-				if(Global.currentPlayer==1) Global.player2.undoCalled();
-				else Global.player1.undoCalled();
+				//If the other person isn't a (local) human
+				if(!p1){
+					//Undo again
+					if(Global.moveNumber>2){
+						lastMove = Global.moveList.thisMove;
+						Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+						Global.moveList = Global.moveList.nextMove;
+						
+						Global.moveNumber--;
+					}
+					
+					Global.player2.undoCalled();
+				}
+				else{
+					//Otherwise, cede the turn to the other player
+					GameAction.hex = new Point(-1,-1);
+				}
+			}
+			else if(Global.currentPlayer==2 && !p2){
+				Global.player2.undoCalled();
 			}
 			
-			GameAction.hex = new Point(-1,-1);
 			Global.moveNumber--;
 			
 			//Reset the game if it's already ended

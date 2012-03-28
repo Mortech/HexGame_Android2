@@ -43,6 +43,7 @@ public class GameAI implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {//Without net play
+		undo = false;
 		this.gameBoard=BoardTools.teamGrid();
 		AIHistoryObject state = new AIHistoryObject(pairs, n, m);
 		history.add(state);
