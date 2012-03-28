@@ -61,7 +61,8 @@ public class BeeGameAI implements PlayingEntity
 		if (lastMove == null)
 		{
 		    pieces [pieces.length / 2] [pieces.length / 2] = team;
-		    GameAction.makeMove(this, (byte) team, new Point(pieces.length / 2 - 1, pieces.length / 2 - 1));
+		    if(!undo) GameAction.makeMove(this, (byte) team, new Point(pieces.length / 2 - 1, pieces.length / 2 - 1));
+		    else undo = false;
 		}
 		// If a move has been made already,
 		// Bee records the move in the pieces array
@@ -76,7 +77,8 @@ public class BeeGameAI implements PlayingEntity
 		    int x = bestMove.x - 1;
 		    int y = bestMove.y - 1;
 		    
-		    if(x>=0 && y>=0) GameAction.makeMove(this, (byte) team, new Point(y, Global.gridSize-1-x));
+		    if(!undo) GameAction.makeMove(this, (byte) team, new Point(y, Global.gridSize-1-x));
+		    else undo = false;
 		    System.out.println("My move: "+new Point(x,y));
 		}
 	}
@@ -706,13 +708,16 @@ public class BeeGameAI implements PlayingEntity
 	return value;
     }
 
-
+    boolean undo = false;
 	@Override
 	public boolean undoCalled() {
-		AIHistoryObject previousState = history.get(history.size()-1);
-		pieces = previousState.pieces;
-		lookUpTable = previousState.lookUpTable;
-		history.remove(history.size()-1);
+		if(history.size()>0){
+			AIHistoryObject previousState = history.get(history.size()-1);
+			pieces = previousState.pieces;
+			lookUpTable = previousState.lookUpTable;
+			history.remove(history.size()-1);
+		}
+		undo = true;
 		
 		return true;
 	}

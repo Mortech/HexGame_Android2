@@ -49,12 +49,16 @@ public class GameAI implements PlayingEntity {
 		makeMove();
 	}
 	
+	boolean undo = false;
 	public boolean undoCalled(){
-		AIHistoryObject previousState = history.get(history.size()-1);
-		pairs = previousState.pairs;
-		n = previousState.n;
-		m = previousState.m;
-		history.remove(history.size()-1);
+		if(history.size()>0){
+			AIHistoryObject previousState = history.get(history.size()-1);
+			pairs = previousState.pairs;
+			n = previousState.n;
+			m = previousState.m;
+			history.remove(history.size()-1);
+		}
+		undo = true;
 		
 		return true;
 	}
@@ -404,7 +408,8 @@ public class GameAI implements PlayingEntity {
 	}
 	
 	private void sendMove(int x, int y){
-		GameAction.makeMove(this, team, new Point(x,y));
+		if(!undo) GameAction.makeMove(this, team, new Point(x,y));
+		else undo = false;
 	}
 
 	@Override
