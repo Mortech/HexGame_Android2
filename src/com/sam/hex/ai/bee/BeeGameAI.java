@@ -17,7 +17,7 @@ import com.sam.hex.PlayingEntity;
 public class BeeGameAI implements PlayingEntity
 {
     private final static int RED = 1, BLUE = 2, EMPTY = 0;
-    private final static int MAX_DEPTH = 5, BEAM_SIZE = 5;
+    private final static int MAX_DEPTH = 2, BEAM_SIZE = 5;
     private int[] [] pieces;
     private HashMap lookUpTable;
     private int team;
