@@ -97,11 +97,8 @@ public class HexGame extends Activity {
     	Global.moveList=new MoveList();
     	replayRunning=false;
     	
-    	//Set up player1
-		setPlayer1();
-		
-		//Set up player2
-		setPlayer2();
+    	setPlayer1();
+    	setPlayer2();
     	
         //Create the game object
         Global.game = new GameObject(); 
@@ -262,11 +259,10 @@ public class HexGame extends Activity {
     }
     
     private void stopGame(){
-    	if(Global.game!=null && Global.game.go){
+    	if(Global.gameThread!=null){
     		Global.gameOver=true;
     		Global.game.stop();
-    		//Let the thread die
-	    	try {
+    		try {
 				Global.gameThread.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -341,6 +337,46 @@ public class HexGame extends Activity {
     	if(Global.gridSize<=0) Global.gridSize=1;
     }
     
+    private void undo(){
+    	if(Global.player1Type==0 || Global.player2Type==0)
+	    		GameAction.undo();
+    }
+    
+    private void newGame(){
+		if(replayRunning){
+			replayRunning = false;
+			try {
+				replayThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		initializeNewGame();
+		Global.board.invalidate();
+    }
+    
+    /**
+     * Returns true if a major setting was changed
+     * */
+    public static boolean somethingChanged(SharedPreferences prefs){
+    	return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
+    			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
+    			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;
+    }
+    
+    Thread replayThread;
+    private void replay(){
+		Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
+		Global.board=new BoardView(this);
+    	Global.board.setOnTouchListener(new TouchListener());
+	    setContentView(Global.board);
+	    Global.currentPlayer=(Global.currentPlayer%2)+1;
+	    replayRunning = true;
+		replayThread = new Thread(new Replay(), "replay");
+		replayThread.start();
+    }
+    
     private void setPlayer1(){
     	if(Global.player2Type==(byte)2){
     		//Playing over LAN
@@ -377,47 +413,5 @@ public class HexGame extends Activity {
     		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
     		else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(2);
     	}
-    }
-    
-    private void undo(){
-    	if(Global.player1Type==0 || Global.player2Type==0)
-	    		GameAction.undo();
-    }
-    
-    private void newGame(){
-    	if(Global.player1.newgameCalled() && Global.player2.newgameCalled()){
-    		if(replayRunning){
-    			replayRunning = false;
-    			try {
-					replayThread.join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-    		}
-    		initializeNewGame();
-    		Global.board.invalidate();
-    	}
-    }
-    
-    /**
-     * Returns true if a major setting was changed
-     * */
-    public static boolean somethingChanged(SharedPreferences prefs){
-    	return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
-    			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
-    			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
-    			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;
-    }
-    
-    Thread replayThread;
-    private void replay(){
-		Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
-		Global.board=new BoardView(this);
-    	Global.board.setOnTouchListener(new TouchListener());
-	    setContentView(Global.board);
-	    Global.currentPlayer=(Global.currentPlayer%2)+1;
-	    replayRunning = true;
-		replayThread = new Thread(new Replay(), "replay");
-		replayThread.start();
     }
 }

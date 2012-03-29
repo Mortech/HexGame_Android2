@@ -2,6 +2,7 @@ package com.sam.hex.ai.bee;
 
 import java.math.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import android.graphics.Point;
 
@@ -19,9 +20,10 @@ public class BeeGameAI implements PlayingEntity
     private final static int RED = 1, BLUE = 2, EMPTY = 0;
     private final static int MAX_DEPTH = 2, BEAM_SIZE = 5;
     private int[] [] pieces;
-    private HashMap lookUpTable;
+    private ConcurrentHashMap lookUpTable;
     private int team;
-    List<AIHistoryObject> history = new LinkedList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
+    private LinkedList<AIHistoryObject> history = new LinkedList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
+    private int gridSize;
 
     /** Constructor for the Bee object
     *@param game    the currently running game
@@ -32,7 +34,8 @@ public class BeeGameAI implements PlayingEntity
     {
     this.team = team;
 	// Creates the pieces array that stores the board inside Bee
-	pieces = new int [Global.gridSize + 2] [Global.gridSize + 2];
+    gridSize = Global.gridSize;
+	pieces = new int [gridSize + 2] [gridSize + 2];
 	for (int i = 1 ; i < pieces.length - 1 ; i++)
 	{
 	    pieces [i] [0] = RED;
@@ -40,7 +43,7 @@ public class BeeGameAI implements PlayingEntity
 	    pieces [i] [pieces.length - 1] = RED;
 	    pieces [pieces.length - 1] [i] = BLUE;
 	}
-	lookUpTable = new HashMap ();
+	lookUpTable = new ConcurrentHashMap ();
     }
 
 
@@ -52,10 +55,13 @@ public class BeeGameAI implements PlayingEntity
     	undo = false;
     	AIHistoryObject state = new AIHistoryObject(pieces, lookUpTable);
 		history.add(state);
+		int moveNumber = Global.moveNumber;
+		int lastMoveY = Global.moveList.getmove().getY();
+		int lastMoveX = Global.moveList.getmove().getX();
     	
 	    Point lastMove;
 		try{
-			if(Global.moveNumber>1) lastMove = new Point(Global.gridSize-1-Global.moveList.getmove().getY(), Global.moveList.getmove().getX());
+			if(moveNumber>1) lastMove = new Point(gridSize-1-lastMoveY, lastMoveX);
 			else lastMove=null;
 		}
 		catch(Exception e){
@@ -82,9 +88,31 @@ public class BeeGameAI implements PlayingEntity
 		    int x = bestMove.x - 1;
 		    int y = bestMove.y - 1;
 		    
-		    if(!undo) GameAction.makeMove(this, (byte) team, new Point(y, Global.gridSize-1-x));
+		    if(!undo) GameAction.makeMove(this, (byte) team, new Point(y, gridSize-1-x));
 		    System.out.println("My move: "+new Point(x,y));
+		    System.out.println("Undo: "+undo);
 		}
+	}
+    
+    private boolean undo = false;
+	@Override
+	public boolean undoCalled() {
+		if(history.size()>0){
+			AIHistoryObject previousState = history.get(history.size()-1);
+			pieces = previousState.pieces;
+			lookUpTable = previousState.lookUpTable;
+			history.remove(history.size()-1);
+		}
+		undo = true;
+		
+		return true;
+	}
+
+
+	@Override
+	public boolean newgameCalled() {
+		undo = true;
+		return true;
 	}
 
 
@@ -711,26 +739,6 @@ public class BeeGameAI implements PlayingEntity
 	}
 	return value;
     }
-
-    static boolean undo = false;
-	@Override
-	public boolean undoCalled() {
-		if(history.size()>0){
-			AIHistoryObject previousState = history.get(history.size()-1);
-			pieces = previousState.pieces;
-			lookUpTable = previousState.lookUpTable;
-			history.remove(history.size()-1);
-		}
-		undo = true;
-		
-		return true;
-	}
-
-
-	@Override
-	public boolean newgameCalled() {
-		return true;
-	}
 }
 
 

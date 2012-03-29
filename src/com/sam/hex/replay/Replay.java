@@ -9,7 +9,7 @@ public class Replay implements Runnable {
 
 	@Override
 	public void run() {
-		if(Global.game!=null && Global.game.go){
+		if(Global.game!=null && Global.gameThread.isAlive()){
     		Global.gameOver=true;
     		Global.game.stop();
     		//Let the thread die

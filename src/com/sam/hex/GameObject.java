@@ -1,7 +1,7 @@
 package com.sam.hex;
 
 public class GameObject implements Runnable {
-	public boolean go=true;
+	private boolean go=true;
 
 	public GameObject() {
 		Global.gameThread = new Thread(this, "runningGame"); //Create a new thread.
@@ -11,6 +11,8 @@ public class GameObject implements Runnable {
 	
 	public void stop(){
 		go=false;
+		Global.player1.newgameCalled();
+		Global.player2.newgameCalled();
 	}
 	
 	public void run() {
@@ -34,9 +36,12 @@ public class GameObject implements Runnable {
 				
 				Global.currentPlayer=(Global.currentPlayer%2)+1;
 			}
-			GameAction.checkedFlagReset();
-			Global.moveNumber++;
-			Global.board.postInvalidate();
+			if(go){
+				GameAction.checkedFlagReset();
+				Global.moveNumber++;
+				GameAction.hex = null;
+				Global.board.postInvalidate();
+			}
 		}
 		
 		System.out.println("Thread died");

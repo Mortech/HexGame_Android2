@@ -29,7 +29,9 @@ public class Load implements Runnable{
 				restore.close();
 				
 				Global.player1 = new PlayerObject((byte) 1);
+				Global.player1Type = (byte) 0;
 				Global.player2 = new PlayerObject((byte) 2);
+				Global.player2Type = (byte) 0;
 				HexGame.replay = true;
 				HexGame.startNewGame = false;
 			}

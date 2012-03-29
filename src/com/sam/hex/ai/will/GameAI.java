@@ -415,6 +415,7 @@ public class GameAI implements PlayingEntity {
 
 	@Override
 	public boolean newgameCalled() {
+		undo = true;
 		return true;
 	}
 	
