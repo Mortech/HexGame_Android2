@@ -8,6 +8,7 @@ import java.util.Random;
 import com.sam.hex.BoardTools;
 import com.sam.hex.GameAction;
 import com.sam.hex.Global;
+import com.sam.hex.PlayerObject;
 import com.sam.hex.PlayingEntity;
 
 import android.graphics.Point;
@@ -51,7 +52,7 @@ public class GameAI implements PlayingEntity {
 	}
 	
 	boolean undo = false;
-	public boolean undoCalled(){
+	public void undoCalled(){
 		if(history.size()>0){
 			AIHistoryObject previousState = history.get(history.size()-1);
 			pairs = previousState.pairs;
@@ -60,8 +61,6 @@ public class GameAI implements PlayingEntity {
 			history.remove(history.size()-1);
 		}
 		undo = true;
-		
-		return true;
 	}
 	
 	private boolean right(){
@@ -414,8 +413,22 @@ public class GameAI implements PlayingEntity {
 	}
 
 	@Override
-	public boolean newgameCalled() {
+	public void newgameCalled() {
 		undo = true;
+	}
+
+	@Override
+	public boolean supportsUndo() {
+		if(team==1){
+			return Global.player2 instanceof PlayerObject;
+		}
+		else{
+			return Global.player1 instanceof PlayerObject;
+		}
+	}
+
+	@Override
+	public boolean supportsNewgame() {
 		return true;
 	}
 	

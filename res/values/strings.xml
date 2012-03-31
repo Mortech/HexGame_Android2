@@ -5,16 +5,22 @@
     
     <!-- Preferences -->
     <string name="preferences">Settings</string>
+    <string name="gameLocationTitle">Game Mode</string>
+    <string name="gameLocationSummary">Play on the same device, over LAN, or online!</string>
     <string name="gameSizeTitle">Game Size</string>
     <string name="gameSizeSummary">Pick a size for the gameboard (Current: 7x7)</string>
+    <string name="gameSizeSummary_onChange">Pick a size for the gameboard (Current: </string>
+    <string name="customGameSizeSummary">Enter a grid size (Ex. 9)</string>
     <string name="player1NameTitle">Player1\'s Name</string>
     <string name="player1NameSummary">Name: Player1</string>
+    <string name="player1NameSummary_onChange">Name: </string>
     <string name="player1TypeTitle">Player1\'s Type</string>
     <string name="player1TypeSummary">Switch between Player and Computer</string>
     <string name="player1ColorTitle">Player1\'s Color</string>
     <string name="player1ColorSummary">Pick a color for Player1</string>
     <string name="player2NameTitle">Player2\'s Name</string>
     <string name="player2NameSummary">Name: Player2</string>
+    <string name="player2NameSummary_onChange">Name: </string>
     <string name="player2TypeTitle">Player2\'s Type</string>
     <string name="player2TypeSummary">Switch between Player and Computer</string>
     <string name="player2ColorTitle">Player2\'s Color</string>
@@ -32,10 +38,12 @@
     
     <!-- Main page -->
     <string name="frontpage">Welcome to Hex</string>
+    <string name="frontpage2">Welcome to Hex</string>
     
     <!-- Buttons from top to bottom -->
     <string name="start">Start Game</string>
-    <string name="rules">Instructions</string>
+    <string name="resume">Resume Game</string>
+    <string name="rules">How to Play</string>
     <string name="options">Options</string>
     
     <!-- Menu choices -->

@@ -40,7 +40,7 @@ public class UnicastListener implements Runnable {
 	    		String message = new String(data, 0, packet.getLength());
 	    		InetAddress address = packet.getAddress();        		
         		
-	    		if(!Global.localPlayer.ip.equals(address)) break;
+	    		if(!LANGlobal.localPlayer.ip.equals(address)) break;
 	    		
 	    		System.out.println(message);
 	    		if(message.contains("Move: ")){
@@ -49,13 +49,13 @@ public class UnicastListener implements Runnable {
 	    		}
 	    		else if(message.contains("I changed my color to ")){
 	    			//Full message looks like: I changed my color to _color_
-	    			Global.localPlayer.playerColor = Integer.decode(message.substring(22));
+	    			LANGlobal.localPlayer.playerColor = Integer.decode(message.substring(22));
 	    			HexGame.setColors(prefs);
 	    			Global.board.postInvalidate();
 	    		}
 	    		else if(message.contains("I changed my name to ")){
 	    			//Full message looks like: I changed my name to _name_
-	    			Global.localPlayer.playerName = message.substring(21);
+	    			LANGlobal.localPlayer.playerName = message.substring(21);
 	    			HexGame.setNames(prefs);
 	    			Global.board.postInvalidate();
 	    		}

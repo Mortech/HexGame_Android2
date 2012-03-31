@@ -80,8 +80,6 @@ public class GameAction {
 						lastMove = Global.moveList.thisMove;
 						Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 						Global.moveList = Global.moveList.nextMove;
-						
-						Global.moveNumber--;
 					}
 					
 					Global.player1.undoCalled();
@@ -104,8 +102,6 @@ public class GameAction {
 						lastMove = Global.moveList.thisMove;
 						Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 						Global.moveList = Global.moveList.nextMove;
-						
-						Global.moveNumber--;
 					}
 					
 					Global.player2.undoCalled();
@@ -118,8 +114,8 @@ public class GameAction {
 			else if(Global.currentPlayer==2 && !p2){
 				Global.player2.undoCalled();
 			}
+			Global.moveNumber-=2;
 			
-			Global.moveNumber--;
 			
 			//Reset the game if it's already ended
 			if(Global.gameOver){

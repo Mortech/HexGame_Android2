@@ -8,6 +8,7 @@ import android.graphics.Point;
 
 import com.sam.hex.GameAction;
 import com.sam.hex.Global;
+import com.sam.hex.PlayerObject;
 import com.sam.hex.PlayingEntity;
 
 /** The "Bee" class.
@@ -56,12 +57,10 @@ public class BeeGameAI implements PlayingEntity
     	AIHistoryObject state = new AIHistoryObject(pieces, lookUpTable);
 		history.add(state);
 		int moveNumber = Global.moveNumber;
-		int lastMoveY = Global.moveList.getmove().getY();
-		int lastMoveX = Global.moveList.getmove().getX();
     	
 	    Point lastMove;
 		try{
-			if(moveNumber>1) lastMove = new Point(gridSize-1-lastMoveY, lastMoveX);
+			if(moveNumber>1) lastMove = new Point(gridSize-1-Global.moveList.getmove().getY(), Global.moveList.getmove().getX());
 			else lastMove=null;
 		}
 		catch(Exception e){
@@ -96,7 +95,7 @@ public class BeeGameAI implements PlayingEntity
     
     private boolean undo = false;
 	@Override
-	public boolean undoCalled() {
+	public void undoCalled() {
 		if(history.size()>0){
 			AIHistoryObject previousState = history.get(history.size()-1);
 			pieces = previousState.pieces;
@@ -104,14 +103,26 @@ public class BeeGameAI implements PlayingEntity
 			history.remove(history.size()-1);
 		}
 		undo = true;
-		
-		return true;
 	}
 
 
 	@Override
-	public boolean newgameCalled() {
+	public void newgameCalled() {
 		undo = true;
+	}
+	
+	@Override
+	public boolean supportsUndo() {
+		if(team==1){
+			return Global.player2 instanceof PlayerObject;
+		}
+		else{
+			return Global.player1 instanceof PlayerObject;
+		}
+	}
+
+	@Override
+	public boolean supportsNewgame() {
 		return true;
 	}
 

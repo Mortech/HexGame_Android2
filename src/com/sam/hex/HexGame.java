@@ -17,6 +17,7 @@ import android.graphics.Point;
 
 import com.sam.hex.ai.bee.BeeGameAI;
 import com.sam.hex.ai.will.GameAI;
+import com.sam.hex.lan.LANGlobal;
 import com.sam.hex.lan.LANMessage;
 import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
@@ -132,21 +133,21 @@ public class HexGame extends Activity {
     		//Check if the color changed
     		if(Global.player1 instanceof PlayerObject && Global.player1Color != prefs.getInt("player1Color", Global.player1DefaultColor)){
     			setColors(prefs);
-    			new LANMessage("I changed my color to "+Global.player1Color, Global.localPlayer.ip, 4080);
+    			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, 4080);
     		}
     		else if(Global.player2 instanceof PlayerObject && Global.player2Color != prefs.getInt("player2Color", Global.player2DefaultColor)){
     			setColors(prefs);
-    			new LANMessage("I changed my color to "+Global.player2Color, Global.localPlayer.ip, 4080);
+    			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, 4080);
     		}
     		
     		//Check if the name changed
     		if(Global.player1 instanceof PlayerObject && !Global.player1Name.equals(prefs.getString("player1Name", Global.player1Name))){
     			setNames(prefs);
-    			new LANMessage("I changed my name to "+Global.player1Name, Global.localPlayer.ip, 4080);
+    			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, 4080);
     		}
     		else if(Global.player2 instanceof PlayerObject && !Global.player2Name.equals(prefs.getString("player2Name", Global.player2Name))){
     			setNames(prefs);
-    			new LANMessage("I changed my name to "+Global.player2Name, Global.localPlayer.ip, 4080);
+    			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, 4080);
     		}
     		Global.board.invalidate();
     	}
@@ -255,6 +256,7 @@ public class HexGame extends Activity {
     	super.onPause();
     	
     	//If the board's empty, just trigger "startNewGame"
+    	System.out.println(Global.moveNumber);
     	if(Global.moveNumber==1) HexGame.startNewGame=true;
     }
     
@@ -276,15 +278,15 @@ public class HexGame extends Activity {
      * Does not invalidate the board
      * */
     public static void setNames(SharedPreferences prefs){
-    	if(Global.player2Type==(byte)2){
+    	if(Global.gameLocation==1){
     		//Playing over LAN
-    		if(Global.localPlayer.firstMove){
-    			Global.player1Name = Global.localPlayer.playerName;
+    		if(LANGlobal.localPlayer.firstMove){
+    			Global.player1Name = LANGlobal.localPlayer.playerName;
         		Global.player2Name = prefs.getString("player1Name", "Player1");
     		}
     		else{
     			Global.player1Name = prefs.getString("player1Name", "Player1");
-        		Global.player2Name = Global.localPlayer.playerName;
+        		Global.player2Name = LANGlobal.localPlayer.playerName;
     		}
     	}
     	else{
@@ -299,15 +301,15 @@ public class HexGame extends Activity {
      * Does not invalidate the board
      * */
     public static void setColors(SharedPreferences prefs){
-    	if(Global.player2Type==(byte)2){
+    	if(Global.gameLocation==1){
     		//Playing over LAN
-    		if(Global.localPlayer.firstMove){
-    			Global.player1Color = Global.localPlayer.playerColor;
+    		if(LANGlobal.localPlayer.firstMove){
+    			Global.player1Color = LANGlobal.localPlayer.playerColor;
         		Global.player2Color = prefs.getInt("player1Color", Global.player1DefaultColor);
     		}
     		else{
     			Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
-        		Global.player2Color = Global.localPlayer.playerColor;
+        		Global.player2Color = LANGlobal.localPlayer.playerColor;
     		}
     	}
     	else{
@@ -320,8 +322,8 @@ public class HexGame extends Activity {
     private void setGrid(SharedPreferences prefs){
     	if(Global.player2Type==(byte)2){
     		//Playing over LAN
-    		if(Global.localPlayer.firstMove){
-    			Global.gridSize=Global.localPlayer.gridSize;
+    		if(LANGlobal.localPlayer.firstMove){
+    			Global.gridSize=LANGlobal.localPlayer.gridSize;
     		}
     		else{
     			Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
@@ -338,21 +340,23 @@ public class HexGame extends Activity {
     }
     
     private void undo(){
-    	if(Global.player1Type==0 || Global.player2Type==0)
+    	if(Global.player1.supportsUndo() && Global.player2.supportsUndo())
 	    		GameAction.undo();
     }
     
     private void newGame(){
-		if(replayRunning){
-			replayRunning = false;
-			try {
-				replayThread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+    	if(Global.player1.supportsNewgame() && Global.player2.supportsNewgame()){
+			if(replayRunning){
+				replayRunning = false;
+				try {
+					replayThread.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		initializeNewGame();
-		Global.board.invalidate();
+			initializeNewGame();
+			Global.board.invalidate();
+    	}
     }
     
     /**
@@ -380,7 +384,7 @@ public class HexGame extends Activity {
     private void setPlayer1(){
     	if(Global.player2Type==(byte)2){
     		//Playing over LAN
-    		if(Global.localPlayer.firstMove){
+    		if(LANGlobal.localPlayer.firstMove){
     			Global.player1=new LocalPlayerObject((byte)1);
     		}
     		else{
@@ -399,7 +403,7 @@ public class HexGame extends Activity {
     private void setPlayer2(){
     	if(Global.player2Type==(byte)2){
     		//Playing over LAN
-    		if(Global.localPlayer.firstMove){
+    		if(LANGlobal.localPlayer.firstMove){
     			if(Global.player1Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
     			else if(Global.player1Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
     		}

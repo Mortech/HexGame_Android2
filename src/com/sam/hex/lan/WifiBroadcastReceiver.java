@@ -39,12 +39,12 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	    if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
 	        if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)) {
 	        	//Clear our cached players from the network
-	            Global.localObjects = new ArrayList<LocalNetworkObject>();
+	            LANGlobal.localObjects = new ArrayList<LocalNetworkObject>();
 	        	handler.post(updateResults);
 	        	
 	        	//Get our new ip address
 	            WifiInfo wifiInfo = wm.getConnectionInfo();
-	            Global.LANipAddress = String.format("%d.%d.%d.%d",(wifiInfo.getIpAddress() & 0xff),(wifiInfo.getIpAddress() >> 8 & 0xff),(wifiInfo.getIpAddress() >> 16 & 0xff),(wifiInfo.getIpAddress() >> 24 & 0xff));
+	            LANGlobal.LANipAddress = String.format("%d.%d.%d.%d",(wifiInfo.getIpAddress() & 0xff),(wifiInfo.getIpAddress() >> 8 & 0xff),(wifiInfo.getIpAddress() >> 16 & 0xff),(wifiInfo.getIpAddress() >> 24 & 0xff));
 	            
 	        	try {
 	        		//Kill previous threads
@@ -76,7 +76,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	        else {
 	            //Wifi connection was lost
 	        	//Clear our cached players from the network
-	            Global.localObjects = new ArrayList<LocalNetworkObject>();
+	            LANGlobal.localObjects = new ArrayList<LocalNetworkObject>();
 	        	handler.post(updateResults);
 	        }
 	    }

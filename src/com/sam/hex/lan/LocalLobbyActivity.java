@@ -45,8 +45,8 @@ public class LocalLobbyActivity extends Activity {
     final Handler handler = new Handler();
     final Runnable updateResults = new Runnable() {
         public void run() {
-        	if(players!=Global.localObjects){
-        		players = Global.localObjects;
+        	if(players!=LANGlobal.localObjects){
+        		players = LANGlobal.localObjects;
         		updateResultsInUi();
         	}
         }
@@ -58,7 +58,7 @@ public class LocalLobbyActivity extends Activity {
     };
     final Runnable startGame = new Runnable() {
         public void run() {
-        	Global.localPlayer = LocalLobbyActivity.lno;
+        	LANGlobal.localPlayer = LocalLobbyActivity.lno;
         	HexGame.startNewGame = true;
         	startActivity(new Intent(getBaseContext(),HexGame.class));
         	finish();
@@ -124,7 +124,7 @@ public class LocalLobbyActivity extends Activity {
         
         //Get our ip address
         WifiInfo wifiInfo = wm.getConnectionInfo();
-        Global.LANipAddress = String.format("%d.%d.%d.%d",(wifiInfo.getIpAddress() & 0xff),(wifiInfo.getIpAddress() >> 8 & 0xff),(wifiInfo.getIpAddress() >> 16 & 0xff),(wifiInfo.getIpAddress() >> 24 & 0xff));
+        LANGlobal.LANipAddress = String.format("%d.%d.%d.%d",(wifiInfo.getIpAddress() & 0xff),(wifiInfo.getIpAddress() >> 8 & 0xff),(wifiInfo.getIpAddress() >> 16 & 0xff),(wifiInfo.getIpAddress() >> 24 & 0xff));
         
         try {
 			//Create a socket
@@ -167,7 +167,7 @@ public class LocalLobbyActivity extends Activity {
         socket.close();
         
         //Clear our cached players from the network
-        Global.localObjects = new ArrayList<LocalNetworkObject>();
+        LANGlobal.localObjects = new ArrayList<LocalNetworkObject>();
     }
     
     private void challengeSent(){
@@ -212,7 +212,7 @@ public class LocalLobbyActivity extends Activity {
     
     private void updateResultsInUi(){
     	final ListView lobby = (ListView) findViewById(R.id.players);
-        ArrayAdapter<LocalNetworkObject> adapter = new ArrayAdapter<LocalNetworkObject>(this,android.R.layout.simple_list_item_1, Global.localObjects);
+        ArrayAdapter<LocalNetworkObject> adapter = new ArrayAdapter<LocalNetworkObject>(this,android.R.layout.simple_list_item_1, LANGlobal.localObjects);
         lobby.setAdapter(adapter);
         
         lobby.setOnItemClickListener(new OnItemClickListener() {
@@ -230,7 +230,7 @@ public class LocalLobbyActivity extends Activity {
         sent.setPositiveButton("Okay", null);
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
-    	    	if(editText.getText().toString().equals(Global.LANipAddress)){
+    	    	if(editText.getText().toString().equals(LANGlobal.LANipAddress)){
     	    		sent.setMessage("That's your own ip").show();
     	    	}
     	    	else{
@@ -248,6 +248,6 @@ public class LocalLobbyActivity extends Activity {
     	};
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage("Your ip address is: "+Global.LANipAddress).setView(editText).setPositiveButton("Enter", dialogClickListener).show();
+    	builder.setMessage("Your ip address is: "+LANGlobal.LANipAddress).setView(editText).setPositiveButton("Enter", dialogClickListener).show();
     }
 }

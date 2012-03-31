@@ -2,19 +2,13 @@ package com.sam.hex;
 
 import android.graphics.Color;
 
-import java.util.ArrayList;
-
-import com.sam.hex.lan.LocalNetworkObject;
-
 public class Global {
 	public static int gridSize = 7;
 	public static int windowHeight = 600;
 	public static int windowWidth = 800;
 	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[7][7];
 	public static BoardView board;
-	public static ArrayList<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
-	public static LocalNetworkObject localPlayer;
-	public static String LANipAddress;
+	public static int gameLocation = 0;
 	
 	//Game
 	public static int currentPlayer = 1;

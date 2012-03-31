@@ -26,6 +26,6 @@ public class Replay implements Runnable {
 		if(HexGame.replayRunning)if(GameAction.checkWinPlayer2()){Global.currentPlayer=(Global.currentPlayer%2)+1; GameObject.announceWinner(2); return;}
 		Global.board.postInvalidate();
 		GameAction.hex=null;
-		new GameObject();
+		Global.game = new GameObject();
 	}
 }

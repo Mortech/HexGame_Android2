@@ -33,13 +33,20 @@ public class LocalPlayerObject implements PlayingEntity {
 		
 	}
 	
-	public boolean undoCalled(){
+	public void undoCalled(){
+	}
+
+	@Override
+	public void newgameCalled() {
+	}
+	
+	@Override
+	public boolean supportsUndo() {
 		return true;
 	}
 
 	@Override
-	public boolean newgameCalled() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean supportsNewgame() {
+		return true;
 	}
 }
