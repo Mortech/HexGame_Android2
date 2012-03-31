@@ -62,11 +62,13 @@
     <!-- LAN play -->
     <string name="challenger"> challenges you. Accept?</string>
     <string name="sendChallenge">Do you want to challenge </string>
+    <string name="challengeSent">Challenge sent</string>
     <string name="wifiOff">Wifi is off. Enable?</string>
     <string name="yourIP">Your ip address is: </string>
     <string name="yourIPWarning">That\'s your own ip</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="enter">Enter</string>
     
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>

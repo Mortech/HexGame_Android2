@@ -208,7 +208,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(lno.playerName+getApplicationContext().getString(R.string.challenger)).setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+    	builder.setMessage(lno.playerName+getApplicationContext().getString(R.string.challenger)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
     }
     
     private void updateResultsInUi(){
@@ -239,7 +239,7 @@ public class LocalLobbyActivity extends Activity {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
 						LocalLobbyActivity.lno.ip = local;
 						new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, 4080);
-						sent.setMessage("Challenge sent").show();
+						sent.setMessage(getApplicationContext().getString(R.string.challengeSent)).show();
 					}
 					catch (UnknownHostException e) {
 						e.printStackTrace();
@@ -249,6 +249,6 @@ public class LocalLobbyActivity extends Activity {
     	};
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(getApplicationContext().getString(R.string.yourIP)+LANGlobal.LANipAddress).setView(editText).setPositiveButton("Enter", dialogClickListener).show();
+    	builder.setMessage(getApplicationContext().getString(R.string.yourIP)+LANGlobal.LANipAddress).setView(editText).setPositiveButton(getApplicationContext().getString(R.string.enter), dialogClickListener).show();
     }
 }
