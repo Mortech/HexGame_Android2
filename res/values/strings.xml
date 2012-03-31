@@ -59,6 +59,15 @@
     <string name="instructions">Hex is played by two players, who take turns placing pieces on the board. The players have different colours, say red and blue. (The players themselves are sometimes referred to as Red and Blue) The four edges of the board are coloured with the same colours, in such a way that parallel edges have the same colour. Red wins if he can build a continuous chain between the two red edges, and blue wins if he can build such a chain between the blue edges.\n\n
         (Taken from <a href="http://www.hexwiki.org/index.php?title=Rules">hexwiki.org</a>)</string>
     
+    <!-- LAN play -->
+    <string name="challenger"> challenges you. Accept?</string>
+    <string name="sendChallenge">Do you want to challenge </string>
+    <string name="wifiOff">Wifi is off. Enable?</string>
+    <string name="yourIP">Your ip address is: </string>
+    <string name="yourIPWarning">That\'s your own ip</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Press on Color to apply</string>    

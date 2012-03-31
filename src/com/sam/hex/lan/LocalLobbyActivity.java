@@ -117,7 +117,7 @@ public class LocalLobbyActivity extends Activity {
         	};
 
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        	builder.setMessage("Wifi is off. Enable?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+        	builder.setMessage(getApplicationContext().getString(R.string.wifiOff)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.yes), dialogClickListener).show();
         }
         
         //Allow for broadcasts
@@ -188,7 +188,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage("Do you want to challenge "+lno.playerName+"?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+    	builder.setMessage(getApplicationContext().getString(R.string.sendChallenge)+lno.playerName+"?").setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
     }
     
     private void challengeRecieved(){
@@ -208,7 +208,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(lno.playerName+" challenges you. Accept?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+    	builder.setMessage(lno.playerName+getApplicationContext().getString(R.string.challenger)).setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
     }
     
     private void updateResultsInUi(){
@@ -232,7 +232,7 @@ public class LocalLobbyActivity extends Activity {
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
     	    	if(editText.getText().toString().equals(LANGlobal.LANipAddress)){
-    	    		sent.setMessage("That's your own ip").show();
+    	    		sent.setMessage(getApplicationContext().getString(R.string.yourIPWarning)).show();
     	    	}
     	    	else{
 					try {
@@ -249,6 +249,6 @@ public class LocalLobbyActivity extends Activity {
     	};
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage("Your ip address is: "+LANGlobal.LANipAddress).setView(editText).setPositiveButton("Enter", dialogClickListener).show();
+    	builder.setMessage(getApplicationContext().getString(R.string.yourIP)+LANGlobal.LANipAddress).setView(editText).setPositiveButton("Enter", dialogClickListener).show();
     }
 }
