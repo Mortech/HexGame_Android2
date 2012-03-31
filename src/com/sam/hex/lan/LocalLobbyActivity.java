@@ -59,6 +59,7 @@ public class LocalLobbyActivity extends Activity {
     final Runnable startGame = new Runnable() {
         public void run() {
         	LANGlobal.localPlayer = LocalLobbyActivity.lno;
+        	Global.gameLocation=1;
         	HexGame.startNewGame = true;
         	startActivity(new Intent(getBaseContext(),HexGame.class));
         	finish();
@@ -133,7 +134,7 @@ public class LocalLobbyActivity extends Activity {
 			socket = new MulticastSocket(port);
 			socket.joinGroup(address);
 			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
-			socket.setLoopbackMode(true);
+//			socket.setLoopbackMode(true);
 			
 			//Create a packet
 			String message = ("Let's play Hex. I'm "+Global.player1Name);
@@ -170,7 +171,7 @@ public class LocalLobbyActivity extends Activity {
         LANGlobal.localObjects = new ArrayList<LocalNetworkObject>();
     }
     
-    private void challengeSent(){
+    private void challengeSent(final LocalNetworkObject lno){
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
     	        switch (which){
@@ -187,7 +188,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage("Do you want to challenge "+LocalLobbyActivity.lno.toString()+"?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+    	builder.setMessage("Do you want to challenge "+lno.playerName+"?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
     }
     
     private void challengeRecieved(){
@@ -207,7 +208,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(LocalLobbyActivity.lno.toString()+" challenges you. Accept?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+    	builder.setMessage(lno.playerName+" challenges you. Accept?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
     }
     
     private void updateResultsInUi(){
@@ -218,7 +219,7 @@ public class LocalLobbyActivity extends Activity {
         lobby.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				challengeSent();
+				challengeSent(LANGlobal.localObjects.get(position));
 			}
         });
     }

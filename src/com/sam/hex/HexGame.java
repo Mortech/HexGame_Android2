@@ -121,13 +121,13 @@ public class HexGame extends Activity {
     		replay = false;
     		replay();
     	}
-    	else if(Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type && Integer.decode(prefs.getString("player2Type", "0")) == 2){
+    	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 1){
     		//Go to the local lobby
     		Global.player2Type = 2;
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
         	finish();
     	}
-    	else if(Integer.decode(prefs.getString("player2Type", "0")) == 2){
+    	else if(Global.gameLocation == 1){
     		//We're in an existing local game
     		
     		//Check if the color changed

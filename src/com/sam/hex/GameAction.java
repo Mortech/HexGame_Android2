@@ -114,8 +114,6 @@ public class GameAction {
 			else if(Global.currentPlayer==2 && !p2){
 				Global.player2.undoCalled();
 			}
-			Global.moveNumber-=2;
-			
 			
 			//Reset the game if it's already ended
 			if(Global.gameOver){
@@ -125,6 +123,9 @@ public class GameAction {
 				
 				Global.gameOver=false;
 				Global.game = new GameObject();
+			}
+			else{
+				Global.moveNumber-=2;
 			}
 		}
 		
