@@ -371,18 +371,28 @@ public class HexGame extends Activity {
     
     Thread replayThread;
     private void replay(){
-		Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
-		Global.board=new BoardView(this);
+    	//Stop the old game
+    	stopGame();
+    	
+    	//Create our board
+    	GameAction.hex = null;
+    	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
+    	Global.board=new BoardView(this);
     	Global.board.setOnTouchListener(new TouchListener());
 	    setContentView(Global.board);
-	    Global.currentPlayer=(Global.currentPlayer%2)+1;
-	    replayRunning = true;
+    	
+        //Create the game object
+        Global.game = new GameObject(); 
+        
+    	Global.currentPlayer=(Global.currentPlayer%2)+1;
+	    
+    	replayRunning = true;
 		replayThread = new Thread(new Replay(), "replay");
 		replayThread.start();
     }
     
     private void setPlayer1(){
-    	if(Global.player2Type==(byte)2){
+    	if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			Global.player1=new LocalPlayerObject((byte)1);
@@ -390,6 +400,7 @@ public class HexGame extends Activity {
     		else{
     			if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
         		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1,(byte)1);
+        		else if(Global.player1Type==(byte) 4) Global.player1=new BeeGameAI(1);
     		}
     	}
     	else{
@@ -401,11 +412,12 @@ public class HexGame extends Activity {
     }
     
     private void setPlayer2(){
-    	if(Global.player2Type==(byte)2){
+    	if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			if(Global.player1Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
     			else if(Global.player1Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
+    			else if(Global.player1Type==(byte) 4) Global.player2=new BeeGameAI(1);
     		}
     		else{
     			Global.player2=new LocalPlayerObject((byte)2);

@@ -17,4 +17,16 @@ public class LANMessage{
     		e.getStackTrace();
     	}
 	}
+
+	public LANMessage(byte[] data, InetAddress ip, int port) {
+		try{
+        	DatagramSocket socket = new DatagramSocket();
+        	DatagramPacket packet = new DatagramPacket(data, data.length, ip, port);
+        	socket.send(packet);
+        	socket.close();
+    	}
+    	catch(Exception e){
+    		e.getStackTrace();
+    	}
+	}
 }
