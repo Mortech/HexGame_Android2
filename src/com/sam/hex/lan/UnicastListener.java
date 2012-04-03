@@ -21,7 +21,6 @@ public class UnicastListener implements Runnable {
 		try {
 			this.socket = new DatagramSocket();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		prefs = PreferenceManager.getDefaultSharedPreferences(Global.board.getContext());

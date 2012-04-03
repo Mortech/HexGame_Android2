@@ -5,7 +5,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class LANMessage{
-	
 	public LANMessage(String message, InetAddress ip, int port) {
 		try{
         	DatagramSocket socket = new DatagramSocket();

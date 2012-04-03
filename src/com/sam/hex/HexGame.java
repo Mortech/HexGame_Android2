@@ -371,20 +371,14 @@ public class HexGame extends Activity {
     
     Thread replayThread;
     private void replay(){
-    	//Stop the old game
-    	stopGame();
-    	
     	//Create our board
     	GameAction.hex = null;
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
     	Global.board=new BoardView(this);
     	Global.board.setOnTouchListener(new TouchListener());
 	    setContentView(Global.board);
-    	
-        //Create the game object
-        Global.game = new GameObject(); 
         
-    	Global.currentPlayer=(Global.currentPlayer%2)+1;
+    	if(Global.moveNumber>1) Global.currentPlayer=(Global.currentPlayer%2)+1;
 	    
     	replayRunning = true;
 		replayThread = new Thread(new Replay(), "replay");

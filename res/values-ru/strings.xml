@@ -11,12 +11,12 @@
     <string name="gameSizeSummary"> выбор размера игрового поля (ток: 7x7) </string>
     <string name="gameSizeSummary_onChange"> выбор размера игрового поля (ток: </string>
     <string name="customGameSizeSummary"> Введите размер сетки (Исх. 9) </string>
-    <string name="player1NameTitle"> Player1 \"Имя </string>
+    <string name="player1NameTitle"> Игрок1 \"Имя </string>
     <string name="player1NameSummary"> Имя: Player1 </string>
     <string name="player1NameSummary_onChange"> Имя: </string>
-    <string name="player1TypeTitle"> Player1 \'ы типа </string>
+    <string name="player1TypeTitle"> Игрок1 \'ы типа </string>
     <string name="player1TypeSummary"> Переключение между игроком и компьютером </string>
-    <string name="player1ColorTitle"> Player1 \'ы Цвет </string>
+    <string name="player1ColorTitle"> Игрок1 \'ы Цвет </string>
     <string name="player1ColorSummary"> Выберите цвет для Player1 </string>
     <string name="player2NameTitle"> Игрок2 \"Имя </string>
     <string name="player2NameSummary"> Имя: Игрок2 </string>

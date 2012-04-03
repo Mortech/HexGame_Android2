@@ -13,10 +13,10 @@ public class AnnounceWinner implements Runnable{
 	public void run(){
 		Looper.prepare();
 		if(team==1){
-			Toast.makeText(Global.board.getContext(), Global.player1Name+" wins!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(Global.board.getContext(), Global.player1Name+Global.board.getContext().getString(R.string.winner), Toast.LENGTH_SHORT).show();
 		}
 		else{
-			Toast.makeText(Global.board.getContext(), Global.player2Name+" wins!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(Global.board.getContext(), Global.player2Name+Global.board.getContext().getString(R.string.winner), Toast.LENGTH_SHORT).show();
 		}
 		Looper.loop();
 	}

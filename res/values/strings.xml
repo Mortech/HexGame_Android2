@@ -32,13 +32,8 @@
     <string name="resetTitle">Reset to Defaults</string>
     <string name="resetSummary">Reset all settings to their defaults</string>
     
-    <!-- Local lobby -->
-    <string name="local">Local Lobby</string>
-    <string name="customIP">Enter an IP directly</string>
-    
     <!-- Main page -->
     <string name="frontpage">Welcome to Hex</string>
-    <string name="frontpage2">Welcome to Hex</string>
     
     <!-- Buttons from top to bottom -->
     <string name="start">Start Game</string>
@@ -55,9 +50,16 @@
     <string name="settings">Settings</string>
     <string name="quit">Quit</string>
     
+    <!-- In game notifications -->
+    <string name="winner"> wins!</string>
+    
     <!-- Game instructions -->
     <string name="instructions">Hex is played by two players, who take turns placing pieces on the board. The players have different colours, say red and blue. (The players themselves are sometimes referred to as Red and Blue) The four edges of the board are coloured with the same colours, in such a way that parallel edges have the same colour. Red wins if he can build a continuous chain between the two red edges, and blue wins if he can build such a chain between the blue edges.\n\n
         (Taken from <a href="http://www.hexwiki.org/index.php?title=Rules">hexwiki.org</a>)</string>
+    
+    <!-- Local lobby -->
+    <string name="local">Local Lobby</string>
+    <string name="customIP">Enter an IP directly</string>
     
     <!-- LAN play -->
     <string name="challenger"> challenges you. Accept?</string>
