@@ -345,6 +345,10 @@ public class HexGame extends Activity {
     }
     
     private void newGame(){
+    	if(Global.gameLocation==1){
+    		//Inside a LAN game
+    		new LANMessage("Want to play a new game?", LANGlobal.localPlayer.ip, LANGlobal.port);
+    	}
     	if(Global.player1.supportsNewgame() && Global.player2.supportsNewgame()){
 			if(replayRunning){
 				replayRunning = false;

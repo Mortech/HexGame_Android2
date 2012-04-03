@@ -176,7 +176,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, 4080);
+    	        	new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, LANGlobal.port);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -196,7 +196,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage("It's on! My color's "+Global.player1Color, lno.ip, 4080);
+    	        	new LANMessage("It's on! My color's "+Global.player1Color, lno.ip, LANGlobal.port);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -237,7 +237,7 @@ public class LocalLobbyActivity extends Activity {
 					try {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
 						LocalLobbyActivity.lno.ip = local;
-						new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, 4080);
+						new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, LANGlobal.port);
 						sent.setMessage(getApplicationContext().getString(R.string.challengeSent)).show();
 					}
 					catch (UnknownHostException e) {

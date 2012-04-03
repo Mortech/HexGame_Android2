@@ -5,19 +5,24 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
+import com.sam.hex.R;
 
 public class UnicastListener implements Runnable {
 	Thread thread;
 	boolean run = true;
 	DatagramSocket socket;
 	SharedPreferences prefs;
+	int team;
 	
-	public UnicastListener() {
+	public UnicastListener(int team) {
+		this.team = team;
 		try {
 			this.socket = new DatagramSocket();
 		} catch (SocketException e) {
@@ -65,22 +70,42 @@ public class UnicastListener implements Runnable {
 	    			
 	    		}
 	    		else if(message.equals("Want to play a new game?")){
-	    			
-	    		}
-	    		else if(message.equals("Sure, let's play again")){
-	    			
-	    		}
-	    		else if(message.equals("No, I don't want to play again")){
-	    			
+	    			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+	    	    	    public void onClick(DialogInterface dialog, int which) {
+	    	    	        switch (which){
+	    	    	        case DialogInterface.BUTTON_POSITIVE:
+	    	    	            //Yes button clicked
+	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.port);
+	    	    	            break;
+	    	    	        case DialogInterface.BUTTON_NEGATIVE:
+	    	    	            //No button clicked
+	    	    	        	new LANMessage("No, I don't want to play again", LANGlobal.localPlayer.ip, LANGlobal.port);
+	    	    	            break;
+	    	    	        }
+	    	    	    }
+	    	    	};
+
+	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
+	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+Global.board.getContext().getString(R.string.newLANGame)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
 	    		}
 	    		else if(message.equals("Can I undo?")){
-	    			
-	    		}
-	    		else if(message.equals("Sure, undo")){
-	    			
-	    		}
-	    		else if(message.equals("No, you cannot undo")){
-	    			
+	    			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+	    	    	    public void onClick(DialogInterface dialog, int which) {
+	    	    	        switch (which){
+	    	    	        case DialogInterface.BUTTON_POSITIVE:
+	    	    	            //Yes button clicked
+	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.port);
+	    	    	            break;
+	    	    	        case DialogInterface.BUTTON_NEGATIVE:
+	    	    	            //No button clicked
+	    	    	        	new LANMessage("No, you cannot undo", LANGlobal.localPlayer.ip, LANGlobal.port);
+	    	    	            break;
+	    	    	        }
+	    	    	    }
+	    	    	};
+
+	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
+	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+Global.board.getContext().getString(R.string.LANUndo)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
 	    		}
 			}
 	    	catch (Exception e) {

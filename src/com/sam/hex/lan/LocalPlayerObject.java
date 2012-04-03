@@ -13,7 +13,7 @@ public class LocalPlayerObject implements PlayingEntity {
 	
 	public LocalPlayerObject(byte team) {
 		this.team=team;//Set the player's team
-		listener = new UnicastListener();
+		listener = new UnicastListener(team);
 	}
 	
 	public void getPlayerTurn() {
@@ -39,17 +39,30 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public boolean supportsUndo() {
-		new LANMessage("Want to play a new game?", LANGlobal.localPlayer.ip, LANGlobal.port);
-		
-		new LANReciever("", LANGlobal.localPlayer.ip, LANGlobal.port, new MessageRunnable(){
+		new LANReciever("undo", LANGlobal.localPlayer.ip, LANGlobal.port, new MessageRunnable(){
 			@Override
 			public void run() {
-				// TODO Write code
+				if(message.contains("Sure")){
+					GameAction.newGame = true;
+				}
+				else if(message.contains("No")){
+					GameAction.newGame = false;
+				}
 			}});
-		return false;
+		return GameAction.newGame;
 	}
 
 	public boolean supportsNewgame() {
-		return false;
+		new LANReciever("play again", LANGlobal.localPlayer.ip, LANGlobal.port, new MessageRunnable(){
+			@Override
+			public void run() {
+				if(message.contains("Sure")){
+					GameAction.newGame = true;
+				}
+				else if(message.contains("No")){
+					GameAction.newGame = false;
+				}
+			}});
+		return GameAction.newGame;
 	}
 }

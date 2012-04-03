@@ -4,6 +4,7 @@ import android.graphics.Point;
 
 public class GameAction {
 	public static Point hex;
+	public static boolean newGame;
 
 	public static boolean checkWinPlayer1() {
 		for (int i = 0; i < Global.gridSize; i++) {
