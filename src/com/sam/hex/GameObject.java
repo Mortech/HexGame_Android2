@@ -20,7 +20,7 @@ public class GameObject implements Runnable {
 		while(go){
 			if (Global.currentPlayer == 1) {
 				Global.player1.getPlayerTurn();
-				if (GameAction.checkWinPlayer1()){
+				if (go && GameAction.checkWinPlayer1()){
 					go=false;
 					announceWinner(1);
 				}
@@ -29,7 +29,7 @@ public class GameObject implements Runnable {
 			}
 			else {
 				Global.player2.getPlayerTurn();
-				if (GameAction.checkWinPlayer2()){
+				if (go && GameAction.checkWinPlayer2()){
 					go=false;
 					announceWinner(2);
 				}

@@ -73,7 +73,7 @@ public class Preferences extends PreferenceActivity {
     class nameListener implements OnPreferenceChangeListener{        
         @Override
         public boolean onPreferenceChange(Preference pref, Object newValue) {
-            pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+newValue.toString());
+            pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+" "+newValue.toString());
             return true;
         }
     }
@@ -118,11 +118,11 @@ public class Preferences extends PreferenceActivity {
     	
     	//Change the summary to show the player's name
         p1Pref = findPreference("player1Name");
-        p1Pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+settings.getString("player1Name", "Player1"));
+        p1Pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+" "+settings.getString("player1Name", "Player1"));
         p1Pref.setOnPreferenceChangeListener(new nameListener());
         p2Pref = findPreference("player2Name");
         if(p2Pref!=null){
-	        p2Pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+settings.getString("player2Name", "Player2"));
+	        p2Pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+" "+settings.getString("player2Name", "Player2"));
 	        p2Pref.setOnPreferenceChangeListener(new nameListener());
         }
         
@@ -147,11 +147,15 @@ public class Preferences extends PreferenceActivity {
         .setPositiveButton("OK", new OnClickListener(){
     		@Override
     		public void onClick(DialogInterface dialog, int which) {
-    			String input = editText.getText().toString();
-    			if(input.matches("[0-9]|[1-2][0-9]|30")){
-    				settings.edit().putString("customGameSizePref", editText.getText().toString()).commit();
-    				gridPref.setSummary(getApplicationContext().getString(R.string.gameSizeSummary_onChange)+settings.getString("customGameSizePref", "7")+"x"+settings.getString("customGameSizePref", "7")+")");
+    			int input = Integer.decode(editText.getText().toString());
+    			if(input>30){
+    				input = 30;
     			}
+    			else if(input<4){
+    				input = 4;
+    			}
+    			settings.edit().putString("customGameSizePref", input+"").commit();
+    			gridPref.setSummary(getApplicationContext().getString(R.string.gameSizeSummary_onChange)+settings.getString("customGameSizePref", "7")+"x"+settings.getString("customGameSizePref", "7")+")");
     		}
         })
         .setNegativeButton("Cancel", null)

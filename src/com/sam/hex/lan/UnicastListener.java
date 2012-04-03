@@ -86,7 +86,7 @@ public class UnicastListener implements Runnable {
 	    	    	};
 
 	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+Global.board.getContext().getString(R.string.newLANGame)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
+	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+" "+Global.board.getContext().getString(R.string.newLANGame)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
 	    		}
 	    		else if(message.equals("Can I undo?")){
 	    			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -105,7 +105,7 @@ public class UnicastListener implements Runnable {
 	    	    	};
 
 	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+Global.board.getContext().getString(R.string.LANUndo)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
+	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+" "+Global.board.getContext().getString(R.string.LANUndo)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
 	    		}
 			}
 	    	catch (Exception e) {

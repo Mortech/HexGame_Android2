@@ -119,7 +119,7 @@ public class HexGame extends Activity {
      	}
     	 else if(replay){
     		replay = false;
-    		replay();
+    		replay(800);
     	}
     	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 1){
     		//Go to the local lobby
@@ -216,7 +216,7 @@ public class HexGame extends Activity {
         	newGame();
             return true;
         case R.id.replay:
-        	replay();
+        	replay(900);
             return true;
         case R.id.loadReplay:
         	startActivity(new Intent(getBaseContext(),FileExplore.class));
@@ -374,7 +374,7 @@ public class HexGame extends Activity {
     }
     
     Thread replayThread;
-    private void replay(){
+    private void replay(int time){
     	//Create our board
     	GameAction.hex = null;
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
@@ -385,7 +385,7 @@ public class HexGame extends Activity {
     	if(Global.moveNumber>1) Global.currentPlayer=(Global.currentPlayer%2)+1;
 	    
     	replayRunning = true;
-		replayThread = new Thread(new Replay(), "replay");
+		replayThread = new Thread(new Replay(time), "replay");
 		replayThread.start();
     }
     

@@ -6,7 +6,11 @@ import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 
 public class Replay implements Runnable {
-
+	int time;
+	public Replay(int time){
+		this.time = time;
+	}
+	
 	@Override
 	public void run() {
 		if(Global.game!=null && Global.gameThread.isAlive()){
@@ -20,7 +24,7 @@ public class Replay implements Runnable {
 			}
 	    	Global.gameOver=false;
     	}
-		Global.moveList.replay(900);
+		Global.moveList.replay(time);
 		GameAction.checkedFlagReset();
 		if(HexGame.replayRunning)if(GameAction.checkWinPlayer1()){Global.currentPlayer=(Global.currentPlayer%2)+1; GameObject.announceWinner(1); return;}
 		if(HexGame.replayRunning)if(GameAction.checkWinPlayer2()){Global.currentPlayer=(Global.currentPlayer%2)+1; GameObject.announceWinner(2); return;}
