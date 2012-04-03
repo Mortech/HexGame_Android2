@@ -260,7 +260,7 @@ public class HexGame extends Activity {
     	if(Global.moveNumber==1) HexGame.startNewGame=true;
     }
     
-    private void stopGame(){
+    public static void stopGame(){
     	if(Global.gameThread!=null){
     		Global.gameOver=true;
     		Global.game.stop();

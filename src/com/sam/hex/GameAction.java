@@ -120,7 +120,8 @@ public class GameAction {
 			if(Global.gameOver){
 				GameAction.hex = null;
 				Global.moveList.replay(0);
-				Global.currentPlayer = (Global.currentPlayer%2)+1;
+				Global.currentPlayer = (Global.moveNumber%2)+1;
+				Global.moveNumber--;
 				
 				Global.gameOver=false;
 				Global.game = new GameObject();

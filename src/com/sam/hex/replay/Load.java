@@ -14,6 +14,7 @@ public class Load implements Runnable{
 	@Override
 	public void run() {
 		try {
+			HexGame.stopGame();
     		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + FileExplore.chosenFile);
     		if(file!=null){
 				FileInputStream saveFile = new FileInputStream(file);
@@ -28,11 +29,13 @@ public class Load implements Runnable{
 				Global.moveNumber = savedGame.moveNumber;
 				restore.close();
 				
+				Global.currentPlayer=(Global.moveNumber%2)+1;
 				Global.player1 = new PlayerObject((byte) 1);
 				Global.player1Type = (byte) 0;
 				Global.player2 = new PlayerObject((byte) 2);
 				Global.player2Type = (byte) 0;
 				HexGame.replay = true;
+				HexGame.replayRunning = false;
 				HexGame.startNewGame = false;
 			}
 		} catch (Exception e) {

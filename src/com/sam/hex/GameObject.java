@@ -20,7 +20,7 @@ public class GameObject implements Runnable {
 		while(go){
 			if (Global.currentPlayer == 1) {
 				Global.player1.getPlayerTurn();
-				if (go && GameAction.checkWinPlayer1()){
+				if (GameAction.checkWinPlayer1()){
 					go=false;
 					announceWinner(1);
 				}
@@ -29,19 +29,17 @@ public class GameObject implements Runnable {
 			}
 			else {
 				Global.player2.getPlayerTurn();
-				if (go && GameAction.checkWinPlayer2()){
+				if (GameAction.checkWinPlayer2()){
 					go=false;
 					announceWinner(2);
 				}
 				
 				Global.currentPlayer=(Global.currentPlayer%2)+1;
 			}
-			if(go){
-				GameAction.checkedFlagReset();
-				Global.moveNumber++;
-				GameAction.hex = null;
-				Global.board.postInvalidate();
-			}
+			GameAction.checkedFlagReset();
+			Global.moveNumber++;
+			GameAction.hex = null;
+			Global.board.postInvalidate();
 		}
 		
 		System.out.println("Thread died");
