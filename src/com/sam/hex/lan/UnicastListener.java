@@ -75,11 +75,11 @@ public class UnicastListener implements Runnable {
 	    	    	        switch (which){
 	    	    	        case DialogInterface.BUTTON_POSITIVE:
 	    	    	            //Yes button clicked
-	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.port);
+	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.newgamePort);
 	    	    	            break;
 	    	    	        case DialogInterface.BUTTON_NEGATIVE:
 	    	    	            //No button clicked
-	    	    	        	new LANMessage("No, I don't want to play again", LANGlobal.localPlayer.ip, LANGlobal.port);
+	    	    	        	new LANMessage("No, I don't want to play again", LANGlobal.localPlayer.ip, LANGlobal.newgamePort);
 	    	    	            break;
 	    	    	        }
 	    	    	    }
@@ -94,11 +94,11 @@ public class UnicastListener implements Runnable {
 	    	    	        switch (which){
 	    	    	        case DialogInterface.BUTTON_POSITIVE:
 	    	    	            //Yes button clicked
-	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.port);
+	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.undoPort);
 	    	    	            break;
 	    	    	        case DialogInterface.BUTTON_NEGATIVE:
 	    	    	            //No button clicked
-	    	    	        	new LANMessage("No, you cannot undo", LANGlobal.localPlayer.ip, LANGlobal.port);
+	    	    	        	new LANMessage("No, you cannot undo", LANGlobal.localPlayer.ip, LANGlobal.undoPort);
 	    	    	            break;
 	    	    	        }
 	    	    	    }

@@ -17,9 +17,9 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {
-		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.port);
+		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.playerPort);
 		
-		new LANReciever("Move: ", LANGlobal.localPlayer.ip, LANGlobal.port, new MessageRunnable(){
+		new LANReciever("Move: ", LANGlobal.localPlayer.ip, LANGlobal.playerPort, new MessageRunnable(){
 			@Override
 			public void run() {
 				int x = Integer.decode(message.substring(message.indexOf(": "),message.indexOf(",")));
@@ -39,7 +39,7 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public boolean supportsUndo() {
-		new LANReciever("undo", LANGlobal.localPlayer.ip, LANGlobal.port, new MessageRunnable(){
+		new LANReciever("undo", LANGlobal.localPlayer.ip, LANGlobal.undoPort, new MessageRunnable(){
 			@Override
 			public void run() {
 				if(message.contains("Sure")){
@@ -53,7 +53,7 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 
 	public boolean supportsNewgame() {
-		new LANReciever("play again", LANGlobal.localPlayer.ip, LANGlobal.port, new MessageRunnable(){
+		new LANReciever("play again", LANGlobal.localPlayer.ip, LANGlobal.newgamePort, new MessageRunnable(){
 			@Override
 			public void run() {
 				if(message.contains("Sure")){
