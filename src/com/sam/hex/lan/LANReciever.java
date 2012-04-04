@@ -6,8 +6,24 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class LANReciever{
+public class LANReciever implements Runnable{
+	String message;
+	InetAddress ip;
+	int port;
+	MessageRunnable run;
+	public Thread thread;
 	public LANReciever(String message, InetAddress ip, int port, MessageRunnable run) {
+		this.message = message;
+		this.ip = ip;
+		this.port = port;
+		this.run = run;
+		
+		thread = new Thread(this, "reciever"); //Create a new thread.
+		thread.start();
+	}
+
+	@Override
+	public void run() {
 		byte[] data = new byte[1024];
 		try {
 			DatagramSocket socket = new DatagramSocket(LANGlobal.port);

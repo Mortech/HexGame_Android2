@@ -129,7 +129,7 @@ public class LocalLobbyActivity extends Activity {
         
         try {
 			//Create a socket
-			InetAddress address = InetAddress.getByName("234.235.236.237");
+			InetAddress address = InetAddress.getByName(LANGlobal.multicastAddress);
 			socket = new MulticastSocket(LANGlobal.port);
 			socket.joinGroup(address);
 			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
@@ -230,10 +230,11 @@ public class LocalLobbyActivity extends Activity {
         sent.setPositiveButton("Okay", null);
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
-    	    	if(editText.getText().toString().equals(LANGlobal.LANipAddress)){
-    	    		sent.setMessage(getApplicationContext().getString(R.string.yourIPWarning)).show();
-    	    	}
-    	    	else{
+    	    	//TODO disables calls to self
+//    	    	if(editText.getText().toString().equals(LANGlobal.LANipAddress)){
+//    	    		sent.setMessage(getApplicationContext().getString(R.string.yourIPWarning)).show();
+//    	    	}
+//    	    	else{
 					try {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
 						LocalLobbyActivity.lno.ip = local;
@@ -243,7 +244,7 @@ public class LocalLobbyActivity extends Activity {
 					catch (UnknownHostException e) {
 						e.printStackTrace();
 					}
-    	    	}
+//    	    	}
     	    }
     	};
     	

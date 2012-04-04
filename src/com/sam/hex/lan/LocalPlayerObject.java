@@ -17,16 +17,20 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {
-		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+		if(Global.moveNumber!=1) new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.playerPort);
 		
-		new LANReciever("Move: ", LANGlobal.localPlayer.ip, LANGlobal.playerPort, new MessageRunnable(){
-			@Override
-			public void run() {
-				int x = Integer.decode(message.substring(message.indexOf(": "),message.indexOf(",")));
-				int y = Integer.decode(message.substring(message.indexOf(",")));
-				GameAction.hex = new Point(x,y);
-			}
-		});
+		try {
+			new LANReciever("Move: ", LANGlobal.localPlayer.ip, LANGlobal.playerPort, new MessageRunnable(){
+				@Override
+				public void run() {
+					int x = Integer.decode(message.substring(message.indexOf(": "),message.indexOf(",")));
+					int y = Integer.decode(message.substring(message.indexOf(",")));
+					GameAction.hex = new Point(x,y);
+				}
+			}).thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		GameAction.makeMove(this, team, GameAction.hex);
 		GameAction.hex = null;
