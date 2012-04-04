@@ -160,11 +160,13 @@ public class LocalLobbyActivity extends Activity {
 		try{
 			sender.stop();
 			listener.stop();
+			mcLock.release();
+	        unregisterReceiver(broadcastReceiver);
+	        socket.close();
 		}
-		catch(Exception e){}
-        mcLock.release();
-        unregisterReceiver(broadcastReceiver);
-        socket.close();
+		catch(Exception e){
+			System.out.println(e);
+		}
         
         //Clear our cached players from the network
         LANGlobal.localObjects = new ArrayList<LocalNetworkObject>();

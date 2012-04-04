@@ -123,7 +123,7 @@ public class HexGame extends Activity {
     	}
     	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 1){
     		//Go to the local lobby
-    		Global.player2Type = 2;
+    		Global.gameLocation = 1;
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
         	finish();
     	}
@@ -369,12 +369,14 @@ public class HexGame extends Activity {
      * */
     public static boolean somethingChanged(SharedPreferences prefs){
     	if(Global.gameLocation==1){
-    		return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
+    				|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
         			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
         			|| !(Integer.decode(prefs.getString("player1Type", "0")) == (int) Global.player1Type || Integer.decode(prefs.getString("player1Type", "0")) == (int) Global.player1Type);
     	}
     	else{
-    		return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
+    				|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
     				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
     				|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;

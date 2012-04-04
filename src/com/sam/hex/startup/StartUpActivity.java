@@ -22,23 +22,6 @@ public class StartUpActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-
-    	//Load preferences
-    	final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        
-        //First button
-        final Button startButton = (Button) findViewById(R.id.startButton);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	if(Integer.parseInt(prefs.getString("gameLocation", "0")) == 1 && !(Global.gameLocation == 1 && !Global.gameOver)){
-            		startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
-            	}
-            	else{
-            		startActivity(new Intent(getBaseContext(),HexGame.class));
-            	}
-            }
-        });
-        
         //Second button
         final Button instructionsButton = (Button) findViewById(R.id.instructionsButton);
         instructionsButton.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +51,7 @@ public class StartUpActivity extends Activity {
         final Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	if(Integer.parseInt(prefs.getString("gameLocation", "0")) == 1 && !(Global.gameLocation == 1 && !Global.gameOver)){
+            	if(Integer.parseInt(prefs.getString("gameLocation", "0")) == 1 && (HexGame.somethingChanged(prefs) || HexGame.startNewGame)){
                 	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
             	}
             	else{
@@ -82,6 +65,7 @@ public class StartUpActivity extends Activity {
         else{ 
         	startButton.setText(R.string.resume);
         }
+        Global.gameLocation = Integer.parseInt(prefs.getString("gameLocation", "0"));
         
         //Set player names
     	Global.player1Name = prefs.getString("player1Name", "Player1");
