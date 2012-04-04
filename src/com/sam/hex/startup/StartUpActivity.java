@@ -30,7 +30,7 @@ public class StartUpActivity extends Activity {
         final Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	if(Integer.parseInt(prefs.getString("player2Type", "0")) == (byte)2 && !(Global.player2Type == (byte)2 && !Global.gameOver)){
+            	if(Integer.parseInt(prefs.getString("gameLocation", "0")) == 1 && !(Global.gameLocation == 1 && !Global.gameOver)){
             		startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
             	}
             	else{

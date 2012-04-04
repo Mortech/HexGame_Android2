@@ -133,7 +133,7 @@ public class LocalLobbyActivity extends Activity {
 			socket = new MulticastSocket(LANGlobal.port);
 			socket.joinGroup(address);
 			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
-			socket.setLoopbackMode(true);
+//			socket.setLoopbackMode(true);
 			
 			//Create a packet
 			String message = ("Let's play Hex. I'm "+Global.player1Name);

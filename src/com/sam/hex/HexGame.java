@@ -150,6 +150,7 @@ public class HexGame extends Activity {
     			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, 4080);
     		}
     		Global.board.invalidate();
+    		setContentView(Global.board);
     	}
     	else if(HexGame.startNewGame){
     		initializeNewGame();
@@ -257,7 +258,7 @@ public class HexGame extends Activity {
     	
     	//If the board's empty, just trigger "startNewGame"
     	System.out.println(Global.moveNumber);
-    	if(Global.moveNumber==1) HexGame.startNewGame=true;
+    	if(Global.moveNumber==1 && Global.gameLocation!=1) HexGame.startNewGame=true;
     }
     
     public static void stopGame(){
@@ -367,10 +368,17 @@ public class HexGame extends Activity {
      * Returns true if a major setting was changed
      * */
     public static boolean somethingChanged(SharedPreferences prefs){
-    	return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
-    			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
-    			|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
-    			|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;
+    	if(Global.gameLocation==1){
+    		return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+        			|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
+        			|| !(Integer.decode(prefs.getString("player1Type", "0")) == (int) Global.player1Type || Integer.decode(prefs.getString("player1Type", "0")) == (int) Global.player1Type);
+    	}
+    	else{
+    		return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
+    				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
+    				|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;
+    	}
     }
     
     Thread replayThread;
