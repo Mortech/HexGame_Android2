@@ -9,11 +9,11 @@ import com.sam.hex.PlayingEntity;
 public class LocalPlayerObject implements PlayingEntity {
 	byte[][] gameBoard; 
 	byte team;
-	UnicastListener listener;
+	PlayerUnicastListener listener;
 	
 	public LocalPlayerObject(byte team) {
 		this.team=team;//Set the player's team
-		listener = new UnicastListener(team);
+		listener = new PlayerUnicastListener(team);
 	}
 	
 	public void getPlayerTurn() {

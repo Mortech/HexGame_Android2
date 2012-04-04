@@ -26,7 +26,7 @@ public class LANReciever implements Runnable{
 	public void run() {
 		byte[] data = new byte[1024];
 		try {
-			DatagramSocket socket = new DatagramSocket(LANGlobal.port);
+			DatagramSocket socket = new DatagramSocket(port);
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			socket.receive(packet);
 			String packetMessage = new String(data, 0, packet.getLength());

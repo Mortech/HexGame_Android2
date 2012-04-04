@@ -5,30 +5,28 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import com.sam.hex.Global;
-import com.sam.hex.HexGame;
-import com.sam.hex.R;
+
+import android.graphics.Color;
+import android.os.Handler;
 
 public class UnicastListener implements Runnable {
 	Thread thread;
 	boolean run = true;
 	DatagramSocket socket;
-	SharedPreferences prefs;
-	int team;
+	Handler handler;
+	Runnable challenger;
+	Runnable startGame;
 	
-	public UnicastListener(int team) {
-		this.team = team;
+	public UnicastListener(Handler handler, Runnable challenger, Runnable startGame) {
 		try {
-			this.socket = new DatagramSocket();
+			this.socket = new DatagramSocket(LANGlobal.challengerPort);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-		prefs = PreferenceManager.getDefaultSharedPreferences(Global.board.getContext());
+		this.handler = handler;
+		this.challenger = challenger;
+		this.startGame = startGame;
 		thread = new Thread(this, "LANscan"); //Create a new thread.
 		thread.start(); //Start the thread.
 	}
@@ -42,77 +40,52 @@ public class UnicastListener implements Runnable {
 	    		DatagramPacket packet = new DatagramPacket(data, data.length);
 	    		socket.receive(packet);
 	    		String message = new String(data, 0, packet.getLength());
+	    		System.out.println(message);
 	    		InetAddress address = packet.getAddress();        		
         		
-	    		if(!LANGlobal.localPlayer.ip.equals(address)) break;
-	    		
-	    		System.out.println(message);
-	    		if(message.contains("Move: ")){
-	    			//Full message looks like: Move: _x_,_y_
+	    		if(message.contains("challenges you. Grid size: ")){
+	    			boolean flag = true;
+	    			for(int i=0;i<LANGlobal.localObjects.size();i++){
+	        			if(LANGlobal.localObjects.get(i).ip.equals(address)){
+	        				flag = false;
+	        				LocalLobbyActivity.lno = LANGlobal.localObjects.get(i);
+	        				LocalLobbyActivity.lno.firstMove = true;
+	        				//Full message looks like: _playername_ challenges you. Grid size: _gridsize_
+	        				LocalLobbyActivity.lno.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));//Grab the grid size from the end of the message
+	        				handler.post(challenger);
+	        				break;
+	        			}
+	        		}
+	    			if(flag){
+	    				LocalLobbyActivity.lno.playerName = message.substring(0, message.lastIndexOf(" challenges you"));
+	    				LocalLobbyActivity.lno.firstMove = true;
+	    				LocalLobbyActivity.lno.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));
+	    				LocalLobbyActivity.lno.ip = address;
+	    				handler.post(challenger);
+	    			}
+	    		}
+	    		else if(message.contains("It's on! My color's ") && LocalLobbyActivity.lno.ip.equals(address)){
+	    			//Full message looks like: It's on! My color's _playercolor_
+	    			LocalLobbyActivity.lno.playerColor = Integer.decode(message.substring(20));//Grab the color from the end of the message
 	    			
-	    		}
-	    		else if(message.contains("I changed my color to ")){
-	    			//Full message looks like: I changed my color to _color_
-	    			LANGlobal.localPlayer.playerColor = Integer.decode(message.substring(22));
-	    			HexGame.setColors(prefs);
-	    			Global.board.postInvalidate();
-	    		}
-	    		else if(message.contains("I changed my name to ")){
-	    			//Full message looks like: I changed my name to _name_
-	    			LANGlobal.localPlayer.playerName = message.substring(21);
-	    			HexGame.setNames(prefs);
-	    			Global.board.postInvalidate();
-	    		}
-	    		else if(message.equals("I win!")){
+	    			//Send our color over
+	    			new LANMessage("My color is "+Global.player1Color, LocalLobbyActivity.lno.ip, LANGlobal.challengerPort);
 	    			
+	    			handler.post(startGame);
+    				break;
 	    		}
-	    		else if(message.equals("Cheater.")){
+	    		else if(message.contains("My color is ") && LocalLobbyActivity.lno.ip.equals(address)){
+	    			//Full message looks like: My color is _playercolor_
+	    			LANGlobal.localPlayer.playerColor = Color.parseColor(message.substring(12));//Grab the color from the end of the message
 	    			
-	    		}
-	    		else if(message.equals("Want to play a new game?")){
-	    			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-	    	    	    public void onClick(DialogInterface dialog, int which) {
-	    	    	        switch (which){
-	    	    	        case DialogInterface.BUTTON_POSITIVE:
-	    	    	            //Yes button clicked
-	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.newgamePort);
-	    	    	            break;
-	    	    	        case DialogInterface.BUTTON_NEGATIVE:
-	    	    	            //No button clicked
-	    	    	        	new LANMessage("No, I don't want to play again", LANGlobal.localPlayer.ip, LANGlobal.newgamePort);
-	    	    	            break;
-	    	    	        }
-	    	    	    }
-	    	    	};
-
-	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+" "+Global.board.getContext().getString(R.string.newLANGame)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
-	    		}
-	    		else if(message.equals("Can I undo?")){
-	    			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-	    	    	    public void onClick(DialogInterface dialog, int which) {
-	    	    	        switch (which){
-	    	    	        case DialogInterface.BUTTON_POSITIVE:
-	    	    	            //Yes button clicked
-	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.undoPort);
-	    	    	            break;
-	    	    	        case DialogInterface.BUTTON_NEGATIVE:
-	    	    	            //No button clicked
-	    	    	        	new LANMessage("No, you cannot undo", LANGlobal.localPlayer.ip, LANGlobal.undoPort);
-	    	    	            break;
-	    	    	        }
-	    	    	    }
-	    	    	};
-
-	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+" "+Global.board.getContext().getString(R.string.LANUndo)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
+	    			handler.post(startGame);
+	    			break;
 	    		}
 			}
 	    	catch (Exception e) {
-				e.printStackTrace();
+				System.out.println(e);
 			}
 	    }
-
 	}
 	
 	public void stop() {

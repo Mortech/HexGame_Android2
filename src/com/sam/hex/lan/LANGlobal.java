@@ -13,4 +13,5 @@ public class LANGlobal {
 	public final static int playerPort = 4083;
 	public final static int newgamePort = 4084;
 	public final static int undoPort = 4085;
+	public final static int challengerPort = 4086;
 }

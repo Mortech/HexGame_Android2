@@ -37,7 +37,8 @@ public class LocalLobbyActivity extends Activity {
 	MulticastLock mcLock;
 	WifiBroadcastReceiver broadcastReceiver;
 	IntentFilter intentFilter;
-	MulticastListener listener;
+	MulticastListener multicastListener;
+	UnicastListener unicastListener;
 	MulticastSender sender;
 	MulticastSocket socket;
 	public static LocalNetworkObject lno = new LocalNetworkObject("", null);
@@ -76,7 +77,7 @@ public class LocalLobbyActivity extends Activity {
         mcLock = wm.createMulticastLock("broadcastlock");
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
-        broadcastReceiver = new WifiBroadcastReceiver(handler, updateResults, challenger, startGame, listener, sender, wm);
+        broadcastReceiver = new WifiBroadcastReceiver(handler, updateResults, challenger, startGame, multicastListener, unicastListener, sender, wm);
         
         final Button ipButton = (Button) findViewById(R.id.customIP);
         ipButton.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +143,8 @@ public class LocalLobbyActivity extends Activity {
 			//Start sending
 			sender=new MulticastSender(socket,packet);
 			//Start listening
-	        listener=new MulticastListener(socket, handler, updateResults, challenger, startGame);
+	        multicastListener=new MulticastListener(socket, handler, updateResults);
+	        unicastListener=new UnicastListener(handler, challenger, startGame);
 		}
         catch (Exception e) {
 			System.out.println(e);
@@ -158,11 +160,12 @@ public class LocalLobbyActivity extends Activity {
     	
     	//Kill our threads
 		try{
+			unregisterReceiver(broadcastReceiver);
 			sender.stop();
-			listener.stop();
-			mcLock.release();
-	        unregisterReceiver(broadcastReceiver);
+			multicastListener.stop();
+			unicastListener.stop();
 	        socket.close();
+	        mcLock.release();
 		}
 		catch(Exception e){
 			System.out.println(e);
@@ -178,7 +181,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, LANGlobal.port);
+    	        	new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, LANGlobal.challengerPort);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -198,7 +201,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage("It's on! My color's "+Global.player1Color, lno.ip, LANGlobal.port);
+    	        	new LANMessage("It's on! My color's "+Global.player1Color, lno.ip, LANGlobal.challengerPort);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -240,7 +243,7 @@ public class LocalLobbyActivity extends Activity {
 					try {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
 						LocalLobbyActivity.lno.ip = local;
-						new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, LANGlobal.port);
+						new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, LANGlobal.challengerPort);
 						sent.setMessage(getApplicationContext().getString(R.string.challengeSent)).show();
 					}
 					catch (UnknownHostException e) {
