@@ -5,7 +5,7 @@
     android:baselineAligned="false"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="0.46"
@@ -74,6 +74,6 @@
             android:textColor="#000000"
             android:textSize="40dp" />
 
-    </RelativeLayout>
+    </RelativeLayout> -->
 
 </LinearLayout>

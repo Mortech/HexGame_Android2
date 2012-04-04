@@ -117,7 +117,7 @@ public class LocalLobbyActivity extends Activity {
         	};
 
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        	builder.setMessage(getApplicationContext().getString(R.string.wifiOff)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.yes), dialogClickListener).show();
+        	builder.setMessage(getApplicationContext().getString(R.string.wifiOff)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
         }
         
         //Allow for broadcasts
@@ -133,7 +133,7 @@ public class LocalLobbyActivity extends Activity {
 			socket = new MulticastSocket(LANGlobal.port);
 			socket.joinGroup(address);
 			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
-//			socket.setLoopbackMode(true);
+			socket.setLoopbackMode(true);
 			
 			//Create a packet
 			String message = ("Let's play Hex. I'm "+Global.player1Name);
@@ -227,14 +227,14 @@ public class LocalLobbyActivity extends Activity {
     	final EditText editText = new EditText(this);
     	editText.setInputType(InputType.TYPE_CLASS_PHONE);
     	final AlertDialog.Builder sent = new AlertDialog.Builder(this);
-        sent.setPositiveButton("Okay", null);
+        sent.setPositiveButton(getApplicationContext().getString(R.string.okay), null);
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
     	    	//TODO disables calls to self
-//    	    	if(editText.getText().toString().equals(LANGlobal.LANipAddress)){
-//    	    		sent.setMessage(getApplicationContext().getString(R.string.yourIPWarning)).show();
-//    	    	}
-//    	    	else{
+    	    	if(editText.getText().toString().equals(LANGlobal.LANipAddress)){
+    	    		sent.setMessage(getApplicationContext().getString(R.string.yourIPWarning)).show();
+    	    	}
+    	    	else{
 					try {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
 						LocalLobbyActivity.lno.ip = local;
@@ -244,7 +244,7 @@ public class LocalLobbyActivity extends Activity {
 					catch (UnknownHostException e) {
 						e.printStackTrace();
 					}
-//    	    	}
+    	    	}
     	    }
     	};
     	

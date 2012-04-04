@@ -66,6 +66,7 @@ public class MulticastListener implements Runnable {
 	    				LocalLobbyActivity.lno.playerName = message.substring(0, message.lastIndexOf(" challenges you"));
 	    				LocalLobbyActivity.lno.firstMove = true;
 	    				LocalLobbyActivity.lno.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));
+	    				LocalLobbyActivity.lno.ip = address;
 	    				handler.post(challenger);
 	    			}
 	    		}
@@ -74,7 +75,7 @@ public class MulticastListener implements Runnable {
 	    			LocalLobbyActivity.lno.playerColor = Integer.decode(message.substring(20));//Grab the color from the end of the message
 	    			
 	    			//Send our color over
-	    			new LANMessage("My color is "+Global.player1Color, LocalLobbyActivity.lno.ip, 4080);
+	    			new LANMessage("My color is "+Global.player1Color, LocalLobbyActivity.lno.ip, LANGlobal.port);
 	    			
 	    			handler.post(startGame);
     				break;

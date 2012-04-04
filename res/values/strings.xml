@@ -73,6 +73,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="enter">Enter</string>
+    <string name="okay">Okay</string>
     
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
