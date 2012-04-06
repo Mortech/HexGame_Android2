@@ -7,7 +7,6 @@ import java.net.SocketException;
 
 import com.sam.hex.Global;
 
-import android.graphics.Color;
 import android.os.Handler;
 
 public class UnicastListener implements Runnable {
@@ -66,7 +65,7 @@ public class UnicastListener implements Runnable {
 	    		}
 	    		else if(message.contains("It's on! My color's ") && LocalLobbyActivity.lno.ip.equals(address)){
 	    			//Full message looks like: It's on! My color's _playercolor_
-	    			LocalLobbyActivity.lno.playerColor = Integer.decode(message.substring(20));//Grab the color from the end of the message
+	    			LocalLobbyActivity.lno.playerColor = Integer.parseInt(message.substring(20));//Grab the color from the end of the message
 	    			
 	    			//Send our color over
 	    			new LANMessage("My color is "+Global.player1Color, LocalLobbyActivity.lno.ip, LANGlobal.challengerPort);
@@ -76,7 +75,7 @@ public class UnicastListener implements Runnable {
 	    		}
 	    		else if(message.contains("My color is ") && LocalLobbyActivity.lno.ip.equals(address)){
 	    			//Full message looks like: My color is _playercolor_
-	    			LANGlobal.localPlayer.playerColor = Color.parseColor(message.substring(12));//Grab the color from the end of the message
+	    			LANGlobal.localPlayer.playerColor = Integer.parseInt(message.substring(12));//Grab the color from the end of the message
 	    			
 	    			handler.post(startGame);
 	    			break;

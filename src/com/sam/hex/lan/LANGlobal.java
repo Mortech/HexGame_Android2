@@ -2,6 +2,8 @@ package com.sam.hex.lan;
 
 import java.util.ArrayList;
 
+import android.graphics.Point;
+
 public class LANGlobal {
 	public static ArrayList<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
 	public static LocalNetworkObject localPlayer;
@@ -14,4 +16,5 @@ public class LANGlobal {
 	public final static int newgamePort = 4084;
 	public final static int undoPort = 4085;
 	public final static int challengerPort = 4086;
+	public static Point hex;
 }

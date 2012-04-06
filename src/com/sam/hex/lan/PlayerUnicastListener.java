@@ -8,6 +8,7 @@ import java.net.SocketException;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.preference.PreferenceManager;
 
 import com.sam.hex.Global;
@@ -47,7 +48,12 @@ public class PlayerUnicastListener implements Runnable {
 	    		if(!LANGlobal.localPlayer.ip.equals(address)) break;
 	    		
 	    		System.out.println(message);
-	    		if(message.contains("I changed my color to ")){
+	    		if(message.contains("Move: ")){
+	    			int x = Integer.decode(message.substring(message.indexOf(": ")+2,message.indexOf(",")));
+					int y = Integer.decode(message.substring(message.indexOf(",")+1));
+					LANGlobal.hex = new Point(x,y);
+	    		}
+	    		else if(message.contains("I changed my color to ")){
 	    			//Full message looks like: I changed my color to _color_
 	    			LANGlobal.localPlayer.playerColor = Integer.decode(message.substring(22));
 	    			HexGame.setColors(prefs);

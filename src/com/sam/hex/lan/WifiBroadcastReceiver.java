@@ -3,7 +3,6 @@ package com.sam.hex.lan;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.util.ArrayList;
 
 import com.sam.hex.Global;
 
@@ -41,7 +40,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	    if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
 	        if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)) {
 	        	//Clear our cached players from the network
-	            LANGlobal.localObjects = new ArrayList<LocalNetworkObject>();
+	            LANGlobal.localObjects.clear();
 	        	handler.post(updateResults);
 	        	
 	        	//Get our new ip address
@@ -54,18 +53,19 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	        			sender.stop();
 	        			multicastListener.stop();
 	        			unicastListener.stop();
-	        			Thread.sleep(600);
+	        			sender.thread.join();
+	        			multicastListener.thread.join();
+	        			unicastListener.thread.join();
 	        		}
 	        		
 					//Create a socket
 					InetAddress address = InetAddress.getByName("234.235.236.237");
-					int port = 4080;
-					MulticastSocket socket = new MulticastSocket(port);
+					MulticastSocket socket = new MulticastSocket(LANGlobal.port);
 					socket.joinGroup(address);
 					
 					//Create a packet
 					String message = ("Let's play Hex. I'm "+Global.player1Name);
-					DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, port);
+					DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.port);
 					
 					//Start sending
 					sender=new MulticastSender(socket,packet);
@@ -80,7 +80,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	        else {
 	            //Wifi connection was lost
 	        	//Clear our cached players from the network
-	            LANGlobal.localObjects = new ArrayList<LocalNetworkObject>();
+	            LANGlobal.localObjects.clear();
 	        	handler.post(updateResults);
 	        }
 	    }

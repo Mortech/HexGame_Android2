@@ -12,6 +12,7 @@ public class PlayerObject implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {
+		GameAction.hex = null;
 		looper: while (true) {
 			Point hex = GameAction.hex;
 			while (hex == null) {
@@ -40,6 +41,7 @@ public class PlayerObject implements PlayingEntity {
 	}
 
 	public void newgameCalled() {
+		GameAction.hex = new Point(-1,-1);
 	}
 
 	@Override

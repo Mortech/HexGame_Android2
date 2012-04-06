@@ -4,8 +4,6 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
@@ -42,14 +40,10 @@ public class LocalLobbyActivity extends Activity {
 	MulticastSender sender;
 	MulticastSocket socket;
 	public static LocalNetworkObject lno = new LocalNetworkObject("", null);
-	private List<LocalNetworkObject> players = new ArrayList<LocalNetworkObject>();
     final Handler handler = new Handler();
     final Runnable updateResults = new Runnable() {
         public void run() {
-        	if(players!=LANGlobal.localObjects){
-        		players = LANGlobal.localObjects;
-        		updateResultsInUi();
-        	}
+        	updateResultsInUi();
         }
     };
     final Runnable challenger = new Runnable() {
@@ -172,7 +166,7 @@ public class LocalLobbyActivity extends Activity {
 		}
         
         //Clear our cached players from the network
-        LANGlobal.localObjects = new ArrayList<LocalNetworkObject>();
+        LANGlobal.localObjects.clear();
     }
     
     private void challengeSent(final LocalNetworkObject lno){
@@ -235,11 +229,10 @@ public class LocalLobbyActivity extends Activity {
         sent.setPositiveButton(getApplicationContext().getString(R.string.okay), null);
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
-    	    	//TODO disables calls to self
     	    	if(editText.getText().toString().equals(LANGlobal.LANipAddress)){
     	    		sent.setMessage(getApplicationContext().getString(R.string.yourIPWarning)).show();
     	    	}
-    	    	else{
+    	    	else if(!editText.getText().toString().equals("")){
 					try {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
 						LocalLobbyActivity.lno.ip = local;

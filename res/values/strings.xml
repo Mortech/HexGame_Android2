@@ -25,10 +25,6 @@
     <string name="player2TypeSummary">Switch between Player and Computer</string>
     <string name="player2ColorTitle">Player2\'s Color</string>
     <string name="player2ColorSummary">Pick a color for Player2</string>
-    <string name="replayTitle">Replay</string>
-    <string name="replaySummary">Replay the current game</string>
-    <string name="loadReplayTitle">Load a Replay</string>
-    <string name="loadReplaySummary">Load a replay off the sd card</string>
     <string name="resetTitle">Reset to Defaults</string>
     <string name="resetSummary">Reset all settings to their defaults</string>
     
