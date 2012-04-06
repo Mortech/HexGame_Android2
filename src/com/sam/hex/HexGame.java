@@ -139,23 +139,24 @@ public class HexGame extends Activity {
     		//Check if the color changed
     		if(Global.player1 instanceof PlayerObject && Global.player1Color != prefs.getInt("player1Color", Global.player1DefaultColor)){
     			setColors(prefs);
-    			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, 4080);
+    			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.playerPort);
     		}
     		else if(Global.player2 instanceof PlayerObject && Global.player2Color != prefs.getInt("player2Color", Global.player2DefaultColor)){
     			setColors(prefs);
-    			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, 4080);
+    			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.playerPort);
     		}
     		
     		//Check if the name changed
     		if(Global.player1 instanceof PlayerObject && !Global.player1Name.equals(prefs.getString("player1Name", Global.player1Name))){
     			setNames(prefs);
-    			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, 4080);
+    			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.playerPort);
     		}
     		else if(Global.player2 instanceof PlayerObject && !Global.player2Name.equals(prefs.getString("player2Name", Global.player2Name))){
     			setNames(prefs);
-    			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, 4080);
+    			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.playerPort);
     		}
-    		Global.board.invalidate();
+    		Global.board=new BoardView(this);
+        	Global.board.setOnTouchListener(new TouchListener());
     		setContentView(Global.board);
     	}
     	else if(somethingChanged(prefs)){
