@@ -60,12 +60,12 @@ public class StartUpActivity extends Activity {
             }
         });
         if(HexGame.somethingChanged(prefs) || HexGame.startNewGame){
+        	HexGame.startNewGame = true;
         	startButton.setText(R.string.start);
     	}
         else{ 
         	startButton.setText(R.string.resume);
         }
-        Global.gameLocation = Integer.parseInt(prefs.getString("gameLocation", "0"));
         
         //Set player names
     	Global.player1Name = prefs.getString("player1Name", "Player1");

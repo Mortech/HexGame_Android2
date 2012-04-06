@@ -72,6 +72,9 @@ public class HexGame extends Activity {
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
+    	//Set game location
+    	Global.gameLocation = Integer.parseInt(prefs.getString("gameLocation", "0"));
+    	
     	//Return to the first player
     	Global.currentPlayer = 1;
     	
@@ -127,7 +130,10 @@ public class HexGame extends Activity {
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
         	finish();
     	}
-    	else if(Global.gameLocation == 1){
+    	else if(HexGame.startNewGame){
+    		initializeNewGame();
+    	}
+    	else if(Integer.decode(prefs.getString("gameLocation", "0")) == 1){
     		//We're in an existing local game
     		
     		//Check if the color changed
@@ -151,9 +157,6 @@ public class HexGame extends Activity {
     		}
     		Global.board.invalidate();
     		setContentView(Global.board);
-    	}
-    	else if(HexGame.startNewGame){
-    		initializeNewGame();
     	}
     	else if(somethingChanged(prefs)){
     		//Reset the game
@@ -257,7 +260,6 @@ public class HexGame extends Activity {
     	super.onPause();
     	
     	//If the board's empty, just trigger "startNewGame"
-    	System.out.println(Global.moveNumber);
     	if(Global.moveNumber==1 && Global.gameLocation!=1) HexGame.startNewGame=true;
     }
     
@@ -346,10 +348,6 @@ public class HexGame extends Activity {
     }
     
     private void newGame(){
-    	if(Global.gameLocation==1){
-    		//Inside a LAN game
-    		new LANMessage("Want to play a new game?", LANGlobal.localPlayer.ip, LANGlobal.port);
-    	}
     	if(Global.player1.supportsNewgame() && Global.player2.supportsNewgame()){
 			if(replayRunning){
 				replayRunning = false;

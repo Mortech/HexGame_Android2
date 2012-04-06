@@ -60,12 +60,12 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	        		
 					//Create a socket
 					InetAddress address = InetAddress.getByName("234.235.236.237");
-					MulticastSocket socket = new MulticastSocket(LANGlobal.port);
+					MulticastSocket socket = new MulticastSocket(LANGlobal.multicastPort);
 					socket.joinGroup(address);
 					
 					//Create a packet
 					String message = ("Let's play Hex. I'm "+Global.player1Name);
-					DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.port);
+					DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.multicastPort);
 					
 					//Start sending
 					sender=new MulticastSender(socket,packet);

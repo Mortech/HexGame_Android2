@@ -63,6 +63,10 @@
     <string name="challengeSent">Challenge sent</string>
     <string name="newLANGame"> wants to play a new game. Accept?</string>
     <string name="LANUndo"> wants to undo. Accept?</string>
+    <string name="LANplayAgain">The other player agreed to a new game.</string>
+    <string name="LANdontPlayAgain">The other player denied a new game.</string>
+    <string name="LANundoAccepted">The other player allowed an undo.</string>
+    <string name="LANundoDenied">The other player denied an undo.</string>
     <string name="wifiOff">Wifi is off. Enable?</string>
     <string name="yourIP">Your ip address is: </string>
     <string name="yourIPWarning">That\'s your own ip</string>

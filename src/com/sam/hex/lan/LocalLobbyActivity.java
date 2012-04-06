@@ -125,14 +125,14 @@ public class LocalLobbyActivity extends Activity {
         try {
 			//Create a socket
 			InetAddress address = InetAddress.getByName(LANGlobal.multicastAddress);
-			socket = new MulticastSocket(LANGlobal.port);
+			socket = new MulticastSocket(LANGlobal.multicastPort);
 			socket.joinGroup(address);
 			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
 //			socket.setLoopbackMode(true);
 			
 			//Create a packet
 			String message = ("Let's play Hex. I'm "+Global.player1Name);
-			DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.port);
+			DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.multicastPort);
 			
 			//Start sending
 			sender=new MulticastSender(socket,packet);

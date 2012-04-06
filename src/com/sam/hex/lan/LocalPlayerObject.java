@@ -17,8 +17,6 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {
-		System.out.println("Yay, my turn");
-		
 		if(Global.moveNumber!=1) new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.playerPort);
 		
 		LANGlobal.hex = null;
@@ -50,34 +48,19 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 
 	public void newgameCalled() {
+		LANGlobal.hex = new Point(-1,-1);
+		listener.stop();
 	}
 	
 	public boolean supportsUndo() {
-		new LANReciever("undo", LANGlobal.localPlayer.ip, LANGlobal.undoPort, new MessageRunnable(){
-			@Override
-			public void run() {
-				if(message.contains("Sure")){
-					GameAction.newGame = true;
-				}
-				else if(message.contains("No")){
-					GameAction.newGame = false;
-				}
-			}});
-		return GameAction.newGame;
+		new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+		
+		return false;
 	}
 
 	public boolean supportsNewgame() {
-		LANGlobal.hex = new Point(-1,-1);
-		new LANReciever("play again", LANGlobal.localPlayer.ip, LANGlobal.newgamePort, new MessageRunnable(){
-			@Override
-			public void run() {
-				if(message.contains("Sure")){
-					GameAction.newGame = true;
-				}
-				else if(message.contains("No")){
-					GameAction.newGame = false;
-				}
-			}});
-		return GameAction.newGame;
+		new LANMessage("Want to play a new game?", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+		
+		return false;
 	}
 }
