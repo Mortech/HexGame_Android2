@@ -21,6 +21,7 @@ public class Preferences extends PreferenceActivity {
 	SharedPreferences settings;
 	Preference p1Pref;
 	Preference p2Pref;
+	Preference lanPlPref;
 	Preference resetPref;
 	EditTextPreference customGridPref;
 	PreferenceScreen screen;
@@ -34,11 +35,14 @@ public class Preferences extends PreferenceActivity {
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         
         addPreferencesFromResource(R.layout.preferences_general);
-        addPreferencesFromResource(R.layout.preferences_player1);
         ListPreference val = (ListPreference) findPreference("gameLocation");
         if(val.getValue().equals("0")){
+        	addPreferencesFromResource(R.layout.preferences_player1);
     		addPreferencesFromResource(R.layout.preferences_player2);
     	}
+        else if(val.getValue().equals("1")){
+        	addPreferencesFromResource(R.layout.preferences_lanplayer);
+        }
     	addPreferencesFromResource(R.layout.preferences_reset);
         
         //Hide custom grid size preference
@@ -54,10 +58,13 @@ public class Preferences extends PreferenceActivity {
         	int val = Integer.decode(newValue.toString());
         	screen.removeAll();
         	addPreferencesFromResource(R.layout.preferences_general);
-            addPreferencesFromResource(R.layout.preferences_player1);
             if(val==0){
+            	addPreferencesFromResource(R.layout.preferences_player1);
         		addPreferencesFromResource(R.layout.preferences_player2);
         	}
+            else if(val==1){
+            	addPreferencesFromResource(R.layout.preferences_lanplayer);
+            }
         	addPreferencesFromResource(R.layout.preferences_reset);
         	
         	//Hide custom grid size preference
@@ -118,12 +125,19 @@ public class Preferences extends PreferenceActivity {
     	
     	//Change the summary to show the player's name
         p1Pref = findPreference("player1Name");
-        p1Pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+" "+settings.getString("player1Name", "Player1"));
-        p1Pref.setOnPreferenceChangeListener(new nameListener());
+        if(p1Pref!=null){
+        	p1Pref.setSummary(getApplicationContext().getString(R.string.player1NameSummary_onChange)+" "+settings.getString("player1Name", "Player1"));
+        	p1Pref.setOnPreferenceChangeListener(new nameListener());
+        }
         p2Pref = findPreference("player2Name");
         if(p2Pref!=null){
 	        p2Pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+" "+settings.getString("player2Name", "Player2"));
 	        p2Pref.setOnPreferenceChangeListener(new nameListener());
+        }
+        lanPlPref = findPreference("lanPlayerName");
+        if(lanPlPref!=null){
+	        lanPlPref.setSummary(getApplicationContext().getString(R.string.lanPlayerNameSummary_onChange)+" "+settings.getString("lanPlayerName", "Player"));
+	        lanPlPref.setOnPreferenceChangeListener(new nameListener());
         }
         
         //Set up the code to return everything to default

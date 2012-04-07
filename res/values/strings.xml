@@ -11,6 +11,7 @@
     <string name="gameSizeSummary">Pick a size for the gameboard (Current: 7x7)</string>
     <string name="gameSizeSummary_onChange">Pick a size for the gameboard (Current: </string>
     <string name="customGameSizeSummary">Enter a grid size (Ex. 9)</string>
+    
     <string name="player1NameTitle">Player1\'s Name</string>
     <string name="player1NameSummary">Name: Player1</string>
     <string name="player1NameSummary_onChange">Name: </string>
@@ -18,6 +19,7 @@
     <string name="player1TypeSummary">Switch between Player and Computer</string>
     <string name="player1ColorTitle">Player1\'s Color</string>
     <string name="player1ColorSummary">Pick a color for Player1</string>
+    
     <string name="player2NameTitle">Player2\'s Name</string>
     <string name="player2NameSummary">Name: Player2</string>
     <string name="player2NameSummary_onChange">Name: </string>
@@ -25,6 +27,15 @@
     <string name="player2TypeSummary">Switch between Player and Computer</string>
     <string name="player2ColorTitle">Player2\'s Color</string>
     <string name="player2ColorSummary">Pick a color for Player2</string>
+    
+    <string name="lanPlayerNameTitle">Player\'s Name</string>
+    <string name="lanPlayerNameSummary">Name: Player</string>
+    <string name="lanPlayerNameSummary_onChange">Name: </string>
+    <string name="lanPlayerTypeTitle">Player\'s Type</string>
+    <string name="lanPlayerTypeSummary">Switch between Player and Computer</string>
+    <string name="lanPlayerColorTitle">Player\'s Color</string>
+    <string name="lanPlayerColorSummary">Pick a color for Player</string>
+    
     <string name="resetTitle">Reset to Defaults</string>
     <string name="resetSummary">Reset all settings to their defaults</string>
     

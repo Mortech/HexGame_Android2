@@ -24,6 +24,16 @@
         <!-- <item>3</item> -->
         <item>4</item>
     </string-array>
+    <string-array name="lanPlayerArray">
+        <item>Human</item>
+        <item>Computer (Will)</item>
+        <item>Computer (Bee)</item>
+    </string-array>
+    <string-array name="lanPlayerValues">
+        <item>0</item>
+        <item>1</item>
+        <item>4</item>
+    </string-array>
     <string-array name="gameSizeArray">
         <item>7x7</item>
         <item>9x9</item>

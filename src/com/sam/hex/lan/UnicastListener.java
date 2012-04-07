@@ -5,8 +5,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-import com.sam.hex.Global;
-
 import android.os.Handler;
 
 public class UnicastListener implements Runnable {
@@ -68,7 +66,7 @@ public class UnicastListener implements Runnable {
 	    			LocalLobbyActivity.lno.playerColor = Integer.parseInt(message.substring(20));//Grab the color from the end of the message
 	    			
 	    			//Send our color over
-	    			new LANMessage("My color is "+Global.player1Color, LocalLobbyActivity.lno.ip, LANGlobal.challengerPort);
+	    			new LANMessage("My color is "+LANGlobal.playerColor, LocalLobbyActivity.lno.ip, LANGlobal.challengerPort);
 	    			
 	    			handler.post(startGame);
     				break;

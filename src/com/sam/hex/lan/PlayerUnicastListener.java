@@ -5,7 +5,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -73,64 +72,73 @@ public class PlayerUnicastListener implements Runnable {
 	    			
 	    		}
 	    		else if(message.equals("Want to play a new game?")){
-	    			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-	    	    	    public void onClick(DialogInterface dialog, int which) {
-	    	    	        switch (which){
-	    	    	        case DialogInterface.BUTTON_POSITIVE:
-	    	    	            //Yes button clicked
-	    	    	        	HexGame.startNewGame=true;
-	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
-	    	    	            break;
-	    	    	        case DialogInterface.BUTTON_NEGATIVE:
-	    	    	            //No button clicked
-	    	    	        	new LANMessage("No, I don't want to play again", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
-	    	    	            break;
-	    	    	        }
-	    	    	    }
-	    	    	};
-
-	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+" "+Global.board.getContext().getString(R.string.newLANGame)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
+	    			new DialogBox(Global.board.getContext(), 
+	    					LANGlobal.localPlayer.playerName+" "+Global.board.getContext().getString(R.string.newLANGame), 
+	    					new DialogInterface.OnClickListener() {
+	    	    	    	    public void onClick(DialogInterface dialog, int which) {
+	    	    	    	        switch (which){
+	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
+	    	    	    	            //Yes button clicked
+	    	    	    	        	HexGame.startNewGame=true;
+	    	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+	    	    	    	            break;
+	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
+	    	    	    	            //No button clicked
+	    	    	    	        	new LANMessage("No, I don't want to play again", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+	    	    	    	            break;
+	    	    	    	        }
+	    	    	    	    }
+	    	    	    	}, 
+	    	    	    	Global.board.getContext().getString(R.string.yes), 
+	    	    	    	Global.board.getContext().getString(R.string.no));
 	    		}
 	    		else if(message.equals("Sure, let's play again")){
 	    			HexGame.startNewGame=true;
-	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(Global.board.getContext().getString(R.string.LANplayAgain)).setNeutralButton(Global.board.getContext().getString(R.string.okay), null).show();
-	    		}
+	    			new DialogBox(Global.board.getContext(), 
+	    					Global.board.getContext().getString(R.string.LANplayAgain), 
+	    					null, 
+	    					Global.board.getContext().getString(R.string.okay));
+	    	    }
 	    		else if(message.equals("No, I don't want to play again")){
-	    			AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(Global.board.getContext().getString(R.string.LANdontPlayAgain)).setNeutralButton(Global.board.getContext().getString(R.string.okay), null).show();
+	    			new DialogBox(Global.board.getContext(), 
+	    					Global.board.getContext().getString(R.string.LANdontPlayAgain), 
+	    					null, 
+	    					Global.board.getContext().getString(R.string.okay));
 	    		}
 	    		else if(message.equals("Can I undo?")){
-	    			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-	    	    	    public void onClick(DialogInterface dialog, int which) {
-	    	    	        switch (which){
-	    	    	        case DialogInterface.BUTTON_POSITIVE:
-	    	    	            //Yes button clicked
-	    	    	        	GameAction.undo();
-	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
-	    	    	            break;
-	    	    	        case DialogInterface.BUTTON_NEGATIVE:
-	    	    	            //No button clicked
-	    	    	        	new LANMessage("No, you cannot undo", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
-	    	    	            break;
-	    	    	        }
-	    	    	    }
-	    	    	};
-
-	    	    	AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(LANGlobal.localPlayer.playerName+" "+Global.board.getContext().getString(R.string.LANUndo)).setPositiveButton(Global.board.getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(Global.board.getContext().getString(R.string.no), dialogClickListener).show();
+	    			new DialogBox(Global.board.getContext(), 
+	    					LANGlobal.localPlayer.playerName+" "+Global.board.getContext().getString(R.string.LANUndo), 
+	    					new DialogInterface.OnClickListener() {
+	    	    	    	    public void onClick(DialogInterface dialog, int which) {
+	    	    	    	        switch (which){
+	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
+	    	    	    	            //Yes button clicked
+	    	    	    	        	GameAction.undo();
+	    	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+	    	    	    	            break;
+	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
+	    	    	    	            //No button clicked
+	    	    	    	        	new LANMessage("No, you cannot undo", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+	    	    	    	            break;
+	    	    	    	        }
+	    	    	    	    }
+	    	    	    	}, 
+	    					Global.board.getContext().getString(R.string.yes), 
+	    					Global.board.getContext().getString(R.string.no));
 	    		}
 	    		else if(message.equals("Sure, undo")){
 	    			GameAction.undo();
-	    			AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(Global.board.getContext().getString(R.string.LANundoAccepted)).setNeutralButton(Global.board.getContext().getString(R.string.okay), null).show();
+	    			new DialogBox(Global.board.getContext(), 
+	    					Global.board.getContext().getString(R.string.LANundoAccepted), 
+	    					null, 
+	    					Global.board.getContext().getString(R.string.okay));
 	    		}
 	    		else if(message.equals("No, you cannot undo")){
-	    			AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
-	    	    	builder.setMessage(Global.board.getContext().getString(R.string.LANundoDenied)).setNeutralButton(Global.board.getContext().getString(R.string.okay), null).show();
+	    			new DialogBox(Global.board.getContext(), 
+	    					Global.board.getContext().getString(R.string.LANundoDenied), 
+	    					null, 
+	    					Global.board.getContext().getString(R.string.okay));
 	    		}
-	    		
 			}
 	    	catch (Exception e) {
 				e.printStackTrace();

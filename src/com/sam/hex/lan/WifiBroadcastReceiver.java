@@ -4,8 +4,6 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-import com.sam.hex.Global;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -64,7 +62,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 					socket.joinGroup(address);
 					
 					//Create a packet
-					String message = ("Let's play Hex. I'm "+Global.player1Name);
+					String message = ("Let's play Hex. I'm "+LANGlobal.playerName);
 					DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.multicastPort);
 					
 					//Start sending

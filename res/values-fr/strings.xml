@@ -11,6 +11,7 @@
     <string name="gameSizeSummary">Choisissez une taille pour le plateau de jeu (actuel: 7x7)</string>
     <string name="gameSizeSummary_onChange">Choisissez une taille pour le plateau de jeu (actuel: </string>
     <string name="customGameSizeSummary">Entrez une taille de grille (Ex. 9)</string>
+    
     <string name="player1NameTitle">Nom du Joueur 1</string>
     <string name="player1NameSummary">Nom: Player1</string>
     <string name="player1NameSummary_onChange">Nom:</string>
@@ -18,6 +19,7 @@
     <string name="player1TypeSummary">Commutateur entre le joueur et l\'ordinateur</string>
     <string name="player1ColorTitle">Couleur du Joueur 1</string>
     <string name="player1ColorSummary">Choisissez une couleur pour le Joueur 1</string>
+    
     <string name="player2NameTitle">Nom du Joueur 2</string>
     <string name="player2NameSummary">Nom: Player2</string>
     <string name="player2NameSummary_onChange">Nom:</string>
@@ -25,6 +27,15 @@
     <string name="player2TypeSummary">Commutateur entre le joueur et l\'ordinateur</string>
     <string name="player2ColorTitle">Couleur du Joueur 2</string>
     <string name="player2ColorSummary">Choisissez une couleur pour le Joueur 2</string>
+    
+    <string name="lanPlayerNameTitle">Nom du Joueur</string>
+    <string name="lanPlayerNameSummary">Nom: Player</string>
+    <string name="lanPlayerNameSummary_onChange">Nom:</string>
+    <string name="lanPlayerTypeTitle">Modèle du Joueur</string>
+    <string name="lanPlayerTypeSummary">Commutateur entre le joueur et l\'ordinateur</string>
+    <string name="lanPlayerColorTitle">Couleur du Joueur</string>
+    <string name="lanPlayerColorSummary">Choisissez une couleur pour le Joueur</string>
+    
     <string name="resetTitle">Réinitialiser les paramètres par défaut</string>
     <string name="resetSummary">Réinitialiser tous les réglages à leurs valeurs par défaut</string>
     

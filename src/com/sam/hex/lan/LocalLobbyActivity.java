@@ -89,11 +89,11 @@ public class LocalLobbyActivity extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
     	//Set player's name, color, grid size
-    	Global.player1Name = prefs.getString("player1Name", "Player1");
-    	Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
-    	Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
-    	if(Global.gridSize==0) Global.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
-    	if(Global.gridSize<=0) Global.gridSize=1;
+    	LANGlobal.playerName = prefs.getString("lanPlayerName", "Player");
+    	LANGlobal.playerColor = prefs.getInt("lanPlayerColor", Global.player1DefaultColor);
+    	LANGlobal.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    	if(LANGlobal.gridSize==0) LANGlobal.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
+    	if(LANGlobal.gridSize<=0) LANGlobal.gridSize=1;
     	
         if (!wm.isWifiEnabled()) {
         	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -131,7 +131,7 @@ public class LocalLobbyActivity extends Activity {
 //			socket.setLoopbackMode(true);
 			
 			//Create a packet
-			String message = ("Let's play Hex. I'm "+Global.player1Name);
+			String message = ("Let's play Hex. I'm "+LANGlobal.playerName);
 			DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.multicastPort);
 			
 			//Start sending
@@ -175,7 +175,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, LANGlobal.challengerPort);
+    	        	new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, lno.ip, LANGlobal.challengerPort);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -195,7 +195,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage("It's on! My color's "+Global.player1Color, lno.ip, LANGlobal.challengerPort);
+    	        	new LANMessage("It's on! My color's "+LANGlobal.playerColor, lno.ip, LANGlobal.challengerPort);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -236,7 +236,7 @@ public class LocalLobbyActivity extends Activity {
 					try {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
 						LocalLobbyActivity.lno.ip = local;
-						new LANMessage(Global.player1Name+" challenges you. Grid size: "+Global.gridSize, lno.ip, LANGlobal.challengerPort);
+						new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, lno.ip, LANGlobal.challengerPort);
 						sent.setMessage(getApplicationContext().getString(R.string.challengeSent)).show();
 					}
 					catch (UnknownHostException e) {

@@ -28,7 +28,7 @@ public class Global {
 	//Player 2
 	public static PlayingEntity player2;
 	public static String player2Name="Player2";
-	public static byte player2Type=0;//0 Human, 1 AI, 2 Local Human, 3 Internet Human;
+	public static byte player2Type=0;//0 Human, 1 AI, 2 Local Human, 3 Internet Human, 4 AI;
 	final public static int player2DefaultColor=Color.RED;
 	public static int player2Color=player2DefaultColor;
 	
@@ -43,7 +43,7 @@ public class Global {
 	}
 	public static void set(int gridSize, int windowHeight, int windowWidth, byte p1, byte p2){
 		set(gridSize, windowHeight, windowWidth);
-		if(p1>=0 && p1<=2) player1Type=p1;
-		if(p1>=0 && p1<=4) player2Type=p2;
+		player1Type=p1;
+		player2Type=p2;
 	}
 }

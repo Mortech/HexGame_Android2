@@ -137,21 +137,21 @@ public class HexGame extends Activity {
     		//We're in an existing local game
     		
     		//Check if the color changed
-    		if(Global.player1 instanceof PlayerObject && Global.player1Color != prefs.getInt("player1Color", Global.player1DefaultColor)){
+    		if(Global.player1 instanceof PlayerObject && Global.player1Color != prefs.getInt("lanPlayerColor", Global.player1DefaultColor)){
     			setColors(prefs);
     			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.playerPort);
     		}
-    		else if(Global.player2 instanceof PlayerObject && Global.player2Color != prefs.getInt("player2Color", Global.player2DefaultColor)){
+    		else if(Global.player2 instanceof PlayerObject && Global.player2Color != prefs.getInt("lanPlayerColor", Global.player2DefaultColor)){
     			setColors(prefs);
     			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.playerPort);
     		}
     		
     		//Check if the name changed
-    		if(Global.player1 instanceof PlayerObject && !Global.player1Name.equals(prefs.getString("player1Name", Global.player1Name))){
+    		if(Global.player1 instanceof PlayerObject && !Global.player1Name.equals(prefs.getString("lanPlayerName", Global.player1Name))){
     			setNames(prefs);
     			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.playerPort);
     		}
-    		else if(Global.player2 instanceof PlayerObject && !Global.player2Name.equals(prefs.getString("player2Name", Global.player2Name))){
+    		else if(Global.player2 instanceof PlayerObject && !Global.player2Name.equals(prefs.getString("lanPlayerName", Global.player2Name))){
     			setNames(prefs);
     			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.playerPort);
     		}
@@ -286,10 +286,10 @@ public class HexGame extends Activity {
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			Global.player1Name = LANGlobal.localPlayer.playerName;
-        		Global.player2Name = prefs.getString("player1Name", "Player1");
+        		Global.player2Name = prefs.getString("lanPlayerName", "Player");
     		}
     		else{
-    			Global.player1Name = prefs.getString("player1Name", "Player1");
+    			Global.player1Name = prefs.getString("lanPlayerName", "Player");
         		Global.player2Name = LANGlobal.localPlayer.playerName;
     		}
     	}
@@ -309,10 +309,10 @@ public class HexGame extends Activity {
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			Global.player1Color = LANGlobal.localPlayer.playerColor;
-        		Global.player2Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+        		Global.player2Color = prefs.getInt("lanPlayerColor", Global.player1DefaultColor);
     		}
     		else{
-    			Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
+    			Global.player1Color = prefs.getInt("lanPlayerColor", Global.player1DefaultColor);
         		Global.player2Color = LANGlobal.localPlayer.playerColor;
     		}
     	}
