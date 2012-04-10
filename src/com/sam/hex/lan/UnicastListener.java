@@ -3,7 +3,6 @@ package com.sam.hex.lan;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 
 import android.os.Handler;
 
@@ -17,8 +16,9 @@ public class UnicastListener implements Runnable {
 	
 	public UnicastListener(Handler handler, Runnable challenger, Runnable startGame) {
 		try {
-			this.socket = new DatagramSocket(LANGlobal.challengerPort);
-		} catch (SocketException e) {
+			socket = new DatagramSocket(LANGlobal.challengerPort);
+		} catch (Exception e) {
+			run=false;
 			e.printStackTrace();
 		}
 		this.handler = handler;
@@ -31,8 +31,7 @@ public class UnicastListener implements Runnable {
 	public void run() {
 		//Listen for other players
 		byte[] data = new byte[1024];
-	    while(run)
-	    {
+	    while(run && socket!=null){
 	    	try {
 	    		DatagramPacket packet = new DatagramPacket(data, data.length);
 	    		socket.receive(packet);
@@ -61,27 +60,33 @@ public class UnicastListener implements Runnable {
 	    				handler.post(challenger);
 	    			}
 	    		}
-	    		else if(message.contains("It's on! My color's ") && LocalLobbyActivity.lno.ip.equals(address)){
-	    			//Full message looks like: It's on! My color's _playercolor_
+	    		else if(message.contains("Its on! My color is ") && LocalLobbyActivity.lno.ip.equals(address)){
+	    			//Full message looks like: Its on! My color is _playercolor_
 	    			LocalLobbyActivity.lno.playerColor = Integer.parseInt(message.substring(20));//Grab the color from the end of the message
 	    			
 	    			//Send our color over
-	    			new LANMessage("My color is "+LANGlobal.playerColor, LocalLobbyActivity.lno.ip, LANGlobal.challengerPort);
+	    			new LANMessage("My color is "+LANGlobal.playerColor, address, LANGlobal.challengerPort);
 	    			
 	    			handler.post(startGame);
-    				break;
 	    		}
 	    		else if(message.contains("My color is ") && LocalLobbyActivity.lno.ip.equals(address)){
 	    			//Full message looks like: My color is _playercolor_
-	    			LANGlobal.localPlayer.playerColor = Integer.parseInt(message.substring(12));//Grab the color from the end of the message
+	    			LocalLobbyActivity.lno.playerColor = Integer.parseInt(message.substring(12));//Grab the color from the end of the message
 	    			
 	    			handler.post(startGame);
-	    			break;
 	    		}
 			}
 	    	catch (Exception e) {
 				System.out.println(e);
 			}
+	    }
+	    if(socket!=null && !socket.isClosed()){
+	    	try{
+	    		socket.close();
+	    	}
+	    	catch(Exception e){
+	    		e.printStackTrace();
+	    	}
 	    }
 	}
 	

@@ -1,6 +1,5 @@
 package com.sam.hex.lan;
 
-import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
@@ -61,12 +60,8 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 					MulticastSocket socket = new MulticastSocket(LANGlobal.multicastPort);
 					socket.joinGroup(address);
 					
-					//Create a packet
-					String message = ("Let's play Hex. I'm "+LANGlobal.playerName);
-					DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.multicastPort);
-					
 					//Start sending
-					sender=new MulticastSender(socket,packet);
+					sender=new MulticastSender(socket);
 					//Start listening
 			        multicastListener=new MulticastListener(socket, handler, updateResults);
 			        unicastListener=new UnicastListener(handler, challenger, startGame);

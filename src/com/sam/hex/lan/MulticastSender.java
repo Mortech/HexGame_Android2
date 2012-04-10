@@ -1,7 +1,9 @@
 package com.sam.hex.lan;
 
 import java.net.DatagramPacket;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.UnknownHostException;
 
 public class MulticastSender implements Runnable {
 	Thread thread;
@@ -9,9 +11,17 @@ public class MulticastSender implements Runnable {
 	DatagramPacket packet;
 	boolean run = true;
 
-	public MulticastSender(MulticastSocket socket, DatagramPacket packet) {
+	public MulticastSender(MulticastSocket socket) {
 		this.socket = socket;
-		this.packet = packet;
+		
+
+		//Create a packet
+		String message = ("Let's play Hex. I'm "+LANGlobal.playerName);
+		try {
+			packet = new DatagramPacket(message.getBytes(), message.length(), InetAddress.getByName(LANGlobal.multicastAddress), LANGlobal.multicastPort);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 		thread = new Thread(this, "LANshout"); //Create a new thread.
 		thread.start(); //Start the thread.
 	}
@@ -21,10 +31,7 @@ public class MulticastSender implements Runnable {
         	try {
         		socket.send(packet);
         		System.out.println("Sending...");
-        		for(int i=0;i<10;i++){
-        			Thread.sleep(500);
-        			if(!run) break;
-        		}
+        		Thread.sleep(3000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -1,6 +1,5 @@
 package com.sam.hex.lan;
 
-import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
@@ -128,21 +127,17 @@ public class LocalLobbyActivity extends Activity {
 			socket = new MulticastSocket(LANGlobal.multicastPort);
 			socket.joinGroup(address);
 			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
-//			socket.setLoopbackMode(true);
-			
-			//Create a packet
-			String message = ("Let's play Hex. I'm "+LANGlobal.playerName);
-			DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), address, LANGlobal.multicastPort);
-			
-			//Start sending
-			sender=new MulticastSender(socket,packet);
-			//Start listening
-	        multicastListener=new MulticastListener(socket, handler, updateResults);
-	        unicastListener=new UnicastListener(handler, challenger, startGame);
+			socket.setLoopbackMode(true);
 		}
         catch (Exception e) {
 			System.out.println(e);
 		}
+        
+        //Start sending
+		sender=new MulticastSender(socket);
+		//Start listening
+        multicastListener=new MulticastListener(socket, handler, updateResults);
+        unicastListener=new UnicastListener(handler, challenger, startGame);
         
         //Listen for connections to a network (Or a disconnection)
         registerReceiver(broadcastReceiver, intentFilter);
@@ -195,7 +190,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage("It's on! My color's "+LANGlobal.playerColor, lno.ip, LANGlobal.challengerPort);
+    	        	new LANMessage("Its on! My color is "+LANGlobal.playerColor, lno.ip, LANGlobal.challengerPort);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
