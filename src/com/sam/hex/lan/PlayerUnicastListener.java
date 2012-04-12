@@ -7,12 +7,14 @@ import java.net.SocketException;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.preference.PreferenceManager;
 
 import com.sam.hex.GameAction;
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
+import com.sam.hex.MoveList;
 import com.sam.hex.R;
 
 public class PlayerUnicastListener implements Runnable {
@@ -79,8 +81,8 @@ public class PlayerUnicastListener implements Runnable {
 	    	    	    	        switch (which){
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
 	    	    	    	            //Yes button clicked
-	    	    	    	        	HexGame.startNewGame=true;
 	    	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+	    	    	    	        	initalizeNewGame();
 	    	    	    	            break;
 	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
 	    	    	    	            //No button clicked
@@ -93,7 +95,7 @@ public class PlayerUnicastListener implements Runnable {
 	    	    	    	Global.board.getContext().getString(R.string.no));
 	    		}
 	    		else if(message.equals("Sure, let's play again")){
-	    			HexGame.startNewGame=true;
+	    			initalizeNewGame();
 	    			new DialogBox(Global.board.getContext(), 
 	    					Global.board.getContext().getString(R.string.LANplayAgain), 
 	    					null, 
@@ -149,5 +151,46 @@ public class PlayerUnicastListener implements Runnable {
 	
 	public void stop() {
 		run = false;
+	}
+	
+	private void initalizeNewGame(){
+		int turn = Global.currentPlayer;
+		if(turn==2){
+			if(LANGlobal.localPlayer.firstMove){
+				GameAction.hex = new Point(-1,-1);
+	    		while(turn == Global.currentPlayer){
+					try {
+						Thread.sleep(80);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+	    	else{
+	    		LANGlobal.hex = new Point(-1,-1);
+	    		while(turn == Global.currentPlayer){
+					try {
+						Thread.sleep(80);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+	    	}
+		}
+		
+		//Make sure defaults are set
+    	Global.moveList=new MoveList();
+    	Global.currentPlayer = 1;
+    	GameAction.hex = null;
+    	Global.moveNumber = 1;
+    	
+    	//Clear the board
+    	for(int x=0;x<Global.gridSize;x++){
+			for(int y=0;y<Global.gridSize;y++){
+				Global.gamePiece[x][y].setColor(Color.WHITE);
+				Global.gamePiece[x][y].setTeam((byte)0);
+			}
+		}
+    	Global.board.postInvalidate();
 	}
 }

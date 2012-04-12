@@ -36,7 +36,7 @@ public class BoardView extends View{
 		
 	}
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh){
+	public void onSizeChanged(int w, int h, int oldw, int oldh){
 		int n = Global.gridSize;
 		mDrawable = new ShapeDrawable[n][n];
 		mOutline=new ShapeDrawable[n][n];

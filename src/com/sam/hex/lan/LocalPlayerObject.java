@@ -35,7 +35,7 @@ public class LocalPlayerObject implements PlayingEntity {
 				LANGlobal.hex = null;
 				break;
 			}
-			if (Global.gamePiece[hex.x][hex.y].getTeam() == 0) {
+			else if (Global.gamePiece[hex.x][hex.y].getTeam() == 0) {
 				GameAction.makeMove(this, team, hex);
 				LANGlobal.hex = null;
 				break;
@@ -66,14 +66,14 @@ public class LocalPlayerObject implements PlayingEntity {
 
 	@Override
 	public void colorChanged() {
-		// TODO Auto-generated method stub
-		
+		if(team==1) new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		else new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	}
 
 	@Override
 	public void nameChanged() {
-		// TODO Auto-generated method stub
-		
+		if(team==1) new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		else new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	}
 
 	@Override
