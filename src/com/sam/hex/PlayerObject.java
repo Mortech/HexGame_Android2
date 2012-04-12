@@ -53,4 +53,17 @@ public class PlayerObject implements PlayingEntity {
 	public boolean supportsNewgame() {
 		return true;
 	}
+
+	@Override
+	public void colorChanged() {
+	}
+
+	@Override
+	public void nameChanged() {
+	}
+
+	@Override
+	public void quit() {
+		GameAction.hex = new Point(-1,-1);
+	}
 }

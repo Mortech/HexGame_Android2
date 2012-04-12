@@ -18,7 +18,7 @@ public class MulticastSender implements Runnable {
 		//Create a packet
 		String message = ("Let's play Hex. I'm "+LANGlobal.playerName);
 		try {
-			packet = new DatagramPacket(message.getBytes(), message.length(), InetAddress.getByName(LANGlobal.multicastAddress), LANGlobal.multicastPort);
+			packet = new DatagramPacket(message.getBytes(), message.length(), InetAddress.getByName(LANGlobal.MULTICASTADDRESS), LANGlobal.MULTICASTPORT);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}

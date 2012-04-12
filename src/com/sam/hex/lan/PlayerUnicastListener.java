@@ -25,7 +25,7 @@ public class PlayerUnicastListener implements Runnable {
 	public PlayerUnicastListener(int team) {
 		this.team = team;
 		try {
-			this.socket = new DatagramSocket(LANGlobal.playerPort);
+			this.socket = new DatagramSocket(LANGlobal.PLAYERPORT);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -80,11 +80,11 @@ public class PlayerUnicastListener implements Runnable {
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
 	    	    	    	            //Yes button clicked
 	    	    	    	        	HexGame.startNewGame=true;
-	    	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+	    	    	    	        	new LANMessage("Sure, let's play again", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	    	    	    	            break;
 	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
 	    	    	    	            //No button clicked
-	    	    	    	        	new LANMessage("No, I don't want to play again", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+	    	    	    	        	new LANMessage("No, I don't want to play again", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	    	    	    	            break;
 	    	    	    	        }
 	    	    	    	    }
@@ -114,11 +114,11 @@ public class PlayerUnicastListener implements Runnable {
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
 	    	    	    	            //Yes button clicked
 	    	    	    	        	GameAction.undo();
-	    	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+	    	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	    	    	    	            break;
 	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
 	    	    	    	            //No button clicked
-	    	    	    	        	new LANMessage("No, you cannot undo", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+	    	    	    	        	new LANMessage("No, you cannot undo", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	    	    	    	            break;
 	    	    	    	        }
 	    	    	    	    }

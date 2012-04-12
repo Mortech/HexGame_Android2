@@ -44,14 +44,14 @@ public class GameAI implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {//Without net play
-		undo = false;
+		skipMove = false;
 		this.gameBoard=BoardTools.teamGrid();
 		AIHistoryObject state = new AIHistoryObject(pairs, n, m);
 		history.add(state);
 		makeMove();
 	}
 	
-	boolean undo = false;
+	boolean skipMove = false;
 	public void undoCalled(){
 		if(history.size()>0){
 			AIHistoryObject previousState = history.get(history.size()-1);
@@ -60,7 +60,7 @@ public class GameAI implements PlayingEntity {
 			m = previousState.m;
 			history.remove(history.size()-1);
 		}
-		undo = true;
+		skipMove = true;
 	}
 	
 	private boolean right(){
@@ -408,13 +408,13 @@ public class GameAI implements PlayingEntity {
 	}
 	
 	private void sendMove(int x, int y){
-		if(!undo) GameAction.makeMove(this, team, new Point(x,y));
-		else undo = false;
+		if(!skipMove) GameAction.makeMove(this, team, new Point(x,y));
+		else skipMove = false;
 	}
 
 	@Override
 	public void newgameCalled() {
-		undo = true;
+		skipMove = true;
 	}
 
 	@Override
@@ -430,6 +430,19 @@ public class GameAI implements PlayingEntity {
 	@Override
 	public boolean supportsNewgame() {
 		return true;
+	}
+
+	@Override
+	public void colorChanged() {
+	}
+
+	@Override
+	public void nameChanged() {
+	}
+
+	@Override
+	public void quit() {
+		skipMove = true;
 	}
 	
 	/*  Bah, ignore this for now.

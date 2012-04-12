@@ -11,8 +11,8 @@ public class GameObject implements Runnable {
 	
 	public void stop(){
 		go=false;
-		Global.player1.newgameCalled();
-		Global.player2.newgameCalled();
+		Global.player1.quit();
+		Global.player2.quit();
 	}
 	
 	public void run() {
@@ -21,7 +21,7 @@ public class GameObject implements Runnable {
 			if (Global.currentPlayer == 1) {
 				Global.player1.getPlayerTurn();
 				if (GameAction.checkWinPlayer1()){
-					go=false;
+					stop();
 					announceWinner(1);
 				}
 				
@@ -30,7 +30,7 @@ public class GameObject implements Runnable {
 			else {
 				Global.player2.getPlayerTurn();
 				if (GameAction.checkWinPlayer2()){
-					go=false;
+					stop();
 					announceWinner(2);
 				}
 				

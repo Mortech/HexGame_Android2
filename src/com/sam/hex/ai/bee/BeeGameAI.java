@@ -53,7 +53,7 @@ public class BeeGameAI implements PlayingEntity
     @Override
     public void getPlayerTurn()
     {
-    	undo = false;
+    	skipMove = false;
     	AIHistoryObject state = new AIHistoryObject(pieces, lookUpTable);
 		history.add(state);
 		int moveNumber = Global.moveNumber;
@@ -72,7 +72,7 @@ public class BeeGameAI implements PlayingEntity
 		if (lastMove == null)
 		{
 		    pieces [pieces.length / 2] [pieces.length / 2] = team;
-		    if(!undo) GameAction.makeMove(this, (byte) team, new Point(pieces.length / 2 - 1, pieces.length / 2 - 1));
+		    if(!skipMove) GameAction.makeMove(this, (byte) team, new Point(pieces.length / 2 - 1, pieces.length / 2 - 1));
 		}
 		// If a move has been made already,
 		// Bee records the move in the pieces array
@@ -87,13 +87,12 @@ public class BeeGameAI implements PlayingEntity
 		    int x = bestMove.x - 1;
 		    int y = bestMove.y - 1;
 		    
-		    if(!undo) GameAction.makeMove(this, (byte) team, new Point(y, gridSize-1-x));
+		    if(!skipMove) GameAction.makeMove(this, (byte) team, new Point(y, gridSize-1-x));
 		    System.out.println("My move: "+new Point(x,y));
-		    System.out.println("Undo: "+undo);
 		}
 	}
     
-    private boolean undo = false;
+    private boolean skipMove = false;
 	@Override
 	public void undoCalled() {
 		if(history.size()>0){
@@ -102,13 +101,13 @@ public class BeeGameAI implements PlayingEntity
 			lookUpTable = previousState.lookUpTable;
 			history.remove(history.size()-1);
 		}
-		undo = true;
+		skipMove = true;
 	}
 
 
 	@Override
 	public void newgameCalled() {
-		undo = true;
+		skipMove = true;
 	}
 	
 	@Override
@@ -750,6 +749,22 @@ public class BeeGameAI implements PlayingEntity
 	}
 	return value;
     }
+
+
+	@Override
+	public void colorChanged() {
+	}
+
+
+	@Override
+	public void nameChanged() {
+	}
+
+
+	@Override
+	public void quit() {
+		skipMove = true;
+	}
 }
 
 

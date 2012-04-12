@@ -16,7 +16,7 @@ public class UnicastListener implements Runnable {
 	
 	public UnicastListener(Handler handler, Runnable challenger, Runnable startGame) {
 		try {
-			socket = new DatagramSocket(LANGlobal.challengerPort);
+			socket = new DatagramSocket(LANGlobal.CHALLENGERPORT);
 		} catch (Exception e) {
 			run=false;
 			e.printStackTrace();
@@ -44,34 +44,34 @@ public class UnicastListener implements Runnable {
 	    			for(int i=0;i<LANGlobal.localObjects.size();i++){
 	        			if(LANGlobal.localObjects.get(i).ip.equals(address)){
 	        				flag = false;
-	        				LocalLobbyActivity.lno = LANGlobal.localObjects.get(i);
-	        				LocalLobbyActivity.lno.firstMove = true;
+	        				LANGlobal.localPlayer = LANGlobal.localObjects.get(i);
+	        				LANGlobal.localPlayer.firstMove = true;
 	        				//Full message looks like: _playername_ challenges you. Grid size: _gridsize_
-	        				LocalLobbyActivity.lno.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));//Grab the grid size from the end of the message
+	        				LANGlobal.localPlayer.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));//Grab the grid size from the end of the message
 	        				handler.post(challenger);
 	        				break;
 	        			}
 	        		}
 	    			if(flag){
-	    				LocalLobbyActivity.lno.playerName = message.substring(0, message.lastIndexOf(" challenges you"));
-	    				LocalLobbyActivity.lno.firstMove = true;
-	    				LocalLobbyActivity.lno.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));
-	    				LocalLobbyActivity.lno.ip = address;
+	    				LANGlobal.localPlayer.playerName = message.substring(0, message.lastIndexOf(" challenges you"));
+	    				LANGlobal.localPlayer.firstMove = true;
+	    				LANGlobal.localPlayer.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));
+	    				LANGlobal.localPlayer.ip = address;
 	    				handler.post(challenger);
 	    			}
 	    		}
-	    		else if(message.contains("Its on! My color is ") && LocalLobbyActivity.lno.ip.equals(address)){
+	    		else if(message.contains("Its on! My color is ") && LANGlobal.localPlayer.ip.equals(address)){
 	    			//Full message looks like: Its on! My color is _playercolor_
-	    			LocalLobbyActivity.lno.playerColor = Integer.parseInt(message.substring(20));//Grab the color from the end of the message
+	    			LANGlobal.localPlayer.playerColor = Integer.parseInt(message.substring(20));//Grab the color from the end of the message
 	    			
 	    			//Send our color over
-	    			new LANMessage("My color is "+LANGlobal.playerColor, address, LANGlobal.challengerPort);
+	    			new LANMessage("My color is "+LANGlobal.playerColor, address, LANGlobal.CHALLENGERPORT);
 	    			
 	    			handler.post(startGame);
 	    		}
-	    		else if(message.contains("My color is ") && LocalLobbyActivity.lno.ip.equals(address)){
+	    		else if(message.contains("My color is ") && LANGlobal.localPlayer.ip.equals(address)){
 	    			//Full message looks like: My color is _playercolor_
-	    			LocalLobbyActivity.lno.playerColor = Integer.parseInt(message.substring(12));//Grab the color from the end of the message
+	    			LANGlobal.localPlayer.playerColor = Integer.parseInt(message.substring(12));//Grab the color from the end of the message
 	    			
 	    			handler.post(startGame);
 	    		}

@@ -17,7 +17,7 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {
-		if(Global.moveNumber!=1) new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+		if(Global.moveNumber!=1) new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		
 		LANGlobal.hex = null;
 		looper: while (true) {
@@ -53,14 +53,33 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public boolean supportsUndo() {
-		new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+		new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		
 		return false;
 	}
 
 	public boolean supportsNewgame() {
-		new LANMessage("Want to play a new game?", LANGlobal.localPlayer.ip, LANGlobal.playerPort);
+		new LANMessage("Want to play a new game?", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		
 		return false;
+	}
+
+	@Override
+	public void colorChanged() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void nameChanged() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void quit() {
+		if(Global.moveNumber!=1) new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		
+		listener.stop();
 	}
 }

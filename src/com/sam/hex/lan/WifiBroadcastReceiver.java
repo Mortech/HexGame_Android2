@@ -57,7 +57,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	        		
 					//Create a socket
 					InetAddress address = InetAddress.getByName("234.235.236.237");
-					MulticastSocket socket = new MulticastSocket(LANGlobal.multicastPort);
+					MulticastSocket socket = new MulticastSocket(LANGlobal.MULTICASTPORT);
 					socket.joinGroup(address);
 					
 					//Start sending

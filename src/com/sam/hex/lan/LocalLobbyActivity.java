@@ -38,7 +38,6 @@ public class LocalLobbyActivity extends Activity {
 	UnicastListener unicastListener;
 	MulticastSender sender;
 	MulticastSocket socket;
-	public static LocalNetworkObject lno = new LocalNetworkObject("", null);
     final Handler handler = new Handler();
     final Runnable updateResults = new Runnable() {
         public void run() {
@@ -52,7 +51,6 @@ public class LocalLobbyActivity extends Activity {
     };
     final Runnable startGame = new Runnable() {
         public void run() {
-        	LANGlobal.localPlayer = LocalLobbyActivity.lno;
         	Global.gameLocation=1;
         	HexGame.startNewGame = true;
         	startActivity(new Intent(getBaseContext(),HexGame.class));
@@ -123,8 +121,8 @@ public class LocalLobbyActivity extends Activity {
         
         try {
 			//Create a socket
-			InetAddress address = InetAddress.getByName(LANGlobal.multicastAddress);
-			socket = new MulticastSocket(LANGlobal.multicastPort);
+			InetAddress address = InetAddress.getByName(LANGlobal.MULTICASTADDRESS);
+			socket = new MulticastSocket(LANGlobal.MULTICASTPORT);
 			socket.joinGroup(address);
 			//(Disables hearing our own voice, off for testing purposes) TODO Turn back on
 			socket.setLoopbackMode(true);
@@ -170,7 +168,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, lno.ip, LANGlobal.challengerPort);
+    	        	new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, lno.ip, LANGlobal.CHALLENGERPORT);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -190,7 +188,7 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage("Its on! My color is "+LANGlobal.playerColor, lno.ip, LANGlobal.challengerPort);
+    	        	new LANMessage("Its on! My color is "+LANGlobal.playerColor, LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -201,7 +199,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(lno.playerName+" "+getApplicationContext().getString(R.string.challenger)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
+    	builder.setMessage(LANGlobal.localPlayer.playerName+" "+getApplicationContext().getString(R.string.challenger)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
     }
     
     private void updateResultsInUi(){
@@ -230,8 +228,8 @@ public class LocalLobbyActivity extends Activity {
     	    	else if(!editText.getText().toString().equals("")){
 					try {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
-						LocalLobbyActivity.lno.ip = local;
-						new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, lno.ip, LANGlobal.challengerPort);
+						LANGlobal.localPlayer.ip = local;
+						new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
 						sent.setMessage(getApplicationContext().getString(R.string.challengeSent)).show();
 					}
 					catch (UnknownHostException e) {
