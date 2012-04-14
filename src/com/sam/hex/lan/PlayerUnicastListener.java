@@ -67,11 +67,13 @@ public class PlayerUnicastListener implements Runnable {
 	    			HexGame.setNames(prefs);
 	    			Global.board.postInvalidate();
 	    		}
-	    		else if(message.equals("I win!")){
-	    			
-	    		}
-	    		else if(message.equals("Cheater.")){
-	    			
+	    		else if(message.equals("Quitting")){
+	    			HexGame.stopGame();
+	    			if(!Global.gameOver)
+		    			new DialogBox(Global.board.getContext(), 
+		    					Global.board.getContext().getString(R.string.playerQuit), 
+		    					null, 
+		    	    	    	Global.board.getContext().getString(R.string.okay));
 	    		}
 	    		else if(message.equals("Want to play a new game?")){
 	    			new DialogBox(Global.board.getContext(), 
@@ -115,6 +117,7 @@ public class PlayerUnicastListener implements Runnable {
 	    	    	    	        switch (which){
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
 	    	    	    	            //Yes button clicked
+	    	    		    			LANGlobal.undoRequested = true;
 	    	    	    	        	GameAction.undo();
 	    	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	    	    	    	            break;
@@ -154,43 +157,62 @@ public class PlayerUnicastListener implements Runnable {
 	}
 	
 	private void initalizeNewGame(){
-		int turn = Global.currentPlayer;
-		if(turn==2){
-			if(LANGlobal.localPlayer.firstMove){
-				GameAction.hex = new Point(-1,-1);
-	    		while(turn == Global.currentPlayer){
-					try {
-						Thread.sleep(80);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+		if(Global.gameOver){
+			Global.game.start();
+			
+			//Make sure defaults are set
+	    	Global.moveList=new MoveList();
+	    	Global.currentPlayer = 1;
+	    	Global.moveNumber = 1;
+	    	
+	    	//Clear the board
+	    	for(int x=0;x<Global.gridSize;x++){
+				for(int y=0;y<Global.gridSize;y++){
+					Global.gamePiece[x][y].setColor(Color.WHITE);
+					Global.gamePiece[x][y].setTeam((byte)0);
 				}
 			}
-	    	else{
-	    		LANGlobal.hex = new Point(-1,-1);
-	    		while(turn == Global.currentPlayer){
-					try {
-						Thread.sleep(80);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+    	}
+		else{
+			int turn = Global.currentPlayer;
+			if(turn==2){
+				if(LANGlobal.localPlayer.firstMove){
+					GameAction.hex = new Point(-1,-1);
+		    		while(turn == Global.currentPlayer){
+						try {
+							Thread.sleep(80);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
-	    	}
+		    	else{
+		    		LANGlobal.hex = new Point(-1,-1);
+		    		while(turn == Global.currentPlayer){
+						try {
+							Thread.sleep(80);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+		    	}
+			}
+			
+			//Make sure defaults are set
+	    	Global.moveList=new MoveList();
+	    	Global.currentPlayer = 1;
+	    	GameAction.hex = null;
+	    	Global.moveNumber = 1;
+	    	
+	    	//Clear the board
+	    	for(int x=0;x<Global.gridSize;x++){
+				for(int y=0;y<Global.gridSize;y++){
+					Global.gamePiece[x][y].setColor(Color.WHITE);
+					Global.gamePiece[x][y].setTeam((byte)0);
+				}
+			}
 		}
 		
-		//Make sure defaults are set
-    	Global.moveList=new MoveList();
-    	Global.currentPlayer = 1;
-    	GameAction.hex = null;
-    	Global.moveNumber = 1;
-    	
-    	//Clear the board
-    	for(int x=0;x<Global.gridSize;x++){
-			for(int y=0;y<Global.gridSize;y++){
-				Global.gamePiece[x][y].setColor(Color.WHITE);
-				Global.gamePiece[x][y].setTeam((byte)0);
-			}
-		}
     	Global.board.postInvalidate();
 	}
 }

@@ -17,7 +17,12 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {
-		if(Global.moveNumber!=1) new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		if(Global.moveNumber>1){
+			//Three times for reliability (I've really got to switch to tcp)
+			new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		}
 		
 		LANGlobal.hex = null;
 		looper: while (true) {
@@ -45,6 +50,7 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public void undoCalled(){
+		LANGlobal.hex = new Point(-1,-1);
 	}
 
 	public void newgameCalled() {
@@ -78,8 +84,18 @@ public class LocalPlayerObject implements PlayingEntity {
 
 	@Override
 	public void quit() {
-		if(Global.moveNumber!=1) new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		
+		new LANMessage("Quitting", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		listener.stop();
+	}
+	
+	@Override
+	public void win() {
+	}
+	
+	@Override
+	public void lose() {
+		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	}
 }

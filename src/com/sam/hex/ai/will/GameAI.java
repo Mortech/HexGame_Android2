@@ -444,6 +444,18 @@ public class GameAI implements PlayingEntity {
 	public void quit() {
 		skipMove = true;
 	}
+
+	@Override
+	public void win() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void lose() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	/*  Bah, ignore this for now.
 	private void nickMove(){

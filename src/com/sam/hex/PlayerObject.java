@@ -8,7 +8,7 @@ public class PlayerObject implements PlayingEntity {
 	byte team;
 	
 	public PlayerObject(byte i) {
-	this.team=i;//Set the player's team
+		this.team=i;//Set the player's team
 	}
 	
 	public void getPlayerTurn() {
@@ -65,5 +65,17 @@ public class PlayerObject implements PlayingEntity {
 	@Override
 	public void quit() {
 		GameAction.hex = new Point(-1,-1);
+	}
+
+	@Override
+	public void win() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void lose() {
+		// TODO Auto-generated method stub
+		
 	}
 }

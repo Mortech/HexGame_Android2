@@ -14,7 +14,14 @@ public class LANGlobal {
 	public final static int PLAYERPORT = 4081;
 	public final static int CHALLENGERPORT = 4082;
 	
+	/**
+	 * A point parsed from the LAN player
+	 * */
 	public static Point hex;
+	/**
+	 * A flag for undo. Checked if undo originated on the other phone
+	 * */
+	public static boolean undoRequested = false;
 	
 	public static String playerName;
 	public static int playerColor;

@@ -13,18 +13,7 @@ public interface PlayingEntity {
 	 * 
 	 * Logic for making a move is here.
 	 * */
-	public void getPlayerTurn();
-	
-	/**
-	 * Undo has been applied. The last move is blank again.
-	 * */
-	public void undoCalled();
-	
-	/**
-	 * New game has been applied. The entire game board is wiped. 
-	 * Do not call GameAction.makeMove() and quit as soon as possible.
-	 * */
-	public void newgameCalled();
+	public void getPlayerTurn();	
 	
 	/**
 	 * Will you allow an undo?
@@ -35,12 +24,24 @@ public interface PlayingEntity {
 	public boolean supportsUndo();
 	
 	/**
+	 * Undo has been applied. The last move is blank again.
+	 * If you're an AI and keep a bunch of variables, roll them back
+	 * */
+	public void undoCalled();
+	
+	/**
 	 * Will you allow a new game?
 	 * Return true if your PlayingEntity supports new games
 	 * Return false if it doesn't or if you want an asynchronous new game
 	 * (such as in LAN or Net play)
 	 * */
 	public boolean supportsNewgame();
+	
+	/**
+	 * New game has been applied. The entire game board is wiped. 
+	 * Do not call GameAction.makeMove() and quit as soon as possible.
+	 * */
+	public void newgameCalled();
 	
 	/**
 	 * The player's color has been changed!
@@ -60,4 +61,22 @@ public interface PlayingEntity {
 	 * The game is over. Die gracefully.
 	 * */
 	public void quit();
+	
+	/**
+	 * You won the game!
+	 * Use this to handle any final actions such as sending
+	 * final moves or comparing game boards to make sure 
+	 * no one cheated. Remember, you're still alive 
+	 * until quit() is called.
+	 **/
+	public void win();
+	
+	/**
+	 * You lost the game!
+	 * Use this to handle any final actions such as sending
+	 * final moves or comparing game boards to make sure 
+	 * no one cheated. Remember, you're still alive 
+	 * until quit() is called.
+	 **/
+	public void lose();
 }

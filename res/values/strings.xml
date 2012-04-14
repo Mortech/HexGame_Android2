@@ -78,6 +78,7 @@
     <string name="LANdontPlayAgain">The other player denied a new game.</string>
     <string name="LANundoAccepted">The other player allowed an undo.</string>
     <string name="LANundoDenied">The other player denied an undo.</string>
+    <string name="playerQuit">The other player left the game.</string>
     <string name="wifiOff">Wifi is off. Enable?</string>
     <string name="yourIP">Your ip address is: </string>
     <string name="yourIPWarning">That\'s your own ip</string>

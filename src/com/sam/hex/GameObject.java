@@ -1,7 +1,8 @@
 package com.sam.hex;
 
 public class GameObject implements Runnable {
-	private boolean go=true;
+	private boolean game=true;
+	private boolean threadAlive=true;
 
 	public GameObject() {
 		Global.gameThread = new Thread(this, "runningGame"); //Create a new thread.
@@ -9,39 +10,55 @@ public class GameObject implements Runnable {
 		Global.gameThread.start(); //Start the thread.
 	}
 	
+	public void start(){
+		Global.gameOver = false;
+		game=true;
+	}
+	
 	public void stop(){
-		go=false;
+		game=false;
+		threadAlive=false;
 		Global.player1.quit();
 		Global.player2.quit();
 	}
 	
 	public void run() {
-		//Loop the game
-		while(go){
-			if (Global.currentPlayer == 1) {
-				Global.player1.getPlayerTurn();
-				if (GameAction.checkWinPlayer1()){
-					stop();
-					announceWinner(1);
+		while(threadAlive){//Keeps the thread alive even if the game has ended
+			while(game){//Loop the game
+				if (Global.currentPlayer == 1) {
+					Global.player1.getPlayerTurn();
+					if (GameAction.checkWinPlayer(1)){
+						game=false;
+						Global.player1.win();
+						Global.player2.lose();
+						announceWinner(1);
+					}
+					
+					Global.currentPlayer=(Global.currentPlayer%2)+1;
 				}
-				
-				Global.currentPlayer=(Global.currentPlayer%2)+1;
-			}
-			else {
-				Global.player2.getPlayerTurn();
-				if (GameAction.checkWinPlayer2()){
-					stop();
-					announceWinner(2);
+				else {
+					Global.player2.getPlayerTurn();
+					if (GameAction.checkWinPlayer(2)){
+						game=false;
+						Global.player1.lose();
+						Global.player2.win();
+						announceWinner(2);
+					}
+					
+					Global.currentPlayer=(Global.currentPlayer%2)+1;
 				}
-				
-				Global.currentPlayer=(Global.currentPlayer%2)+1;
+				GameAction.checkedFlagReset();
+				Global.moveNumber++;
+				GameAction.hex = null;
+				Global.board.postInvalidate();
 			}
-			GameAction.checkedFlagReset();
-			Global.moveNumber++;
-			GameAction.hex = null;
-			Global.board.postInvalidate();
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		
 		System.out.println("Thread died");
 	}
 	

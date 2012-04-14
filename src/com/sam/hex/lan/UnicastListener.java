@@ -66,6 +66,8 @@ public class UnicastListener implements Runnable {
 	    			
 	    			//Send our color over
 	    			new LANMessage("My color is "+LANGlobal.playerColor, address, LANGlobal.CHALLENGERPORT);
+	    			new LANMessage("My color is "+LANGlobal.playerColor, address, LANGlobal.CHALLENGERPORT);
+	    			new LANMessage("My color is "+LANGlobal.playerColor, address, LANGlobal.CHALLENGERPORT);
 	    			
 	    			handler.post(startGame);
 	    		}
@@ -74,6 +76,16 @@ public class UnicastListener implements Runnable {
 	    			LANGlobal.localPlayer.playerColor = Integer.parseInt(message.substring(12));//Grab the color from the end of the message
 	    			
 	    			handler.post(startGame);
+	    			stop();
+	    		}
+	    		else if(message.equals("What's your name?")){
+	    			new LANMessage("My name is "+LANGlobal.playerName, address, LANGlobal.CHALLENGERPORT);
+	    			new LANMessage("My name is "+LANGlobal.playerName, address, LANGlobal.CHALLENGERPORT);
+	    			new LANMessage("My name is "+LANGlobal.playerName, address, LANGlobal.CHALLENGERPORT);
+	    		}
+	    		else if(message.contains("My name is ")){
+	    			//Full message looks like: My name is _playername_
+	    			LANGlobal.localPlayer.playerName = message.substring(11);//Grab the name from the end of the message
 	    		}
 			}
 	    	catch (Exception e) {

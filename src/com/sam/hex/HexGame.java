@@ -216,7 +216,7 @@ public class HexGame extends Activity {
         	        switch (which){
         	        case DialogInterface.BUTTON_POSITIVE:
         	            //Yes button clicked
-        	        	Global.gameOver = true;
+        	        	stopGame();
         	        	android.os.Process.killProcess(android.os.Process.myPid());
         	            break;
         	        case DialogInterface.BUTTON_NEGATIVE:

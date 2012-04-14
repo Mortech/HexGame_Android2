@@ -2,7 +2,6 @@ package com.sam.hex.lan;
 
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.UnknownHostException;
 
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
@@ -230,9 +229,10 @@ public class LocalLobbyActivity extends Activity {
 						InetAddress local = InetAddress.getByName(editText.getText().toString());
 						LANGlobal.localPlayer.ip = local;
 						new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
+						new LANMessage("What's your name?", LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
 						sent.setMessage(getApplicationContext().getString(R.string.challengeSent)).show();
 					}
-					catch (UnknownHostException e) {
+					catch (Exception e) {
 						e.printStackTrace();
 					}
     	    	}
