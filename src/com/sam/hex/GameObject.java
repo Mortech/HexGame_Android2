@@ -33,8 +33,6 @@ public class GameObject implements Runnable {
 						Global.player2.lose();
 						announceWinner(1);
 					}
-					
-					Global.currentPlayer=(Global.currentPlayer%2)+1;
 				}
 				else {
 					Global.player2.getPlayerTurn();
@@ -44,12 +42,10 @@ public class GameObject implements Runnable {
 						Global.player2.win();
 						announceWinner(2);
 					}
-					
-					Global.currentPlayer=(Global.currentPlayer%2)+1;
 				}
+				Global.currentPlayer=(Global.currentPlayer%2)+1;
 				GameAction.checkedFlagReset();
 				Global.moveNumber++;
-				GameAction.hex = null;
 				Global.board.postInvalidate();
 			}
 			

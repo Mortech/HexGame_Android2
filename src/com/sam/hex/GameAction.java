@@ -79,6 +79,7 @@ public class GameAction {
 								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 								Global.moveList = Global.moveList.nextMove;
 							}
+							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
 						}
 						else{//Second player requested the undo
 							//undo once, switch players
@@ -97,6 +98,7 @@ public class GameAction {
 								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 								Global.moveList = Global.moveList.nextMove;
 							}
+							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
 						}
 					}
 				}
@@ -113,6 +115,7 @@ public class GameAction {
 								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 								Global.moveList = Global.moveList.nextMove;
 							}
+							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
 						}
 					}
 					else{//Second player is on the network (not local)
@@ -123,6 +126,7 @@ public class GameAction {
 								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 								Global.moveList = Global.moveList.nextMove;
 							}
+							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
 						}
 						else{//First player requested the undo
 							//undo once, switch players
@@ -181,7 +185,7 @@ public class GameAction {
 			//Reset the game if it's already ended
 			if(Global.gameOver){
 				Global.moveList.replay(0);
-				Global.currentPlayer = (Global.moveNumber%2)+1;
+				Global.currentPlayer = (Global.currentPlayer%2)+1;
 				Global.moveNumber--;
 				Global.game.start();
 			}

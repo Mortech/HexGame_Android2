@@ -243,6 +243,14 @@ public class HexGame extends Activity {
     	if(Global.moveNumber==1 && Global.gameLocation!=1) HexGame.startNewGame=true;
     }
     
+    @Override
+    public void onDestroy(){
+    	super.onDestroy();
+    	
+    	startNewGame=true;
+    	Global.game.stop();
+    }
+    
     public static void stopGame(){
     	if(Global.gameThread!=null){
     		Global.gameOver=true;

@@ -26,4 +26,6 @@ public class LANGlobal {
 	public static String playerName;
 	public static int playerColor;
 	public static int gridSize;
+	
+	public static int undoNumber = 0;
 }

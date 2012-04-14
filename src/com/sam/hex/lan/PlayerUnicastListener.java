@@ -119,7 +119,10 @@ public class PlayerUnicastListener implements Runnable {
 	    	    	    	            //Yes button clicked
 	    	    		    			LANGlobal.undoRequested = true;
 	    	    	    	        	GameAction.undo();
-	    	    	    	        	new LANMessage("Sure, undo", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+	    	    	    	        	new LANMessage("Sure, undo"+LANGlobal.undoNumber, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+	    	    	    	        	new LANMessage("Sure, undo"+LANGlobal.undoNumber, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+	    	    	    	        	new LANMessage("Sure, undo"+LANGlobal.undoNumber, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+	    	    	    	        	LANGlobal.undoNumber++;
 	    	    	    	            break;
 	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
 	    	    	    	            //No button clicked
@@ -131,12 +134,16 @@ public class PlayerUnicastListener implements Runnable {
 	    					Global.board.getContext().getString(R.string.yes), 
 	    					Global.board.getContext().getString(R.string.no));
 	    		}
-	    		else if(message.equals("Sure, undo")){
-	    			GameAction.undo();
-	    			new DialogBox(Global.board.getContext(), 
-	    					Global.board.getContext().getString(R.string.LANundoAccepted), 
-	    					null, 
-	    					Global.board.getContext().getString(R.string.okay));
+	    		else if(message.contains("Sure, undo")){
+	    			int num = Integer.parseInt(message.substring(10));
+	    			if(num==LANGlobal.undoNumber){
+	    				LANGlobal.undoNumber++;
+	    				GameAction.undo();
+	    				new DialogBox(Global.board.getContext(), 
+		    					Global.board.getContext().getString(R.string.LANundoAccepted), 
+		    					null, 
+		    					Global.board.getContext().getString(R.string.okay));
+	    			}
 	    		}
 	    		else if(message.equals("No, you cannot undo")){
 	    			new DialogBox(Global.board.getContext(), 
