@@ -49,7 +49,7 @@ public class GameAction {
 	}
 	
 	public static boolean makeMove(PlayingEntity player, byte team, Point hex){
-		if(Global.gamePiece[hex.x][hex.y].getTeam() == 0){
+		if(player!=null && Global.gamePiece[hex.x][hex.y].getTeam() == 0){
 			setTeam(team,hex.x,hex.y);
 			return true;
 		}
@@ -91,6 +91,7 @@ public class GameAction {
 					else{
 						//Otherwise, cede the turn to the other player
 						GameAction.hex = new Point(-1,-1);
+						Global.moveNumber--;
 					}
 				}
 				else if(Global.currentPlayer==1 && !p1){
@@ -121,6 +122,7 @@ public class GameAction {
 					else{
 						//Otherwise, cede the turn to the other player
 						GameAction.hex = new Point(-1,-1);
+						Global.moveNumber--;
 					}
 				}
 				else if(Global.currentPlayer==2 && !p2){
