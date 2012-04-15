@@ -12,7 +12,6 @@ public class Global {
 	
 	//Game
 	public static int currentPlayer = 1;
-	public static int winner = 0;
 	public static GameObject game;
 	public static Thread gameThread;
 	public static boolean gameOver = false;

@@ -1,8 +1,5 @@
 package com.sam.hex.lan;
 
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -43,32 +40,6 @@ public class WifiBroadcastReceiver extends BroadcastReceiver{
 	        	//Get our new ip address
 	            WifiInfo wifiInfo = wm.getConnectionInfo();
 	            LANGlobal.LANipAddress = String.format("%d.%d.%d.%d",(wifiInfo.getIpAddress() & 0xff),(wifiInfo.getIpAddress() >> 8 & 0xff),(wifiInfo.getIpAddress() >> 16 & 0xff),(wifiInfo.getIpAddress() >> 24 & 0xff));
-	            
-	        	try {
-	        		//Kill previous threads
-	        		if(sender!=null){
-	        			sender.stop();
-	        			multicastListener.stop();
-	        			unicastListener.stop();
-	        			sender.thread.join();
-	        			multicastListener.thread.join();
-	        			unicastListener.thread.join();
-	        		}
-	        		
-					//Create a socket
-					InetAddress address = InetAddress.getByName("234.235.236.237");
-					MulticastSocket socket = new MulticastSocket(LANGlobal.MULTICASTPORT);
-					socket.joinGroup(address);
-					
-					//Start sending
-					sender=new MulticastSender(socket);
-					//Start listening
-			        multicastListener=new MulticastListener(socket, handler, updateResults);
-			        unicastListener=new UnicastListener(handler, challenger, startGame);
-				}
-				catch (Exception e) {
-					System.out.println(e);
-				}
 	        }
 	        else {
 	            //Wifi connection was lost

@@ -59,7 +59,8 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public boolean supportsUndo() {
-		new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		//If they're Red, Blue played first, and that's the only move played so far, no, you cannot undo.
+		if(!(Global.moveNumber==2 && LANGlobal.localPlayer.firstMove)) new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		
 		return false;
 	}

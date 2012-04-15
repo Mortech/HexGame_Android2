@@ -5,6 +5,7 @@ import java.net.MulticastSocket;
 
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
+import com.sam.hex.Preferences;
 import com.sam.hex.R;
 
 import android.app.Activity;
@@ -19,7 +20,11 @@ import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -97,7 +102,7 @@ public class LocalLobbyActivity extends Activity {
         	        switch (which){
         	        case DialogInterface.BUTTON_POSITIVE:
         	            //Yes button clicked
-        	        	wm.setWifiEnabled(true);
+        	        	startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         	            break;
         	        case DialogInterface.BUTTON_NEGATIVE:
         	            //No button clicked
@@ -159,6 +164,44 @@ public class LocalLobbyActivity extends Activity {
         
         //Clear our cached players from the network
         LANGlobal.localObjects.clear();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.layout.lan_menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.settings:
+        	startActivity(new Intent(getBaseContext(),Preferences.class));
+            return true;
+        case R.id.quit:
+        	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        	    public void onClick(DialogInterface dialog, int which) {
+        	        switch (which){
+        	        case DialogInterface.BUTTON_POSITIVE:
+        	            //Yes button clicked
+        	        	android.os.Process.killProcess(android.os.Process.myPid());
+        	            break;
+        	        case DialogInterface.BUTTON_NEGATIVE:
+        	            //No button clicked
+        	        	//Do nothing
+        	            break;
+        	        }
+        	    }
+        	};
+
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
     
     private void challengeSent(final LocalNetworkObject lno){

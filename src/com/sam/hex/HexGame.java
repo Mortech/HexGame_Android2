@@ -78,8 +78,7 @@ public class HexGame extends Activity {
     	Global.currentPlayer = 1;
     	
     	//Set game mode
-    	Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
-    	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
+    	setType(prefs);
     	
     	//Set player names
     	setNames(prefs);
@@ -228,7 +227,7 @@ public class HexGame extends Activity {
         	};
 
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        	builder.setMessage("Are you sure you want to exit?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+        	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -241,14 +240,6 @@ public class HexGame extends Activity {
     	
     	//If the board's empty, just trigger "startNewGame"
     	if(Global.moveNumber==1 && Global.gameLocation!=1) HexGame.startNewGame=true;
-    }
-    
-    @Override
-    public void onDestroy(){
-    	super.onDestroy();
-    	
-    	startNewGame=true;
-    	Global.game.stop();
     }
     
     public static void stopGame(){
@@ -311,7 +302,7 @@ public class HexGame extends Activity {
     }
     
     private void setGrid(SharedPreferences prefs){
-    	if(Global.player2Type==(byte)2){
+    	if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			Global.gridSize=LANGlobal.localPlayer.gridSize;
@@ -328,6 +319,17 @@ public class HexGame extends Activity {
     	
     	//We don't want 0x0 games
     	if(Global.gridSize<=0) Global.gridSize=1;
+    }
+    
+    private void setType(SharedPreferences prefs){
+    	if(Global.gameLocation==1){
+    		Global.player1Type=(byte)Integer.parseInt(prefs.getString("lanPlayerType", "0"));
+        	Global.player2Type=(byte)Integer.parseInt(prefs.getString("lanPlayerType", "0"));
+    	}
+    	else{
+    		Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
+        	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
+    	}
     }
     
     private void undo(){
@@ -407,9 +409,9 @@ public class HexGame extends Activity {
     	if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
-    			if(Global.player1Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
-    			else if(Global.player1Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
-    			else if(Global.player1Type==(byte) 4) Global.player2=new BeeGameAI(1);
+    			if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
+    			else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
+    			else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(1);
     		}
     		else{
     			Global.player2=new LocalPlayerObject((byte)2);

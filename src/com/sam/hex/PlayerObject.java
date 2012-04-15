@@ -38,6 +38,7 @@ public class PlayerObject implements PlayingEntity {
 	}
 	
 	public void undoCalled(){
+		GameAction.hex = new Point(-1,-1);
 	}
 
 	public void newgameCalled() {
