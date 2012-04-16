@@ -27,8 +27,8 @@ public class GameAction {
 				if (RegularPolygonGameObject.checkWinTeam((byte) 2, i, Global.gridSize, Global.gamePiece)) {
 					System.out.println("Player two wins");
 					checkedFlagReset();
-					String path=RegularPolygonGameObject.findShortestPath((byte) 2, Global.gridSize, i, Global.gamePiece);
-					RegularPolygonGameObject.colorPath(Global.gridSize,i,path);
+					String path=RegularPolygonGameObject.findShortestPath((byte) 2, i, Global.gridSize, Global.gamePiece);
+					RegularPolygonGameObject.colorPath(i,Global.gridSize,path);
 					return true;
 				}
 			}
