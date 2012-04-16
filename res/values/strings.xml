@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Please note, # represents a player's name. # wins will write out Alex wins (or whatever their name is) -->
+    <!-- Please note, # represents a variable. For example, # wins will write out Alex wins (or whatever their name is) -->
     
     <!-- Application name -->
     <string name="app_name">Hex</string>

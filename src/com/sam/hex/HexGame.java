@@ -134,40 +134,29 @@ public class HexGame extends Activity {
     		//Reset the game
     		initializeNewGame();
     	}
-    	else{
-    		//Apply minor changes without stopping the current game
-    		
-    		//Reset the colors for every piece
+    	else{//Apply minor changes without stopping the current game
     		if(Global.gameLocation==0){
-	    		if(Global.player1Color != prefs.getInt("player1Color", Global.player1DefaultColor)){
-	    			for(int x=0;x<Global.gridSize;x++){
-	    				for(int y=0;y<Global.gridSize;y++){
-	    					if(Global.gamePiece[x][y].getColor()==Global.player1Color){
-	    						Global.gamePiece[x][y].setColor(prefs.getInt("player1Color", Global.player1DefaultColor));
-	    					}
-	    				}
-	    			}
-	    			Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
-	    			Global.player1.colorChanged();
-	    		}
-	    		if(Global.player2Color != prefs.getInt("player2Color", Global.player2DefaultColor)){
-	    			for(int x=0;x<Global.gridSize;x++){
-	    				for(int y=0;y<Global.gridSize;y++){
-	    					if(Global.gamePiece[x][y].getColor()==Global.player2Color){
-	    						Global.gamePiece[x][y].setColor(prefs.getInt("player2Color", Global.player2DefaultColor));
-	    					}
-	    				}
-	    			}
-	    			Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
-	    			Global.player2.colorChanged();
-	    		}
+	    		setColors(prefs);
+	    		setNames(prefs);
+	    		Global.moveList.replay(0);
     		}
     		else if(Global.gameLocation==1){
+    			int p1Color = Global.player1Color;
+    			int p2Color = Global.player2Color;
+    			setColors(prefs);
+    			if(p1Color!=Global.player1Color || p2Color!=Global.player2Color){
+    				Global.player1.colorChanged();
+    				Global.player2.colorChanged();
+    			}
     			
+    			String p1Name = Global.player1Name;
+    			String p2Name = Global.player2Name;
+    			setNames(prefs);
+    			if(!p1Name.equals(Global.player1Name) || !p2Name.equals(Global.player2Name)){
+    				Global.player1.nameChanged();
+    				Global.player2.nameChanged();
+    			}
     		}
-    		
-    		//Reset the players names
-	    	setNames(prefs);
 	    	
 	    	//Reset the background colors
 	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
