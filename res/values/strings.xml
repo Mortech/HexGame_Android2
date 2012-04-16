@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Please note, # represents a player's name. # wins will write out Alex wins (or whatever their name is) -->
+    
     <!-- Application name -->
     <string name="app_name">Hex</string>
     
@@ -9,7 +11,7 @@
     <string name="gameLocationSummary">Play on the same device, over LAN, or online!</string>
     <string name="gameSizeTitle">Game Size</string>
     <string name="gameSizeSummary">Pick a size for the gameboard (Current: 7x7)</string>
-    <string name="gameSizeSummary_onChange">Pick a size for the gameboard (Current: </string>
+    <string name="gameSizeSummary_onChange">Pick a size for the gameboard (Current: #x#)</string>
     <string name="customGameSizeSummary">Enter a grid size (Ex. 9)</string>
     
     <string name="player1NameTitle">Player1\'s Name</string>
@@ -63,7 +65,7 @@
     <string name="quit">Quit</string>
     
     <!-- In game notifications -->
-    <string name="winner"> wins!</string>
+    <string name="winner"># wins!</string>
     
     <!-- Game instructions -->
     <string name="instructions">Hex is played by two players, who take turns placing pieces on the board. The players have different colours, say red and blue. (The players themselves are sometimes referred to as Red and Blue) The four edges of the board are coloured with the same colours, in such a way that parallel edges have the same colour. Red wins if he can build a continuous chain between the two red edges, and blue wins if he can build such a chain between the blue edges.\n\n
@@ -77,18 +79,18 @@
     <string name="customIP">Enter an IP directly</string>
     
     <!-- LAN play -->
-    <string name="challenger"> challenges you. Accept?</string>
-    <string name="sendChallenge">Do you want to challenge </string>
+    <string name="challenger"># challenges you. Accept?</string>
+    <string name="sendChallenge">Do you want to challenge #?</string>
     <string name="challengeSent">Challenge sent</string>
-    <string name="newLANGame"> wants to play a new game. Accept?</string>
-    <string name="LANUndo"> wants to undo. Accept?</string>
+    <string name="newLANGame"># wants to play a new game. Accept?</string>
+    <string name="LANUndo"># wants to undo. Accept?</string>
     <string name="LANplayAgain">The other player agreed to a new game.</string>
     <string name="LANdontPlayAgain">The other player denied a new game.</string>
     <string name="LANundoAccepted">The other player allowed an undo.</string>
     <string name="LANundoDenied">The other player denied an undo.</string>
     <string name="playerQuit">The other player left the game.</string>
     <string name="wifiOff">Wifi is off. Enable?</string>
-    <string name="yourIP">Your ip address is: </string>
+    <string name="yourIP">Your ip address is: #</string>
     <string name="yourIPWarning">That\'s your own ip</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

@@ -118,8 +118,8 @@ public class Preferences extends PreferenceActivity {
         
         //Allow for custom grid sizes
         gridPref = findPreference("gameSizePref");
-        if(settings.getString("gameSizePref", "7").equals("0")) gridPref.setSummary(getApplicationContext().getString(R.string.gameSizeSummary_onChange)+settings.getString("customGameSizePref", "7")+"x"+settings.getString("customGameSizePref", "7")+")");
-        else gridPref.setSummary(getApplicationContext().getString(R.string.gameSizeSummary_onChange)+settings.getString("gameSizePref", "7")+"x"+settings.getString("gameSizePref", "7")+")");
+        if(settings.getString("gameSizePref", "7").equals("0")) gridPref.setSummary(InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
+        else gridPref.setSummary(InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("gameSizePref", "7")));
         gridPref.setOnPreferenceChangeListener(new gridListener());
     }
     
@@ -165,7 +165,7 @@ public class Preferences extends PreferenceActivity {
     				input = 4;
     			}
     			settings.edit().putString("customGameSizePref", input+"").commit();
-    			gridPref.setSummary(getApplicationContext().getString(R.string.gameSizeSummary_onChange)+settings.getString("customGameSizePref", "7")+"x"+settings.getString("customGameSizePref", "7")+")");
+    			gridPref.setSummary(InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
     		}
         })
         .setNegativeButton("Cancel", null)
