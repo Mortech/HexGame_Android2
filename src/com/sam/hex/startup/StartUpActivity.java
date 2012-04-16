@@ -5,6 +5,7 @@ import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
 import com.sam.hex.lan.LocalLobbyActivity;
+import com.sam.hex.net.NetLobbyActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -52,6 +53,9 @@ public class StartUpActivity extends Activity {
             public void onClick(View v) {
             	if(Integer.parseInt(prefs.getString("gameLocation", "0")) == 1 && (HexGame.somethingChanged(prefs) || HexGame.startNewGame)){
                 	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
+            	}
+            	else if(Integer.parseInt(prefs.getString("gameLocation", "0")) == 2 && (HexGame.somethingChanged(prefs) || HexGame.startNewGame)){
+                	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
             	}
             	else{
             		startActivity(new Intent(getBaseContext(),HexGame.class));

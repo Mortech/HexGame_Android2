@@ -21,6 +21,7 @@ import com.sam.hex.ai.will.GameAI;
 import com.sam.hex.lan.LANGlobal;
 import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
+import com.sam.hex.net.NetLobbyActivity;
 import com.sam.hex.replay.FileExplore;
 import com.sam.hex.replay.Replay;
 import com.sam.hex.replay.Save;
@@ -125,6 +126,12 @@ public class HexGame extends Activity {
     		//Go to the local lobby
     		Global.gameLocation = 1;
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
+        	finish();
+    	}
+    	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 2){
+    		//Go to the local lobby
+    		Global.gameLocation = 2;
+        	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
         	finish();
     	}
     	else if(HexGame.startNewGame){
@@ -354,6 +361,9 @@ public class HexGame extends Activity {
     	if(Global.gameLocation==1){
     		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
         			|| !(Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) Global.player1Type || Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) Global.player2Type);
+    	}
+    	else if(Global.gameLocation==2){
+    		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation;
     	}
     	else{
     		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
