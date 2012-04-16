@@ -134,13 +134,14 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void win() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void lose() {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public boolean supportsSave() {
+		return false;
 	}
 }

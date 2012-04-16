@@ -3,7 +3,6 @@ package com.sam.hex;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -63,8 +62,8 @@ public class Preferences extends PreferenceActivity {
         	//Clear everything
     		PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().commit();
     		//Reload settings
-        	startActivity(new Intent(getBaseContext(),Preferences.class));
-        	finish();
+    		screen.removeAll();
+        	loadPreferences();
             return false;
         }
     }

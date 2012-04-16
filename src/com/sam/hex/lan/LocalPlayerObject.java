@@ -114,4 +114,9 @@ public class LocalPlayerObject implements PlayingEntity {
 		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	}
+
+	@Override
+	public boolean supportsSave() {
+		return false;
+	}
 }

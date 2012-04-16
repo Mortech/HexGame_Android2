@@ -447,14 +447,20 @@ public class GameAI implements PlayingEntity {
 
 	@Override
 	public void win() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void lose() {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public boolean supportsSave() {
+		if(team==(byte)1){
+			return Global.player2 instanceof PlayerObject;
+		}
+		else{
+			return Global.player1 instanceof PlayerObject;
+		}
 	}
 	
 	/*  Bah, ignore this for now.

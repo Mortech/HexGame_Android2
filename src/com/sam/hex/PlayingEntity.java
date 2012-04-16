@@ -44,6 +44,14 @@ public interface PlayingEntity {
 	public void newgameCalled();
 	
 	/**
+	 * The player has decided they want to save this game.
+	 * Return true if your PlayingEntity supports saving.
+	 * Return false if it doesn't.
+	 * If you return false, the default human player will be saved instead.
+	 * */
+	public boolean supportsSave();
+	
+	/**
 	 * The player's color has been changed!
 	 * Locally, all the pieces have been swapped to the new color.
 	 * This is only useful for LAN play.

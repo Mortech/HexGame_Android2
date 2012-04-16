@@ -769,15 +769,22 @@ public class BeeGameAI implements PlayingEntity
 
 	@Override
 	public void win() {
-		// TODO Auto-generated method stub
-		
 	}
 
 
 	@Override
 	public void lose() {
-		// TODO Auto-generated method stub
-		
+	}
+
+
+	@Override
+	public boolean supportsSave() {
+		if(team==1){
+			return Global.player2 instanceof PlayerObject;
+		}
+		else{
+			return Global.player1 instanceof PlayerObject;
+		}
 	}
 }
 
