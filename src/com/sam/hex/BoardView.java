@@ -18,7 +18,7 @@ public class BoardView extends View{
 	
 	public BoardView(Context context){
 		super(context);
-		calculateGrid(context);
+		calculateGrid();
 	}
 	
 	protected void onDraw(Canvas canvas){
@@ -102,7 +102,6 @@ public class BoardView extends View{
 	        backgroundRight = new ShapeDrawable(new PathShape(right, Global.windowWidth, Global.windowHeight));
 	        backgroundRight.setBounds(0,0,Global.windowWidth,Global.windowHeight);
         }
-        
               
 		for(int xc=0;xc<n;xc++)
 			for(int yc=0;yc<n;yc++){
@@ -118,7 +117,7 @@ public class BoardView extends View{
 			}
 	}
 	
-	public void calculateGrid(Context context){
+	public void calculateGrid(){
 		if(Global.gamePiece[0][0]==null)
 		for(int xc=0;xc<Global.gridSize;xc++)
 			for(int yc=0;yc<Global.gridSize;yc++)

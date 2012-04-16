@@ -66,6 +66,6 @@ public class GameObject implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		new Thread(new AnnounceWinner(team)).start();
+		new Thread(new GameAction.AnnounceWinner(team)).start();
 	}
 }

@@ -11,10 +11,10 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.preference.PreferenceManager;
 
+import com.sam.hex.DialogBox;
 import com.sam.hex.GameAction;
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
-import com.sam.hex.InsertName;
 import com.sam.hex.MoveList;
 import com.sam.hex.R;
 
@@ -79,7 +79,7 @@ public class PlayerUnicastListener implements Runnable {
 	    		}
 	    		else if(message.equals("Want to play a new game?")){
 	    			new DialogBox(Global.board.getContext(), 
-	    					InsertName.insert(Global.board.getContext().getString(R.string.newLANGame), LANGlobal.localPlayer.playerName), 
+	    					GameAction.InsertName.insert(Global.board.getContext().getString(R.string.newLANGame), LANGlobal.localPlayer.playerName), 
 	    					new DialogInterface.OnClickListener() {
 	    	    	    	    public void onClick(DialogInterface dialog, int which) {
 	    	    	    	        switch (which){
@@ -113,7 +113,7 @@ public class PlayerUnicastListener implements Runnable {
 	    		}
 	    		else if(message.equals("Can I undo?")){
 	    			new DialogBox(Global.board.getContext(), 
-	    					InsertName.insert(Global.board.getContext().getString(R.string.LANUndo), LANGlobal.localPlayer.playerName), 
+	    					GameAction.InsertName.insert(Global.board.getContext().getString(R.string.LANUndo), LANGlobal.localPlayer.playerName), 
 	    					new DialogInterface.OnClickListener() {
 	    	    	    	    public void onClick(DialogInterface dialog, int which) {
 	    	    	    	        switch (which){

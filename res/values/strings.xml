@@ -16,7 +16,7 @@
     
     <string name="player1NameTitle">Player1\'s Name</string>
     <string name="player1NameSummary">Name: Player1</string>
-    <string name="player1NameSummary_onChange">Name: </string>
+    <string name="player1NameSummary_onChange">Name: #</string>
     <string name="player1TypeTitle">Player1\'s Type</string>
     <string name="player1TypeSummary">Switch between Player and Computer</string>
     <string name="player1ColorTitle">Player1\'s Color</string>
@@ -24,7 +24,7 @@
     
     <string name="player2NameTitle">Player2\'s Name</string>
     <string name="player2NameSummary">Name: Player2</string>
-    <string name="player2NameSummary_onChange">Name: </string>
+    <string name="player2NameSummary_onChange">Name: #</string>
     <string name="player2TypeTitle">Player2\'s Type</string>
     <string name="player2TypeSummary">Switch between Player and Computer</string>
     <string name="player2ColorTitle">Player2\'s Color</string>
@@ -32,7 +32,7 @@
     
     <string name="lanPlayerNameTitle">Player\'s Name</string>
     <string name="lanPlayerNameSummary">Name: Player</string>
-    <string name="lanPlayerNameSummary_onChange">Name: </string>
+    <string name="lanPlayerNameSummary_onChange">Name: #</string>
     <string name="lanPlayerTypeTitle">Player\'s Type</string>
     <string name="lanPlayerTypeSummary">Switch between Player and Computer</string>
     <string name="lanPlayerColorTitle">Player\'s Color</string>

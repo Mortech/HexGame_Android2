@@ -76,7 +76,7 @@ public class Preferences extends PreferenceActivity {
 				showInputDialog(getApplicationContext().getString(R.string.customGameSizeSummary));
 			}
 			else{
-				preference.setSummary(getApplicationContext().getString(R.string.gameSizeSummary_onChange)+newValue.toString()+"x"+newValue.toString()+")");
+				preference.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), newValue.toString()));
 			}
 			return true;
 		}
@@ -97,17 +97,17 @@ public class Preferences extends PreferenceActivity {
     	//Change the summary to show the player's name
         p1Pref = findPreference("player1Name");
         if(p1Pref!=null){
-        	p1Pref.setSummary(getApplicationContext().getString(R.string.player1NameSummary_onChange)+" "+settings.getString("player1Name", "Player1"));
+        	p1Pref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.player1NameSummary_onChange), settings.getString("player1Name", "Player1")));
         	p1Pref.setOnPreferenceChangeListener(new nameListener());
         }
         p2Pref = findPreference("player2Name");
         if(p2Pref!=null){
-	        p2Pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+" "+settings.getString("player2Name", "Player2"));
+	        p2Pref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.player2NameSummary_onChange), settings.getString("player2Name", "Player2")));
 	        p2Pref.setOnPreferenceChangeListener(new nameListener());
         }
         lanPlPref = findPreference("lanPlayerName");
         if(lanPlPref!=null){
-	        lanPlPref.setSummary(getApplicationContext().getString(R.string.lanPlayerNameSummary_onChange)+" "+settings.getString("lanPlayerName", "Player"));
+	        lanPlPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.lanPlayerNameSummary_onChange), settings.getString("lanPlayerName", "Player")));
 	        lanPlPref.setOnPreferenceChangeListener(new nameListener());
         }
         
@@ -117,8 +117,8 @@ public class Preferences extends PreferenceActivity {
         
         //Allow for custom grid sizes
         gridPref = findPreference("gameSizePref");
-        if(settings.getString("gameSizePref", "7").equals("0")) gridPref.setSummary(InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
-        else gridPref.setSummary(InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("gameSizePref", "7")));
+        if(settings.getString("gameSizePref", "7").equals("0")) gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
+        else gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("gameSizePref", "7")));
         gridPref.setOnPreferenceChangeListener(new gridListener());
     }
     
@@ -164,7 +164,7 @@ public class Preferences extends PreferenceActivity {
     				input = 4;
     			}
     			settings.edit().putString("customGameSizePref", input+"").commit();
-    			gridPref.setSummary(InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
+    			gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
     		}
         })
         .setNegativeButton("Cancel", null)

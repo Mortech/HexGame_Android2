@@ -3,6 +3,8 @@ package com.sam.hex;
 import com.sam.hex.lan.LANGlobal;
 
 import android.graphics.Point;
+import android.os.Looper;
+import android.widget.Toast;
 
 public class GameAction {
 	public static Point hex;
@@ -231,6 +233,32 @@ public class GameAction {
 		catch(NullPointerException e){
 			Global.moveNumber=1;
 			e.printStackTrace();
+		}
+	}
+	
+	public static class AnnounceWinner implements Runnable{
+		int team;
+		public AnnounceWinner(int team){
+			this.team = team;
+		}
+		
+		@Override
+		public void run(){
+			Looper.prepare();
+			if(team==1){
+				Toast.makeText(Global.board.getContext(), InsertName.insert(Global.board.getContext().getString(R.string.winner), Global.player1Name), Toast.LENGTH_SHORT).show();
+			}
+			else{
+				Toast.makeText(Global.board.getContext(), InsertName.insert(Global.board.getContext().getString(R.string.winner), Global.player2Name), Toast.LENGTH_SHORT).show();
+			}
+			Looper.loop();
+		}
+	}
+	
+	public static class InsertName{
+		public static String insert(String text, String name){
+			String inserted = text.replaceAll("#",name);
+			return inserted;
 		}
 	}
 }

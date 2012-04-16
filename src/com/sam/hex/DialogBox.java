@@ -1,4 +1,4 @@
-package com.sam.hex.lan;
+package com.sam.hex;
 
 import android.app.AlertDialog;
 import android.content.Context;

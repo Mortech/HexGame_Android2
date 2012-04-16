@@ -33,18 +33,33 @@ public class BeeGameAI implements PlayingEntity
     */
     public BeeGameAI (int team)
     {
-    this.team = team;
-	// Creates the pieces array that stores the board inside Bee
-    gridSize = Global.gridSize;
-	pieces = new int [gridSize + 2] [gridSize + 2];
-	for (int i = 1 ; i < pieces.length - 1 ; i++)
-	{
-	    pieces [i] [0] = RED;
-	    pieces [0] [i] = BLUE;
-	    pieces [i] [pieces.length - 1] = RED;
-	    pieces [pieces.length - 1] [i] = BLUE;
-	}
-	lookUpTable = new ConcurrentHashMap ();
+	    this.team = team;
+		// Creates the pieces array that stores the board inside Bee
+	    gridSize = Global.gridSize;
+		pieces = new int [gridSize + 2] [gridSize + 2];
+		for (int i = 1 ; i < pieces.length - 1 ; i++)
+		{
+		    pieces [i] [0] = RED;
+		    pieces [0] [i] = BLUE;
+		    pieces [i] [pieces.length - 1] = RED;
+		    pieces [pieces.length - 1] [i] = BLUE;
+		}
+		lookUpTable = new ConcurrentHashMap ();
+    }
+    
+    public class AIHistoryObject{
+    	int[][] pieces;
+    	ConcurrentHashMap lookUpTable;
+    	
+    	public AIHistoryObject(int[][] pieces, ConcurrentHashMap lookUpTable) {
+    		this.pieces = new int[pieces.length][pieces.length];
+    		for(int i=0;i<pieces.length;i++){
+    			for(int j=0;j<pieces.length;j++){
+    				this.pieces[i][j] = pieces[i][j];
+    			}
+    		}
+    		this.lookUpTable = lookUpTable;
+    	}
     }
 
 
