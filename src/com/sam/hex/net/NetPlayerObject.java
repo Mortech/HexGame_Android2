@@ -12,21 +12,26 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import com.sam.hex.GameAction;
 import com.sam.hex.Global;
 import com.sam.hex.PlayingEntity;
 
+import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.preference.PreferenceManager;
 
 public class NetPlayerObject implements PlayingEntity {
+	int team;
 	
-	byte[][] gameBoard; 
-	byte team;
-	
-	public NetPlayerObject(byte i) {
+	public NetPlayerObject(int i) {
 		this.team=i;//Set the player's team
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Global.board.getContext());
+		String username = prefs.getString("netUsername", "");
+		String password = prefs.getString("netPassword", "");
 		
 		//Register with igGC
 		String registrationUrl;
@@ -36,7 +41,7 @@ public class NetPlayerObject implements PlayingEntity {
 		int responseCode;
 		try {
 			//http://www.iggamecenter.com/api_login.php?app_id=17&app_code=wihamo8984&login=Xlythe&password=crunch&networkuid=NotSet
-			registrationUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s&networkuid=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(NetGlobal.username,"UTF-8"), URLEncoder.encode(NetGlobal.password,"UTF-8"), URLEncoder.encode(NetGlobal.uniqueID,"UTF-8"));
+			registrationUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s&networkuid=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(username,"UTF-8"), URLEncoder.encode(password,"UTF-8"), URLEncoder.encode(NetGlobal.uniqueID,"UTF-8"));
 			url = new URL(registrationUrl);
 			connection = url.openConnection();
 			httpConnection = (HttpURLConnection) connection;
@@ -45,7 +50,9 @@ public class NetPlayerObject implements PlayingEntity {
 			if(responseCode == HttpURLConnection.HTTP_OK) {
 	            //Registration success
 				SAXParserFactory spf = SAXParserFactory.newInstance();
-                SAXParser sp = spf.newSAXParser();
+                SAXParser parser = spf.newSAXParser();
+                XMLReader reader = parser.getXMLReader();
+                reader.parse(new InputSource(url.openStream()));
 	        }
 	        else {
 	            //Registration failed             
@@ -87,7 +94,7 @@ public class NetPlayerObject implements PlayingEntity {
 				break;
 			}
 			if (Global.gamePiece[hex.x][hex.y].getTeam() == 0) {
-				GameAction.makeMove(this, team, hex);
+				GameAction.makeMove(this, (byte) team, hex);
 				GameAction.hex = null;
 				break;
 			}

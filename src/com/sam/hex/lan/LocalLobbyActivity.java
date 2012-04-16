@@ -7,6 +7,7 @@ import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
+import com.sam.hex.startup.StartUpActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -78,6 +79,15 @@ public class LocalLobbyActivity extends Activity {
         ipButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	customIP();
+            }
+        });
+        
+        Button home = (Button) findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	startActivity(new Intent(getBaseContext(),StartUpActivity.class));
+            	finish();
+            	StartUpActivity.startup.finish();
             }
         });
     }
@@ -169,7 +179,7 @@ public class LocalLobbyActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.layout.lan_menu, menu);
+        inflater.inflate(R.layout.locallobby_menu, menu);
         return true;
     }
     

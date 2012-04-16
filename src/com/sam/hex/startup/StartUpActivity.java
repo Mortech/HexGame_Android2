@@ -15,18 +15,19 @@ import android.view.View;
 import android.widget.Button;
 
 public class StartUpActivity extends Activity {
+	public static Activity startup;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        StartUpActivity.startup = this;
         
         //Second button
         final Button instructionsButton = (Button) findViewById(R.id.instructionsButton);
         instructionsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	Intent instructionsActivity = new Intent(getBaseContext(),InstructionsActivity.class);
-            	startActivity(instructionsActivity);
+            	startActivity(new Intent(getBaseContext(),InstructionsActivity.class));
             }
         });
         
@@ -34,8 +35,7 @@ public class StartUpActivity extends Activity {
         final Button optionsButton = (Button) findViewById(R.id.optionsButton);
         optionsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	Intent settingsActivity = new Intent(getBaseContext(),Preferences.class);
-            	startActivity(settingsActivity);
+            	startActivity(new Intent(getBaseContext(),Preferences.class));
             }
         });
     }

@@ -15,23 +15,18 @@
     
 
     <application android:icon="@drawable/icon" android:label="@string/app_name" >
-		<activity android:name=".startup.StartUpActivity" android:label="@string/app_name">
+		<activity android:name=".startup.StartUpActivity" android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
 		    <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 		</activity>
-		<activity android:label="@string/app_name" android:name=".HexGame" >
-        </activity>
-        <activity android:label="@string/preferences" android:name=".Preferences" android:theme="@style/Theme.QuickLoad">
-		</activity>
-		<activity android:label="@string/rules" android:name=".startup.InstructionsActivity" >
-        </activity>
-        <activity android:label="@string/app_name" android:name=".lan.LocalLobbyActivity" >
-        </activity>
-        <activity android:label="@string/app_name" android:name=".replay.FileExplore" >
-        </activity>
+		<activity android:label="@string/app_name" android:name=".HexGame" />
+        <activity android:label="@string/preferences" android:name=".Preferences" />
+		<activity android:label="@string/rules" android:name=".startup.InstructionsActivity" android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:label="@string/app_name" android:name=".lan.LocalLobbyActivity" android:theme="@style/ListFont" />
+        <activity android:label="@string/app_name" android:name=".replay.FileExplore" />
     </application>
 
 </manifest>
