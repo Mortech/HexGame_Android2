@@ -36,6 +36,11 @@
     <string name="lanPlayerColorTitle">Player\'s Color</string>
     <string name="lanPlayerColorSummary">Pick a color for Player</string>
     
+    <string name="netUsernameTitle">Username</string>
+    <string name="netUsernameSummary">Username to sign into igGC</string>
+    <string name="netPasswordTitle">Password</string>
+    <string name="netPasswordSummary">Password to sign into igGC</string>
+    
     <string name="resetTitle">Reset to Defaults</string>
     <string name="resetSummary">Reset all settings to their defaults</string>
     

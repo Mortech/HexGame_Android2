@@ -34,43 +34,15 @@ public class Preferences extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         
-        addPreferencesFromResource(R.layout.preferences_general);
-        ListPreference val = (ListPreference) findPreference("gameLocation");
-        if(val.getValue().equals("0")){
-        	addPreferencesFromResource(R.layout.preferences_player1);
-    		addPreferencesFromResource(R.layout.preferences_player2);
-    	}
-        else if(val.getValue().equals("1")){
-        	addPreferencesFromResource(R.layout.preferences_lanplayer);
-        }
-    	addPreferencesFromResource(R.layout.preferences_reset);
-        
-        //Hide custom grid size preference
-        customGridPref = (EditTextPreference) findPreference("customGameSizePref");
-        screen = (PreferenceScreen) findPreference("preferences");
-        screen.removePreference(customGridPref);
+        loadPreferences();
     }
     
     class locListener implements OnPreferenceChangeListener{        
         @Override
         public boolean onPreferenceChange(Preference pref, Object newValue) {
         	settings.edit().putString(pref.getKey(), (String) newValue).commit();
-        	int val = Integer.decode(newValue.toString());
         	screen.removeAll();
-        	addPreferencesFromResource(R.layout.preferences_general);
-            if(val==0){
-            	addPreferencesFromResource(R.layout.preferences_player1);
-        		addPreferencesFromResource(R.layout.preferences_player2);
-        	}
-            else if(val==1){
-            	addPreferencesFromResource(R.layout.preferences_lanplayer);
-            }
-        	addPreferencesFromResource(R.layout.preferences_reset);
-        	
-        	//Hide custom grid size preference
-            customGridPref = (EditTextPreference) findPreference("customGameSizePref");
-            screen = (PreferenceScreen) findPreference("preferences");
-            screen.removePreference(customGridPref);
+        	loadPreferences();
             
             setListeners();
             return true;
@@ -151,6 +123,30 @@ public class Preferences extends PreferenceActivity {
         gridPref.setOnPreferenceChangeListener(new gridListener());
     }
     
+    private void loadPreferences(){
+    	addPreferencesFromResource(R.layout.preferences_general);
+        ListPreference val = (ListPreference) findPreference("gameLocation");
+        if(val.getValue().equals("0")){
+        	addPreferencesFromResource(R.layout.preferences_player1);
+    		addPreferencesFromResource(R.layout.preferences_player2);
+    	}
+        else if(val.getValue().equals("1")){
+        	addPreferencesFromResource(R.layout.preferences_lanplayer);
+        }
+        else if(val.getValue().equals("2")){
+        	addPreferencesFromResource(R.layout.preferences_netplayer);
+        }
+    	addPreferencesFromResource(R.layout.preferences_reset);
+    	
+    	//Hide custom grid size preference
+        customGridPref = (EditTextPreference) findPreference("customGameSizePref");
+        screen = (PreferenceScreen) findPreference("preferences");
+        screen.removePreference(customGridPref);
+    }
+    
+    /**
+     * Popup for custom grid sizes
+     * */
     private void showInputDialog(String message){
         final EditText editText = new EditText(this);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
