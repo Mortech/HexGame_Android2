@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.graphics.Point;
 
 import com.sam.hex.ai.bee.BeeGameAI;
@@ -39,8 +40,7 @@ public class HexGame extends Activity {
         }
         else{
         	//Readd the view
-        	Global.board=new BoardView(this);
-        	Global.board.setOnTouchListener(new TouchListener());
+        	((ViewGroup)Global.board.getParent()).removeView(Global.board);
     	    setContentView(Global.board);
         }
     }
@@ -138,10 +138,7 @@ public class HexGame extends Activity {
     		//Apply minor changes without stopping the current game
     		
     		//Reset the colors for every piece
-    		if(Global.gameLocation==1){
-    			
-    		}
-    		else{
+    		if(Global.gameLocation==0){
 	    		if(Global.player1Color != prefs.getInt("player1Color", Global.player1DefaultColor)){
 	    			for(int x=0;x<Global.gridSize;x++){
 	    				for(int y=0;y<Global.gridSize;y++){
@@ -164,6 +161,9 @@ public class HexGame extends Activity {
 	    			Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
 	    			Global.player2.colorChanged();
 	    		}
+    		}
+    		else if(Global.gameLocation==1){
+    			
     		}
     		
     		//Reset the players names

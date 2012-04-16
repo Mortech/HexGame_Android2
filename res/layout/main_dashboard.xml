@@ -9,17 +9,17 @@
         android:id="@+id/startButton"
         style="@style/DashboardButton"
         android:text="@string/start"
-        android:drawableTop="@drawable/icon" />
+        android:drawableTop="@drawable/start_icon" />
     <Button
         android:id="@+id/instructionsButton"
         style="@style/DashboardButton"
         android:text="@string/rules"
-        android:drawableTop="@drawable/icon" />
+        android:drawableTop="@drawable/rules_icon" />
 
     <Button
         android:id="@+id/optionsButton"
         style="@style/DashboardButton"
         android:text="@string/options"
-        android:drawableTop="@drawable/icon" />
+        android:drawableTop="@drawable/settings_icon" />
 
 </com.sam.hex.startup.DashboardLayout>

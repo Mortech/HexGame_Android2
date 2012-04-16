@@ -6,7 +6,7 @@
         <!-- Include Action Bar -->
         <include layout="@layout/locallobby_actionbar"/>
  
-        <!--  Include Fragmented dashboard -->
+        <!--  Include players -->
         <include layout="@layout/locallobby_playerlist"/>
  
 </LinearLayout>

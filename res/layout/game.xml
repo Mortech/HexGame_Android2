@@ -4,9 +4,6 @@
     android:layout_height="fill_parent">
     
         <!-- Include Action Bar -->
-        <include layout="@layout/instructions_actionbar"/>
- 
-        <!--  Include text -->
-        <include layout="@layout/instructions_text"/>
+        <include layout="@layout/game_actionbar"/>
  
 </LinearLayout>
