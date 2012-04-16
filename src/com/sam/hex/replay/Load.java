@@ -8,6 +8,7 @@ import android.os.Environment;
 
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
+import com.sam.hex.MoveList;
 import com.sam.hex.PlayerObject;
 
 public class Load implements Runnable{
@@ -17,17 +18,23 @@ public class Load implements Runnable{
 			HexGame.stopGame();
     		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + FileExplore.chosenFile);
     		if(file!=null){
-				FileInputStream saveFile = new FileInputStream(file);
-				ObjectInputStream restore = new ObjectInputStream(saveFile);
-				SavedGameObject savedGame = (SavedGameObject) restore.readObject();
-				Global.player1Color = savedGame.player1Color;
-				Global.player2Color = savedGame.player2Color;
-				Global.player1Name = savedGame.player1Name;
-				Global.player2Name = savedGame.player2Name;
-				Global.moveList = savedGame.moveList;
-				Global.gridSize = savedGame.gridSize;
-				Global.moveNumber = savedGame.moveNumber;
-				restore.close();
+    	        try {
+    	            //Construct the ObjectInputStream object
+    	        	ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
+    	            
+    	            Global.player1Color = (Integer) inputStream.readObject();
+    				Global.player2Color = (Integer) inputStream.readObject();
+    				Global.player1Name = (String) inputStream.readObject();
+    				Global.player2Name = (String) inputStream.readObject();
+    				Global.moveList = (MoveList) inputStream.readObject();
+    				Global.gridSize = (Integer) inputStream.readObject();
+    				Global.moveNumber = (Integer) inputStream.readObject();
+    				
+    				inputStream.close();
+    	        }
+    	        catch(Exception e){
+    	        	e.printStackTrace();
+    	        }
 				
 				Global.currentPlayer=(Global.moveNumber%2)+1;
 				Global.player1 = new PlayerObject((byte) 1);

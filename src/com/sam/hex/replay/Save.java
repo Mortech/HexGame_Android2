@@ -1,11 +1,9 @@
 package com.sam.hex.replay;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,34 +35,26 @@ public class Save{
 		@Override
 		public void run() {
 			createDirIfNoneExists(File.separator + "Hex" + File.separator);
-			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
+			String file = Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName;
 			if(file!=null){
-				String filePath = file.getPath();
-				if(!filePath.toLowerCase().endsWith(".rhex")){
-				    file = new File(filePath + ".rhex");
+				if(!file.toLowerCase().endsWith(".rhex")){
+				    file = file + ".rhex";
 				}
 				try {
-					file.createNewFile();
+					ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+					
+					outputStream.writeObject(Global.player1Color);
+					outputStream.writeObject(Global.player2Color);
+					outputStream.writeObject(Global.player1Name);
+					outputStream.writeObject(Global.player2Name);
+					outputStream.writeObject(Global.moveList);
+					outputStream.writeObject(Global.gridSize);
+					outputStream.writeObject(Global.moveNumber);
+					
+					outputStream.flush();
+                    outputStream.close();
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
-				
-				if(file.exists()){
-					try {
-				    	OutputStream fo = new FileOutputStream(file);
-				    	
-				    	SavedGameObject savedGame = new SavedGameObject(Global.player1Color, Global.player2Color, Global.player1Name, Global.player2Name, Global.moveList, Global.gridSize, Global.moveNumber);
-				    	ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-				    	ObjectOutputStream oStream = new ObjectOutputStream(bStream);
-						oStream.writeObject(savedGame);
-						byte[] data = bStream.toByteArray();
-						
-					    fo.write(data);
-					    fo.close();
-					    
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 				}
 			}
 		}
