@@ -144,6 +144,7 @@ public class HexGame extends Activity {
     			int p1Color = Global.player1Color;
     			int p2Color = Global.player2Color;
     			setColors(prefs);
+    			Global.moveList.replay(0);
     			if(p1Color!=Global.player1Color || p2Color!=Global.player2Color){
     				Global.player1.colorChanged();
     				Global.player2.colorChanged();
@@ -157,9 +158,6 @@ public class HexGame extends Activity {
     				Global.player2.nameChanged();
     			}
     		}
-	    	
-	    	//Reset the background colors
-	    	Global.board.onSizeChanged(Global.windowWidth,Global.windowHeight,0,0);
 	    	
 	    	//Apply everything
 	    	Global.board.invalidate();

@@ -60,6 +60,7 @@ public class PlayerUnicastListener implements Runnable {
 	    			//Full message looks like: I changed my color to _color_
 	    			LANGlobal.localPlayer.playerColor = Integer.decode(message.substring(22));
 	    			HexGame.setColors(prefs);
+	    			Global.moveList.replay(0);
 	    			Global.board.postInvalidate();
 	    		}
 	    		else if(message.contains("I changed my name to ")){

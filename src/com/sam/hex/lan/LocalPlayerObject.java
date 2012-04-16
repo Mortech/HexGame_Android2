@@ -72,14 +72,30 @@ public class LocalPlayerObject implements PlayingEntity {
 
 	@Override
 	public void colorChanged() {
-		if(team==1) new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		else new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		if(team==1){
+			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		}
+		else{
+			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		}
 	}
 
 	@Override
 	public void nameChanged() {
-		if(team==1) new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		else new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		if(team==1){
+			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		}
+		else{
+			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		}
 	}
 
 	@Override

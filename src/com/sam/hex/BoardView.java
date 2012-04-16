@@ -24,6 +24,7 @@ public class BoardView extends View{
 	protected void onDraw(Canvas canvas){
 		int n = Global.gridSize;
 		
+		colorBackground();
 		backgroundTopBottom.draw(canvas);
 		backgroundLeft.draw(canvas);
 		backgroundRight.draw(canvas);
@@ -77,13 +78,10 @@ public class BoardView extends View{
 	        
 	        backgroundTopBottom = new ShapeDrawable(new RectShape());
 	        backgroundTopBottom.setBounds(0,0,Global.windowWidth,Global.windowHeight);
-	        backgroundTopBottom.getPaint().setColor(Global.player2Color);
 	        backgroundLeft = new ShapeDrawable(new PathShape(left, Global.windowWidth, Global.windowHeight));
 	        backgroundLeft.setBounds(0,(int) (yOffset+hrad),Global.windowWidth,Global.windowHeight);
-	        backgroundLeft.getPaint().setColor(Global.player1Color);
 	        backgroundRight = new ShapeDrawable(new PathShape(right, Global.windowWidth, Global.windowHeight));
 	        backgroundRight.setBounds(0,0,Global.windowWidth,(int) (Global.windowHeight-(yOffset+hrad)));
-	        backgroundRight.getPaint().setColor(Global.player1Color);
         }
         else{
         	Path left = new Path();
@@ -99,13 +97,10 @@ public class BoardView extends View{
 	        
         	backgroundTopBottom = new ShapeDrawable(new RectShape());
 	        backgroundTopBottom.setBounds(0,0,Global.windowWidth,Global.windowHeight);
-	        backgroundTopBottom.getPaint().setColor(Global.player1Color);
 	        backgroundLeft = new ShapeDrawable(new PathShape(left, Global.windowWidth, Global.windowHeight));
 	        backgroundLeft.setBounds(0,0,Global.windowWidth,Global.windowHeight);
-	        backgroundLeft.getPaint().setColor(Global.player2Color);
 	        backgroundRight = new ShapeDrawable(new PathShape(right, Global.windowWidth, Global.windowHeight));
 	        backgroundRight.setBounds(0,0,Global.windowWidth,Global.windowHeight);
-	        backgroundRight.getPaint().setColor(Global.player2Color);
         }
         
               
@@ -128,5 +123,18 @@ public class BoardView extends View{
 		for(int xc=0;xc<Global.gridSize;xc++)
 			for(int yc=0;yc<Global.gridSize;yc++)
 				Global.gamePiece[xc][yc]=new RegularPolygonGameObject();
+	}
+	
+	private void colorBackground(){
+		if(Global.windowHeight>Global.windowWidth){
+	        backgroundTopBottom.getPaint().setColor(Global.player2Color);
+	        backgroundLeft.getPaint().setColor(Global.player1Color);
+	        backgroundRight.getPaint().setColor(Global.player1Color);
+        }
+        else{
+	        backgroundTopBottom.getPaint().setColor(Global.player1Color);
+	        backgroundLeft.getPaint().setColor(Global.player2Color);
+	        backgroundRight.getPaint().setColor(Global.player2Color);
+        }
 	}
 }
