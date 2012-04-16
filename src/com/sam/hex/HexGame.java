@@ -139,12 +139,20 @@ public class HexGame extends Activity {
 	    		setColors(prefs);
 	    		setNames(prefs);
 	    		Global.moveList.replay(0);
+	    		GameAction.checkedFlagReset();
+	    		GameAction.checkWinPlayer(1);
+	    		GameAction.checkWinPlayer(2);
+	    		GameAction.checkedFlagReset();
     		}
     		else if(Global.gameLocation==1){
     			int p1Color = Global.player1Color;
     			int p2Color = Global.player2Color;
     			setColors(prefs);
     			Global.moveList.replay(0);
+    			GameAction.checkedFlagReset();
+	    		GameAction.checkWinPlayer(1);
+	    		GameAction.checkWinPlayer(2);
+	    		GameAction.checkedFlagReset();
     			if(p1Color!=Global.player1Color || p2Color!=Global.player2Color){
     				Global.player1.colorChanged();
     				Global.player2.colorChanged();
