@@ -56,6 +56,10 @@ public class GameAction {
 			setTeam(team,hex.x,hex.y);
 			return true;
 		}
+		else if(player!=null && Global.moveNumber==2 && Global.gamePiece[hex.x][hex.y].getTeam() == 1){//Swap rule
+			setTeam(team,hex.x,hex.y);
+			return true;
+		}
 		return false;
 	}
 	
@@ -67,6 +71,7 @@ public class GameAction {
 			Move lastMove = Global.moveList.thisMove;
 			Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
 			Global.moveList = Global.moveList.nextMove;
+			Global.moveList.replay(0);
 			Global.moveNumber--;
 			
 			//Determine who is a human

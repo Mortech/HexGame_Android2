@@ -28,8 +28,7 @@ public class PlayerObject implements PlayingEntity {
 				GameAction.hex = null;
 				break;
 			}
-			if (Global.gamePiece[hex.x][hex.y].getTeam() == 0) {
-				GameAction.makeMove(this, team, hex);
+			if (GameAction.makeMove(this, team, hex)) {
 				GameAction.hex = null;
 				break;
 			}

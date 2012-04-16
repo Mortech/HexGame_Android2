@@ -40,8 +40,7 @@ public class LocalPlayerObject implements PlayingEntity {
 				LANGlobal.hex = null;
 				break;
 			}
-			else if (Global.gamePiece[hex.x][hex.y].getTeam() == 0) {
-				GameAction.makeMove(this, team, hex);
+			else if (GameAction.makeMove(this, team, hex)) {
 				LANGlobal.hex = null;
 				break;
 			}
