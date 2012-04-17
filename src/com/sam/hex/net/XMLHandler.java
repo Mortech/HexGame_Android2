@@ -76,14 +76,19 @@ public class XMLHandler extends DefaultHandler{
      * <tag>characters</tag> */
     @Override
     public void characters(char ch[], int start, int length) {
-    	if (this.in_uid) {
-    		parsedDataset.setUid(new String(ch, start, length));
-        }
-    	else if (this.in_name) {
-    		parsedDataset.setName(new String(ch, start, length));
-        }
-    	else if (this.in_session_id){
-    		parsedDataset.setSession_id(new String(ch, start, length));
+    	if(this.in_loginResult){
+	    	if (this.in_uid) {
+	    		parsedDataset.setUid(new String(ch, start, length));
+	        }
+	    	else if (this.in_name) {
+	    		parsedDataset.setName(new String(ch, start, length));
+	        }
+	    	else if (this.in_session_id){
+	    		parsedDataset.setSession_id(new String(ch, start, length));
+	    	}
+    	}
+    	else if (this.in_errorMessage){
+    		parsedDataset.setErrorMessage(new String(ch, start, length));
     	}
     }
 }

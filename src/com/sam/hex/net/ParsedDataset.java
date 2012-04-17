@@ -5,6 +5,7 @@ public class ParsedDataset {
     private String name = null;
     private String session_id = null;
     public boolean error = false;
+    private String errorMessage = null;
  
     public String getUid() {
     	return uid;
@@ -28,5 +29,13 @@ public class ParsedDataset {
 
 	public void setSession_id(String session_id) {
 		this.session_id = session_id;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 }

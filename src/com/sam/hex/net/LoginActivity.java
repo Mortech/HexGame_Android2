@@ -50,15 +50,15 @@ public class LoginActivity extends Activity {
         
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         Button enter = (Button) findViewById(R.id.loginEnter);
-        final EditText username = (EditText) findViewById(R.id.username);
-        final EditText password = (EditText) findViewById(R.id.password);
+        final String username = ((EditText) findViewById(R.id.username)).getText().toString();
+        final String password = ((EditText) findViewById(R.id.password)).getText().toString();
         enter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	new Thread(new Runnable(){
 					@Override
 					public void run() {
 						try {
-		            		String registrationUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s&networkuid=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(username.getText().toString(),"UTF-8"), URLEncoder.encode(password.getText().toString(),"UTF-8"), URLEncoder.encode(NetGlobal.uniqueID,"UTF-8"));
+		            		String registrationUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(username,"UTF-8"), URLEncoder.encode(password,"UTF-8"));
 							URL url = new URL(registrationUrl);
 							SAXParserFactory spf = SAXParserFactory.newInstance();
 			                SAXParser parser = spf.newSAXParser();
@@ -69,8 +69,8 @@ public class LoginActivity extends Activity {
 			                
 			                ParsedDataset parsedDataset = handler.getParsedData();
 			            	if(!parsedDataset.error){
-				            	settings.edit().putString("netUsername", (String) username.getText().toString()).commit();
-				            	settings.edit().putString("netPassword", (String) password.getText().toString()).commit();
+				            	settings.edit().putString("netUsername", username).commit();
+				            	settings.edit().putString("netPassword", password).commit();
 				            	
 				            	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
 				            	finish();
@@ -101,6 +101,13 @@ public class LoginActivity extends Activity {
 						}
 					}
             	}).start();
+            }
+        });
+        
+        Button register = (Button) findViewById(R.id.registerEnter);
+        register.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	startActivity(new Intent(getBaseContext(),RegistrationActivity.class));
             }
         });
     }

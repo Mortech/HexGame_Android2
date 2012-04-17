@@ -94,10 +94,19 @@
     <string name="yourIPWarning">That\'s your own ip</string>
     
     <!-- Net play -->
-    <string name="loginFailed">We couldn\'t log you in</string>
     <string name="net">Net Lobby</string>
+    
     <string name="register">Register</string>
+    <string name="field_username">Username (required):</string>
+    <string name="field_password">Password (required):</string>
+    <string name="field_email">Email:</string>
+    <string name="field_birthday">Birthday:</string>
+    <string name="field_about">About:</string>
+    
     <string name="login">Login</string>
+    <string name="login_field_username">Username:</string>
+    <string name="login_field_password">Password:</string>
+    <string name="loginFailed">We couldn\'t log you in</string>
     
     <!-- Dialog Options -->
     <string name="yes">Yes</string>
@@ -105,6 +114,7 @@
     <string name="enter">Enter</string>
     <string name="okay">Okay</string>
     <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
     
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>

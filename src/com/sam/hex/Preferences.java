@@ -1,7 +1,10 @@
 package com.sam.hex;
 
+import com.sam.hex.startup.StartUpActivity;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +17,8 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.text.InputType;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class Preferences extends PreferenceActivity {
@@ -124,6 +129,7 @@ public class Preferences extends PreferenceActivity {
     }
     
     private void loadPreferences(){
+    	setContentView(R.layout.preferences);
     	addPreferencesFromResource(R.layout.preferences_general);
         ListPreference val = (ListPreference) findPreference("gameLocation");
         if(val.getValue().equals("0")){
@@ -142,6 +148,15 @@ public class Preferences extends PreferenceActivity {
         customGridPref = (EditTextPreference) findPreference("customGameSizePref");
         screen = (PreferenceScreen) findPreference("preferences");
         screen.removePreference(customGridPref);
+        
+        Button home = (Button) findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	startActivity(new Intent(getBaseContext(),StartUpActivity.class));
+            	finish();
+            	StartUpActivity.startup.finish();
+            }
+        });
     }
     
     /**
