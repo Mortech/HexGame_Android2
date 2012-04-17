@@ -1,82 +1,19 @@
 package com.sam.hex.net;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-
 import com.sam.hex.GameAction;
 import com.sam.hex.Global;
 import com.sam.hex.PlayingEntity;
 
-import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.preference.PreferenceManager;
 
 public class NetPlayerObject implements PlayingEntity {
 	int team;
 	
 	public NetPlayerObject(int i) {
 		this.team=i;//Set the player's team
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Global.board.getContext());
-		String username = prefs.getString("netUsername", "");
-		String password = prefs.getString("netPassword", "");
-		
-		//Register with igGC
-		String registrationUrl;
-		URL url;
-		URLConnection connection;
-		HttpURLConnection httpConnection;
-		int responseCode;
-		try {
-			//http://www.iggamecenter.com/api_login.php?app_id=17&app_code=wihamo8984&login=Xlythe&password=crunch&networkuid=NotSet
-			registrationUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s&networkuid=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(username,"UTF-8"), URLEncoder.encode(password,"UTF-8"), URLEncoder.encode(NetGlobal.uniqueID,"UTF-8"));
-			url = new URL(registrationUrl);
-			connection = url.openConnection();
-			httpConnection = (HttpURLConnection) connection;
-			responseCode = httpConnection.getResponseCode();
-			
-			if(responseCode == HttpURLConnection.HTTP_OK) {
-	            //Registration success
-				SAXParserFactory spf = SAXParserFactory.newInstance();
-                SAXParser parser = spf.newSAXParser();
-                XMLReader reader = parser.getXMLReader();
-                reader.parse(new InputSource(url.openStream()));
-	        }
-	        else {
-	            //Registration failed             
-	        }
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void getPlayerTurn() {
-		
-        
-
-		
-		
-		
 		GameAction.hex = null;
 		looper: while (true) {
 			Point hex = GameAction.hex;

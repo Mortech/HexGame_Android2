@@ -64,6 +64,7 @@ public class Preferences extends PreferenceActivity {
     		//Reload settings
     		screen.removeAll();
         	loadPreferences();
+        	setListeners();
             return false;
         }
     }

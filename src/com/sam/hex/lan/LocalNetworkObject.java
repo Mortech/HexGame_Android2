@@ -25,7 +25,7 @@ public class LocalNetworkObject{
 	
 	public boolean equals(Object e){
 		if(e instanceof LocalNetworkObject){
-			return this.playerName.equals(((LocalNetworkObject) e).playerName) && this.ip.equals(((LocalNetworkObject) e).ip);
+			return this.ip.equals(((LocalNetworkObject) e).ip);
 		}
 		else{
 			return false;

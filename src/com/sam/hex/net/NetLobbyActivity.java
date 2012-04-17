@@ -23,7 +23,7 @@ public class NetLobbyActivity extends Activity {
         	finish();
         }
         
-        setContentView(R.layout.locallobby);
+        setContentView(R.layout.netlobby);
         
         Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {

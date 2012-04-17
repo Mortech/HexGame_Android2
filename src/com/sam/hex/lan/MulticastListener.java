@@ -39,8 +39,8 @@ public class MulticastListener implements Runnable {
 	        		LocalNetworkObject lno = new LocalNetworkObject(name,address);
 	        		if(!LANGlobal.localObjects.contains(lno)){
 	        			LANGlobal.localObjects.add(lno);
+	        			handler.post(updateUI);
 	        		}
-	        		handler.post(updateUI);
 	    		}
 			}
 	    	catch (Exception e) {
