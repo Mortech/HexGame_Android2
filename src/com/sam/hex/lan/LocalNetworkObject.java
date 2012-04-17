@@ -16,6 +16,9 @@ public class LocalNetworkObject{
 		this.ip = ip;
 	}
 	
+	public LocalNetworkObject() {
+	}
+	
 	public String toString(){
 		return playerName;
 	}

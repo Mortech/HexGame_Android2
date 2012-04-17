@@ -31,7 +31,7 @@ public class MulticastSender implements Runnable {
         	try {
         		socket.send(packet);
         		System.out.println("Sending...");
-        		Thread.sleep(3000);
+        		Thread.sleep(1000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

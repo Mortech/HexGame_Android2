@@ -40,25 +40,10 @@ public class UnicastListener implements Runnable {
 	    		InetAddress address = packet.getAddress();        		
         		
 	    		if(message.contains("challenges you. Grid size: ")){
-	    			boolean flag = true;
-	    			for(int i=0;i<LANGlobal.localObjects.size();i++){
-	        			if(LANGlobal.localObjects.get(i).ip.equals(address)){
-	        				flag = false;
-	        				LANGlobal.localPlayer = LANGlobal.localObjects.get(i);
-	        				LANGlobal.localPlayer.firstMove = true;
-	        				//Full message looks like: _playername_ challenges you. Grid size: _gridsize_
-	        				LANGlobal.localPlayer.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));//Grab the grid size from the end of the message
-	        				handler.post(challenger);
-	        				break;
-	        			}
-	        		}
-	    			if(flag){
-	    				LANGlobal.localPlayer.playerName = message.substring(0, message.lastIndexOf(" challenges you"));
-	    				LANGlobal.localPlayer.firstMove = true;
-	    				LANGlobal.localPlayer.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));
-	    				LANGlobal.localPlayer.ip = address;
-	    				handler.post(challenger);
-	    			}
+    				LANGlobal.localPlayer.playerName = message.substring(0, message.lastIndexOf(" challenges you"));
+    				LANGlobal.localPlayer.gridSize = Integer.decode(message.substring(message.lastIndexOf("Grid size: ")+11));
+    				LANGlobal.localPlayer.ip = address;
+    				handler.post(challenger);
 	    		}
 	    		else if(message.contains("Its on! My color is ") && LANGlobal.localPlayer.ip.equals(address)){
 	    			//Full message looks like: Its on! My color is _playercolor_
@@ -70,6 +55,7 @@ public class UnicastListener implements Runnable {
 	    			new LANMessage("My color is "+LANGlobal.playerColor, address, LANGlobal.CHALLENGERPORT);
 	    			
 	    			handler.post(startGame);
+	    			stop();
 	    		}
 	    		else if(message.contains("My color is ") && LANGlobal.localPlayer.ip.equals(address)){
 	    			//Full message looks like: My color is _playercolor_

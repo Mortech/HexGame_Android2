@@ -70,6 +70,8 @@ public class LocalLobbyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.locallobby);
         
+        LANGlobal.localPlayer = new LocalNetworkObject();
+        
         wm = (WifiManager) getSystemService(WIFI_SERVICE);
         mcLock = wm.createMulticastLock("broadcastlock");
         intentFilter = new IntentFilter();
@@ -215,13 +217,18 @@ public class LocalLobbyActivity extends Activity {
         }
     }
     
-    private void challengeSent(final LocalNetworkObject lno){
+    private void challengeSent(final LocalNetworkObject player){
     	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int which) {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
-    	        	new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, lno.ip, LANGlobal.CHALLENGERPORT);
+    	        	LANGlobal.localPlayer.ip = player.ip;
+					LANGlobal.localPlayer.firstMove = false;
+					new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
+					new LANMessage("What's your name?", LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
+					new LANMessage("What's your name?", LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
+					new LANMessage("What's your name?", LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
@@ -232,7 +239,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(GameAction.InsertName.insert(getApplicationContext().getString(R.string.sendChallenge), lno.playerName)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
+    	builder.setMessage(GameAction.InsertName.insert(getApplicationContext().getString(R.string.sendChallenge), player.playerName)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
     }
     
     private void challengeRecieved(){
@@ -241,11 +248,12 @@ public class LocalLobbyActivity extends Activity {
     	        switch (which){
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
+    	        	LANGlobal.localPlayer.firstMove = true;
     	        	new LANMessage("Its on! My color is "+LANGlobal.playerColor, LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:
     	            //No button clicked
-    	        	//Do nothing
+    	        	LANGlobal.localPlayer = new LocalNetworkObject();
     	            break;
     	        }
     	    }
@@ -257,7 +265,7 @@ public class LocalLobbyActivity extends Activity {
     
     private void updateResultsInUi(){
     	final ListView lobby = (ListView) findViewById(R.id.players);
-        ArrayAdapter<LocalNetworkObject> adapter = new ArrayAdapter<LocalNetworkObject>(this,android.R.layout.simple_list_item_1, LANGlobal.localObjects);
+        ArrayAdapter<LocalNetworkObject> adapter = new ArrayAdapter<LocalNetworkObject>(this,R.layout.simple_list_item_1, LANGlobal.localObjects);
         lobby.setAdapter(adapter);
         
         lobby.setOnItemClickListener(new OnItemClickListener() {
@@ -280,9 +288,11 @@ public class LocalLobbyActivity extends Activity {
     	    	}
     	    	else if(!editText.getText().toString().equals("")){
 					try {
-						InetAddress local = InetAddress.getByName(editText.getText().toString());
-						LANGlobal.localPlayer.ip = local;
+						LANGlobal.localPlayer.ip = InetAddress.getByName(editText.getText().toString());
+						LANGlobal.localPlayer.firstMove = false;
 						new LANMessage(LANGlobal.playerName+" challenges you. Grid size: "+LANGlobal.gridSize, LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
+						new LANMessage("What's your name?", LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
+						new LANMessage("What's your name?", LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
 						new LANMessage("What's your name?", LANGlobal.localPlayer.ip, LANGlobal.CHALLENGERPORT);
 						sent.setMessage(getApplicationContext().getString(R.string.challengeSent)).show();
 					}

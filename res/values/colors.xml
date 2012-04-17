@@ -3,4 +3,6 @@
 	<color name="black">#000000</color>
 	<color name="white">#FFFFFF</color>
 	<color name="red">#FF0000</color>
+	<drawable name="transparent">#00000000</drawable>
+	<drawable name="white">#FFFFFFFF</drawable>
 </resources>

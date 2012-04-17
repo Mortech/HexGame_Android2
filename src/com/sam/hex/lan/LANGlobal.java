@@ -6,7 +6,7 @@ import android.graphics.Point;
 
 public class LANGlobal {
 	public static ArrayList<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
-	public static LocalNetworkObject localPlayer = new LocalNetworkObject("", null);
+	public static LocalNetworkObject localPlayer = new LocalNetworkObject();
 	public static String LANipAddress;
 	public final static String MULTICASTADDRESS = "234.235.236.237"; 
 	
