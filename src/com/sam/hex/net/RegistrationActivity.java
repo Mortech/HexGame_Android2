@@ -47,24 +47,25 @@ public class RegistrationActivity extends Activity {
         
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         Button enter = (Button) findViewById(R.id.loginEnter);
-        final String username = ((EditText) findViewById(R.id.username)).getText().toString();
-        final String password = ((EditText) findViewById(R.id.password)).getText().toString();
-        final String email = ((EditText) findViewById(R.id.email)).getText().toString();
+        final EditText username = (EditText) findViewById(R.id.username);
+        final EditText password = (EditText) findViewById(R.id.password);
+        final EditText email = (EditText) findViewById(R.id.email);
         final Calendar cal = Calendar.getInstance();
-        final int birthDay = ((DatePicker) findViewById(R.id.birthday)).getDayOfMonth();
-        final int birthMonth = ((DatePicker) findViewById(R.id.birthday)).getMonth();
-        final int birthYear = ((DatePicker) findViewById(R.id.birthday)).getYear();
-        final String about = ((EditText) findViewById(R.id.about)).getText().toString();
+        final DatePicker birth = (DatePicker) findViewById(R.id.birthday);
+        final EditText about = (EditText) findViewById(R.id.about);
         enter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	new Thread(new Runnable(){
 					@Override
 					public void run() {
 						try {
-		            		String registrationUrl = String.format("http://www.iggamecenter.com/api_user_add.php?app_id=%s&app_code=%s&name=%s&password=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(username,"UTF-8"), URLEncoder.encode(password,"UTF-8"));
-		            		if(!email.equals("")) registrationUrl += "&email="+URLEncoder.encode(email,"UTF-8");
+							int birthDay = birth.getDayOfMonth();
+					        int birthMonth = birth.getMonth();
+					        int birthYear = birth.getYear();
+		            		String registrationUrl = String.format("http://www.iggamecenter.com/api_user_add.php?app_id=%s&app_code=%s&name=%s&password=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(username.getText().toString(),"UTF-8"), URLEncoder.encode(password.getText().toString(),"UTF-8"));
+		            		if(!email.equals("")) registrationUrl += "&email="+URLEncoder.encode(email.getText().toString(),"UTF-8");
 		            		if(birthYear!=cal.get(Calendar.YEAR) && birthMonth!=cal.get(Calendar.MONTH) && birthDay!=cal.get(Calendar.DAY_OF_MONTH)) registrationUrl += "&birthDay="+birthDay+"&birthMonth="+birthMonth+"&birthYear="+birthYear;
-		            		if(!about.equals("")) registrationUrl += "&about="+URLEncoder.encode(about,"UTF-8");
+		            		if(!about.equals("")) registrationUrl += "&about="+URLEncoder.encode(about.getText().toString(),"UTF-8");
 							URL url = new URL(registrationUrl);
 							SAXParserFactory spf = SAXParserFactory.newInstance();
 			                SAXParser parser = spf.newSAXParser();
@@ -75,8 +76,8 @@ public class RegistrationActivity extends Activity {
 			                
 			                ParsedDataset parsedDataset = handler.getParsedData();
 			            	if(!parsedDataset.error){
-				            	settings.edit().putString("netUsername", username).commit();
-				            	settings.edit().putString("netPassword", password).commit();
+				            	settings.edit().putString("netUsername", username.getText().toString()).commit();
+				            	settings.edit().putString("netPassword", password.getText().toString()).commit();
 				            	
 				            	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
 				            	finish();

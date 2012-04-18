@@ -95,6 +95,7 @@
     
     <!-- Net play -->
     <string name="net">Net Lobby</string>
+    <string name="createBoard">Create a board</string>
     
     <string name="register">Register</string>
     <string name="field_username">Username (required):</string>

@@ -6,11 +6,11 @@
     android:background="@color/white" >
     
     <Button
-        android:id="@+id/customIP"
+        android:id="@+id/createBoard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/customIP" />
+        android:text="@string/createBoard" />
 
     <ListView
         android:id="@+id/players"
