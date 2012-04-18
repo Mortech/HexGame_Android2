@@ -5,5 +5,8 @@
     
         <!-- Include Action Bar -->
         <include layout="@layout/game_actionbar"/>
+        
+        <!-- Include game -->
+        <include layout="@layout/game_board"/>
  
 </LinearLayout>

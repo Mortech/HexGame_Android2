@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.graphics.Point;
 
 import com.sam.hex.ai.bee.BeeGameAI;
@@ -25,6 +25,7 @@ import com.sam.hex.net.NetLobbyActivity;
 import com.sam.hex.replay.FileExplore;
 import com.sam.hex.replay.Replay;
 import com.sam.hex.replay.Save;
+import com.sam.hex.startup.StartUpActivity;
 
 public class HexGame extends Activity {
 	public static boolean startNewGame = true;
@@ -40,10 +41,19 @@ public class HexGame extends Activity {
         	initializeNewGame();//Must be set up immediately
         }
         else{
-        	//Readd the view
-        	((ViewGroup)Global.board.getParent()).removeView(Global.board);
-    	    setContentView(Global.board);
+        	setContentView(R.layout.game);
+        	Global.board=(BoardView) findViewById(R.id.board);
+        	Global.board.setOnTouchListener(new TouchListener());
         }
+        
+        Button home = (Button) findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	startActivity(new Intent(getBaseContext(),StartUpActivity.class));
+            	finish();
+            	StartUpActivity.startup.finish();
+            }
+        });
     }
     
     class TouchListener implements OnTouchListener{
@@ -92,9 +102,9 @@ public class HexGame extends Activity {
     	GameAction.hex = null;
     	Global.moveNumber = 1;
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
-    	Global.board=new BoardView(this);
+	    setContentView(R.layout.game);
+    	Global.board=(BoardView) findViewById(R.id.board);
     	Global.board.setOnTouchListener(new TouchListener());
-	    setContentView(Global.board);
     	
     	//Make sure the board is empty and defaults are set
     	Global.moveList=new MoveList();

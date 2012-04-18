@@ -6,6 +6,7 @@ import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
 import android.graphics.drawable.shapes.RectShape;
+import android.util.AttributeSet;
 import android.view.View;
 import android.graphics.Color;
 
@@ -20,6 +21,15 @@ public class BoardView extends View{
 		super(context);
 		calculateGrid();
 	}
+	public BoardView(Context context, AttributeSet attrs)
+    {
+        super(context, attrs);
+        calculateGrid();
+    }
+    public BoardView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        calculateGrid();
+    }
 	
 	protected void onDraw(Canvas canvas){
 		int n = Global.gridSize;
