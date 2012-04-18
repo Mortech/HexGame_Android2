@@ -51,7 +51,9 @@ public class LoginActivity extends Activity {
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         Button enter = (Button) findViewById(R.id.loginEnter);
         final EditText username = (EditText) findViewById(R.id.username);
+        username.setText(settings.getString("netUsername", ""));
         final EditText password = (EditText) findViewById(R.id.password);
+        password.setText(settings.getString("netPassword", ""));
         enter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	new Thread(new Runnable(){

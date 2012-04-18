@@ -10,6 +10,8 @@ public class XMLHandler extends DefaultHandler{
     private boolean in_uid = false;
     private boolean in_name = false;
     private boolean in_session_id = false;
+    private boolean in_sessionList = false;
+    private boolean in_session = false;
        
     private ParsedDataset parsedDataset = new ParsedDataset();
  
@@ -49,6 +51,22 @@ public class XMLHandler extends DefaultHandler{
     	else if (localName.equals("session_id")){
     		this.in_session_id = true;
     	}
+    	else if (localName.equals("sessionList")){
+    		this.in_sessionList = true;
+    	}
+    	if(in_sessionList){
+	    	if (localName.equals("session")){
+	    		if(atts.getValue("stat").equals("ACTIVE") || atts.getValue("stat").equals("INIT")){
+	    			parsedDataset.addSession(atts.getValue("stat"), Integer.parseInt(atts.getValue("sid")), Integer.parseInt(atts.getValue("uid")));
+		    		this.in_session = true;
+	    		}
+	    	}
+	    	if(in_session){
+		    	if (localName.equals("member")){
+		    		parsedDataset.addSessionMember(Integer.parseInt(atts.getValue("plc")), Integer.parseInt(atts.getValue("uid")), atts.getValue("nam"), atts.getValue("stat"));
+		    	}
+	    	}
+    	}
     }
        
     /** Gets be called on closing tags like:
@@ -70,6 +88,12 @@ public class XMLHandler extends DefaultHandler{
     	else if (localName.equals("session_id")){
     		this.in_session_id = false;
     	}
+    	else if (localName.equals("sessionList")){
+    		this.in_sessionList = false;
+    	}
+    	else if (localName.equals("session")){
+    		this.in_session = false;
+    	}
     }
        
     /** Gets be called on the following structure:
@@ -78,7 +102,7 @@ public class XMLHandler extends DefaultHandler{
     public void characters(char ch[], int start, int length) {
     	if(this.in_loginResult){
 	    	if (this.in_uid) {
-	    		parsedDataset.setUid(new String(ch, start, length));
+	    		parsedDataset.setUid(Integer.parseInt(new String(ch, start, length)));
 	        }
 	    	else if (this.in_name) {
 	    		parsedDataset.setName(new String(ch, start, length));

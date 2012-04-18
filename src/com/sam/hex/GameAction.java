@@ -3,6 +3,7 @@ package com.sam.hex;
 import com.sam.hex.lan.LANGlobal;
 
 import android.graphics.Point;
+import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
@@ -237,6 +238,7 @@ public class GameAction {
 	}
 	
 	public static class AnnounceWinner implements Runnable{
+		private static Handler handler;
 		int team;
 		public AnnounceWinner(int team){
 			this.team = team;
@@ -244,7 +246,9 @@ public class GameAction {
 		
 		@Override
 		public void run(){
+			if(handler!=null) handler.getLooper().quit();
 			Looper.prepare();
+			handler = new Handler();
 			if(team==1){
 				Toast.makeText(Global.board.getContext(), InsertName.insert(Global.board.getContext().getString(R.string.winner), Global.player1Name), Toast.LENGTH_SHORT).show();
 			}
