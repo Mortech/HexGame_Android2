@@ -41,17 +41,49 @@ public class HexGame extends Activity {
         	initializeNewGame();//Must be set up immediately
         }
         else{
-        	setContentView(R.layout.game);
-        	Global.board=(BoardView) findViewById(R.id.board);
-        	Global.board.setOnTouchListener(new TouchListener());
+        	applyBoard();
         }
-        
-        Button home = (Button) findViewById(R.id.home);
+    }
+    
+    public void applyBoard(){
+    	setContentView(R.layout.game);
+    	Global.board=(BoardView) findViewById(R.id.board);
+    	Global.board.setOnTouchListener(new TouchListener());
+    	
+    	Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	startActivity(new Intent(getBaseContext(),StartUpActivity.class));
             	finish();
             	StartUpActivity.startup.finish();
+            }
+        });
+        
+        Button undo = (Button) findViewById(R.id.undo);
+        undo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	undo();
+            }
+        });
+        
+        Button newgame = (Button) findViewById(R.id.newgame);
+        newgame.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	initializeNewGame();
+            }
+        });
+        
+        Button settings = (Button) findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	startActivity(new Intent(getBaseContext(),Preferences.class));
+            }
+        });
+        
+        Button quit = (Button) findViewById(R.id.quit);
+        quit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	quit();
             }
         });
     }
@@ -102,9 +134,7 @@ public class HexGame extends Activity {
     	GameAction.hex = null;
     	Global.moveNumber = 1;
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
-	    setContentView(R.layout.game);
-    	Global.board=(BoardView) findViewById(R.id.board);
-    	Global.board.setOnTouchListener(new TouchListener());
+	    applyBoard();
     	
     	//Make sure the board is empty and defaults are set
     	Global.moveList=new MoveList();
@@ -222,24 +252,7 @@ public class HexGame extends Activity {
         	save.showSavingDialog();
         	return true;
         case R.id.quit:
-        	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        	    public void onClick(DialogInterface dialog, int which) {
-        	        switch (which){
-        	        case DialogInterface.BUTTON_POSITIVE:
-        	            //Yes button clicked
-        	        	stopGame();
-        	        	android.os.Process.killProcess(android.os.Process.myPid());
-        	            break;
-        	        case DialogInterface.BUTTON_NEGATIVE:
-        	            //No button clicked
-        	        	//Do nothing
-        	            break;
-        	        }
-        	    }
-        	};
-
-        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
+        	quit();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -438,5 +451,26 @@ public class HexGame extends Activity {
     		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
     		else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(2);
     	}
+    }
+    
+    private void quit(){
+    	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+    	    public void onClick(DialogInterface dialog, int which) {
+    	        switch (which){
+    	        case DialogInterface.BUTTON_POSITIVE:
+    	            //Yes button clicked
+    	        	stopGame();
+    	        	android.os.Process.killProcess(android.os.Process.myPid());
+    	            break;
+    	        case DialogInterface.BUTTON_NEGATIVE:
+    	            //No button clicked
+    	        	//Do nothing
+    	            break;
+    	        }
+    	    }
+    	};
+
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
     }
 }
