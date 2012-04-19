@@ -120,9 +120,11 @@ public class Preferences extends PreferenceActivity {
         
         //Allow for custom grid sizes
         gridPref = findPreference("gameSizePref");
-        if(settings.getString("gameSizePref", "7").equals("0")) gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
-        else gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("gameSizePref", "7")));
-        gridPref.setOnPreferenceChangeListener(new gridListener());
+        if(gridPref!=null){
+        	if(settings.getString("gameSizePref", "7").equals("0")) gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
+        	else gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("gameSizePref", "7")));
+        	gridPref.setOnPreferenceChangeListener(new gridListener());
+        }
     }
     
     private void loadPreferences(){
@@ -130,10 +132,12 @@ public class Preferences extends PreferenceActivity {
     	addPreferencesFromResource(R.layout.preferences_general);
         ListPreference val = (ListPreference) findPreference("gameLocation");
         if(val.getValue().equals("0")){
+        	addPreferencesFromResource(R.layout.preferences_gridsize);
         	addPreferencesFromResource(R.layout.preferences_player1);
     		addPreferencesFromResource(R.layout.preferences_player2);
     	}
         else if(val.getValue().equals("1")){
+        	addPreferencesFromResource(R.layout.preferences_gridsize);
         	addPreferencesFromResource(R.layout.preferences_lanplayer);
         }
         else if(val.getValue().equals("2")){
@@ -144,7 +148,7 @@ public class Preferences extends PreferenceActivity {
     	//Hide custom grid size preference
         customGridPref = (EditTextPreference) findPreference("customGameSizePref");
         screen = (PreferenceScreen) findPreference("preferences");
-        screen.removePreference(customGridPref);
+        if(customGridPref!=null) screen.removePreference(customGridPref);
         
         Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {

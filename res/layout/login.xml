@@ -8,5 +8,4 @@
  
         <!--  Include players -->
         <include layout="@layout/login_fields"/>
- 
 </LinearLayout>

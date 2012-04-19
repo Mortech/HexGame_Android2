@@ -26,12 +26,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:id="@+id/search"
-        android:background="@drawable/ic_menu_search_holo_dark"/>
-    <Button 
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_toLeftOf="@id/search"
         android:id="@+id/createBoard"
         android:background="@drawable/ic_menu_add"/>
 </RelativeLayout>

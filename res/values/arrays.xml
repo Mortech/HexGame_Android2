@@ -47,11 +47,41 @@
     </string-array>
     <string-array name="gameLocationArray">
         <item>Same Device</item>
-        <item>LAN</item>
+        <!-- <item>LAN</item> -->
         <item>Online</item>
     </string-array>
     <string-array name="gameLocationValues">
         <item>0</item>
+        <!-- <item>1</item> -->
+        <item>2</item>
+    </string-array>
+    <string-array name="netGameSizeArray">
+        <item>8x8</item>
+        <item>9x9</item>
+        <item>10x10</item>
+        <item>11x11</item>
+        <item>12x12</item>
+        <item>13x13</item>
+        <item>14x14</item>
+        <item>15x15</item>
+        <item>19x19</item>
+    </string-array>
+    <string-array name="netGameSizeValues">
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>19</item>
+    </string-array>
+    <string-array name="netPositionArray">
+        <item>First Player</item>
+        <item>Second Player</item>
+    </string-array>
+    <string-array name="netPositionValues">
         <item>1</item>
         <item>2</item>
     </string-array>

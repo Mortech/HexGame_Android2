@@ -64,13 +64,25 @@ public class NetLobbyActivity extends Activity {
             	finish();
             }
         });
+        
+        Button createBoard = (Button) findViewById(R.id.createBoard);
+        createBoard.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	if(loginSucceeded){
+            		createBoard();
+            	}
+            }
+        });
+        
         context = getApplicationContext();
+        Global.gameLocation = 2;
     }
     
     @Override
     public void onResume(){
     	super.onResume();
     	
+    	loginSucceeded = false;
     	final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if(prefs.getString("netUsername", "").equals("") || prefs.getString("netPassword", "").equals("")){
         	startActivity(new Intent(getBaseContext(),LoginActivity.class));
@@ -224,9 +236,13 @@ public class NetLobbyActivity extends Activity {
         });
     }
     
-    private boolean isOnline() {
+    private boolean isOnline(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+    
+    private void createBoard(){
+    	startActivity(new Intent(getBaseContext(),CreateBoardActivity.class));
     }
 }

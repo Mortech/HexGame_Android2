@@ -10,5 +10,8 @@ public class NetGlobal{
 	public static int uid;
 	public static String session_id;
 	
+	public static int place;
+	public static int gridSize;
+	
 	public static ArrayList<ParsedDataset.GameSession> sessions;
 }

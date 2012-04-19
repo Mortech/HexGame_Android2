@@ -9,7 +9,7 @@
     <string name="preferences">Settings</string>
     <string name="gameLocationTitle">Game Mode</string>
     <string name="gameLocationSummary">Play on the same device, over LAN, or online!</string>
-    <string name="gameSizeTitle">Game Size</string>
+    <string name="gameSizeTitle">Board Size</string>
     <string name="gameSizeSummary">Pick a size for the gameboard (Current: 7x7)</string>
     <string name="gameSizeSummary_onChange">Pick a size for the gameboard (Current: #x#)</string>
     <string name="customGameSizeSummary">Enter a grid size (Ex. 9)</string>
@@ -98,7 +98,8 @@
     <string name="cantConnect">Can\'t connect to the internet. Want to try wifi?</string>
     
     <string name="net">Net Lobby</string>
-    <string name="createBoard">Create Board</string>
+    <string name="createBoard">Create a Game Board</string>
+    <string name="position">Position</string>
     
     <string name="register">Register</string>
     <string name="field_username">Username (required):</string>
