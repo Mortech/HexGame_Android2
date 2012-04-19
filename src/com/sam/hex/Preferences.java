@@ -1,5 +1,9 @@
 package com.sam.hex;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -17,6 +21,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 public class Preferences extends PreferenceActivity {
 	SharedPreferences settings;
@@ -156,6 +161,10 @@ public class Preferences extends PreferenceActivity {
             	finish();
             }
         });
+        
+        ListView list = getListView();
+        View ads = View.inflate(this, R.layout.preferences_ads, null);
+        list.addFooterView(ads);
     }
     
     /**
