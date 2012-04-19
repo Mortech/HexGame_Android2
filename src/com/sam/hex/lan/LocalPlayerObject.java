@@ -54,7 +54,6 @@ public class LocalPlayerObject implements PlayingEntity {
 
 	public void newgameCalled() {
 		LANGlobal.hex = new Point(-1,-1);
-		listener.stop();
 	}
 	
 	public boolean supportsUndo() {

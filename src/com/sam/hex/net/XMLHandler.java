@@ -12,6 +12,9 @@ public class XMLHandler extends DefaultHandler{
     private boolean in_session_id = false;
     private boolean in_sessionList = false;
     private boolean in_session = false;
+    private boolean in_sessionInfo = false;
+    private boolean in_sid = false;
+    private boolean in_server = false;
        
     private ParsedDataset parsedDataset = new ParsedDataset();
  
@@ -54,7 +57,7 @@ public class XMLHandler extends DefaultHandler{
     	else if (localName.equals("sessionList")){
     		this.in_sessionList = true;
     	}
-    	if(in_sessionList){
+    	else if(in_sessionList){
 	    	if (localName.equals("session")){
 	    		if(atts.getValue("stat").equals("ACTIVE") || atts.getValue("stat").equals("INIT")){
 	    			parsedDataset.addSession(atts.getValue("stat"), Integer.parseInt(atts.getValue("sid")), Integer.parseInt(atts.getValue("uid")));
@@ -66,6 +69,17 @@ public class XMLHandler extends DefaultHandler{
 		    		parsedDataset.addSessionMember(Integer.parseInt(atts.getValue("plc")), Integer.parseInt(atts.getValue("uid")), atts.getValue("nam"), atts.getValue("stat"));
 		    	}
 	    	}
+    	}
+    	else if (localName.equals("sessionInfo")){
+    		this.in_sessionInfo = true;
+    	}
+    	else if(in_sessionInfo){
+    		if (localName.equals("sid")){
+    			this.in_sid = true;
+    		}
+    		else if (localName.equals("server")){
+    			this.in_server = true;
+    		}
     	}
     }
        
@@ -94,6 +108,15 @@ public class XMLHandler extends DefaultHandler{
     	else if (localName.equals("session")){
     		this.in_session = false;
     	}
+    	else if (localName.equals("sessionInfo")){
+    		this.in_sessionInfo = false;
+    	}
+    	else if (localName.equals("sid")){
+			this.in_sid = false;
+		}
+		else if (localName.equals("server")){
+			this.in_server = false;
+		}
     }
        
     /** Gets be called on the following structure:
@@ -110,6 +133,14 @@ public class XMLHandler extends DefaultHandler{
 	    	else if (this.in_session_id){
 	    		parsedDataset.setSession_id(new String(ch, start, length));
 	    	}
+    	}
+    	else if(this.in_sessionInfo){
+    		if (this.in_sid) {
+    			parsedDataset.setSid(Integer.parseInt(new String(ch, start, length)));
+    		}
+    		else if (this.in_server) {
+    			parsedDataset.setServer(new String(ch, start, length));
+    		}
     	}
     	else if (this.in_errorMessage){
     		parsedDataset.setErrorMessage(new String(ch, start, length));

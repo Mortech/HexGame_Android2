@@ -56,6 +56,10 @@ public class ParsedDataset {
     	sessions.get(sessions.size()-1).members.add(new Member(position, uid, name, state));
     }
     
+    //Playing a game
+    private int sid;
+    private String server = null;
+    
     //Errors
     public boolean error = false;
     private String errorMessage = null;
@@ -90,5 +94,17 @@ public class ParsedDataset {
 
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
+	}
+	public int getSid() {
+		return sid;
+	}
+	public void setSid(int sid) {
+		this.sid = sid;
+	}
+	public String getServer() {
+		return server;
+	}
+	public void setServer(String server) {
+		this.server = server;
 	}
 }

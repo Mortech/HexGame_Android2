@@ -8,17 +8,23 @@ import android.graphics.Point;
 
 public class NetPlayerObject implements PlayingEntity {
 	int team;
+	MoveListener listener;
 	
 	public NetPlayerObject(int i) {
 		this.team=i;//Set the player's team
+		this.listener = new MoveListener();
 	}
 	
 	public void getPlayerTurn() {
-		GameAction.hex = null;
+		if(Global.moveNumber>1){
+			//TODO Send our move
+		}
+		
+		NetGlobal.hex = null;
 		looper: while (true) {
-			Point hex = GameAction.hex;
+			Point hex = NetGlobal.hex;
 			while (hex == null) {
-				hex = GameAction.hex;
+				hex = NetGlobal.hex;
 				try {
 					Thread.sleep(80);
 				} catch (InterruptedException e) {
@@ -27,15 +33,14 @@ public class NetPlayerObject implements PlayingEntity {
 				if(Global.gameOver) break looper;
 			}
 			if (hex.equals(new Point(-1,-1))){
-				GameAction.hex = null;
+				NetGlobal.hex = null;
 				break;
 			}
-			if (Global.gamePiece[hex.x][hex.y].getTeam() == 0) {
-				GameAction.makeMove(this, (byte) team, hex);
-				GameAction.hex = null;
+			else if (GameAction.makeMove(this, (byte) team, hex)) {
+				NetGlobal.hex = null;
 				break;
 			}
-			GameAction.hex = null;
+			NetGlobal.hex = null;
 		}
 	}
 	
@@ -48,12 +53,14 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public boolean supportsUndo() {
-		return true;
+		//TODO Ask to undo
+		return false;
 	}
 
 	@Override
 	public boolean supportsNewgame() {
-		return true;
+		//TODO Ask for a new game
+		return false;
 	}
 
 	@Override
@@ -66,7 +73,7 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void quit() {
-		GameAction.hex = new Point(-1,-1);
+		listener.stop();
 	}
 
 	@Override
@@ -75,6 +82,7 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void lose() {
+		//TODO Send move
 	}
 
 	@Override

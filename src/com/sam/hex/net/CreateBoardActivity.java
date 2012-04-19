@@ -57,6 +57,8 @@ public class CreateBoardActivity extends Activity {
 	    	                
 	    	                ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	    	                if(!parsedDataset.error){
+	    	                	NetGlobal.sid = parsedDataset.getSid();
+	    	                	NetGlobal.server = parsedDataset.getServer();
 	    	                	startActivity(new Intent(getBaseContext(),HexGame.class));
 	    	                	finish();
 	    	                }
