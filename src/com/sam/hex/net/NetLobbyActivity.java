@@ -14,9 +14,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.sam.hex.DialogBox;
+import com.sam.hex.Global;
+import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
-import com.sam.hex.startup.StartUpActivity;
+import com.sam.hex.lan.LocalLobbyActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,9 +26,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,9 +61,7 @@ public class NetLobbyActivity extends Activity {
         Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	startActivity(new Intent(getBaseContext(),StartUpActivity.class));
             	finish();
-            	StartUpActivity.startup.finish();
             }
         });
         context = getApplicationContext();
@@ -74,7 +76,38 @@ public class NetLobbyActivity extends Activity {
         	startActivity(new Intent(getBaseContext(),LoginActivity.class));
         	finish();
         }
+        else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 0){
+    		//Go into a normal game
+    		Global.gameLocation = 0;
+        	startActivity(new Intent(getBaseContext(),HexGame.class));
+        	finish();
+    	}
+        else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 1){
+    		//Go to the local lobby
+    		Global.gameLocation = 1;
+        	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
+        	finish();
+    	}
         else{
+        	if(!isOnline()){
+        		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            	    public void onClick(DialogInterface dialog, int which) {
+            	        switch (which){
+            	        case DialogInterface.BUTTON_POSITIVE:
+            	            //Yes button clicked
+            	        	startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            	            break;
+            	        case DialogInterface.BUTTON_NEGATIVE:
+            	            //No button clicked
+            	        	android.os.Process.killProcess(android.os.Process.myPid());
+            	            break;
+            	        }
+            	    }
+            	};
+
+            	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            	builder.setMessage(getApplicationContext().getString(R.string.cantConnect)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
+        	}
         	new Thread(new Runnable(){
     			@Override
     			public void run() {
@@ -189,5 +222,11 @@ public class NetLobbyActivity extends Activity {
 				
 			}
         });
+    }
+    
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 }

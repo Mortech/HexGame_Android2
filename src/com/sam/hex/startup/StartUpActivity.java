@@ -16,13 +16,11 @@ import android.view.View;
 import android.widget.Button;
 
 public class StartUpActivity extends Activity {
-	public static Activity startup;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        StartUpActivity.startup = this;
         
         //Second button
         final Button instructionsButton = (Button) findViewById(R.id.instructionsButton);

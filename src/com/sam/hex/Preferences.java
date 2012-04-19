@@ -1,10 +1,7 @@
 package com.sam.hex;
 
-import com.sam.hex.startup.StartUpActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -152,9 +149,7 @@ public class Preferences extends PreferenceActivity {
         Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	startActivity(new Intent(getBaseContext(),StartUpActivity.class));
             	finish();
-            	StartUpActivity.startup.finish();
             }
         });
     }

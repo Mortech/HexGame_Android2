@@ -33,4 +33,11 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@color/red</item>
     </style>
+    
+	<style name="ActionBarSeperator">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/black</item>
+    </style>
 </resources>

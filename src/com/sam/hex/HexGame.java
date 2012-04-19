@@ -25,7 +25,6 @@ import com.sam.hex.net.NetLobbyActivity;
 import com.sam.hex.replay.FileExplore;
 import com.sam.hex.replay.Replay;
 import com.sam.hex.replay.Save;
-import com.sam.hex.startup.StartUpActivity;
 
 public class HexGame extends Activity {
 	public static boolean startNewGame = true;
@@ -53,9 +52,7 @@ public class HexGame extends Activity {
     	Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	startActivity(new Intent(getBaseContext(),StartUpActivity.class));
             	finish();
-            	StartUpActivity.startup.finish();
             }
         });
         
@@ -69,7 +66,23 @@ public class HexGame extends Activity {
         Button newgame = (Button) findViewById(R.id.newgame);
         newgame.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	initializeNewGame();
+            	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            	    public void onClick(DialogInterface dialog, int which) {
+            	        switch (which){
+            	        case DialogInterface.BUTTON_POSITIVE:
+            	            //Yes button clicked
+            	        	initializeNewGame();
+            	            break;
+            	        case DialogInterface.BUTTON_NEGATIVE:
+            	            //No button clicked
+            	        	//Do nothing
+            	            break;
+            	        }
+            	    }
+            	};
+
+            	AlertDialog.Builder builder = new AlertDialog.Builder(HexGame.this);
+            	builder.setMessage(HexGame.this.getString(R.string.confirmNewgame)).setPositiveButton(HexGame.this.getString(R.string.yes), dialogClickListener).setNegativeButton(HexGame.this.getString(R.string.no), dialogClickListener).show();
             }
         });
         
@@ -169,7 +182,7 @@ public class HexGame extends Activity {
         	finish();
     	}
     	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 2){
-    		//Go to the local lobby
+    		//Go to the net lobby
     		Global.gameLocation = 2;
         	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
         	finish();
@@ -402,9 +415,7 @@ public class HexGame extends Activity {
     	//Create our board
     	GameAction.hex = null;
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
-    	Global.board=new BoardView(this);
-    	Global.board.setOnTouchListener(new TouchListener());
-	    setContentView(Global.board);
+    	applyBoard();
         
     	if(Global.moveNumber>1) Global.currentPlayer=(Global.currentPlayer%2)+1;
 	    

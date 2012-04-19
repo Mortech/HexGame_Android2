@@ -3,7 +3,6 @@ package com.sam.hex.startup;
 import com.sam.hex.R;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -23,9 +22,7 @@ public class InstructionsActivity extends Activity {
         Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	startActivity(new Intent(getBaseContext(),StartUpActivity.class));
             	finish();
-            	StartUpActivity.startup.finish();
             }
         });
     }
