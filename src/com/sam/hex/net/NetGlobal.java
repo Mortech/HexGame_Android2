@@ -20,4 +20,6 @@ public class NetGlobal{
 	
 	public static ArrayList<ParsedDataset.GameSession> sessions;
 	public static Point hex;
+	
+	public static String android_id;
 }

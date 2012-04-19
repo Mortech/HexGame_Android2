@@ -1,19 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ActionBarCompat" >
-    <ImageView 
-        android:id="@+id/caret"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_ab_back_holo_light"
-        android:contentDescription="@null"/>
     <Button 
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="50dp"
-        android:layout_toRightOf="@id/caret"
+        android:layout_alignParentLeft="true"
         android:id="@+id/home"
-        android:background="@drawable/icon"/>
+        android:background="@drawable/actionbar_home"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -27,5 +19,5 @@
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:id="@+id/createBoard"
-        android:background="@drawable/ic_menu_add"/>
+        android:background="@drawable/actionbar_addboard"/>
 </RelativeLayout>

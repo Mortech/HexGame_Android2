@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -76,6 +77,7 @@ public class NetLobbyActivity extends Activity {
         
         context = getApplicationContext();
         Global.gameLocation = 2;
+        NetGlobal.android_id = Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
     }
     
     @Override
@@ -124,8 +126,8 @@ public class NetLobbyActivity extends Activity {
     			@Override
     			public void run() {
     				try {
-                		String registrationUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(prefs.getString("netUsername", ""),"UTF-8"), URLEncoder.encode(prefs.getString("netPassword", ""),"UTF-8"));
-    					URL url = new URL(registrationUrl);
+                		String loginUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s&networkuid=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(prefs.getString("netUsername", ""),"UTF-8"), URLEncoder.encode(prefs.getString("netPassword", ""),"UTF-8"), URLEncoder.encode(NetGlobal.android_id,"UTF-8"));
+    					URL url = new URL(loginUrl);
     					SAXParserFactory spf = SAXParserFactory.newInstance();
     	                SAXParser parser = spf.newSAXParser();
     	                XMLReader reader = parser.getXMLReader();
