@@ -31,7 +31,7 @@ public class XMLHandler extends DefaultHandler{
  
     /** Gets be called on opening tags like:
      * <tag>
-     * Can provide attribute(s), when xml was like:
+     * Can provide attribute(s), when xml is like:
      * <tag attribute="attributeValue">*/
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {

@@ -8,5 +8,8 @@
  
         <!--  Include preferences -->
         <ListView android:id="@android:id/list" android:layout_width="fill_parent" android:layout_height="fill_parent"/>
+        
+        <!-- Include ads -->
+        <include layout="@layout/preferences_ads"/>
  
 </LinearLayout>
