@@ -6,9 +6,10 @@
     <string name="app_name">Hex</string>
     
     <!-- Preferences -->
-    <string name="preferences">Settings</string>
-    <string name="gameLocationTitle">Game Mode</string>
-    <string name="gameLocationSummary">Play on the same device, over LAN, or online!</string>
+    <string name="preferences">Settings (Local)</string>
+    <string name="preferences_net">Settings (Online)</string>
+    <string name="gameLocationTitle">Local or Online</string>
+    <string name="gameLocationSummary">Switch between playing on the same device or going online!</string>
     <string name="gameSizeTitle">Board Size</string>
     <string name="gameSizeSummary">Pick a size for the gameboard (Current: 7x7)</string>
     <string name="gameSizeSummary_onChange">Pick a size for the gameboard (Current: #x#)</string>
@@ -53,7 +54,7 @@
     <string name="start">Start Game</string>
     <string name="resume">Resume Game</string>
     <string name="rules">How to Play</string>
-    <string name="options">Settings</string>
+    <string name="options">Player Settings</string>
     
     <!-- Menu choices -->
     <string name="undo">Undo</string>
@@ -66,6 +67,7 @@
     
     <!-- In game notifications -->
     <string name="winner"># wins!</string>
+    <string name="timer">Time Left: #</string>
     
     <!-- Game instructions -->
     <string name="instructions">Hex is played by two players, who take turns placing pieces on the board. The players have different colours, say red and blue. (The players themselves are sometimes referred to as Red and Blue) The four edges of the board are coloured with the same colours, in such a way that parallel edges have the same colour. Red wins if he can build a continuous chain between the two red edges, and blue wins if he can build such a chain between the blue edges.\n\n

@@ -238,10 +238,16 @@ public class NetLobbyActivity extends Activity {
         });
     }
     
-    private boolean isOnline(){
+    private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        
+        boolean connected = false;
+        try{
+        	connected = cm.getActiveNetworkInfo().isConnected();
+        }catch(NullPointerException e){
+        	e.printStackTrace();
+        }
+        return connected;
     }
     
     private void createBoard(){

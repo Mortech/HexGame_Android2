@@ -77,6 +77,6 @@ public class PlayerObject implements PlayingEntity {
 
 	@Override
 	public boolean supportsSave() {
-		return true;
+		return false;
 	}
 }

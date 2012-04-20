@@ -794,12 +794,13 @@ public class BeeGameAI implements PlayingEntity
 
 	@Override
 	public boolean supportsSave() {
-		if(team==1){
-			return Global.player2 instanceof PlayerObject;
-		}
-		else{
-			return Global.player1 instanceof PlayerObject;
-		}
+//		if(team==1){
+//			return Global.player2 instanceof PlayerObject;
+//		}
+//		else{
+//			return Global.player1 instanceof PlayerObject;
+//		}
+		return false;
 	}
 }
 

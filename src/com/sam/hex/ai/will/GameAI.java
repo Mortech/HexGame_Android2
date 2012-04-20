@@ -475,12 +475,13 @@ public class GameAI implements PlayingEntity {
 
 	@Override
 	public boolean supportsSave() {
-		if(team==(byte)1){
-			return Global.player2 instanceof PlayerObject;
-		}
-		else{
-			return Global.player1 instanceof PlayerObject;
-		}
+//		if(team==(byte)1){
+//			return Global.player2 instanceof PlayerObject;
+//		}
+//		else{
+//			return Global.player1 instanceof PlayerObject;
+//		}
+		return false;
 	}
 	
 	/*  Bah, ignore this for now.

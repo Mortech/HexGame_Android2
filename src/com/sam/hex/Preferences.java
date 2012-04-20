@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class Preferences extends PreferenceActivity {
 	SharedPreferences settings;
@@ -130,9 +131,11 @@ public class Preferences extends PreferenceActivity {
     
     private void loadPreferences(){
     	setContentView(R.layout.preferences);
+    	TextView title = (TextView) findViewById(R.id.actionbarTitle);
     	addPreferencesFromResource(R.layout.preferences_general);
         ListPreference val = (ListPreference) findPreference("gameLocation");
         if(val.getValue().equals("0")){
+            title.setText(this.getText(R.string.preferences));
         	addPreferencesFromResource(R.layout.preferences_gridsize);
         	addPreferencesFromResource(R.layout.preferences_player1);
     		addPreferencesFromResource(R.layout.preferences_player2);
@@ -142,6 +145,7 @@ public class Preferences extends PreferenceActivity {
         	addPreferencesFromResource(R.layout.preferences_lanplayer);
         }
         else if(val.getValue().equals("2")){
+            title.setText(this.getText(R.string.preferences_net));
         	addPreferencesFromResource(R.layout.preferences_netplayer);
         }
     	addPreferencesFromResource(R.layout.preferences_reset);

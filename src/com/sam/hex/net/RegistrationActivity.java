@@ -141,7 +141,13 @@ public class RegistrationActivity extends Activity {
     
     private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        
+        boolean connected = false;
+        try{
+        	connected = cm.getActiveNetworkInfo().isConnected();
+        }catch(NullPointerException e){
+        	e.printStackTrace();
+        }
+        return connected;
     }
 }

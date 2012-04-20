@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.graphics.Point;
 
 import com.sam.hex.ai.bee.BeeGameAI;
@@ -99,6 +100,9 @@ public class HexGame extends Activity {
             	quit();
             }
         });
+        
+        Global.player1Icon = (ImageButton) this.findViewById(R.id.p1);
+        Global.player2Icon = (ImageButton) this.findViewById(R.id.p2);
     }
     
     class TouchListener implements OnTouchListener{

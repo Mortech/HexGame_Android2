@@ -44,7 +44,24 @@ public class BoardView extends View{
 				mDrawable[xc][yc].getPaint().setColor(Global.gamePiece[xc][yc].getColor());
 				mDrawable[xc][yc].draw(canvas);
 			}
-		
+		if(Global.currentPlayer==1 && !Global.gameOver){
+			Global.player1Icon.setColorFilter(Global.player1Color);
+			Global.player1Icon.setAlpha(255);
+//			Global.player2Icon.setColorFilter(Color.TRANSPARENT);
+			Global.player2Icon.setColorFilter(Global.player2Color);
+			Global.player2Icon.setAlpha(80);
+		}
+		else if(Global.currentPlayer==2 && !Global.gameOver){
+//			Global.player1Icon.setColorFilter(Color.TRANSPARENT);
+			Global.player1Icon.setColorFilter(Global.player1Color);
+			Global.player1Icon.setAlpha(80);
+			Global.player2Icon.setColorFilter(Global.player2Color);
+			Global.player2Icon.setAlpha(255);
+		}
+		else{
+			Global.player1Icon.setAlpha(80);
+			Global.player2Icon.setAlpha(80);
+		}
 	}
 	@Override
 	public void onSizeChanged(int w, int h, int oldw, int oldh){
