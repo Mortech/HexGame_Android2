@@ -45,7 +45,6 @@ public class GameObject implements Runnable {
 				}
 				Global.currentPlayer=(Global.currentPlayer%2)+1;
 				GameAction.checkedFlagReset();
-				Global.moveNumber++;
 				Global.board.postInvalidate();
 			}
 			

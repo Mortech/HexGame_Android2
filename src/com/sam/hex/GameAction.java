@@ -52,6 +52,7 @@ public class GameAction {
 	private static void setTeam(byte t,int x,int y) {
 		Global.moveList.makeMove(x, y, t);
 		Global.gamePiece[x][y].setTeam(t);
+		Global.moveNumber++;
 	}
 	
 	public static boolean makeMove(PlayingEntity player, byte team, Point hex){
@@ -67,174 +68,158 @@ public class GameAction {
 	}
 	
 	public static void undo(){
-		try{
-			if(Global.moveNumber>1){
-				GameAction.checkedFlagReset();
-				
-				//Remove the piece from the board and the movelist
-				Move lastMove = Global.moveList.thisMove;
-				Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-				Global.moveList = Global.moveList.nextMove;
-				Global.moveList.replay(0);
-				Global.moveNumber--;
-				
-				//Determine who is a human
-				boolean p1 = Global.player1 instanceof PlayerObject;
-				boolean p2 = Global.player2 instanceof PlayerObject;
-				
-				if(Global.gameLocation==0){
-					if(Global.currentPlayer==1 && p1){//It's a human's turn
-						Global.player2.undoCalled();//Tell the other player we're going back a turn
-						
-						if(!p2){//If the other person isn't a human, undo again
-							if(Global.moveNumber>1){
-								lastMove = Global.moveList.thisMove;
-								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-								Global.moveList = Global.moveList.nextMove;
-								Global.moveNumber--;
-							}
-							else{
-								GameAction.hex = new Point(-1,-1);
-								Global.moveNumber--;
-							}
-							
-							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
-						}
-						else{
-							//Otherwise, cede the turn to the other player
-							GameAction.hex = new Point(-1,-1);
-							Global.moveNumber--;
-						}
-					}
-					else if(Global.currentPlayer==1 && !p1){
-						if(!Global.gameOver){
-							Global.player1.undoCalled();
-							Global.moveNumber--;
-						}
-					}
-					else if(Global.currentPlayer==2 && p2){
-						Global.player1.undoCalled();
-						
-						//If the other person isn't a (local) human
-						if(!p1){
-							//Undo again
-							if(Global.moveNumber>1){
-								lastMove = Global.moveList.thisMove;
-								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-								Global.moveList = Global.moveList.nextMove;
-								Global.moveNumber--;
-							}
-							else{
-								GameAction.hex = new Point(-1,-1);
-								Global.moveNumber--;
-							}
-							
-							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
-						}
-						else{
-							//Otherwise, cede the turn to the other player
-							GameAction.hex = new Point(-1,-1);
-							Global.moveNumber--;
-						}
-					}
-					else if(Global.currentPlayer==2 && !p2){
-						if(!Global.gameOver) {
-							Global.player2.undoCalled();
-							Global.moveNumber--;
-						}
-					}
-				}
-				if(Global.gameLocation==1){//Inside a LAN game
-					if(Global.currentPlayer==1){//First player's turn
-						if(LANGlobal.localPlayer.firstMove){//First player is on the network (not local)
-							if(LANGlobal.undoRequested){//First player requested the undo
-								//undo twice, don't switch players
-								if(Global.moveNumber>1){
-									lastMove = Global.moveList.thisMove;
-									Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-									Global.moveList = Global.moveList.nextMove;
-									Global.moveNumber--;
-								}
-								if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
-							}
-							else{//Second player requested the undo
-								//undo once, switch players
-								LANGlobal.hex = new Point(-1,-1);
-								Global.moveNumber--;
-							}
-						}
-						else{//First player is local (not on the network)
-							if(LANGlobal.undoRequested){//Second player requested the undo
-								//undo once, switch players
-								GameAction.hex = new Point(-1,-1);
-								Global.moveNumber--;
-							}
-							else{//First player requested the undo
-								//undo twice, don't switch players
-								if(Global.moveNumber>1){
-									lastMove = Global.moveList.thisMove;
-									Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-									Global.moveList = Global.moveList.nextMove;
-									Global.moveNumber--;
-								}
-								if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
-							}
-						}
-					}
-					else{//Second player's turn
-						if(LANGlobal.localPlayer.firstMove){//Second player is local (not on the network)
-							if(LANGlobal.undoRequested){//First player requested the undo
-								//undo once, switch players
-								GameAction.hex = new Point(-1,-1);
-								Global.moveNumber--;
-							}
-							else{//Second player requested the undo
-								//undo twice, don't switch players
-								if(Global.moveNumber>1){
-									lastMove = Global.moveList.thisMove;
-									Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-									Global.moveList = Global.moveList.nextMove;
-									Global.moveNumber--;
-								}
-								if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
-							}
-						}
-						else{//Second player is on the network (not local)
-							if(LANGlobal.undoRequested){//Second player requested the undo
-								//undo twice, don't switch players
-								if(Global.moveNumber>1){
-									lastMove = Global.moveList.thisMove;
-									Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
-									Global.moveList = Global.moveList.nextMove;
-									Global.moveNumber--;
-								}
-								if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
-							}
-							else{//First player requested the undo
-								//undo once, switch players
-								LANGlobal.hex = new Point(-1,-1);
-								Global.moveNumber--;
-							}
-						}
-					}
+		if(Global.moveNumber>1){
+			GameAction.checkedFlagReset();
+			
+			//Remove the piece from the board and the movelist
+			Move lastMove = Global.moveList.thisMove;
+			Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+			Global.moveList = Global.moveList.nextMove;
+			Global.moveList.replay(0);
+			Global.moveNumber--;
+			
+			//Determine who is a human
+			boolean p1 = Global.player1 instanceof PlayerObject;
+			boolean p2 = Global.player2 instanceof PlayerObject;
+			
+			if(Global.gameLocation==0){
+				if(Global.currentPlayer==1 && p1){//It's a human's turn
+					Global.player2.undoCalled();//Tell the other player we're going back a turn
 					
-					LANGlobal.undoRequested = false;
+					if(!p2){//If the other person isn't a human, undo again
+						if(Global.moveNumber>1){
+							lastMove = Global.moveList.thisMove;
+							Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+							Global.moveList = Global.moveList.nextMove;
+							Global.moveNumber--;
+						}
+						else{
+							GameAction.hex = new Point(-1,-1);
+						}
+						
+						if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
+					}
+					else{
+						//Otherwise, cede the turn to the other player
+						GameAction.hex = new Point(-1,-1);
+					}
 				}
-				
-				//Reset the game if it's already ended
-				if(Global.gameOver){
-					Global.moveList.replay(0);
-					Global.currentPlayer = (Global.currentPlayer%2)+1;
-					Global.game.start();
+				else if(Global.currentPlayer==1 && !p1){
+					if(!Global.gameOver){
+						Global.player1.undoCalled();
+					}
+				}
+				else if(Global.currentPlayer==2 && p2){
+					Global.player1.undoCalled();
+					
+					//If the other person isn't a (local) human
+					if(!p1){
+						//Undo again
+						if(Global.moveNumber>1){
+							lastMove = Global.moveList.thisMove;
+							Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+							Global.moveList = Global.moveList.nextMove;
+							Global.moveNumber--;
+						}
+						else{
+							GameAction.hex = new Point(-1,-1);
+						}
+						
+						if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
+					}
+					else{
+						//Otherwise, cede the turn to the other player
+						GameAction.hex = new Point(-1,-1);
+					}
+				}
+				else if(Global.currentPlayer==2 && !p2){
+					if(!Global.gameOver) {
+						Global.player2.undoCalled();
+					}
 				}
 			}
+			if(Global.gameLocation==1){//Inside a LAN game
+				if(Global.currentPlayer==1){//First player's turn
+					if(LANGlobal.localPlayer.firstMove){//First player is on the network (not local)
+						if(LANGlobal.undoRequested){//First player requested the undo
+							//undo twice, don't switch players
+							if(Global.moveNumber>1){
+								lastMove = Global.moveList.thisMove;
+								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+								Global.moveList = Global.moveList.nextMove;
+								Global.moveNumber--;
+							}
+							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
+						}
+						else{//Second player requested the undo
+							//undo once, switch players
+							LANGlobal.hex = new Point(-1,-1);
+						}
+					}
+					else{//First player is local (not on the network)
+						if(LANGlobal.undoRequested){//Second player requested the undo
+							//undo once, switch players
+							GameAction.hex = new Point(-1,-1);
+						}
+						else{//First player requested the undo
+							//undo twice, don't switch players
+							if(Global.moveNumber>1){
+								lastMove = Global.moveList.thisMove;
+								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+								Global.moveList = Global.moveList.nextMove;
+								Global.moveNumber--;
+							}
+							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
+						}
+					}
+				}
+				else{//Second player's turn
+					if(LANGlobal.localPlayer.firstMove){//Second player is local (not on the network)
+						if(LANGlobal.undoRequested){//First player requested the undo
+							//undo once, switch players
+							GameAction.hex = new Point(-1,-1);
+						}
+						else{//Second player requested the undo
+							//undo twice, don't switch players
+							if(Global.moveNumber>1){
+								lastMove = Global.moveList.thisMove;
+								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+								Global.moveList = Global.moveList.nextMove;
+								Global.moveNumber--;
+							}
+							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
+						}
+					}
+					else{//Second player is on the network (not local)
+						if(LANGlobal.undoRequested){//Second player requested the undo
+							//undo twice, don't switch players
+							if(Global.moveNumber>1){
+								lastMove = Global.moveList.thisMove;
+								Global.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0);
+								Global.moveList = Global.moveList.nextMove;
+								Global.moveNumber--;
+							}
+							if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
+						}
+						else{//First player requested the undo
+							//undo once, switch players
+							LANGlobal.hex = new Point(-1,-1);
+						}
+					}
+				}
+				
+				LANGlobal.undoRequested = false;
+			}
 			
-			Global.board.postInvalidate();
+			//Reset the game if it's already ended
+			if(Global.gameOver){
+				Global.moveList.replay(0);
+				Global.currentPlayer = (Global.currentPlayer%2)+1;
+				Global.game.start();
+			}
 		}
-		catch(NullPointerException e){
-			Global.moveNumber=1;
-			e.printStackTrace();
-		}
+		
+		Global.board.postInvalidate();
 	}
 	
 	public static class AnnounceWinner implements Runnable{
