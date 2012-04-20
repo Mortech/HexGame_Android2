@@ -132,16 +132,16 @@ public class Preferences extends PreferenceActivity {
     private void loadPreferences(){
     	setContentView(R.layout.preferences);
     	TextView title = (TextView) findViewById(R.id.actionbarTitle);
-    	addPreferencesFromResource(R.layout.preferences_general);
+    	addPreferencesFromResource(R.layout.preferences_location);
         ListPreference val = (ListPreference) findPreference("gameLocation");
         if(val.getValue().equals("0")){
             title.setText(this.getText(R.string.preferences));
-        	addPreferencesFromResource(R.layout.preferences_gridsize);
+        	addPreferencesFromResource(R.layout.preferences_general);
         	addPreferencesFromResource(R.layout.preferences_player1);
     		addPreferencesFromResource(R.layout.preferences_player2);
     	}
         else if(val.getValue().equals("1")){
-        	addPreferencesFromResource(R.layout.preferences_gridsize);
+        	addPreferencesFromResource(R.layout.preferences_general);
         	addPreferencesFromResource(R.layout.preferences_lanplayer);
         }
         else if(val.getValue().equals("2")){

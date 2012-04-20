@@ -61,8 +61,10 @@ public class GameAction {
 			return true;
 		}
 		else if(player!=null && Global.moveNumber==2 && Global.gamePiece[hex.x][hex.y].getTeam() == 1){//Swap rule
-			setTeam(team,hex.x,hex.y);
-			return true;
+	    	if(Global.swap){
+				setTeam(team,hex.x,hex.y);
+				return true;
+	    	}
 		}
 		return false;
 	}

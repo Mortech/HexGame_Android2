@@ -18,6 +18,7 @@ public class Global {
 	public static boolean gameOver = false;
 	public static int moveNumber = 1;
 	public static MoveList moveList = new MoveList();
+	public static boolean swap = true;
 	
 	//Player 1
 	public static PlayingEntity player1;

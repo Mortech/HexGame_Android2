@@ -156,6 +156,7 @@ public class HexGame extends Activity {
     	//Make sure the board is empty and defaults are set
     	Global.moveList=new MoveList();
     	replayRunning=false;
+    	Global.swap = prefs.getBoolean("swapPref", true);
     	
     	setPlayer1();
     	setPlayer2();
