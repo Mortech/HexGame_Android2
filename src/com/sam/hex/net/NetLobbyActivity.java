@@ -32,15 +32,19 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Spinner;
 
 public class NetLobbyActivity extends Activity {
 	Context context;
@@ -119,7 +123,7 @@ public class NetLobbyActivity extends Activity {
             	    }
             	};
 
-            	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
             	builder.setMessage(getApplicationContext().getString(R.string.cantConnect)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
         	}
         	new Thread(new Runnable(){
@@ -217,7 +221,7 @@ public class NetLobbyActivity extends Activity {
         	    }
         	};
 
-        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
         	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
             return true;
         default:
@@ -251,6 +255,70 @@ public class NetLobbyActivity extends Activity {
     }
     
     private void createBoard(){
-    	startActivity(new Intent(getBaseContext(),CreateBoardActivity.class));
+    	LayoutInflater inflater = getLayoutInflater();
+    	View dialoglayout = inflater.inflate(R.layout.netlobby_createboard, (ViewGroup) getCurrentFocus());
+    	final Spinner gameSize = (Spinner)dialoglayout.findViewById(R.id.gameSize);
+        ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, R.layout.spinner_text);
+        gameSizeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        gameSize.setAdapter(gameSizeAdapter);
+        final Spinner position = (Spinner)dialoglayout.findViewById(R.id.position);
+        ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, R.layout.spinner_text);
+        positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        position.setAdapter(positionAdapter);
+    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
+    	builder.setView(dialoglayout);
+		builder.setMessage(this.getText(R.string.createBoard));
+		
+		
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+    	    public void onClick(DialogInterface dialog, int which) {
+    	        switch (which){
+    	        case DialogInterface.BUTTON_POSITIVE:
+    	            //Yes button clicked
+    	        	new Thread(new Runnable(){
+    	        		@Override
+    	        		public void run() {
+	    	        		NetGlobal.gridSize = Integer.parseInt(getResources().getStringArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()]);
+	    	        		NetGlobal.place = Integer.parseInt(getResources().getStringArray(R.array.netPositionValues)[position.getSelectedItemPosition()]);
+	    	        		System.out.println(NetGlobal.gridSize);
+	    	        		System.out.println(NetGlobal.place);
+	    	        		try {
+		    	        		String registrationUrl = String.format("http://www.iggamecenter.com/api_board_create.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&gid=%s&place=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.gid, NetGlobal.place);
+		    	        		URL url = new URL(registrationUrl);
+		    	        		SAXParserFactory spf = SAXParserFactory.newInstance();
+		    	        		SAXParser parser = spf.newSAXParser();
+		    	        		XMLReader reader = parser.getXMLReader();
+		    	        		XMLHandler xmlHandler = new XMLHandler();
+		    	        		reader.setContentHandler(xmlHandler);
+		    	        		reader.parse(new InputSource(url.openStream()));
+		
+		    	        		ParsedDataset parsedDataset = xmlHandler.getParsedData();
+		    	        		if(!parsedDataset.error){
+			    	        		NetGlobal.sid = parsedDataset.getSid();
+			    	        		NetGlobal.server = parsedDataset.getServer();
+			    	        		startActivity(new Intent(getBaseContext(),HexGame.class));
+			    	        		finish();
+		    	        		}
+	    	        		} catch (MalformedURLException e) {
+	    	        		e.printStackTrace();
+	    	        		} catch (ParserConfigurationException e) {
+	    	        		e.printStackTrace();
+	    	        		} catch (SAXException e) {
+	    	        		e.printStackTrace();
+	    	        		} catch (IOException e) {
+	    	        		e.printStackTrace();
+	    	        		}
+    	        		}}).start();
+    	            break;
+    	        case DialogInterface.BUTTON_NEGATIVE:
+    	            //No button clicked
+    	        	//Do nothing
+    	            break;
+    	        }
+    	    }
+    	};
+		builder.setPositiveButton(this.getText(R.string.okay), dialogClickListener);
+		builder.setNegativeButton(this.getText(R.string.cancel), dialogClickListener);
+    	builder.show();
     }
 }

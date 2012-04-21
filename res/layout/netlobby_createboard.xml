@@ -2,23 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@color/white" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textColor="@color/black"
-        android:text="@string/createBoard"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    android:orientation="vertical">
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:textColor="@color/black"
         android:text="@string/gameSizeTitle"
+        android:textColor="@color/white"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <Spinner
@@ -33,8 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:textColor="@color/black"
         android:text="@string/position"
+        android:textColor="@color/white"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <Spinner
@@ -44,25 +35,5 @@
         android:defaultValue="1"
         android:entries="@array/netPositionArray"
         android:entryValues="@array/netPositionValues" />
-    
-    <LinearLayout
-  		android:layout_width="fill_parent"
-  		android:layout_height="wrap_content">
-  		
-        <Button 
-	        android:id="@+id/create"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/okay"/>
-    
-	    <Button 
-	        android:id="@+id/cancel"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/cancel"/>
-    
-    </LinearLayout>
 
 </LinearLayout>

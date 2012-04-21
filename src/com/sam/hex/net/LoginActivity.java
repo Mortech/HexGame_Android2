@@ -26,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -135,7 +136,7 @@ public class LoginActivity extends Activity {
         	    }
         	};
 
-        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
         	builder.setMessage(getApplicationContext().getString(R.string.cantConnect)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
     	}
     }

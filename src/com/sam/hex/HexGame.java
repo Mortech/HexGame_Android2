@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,7 +83,7 @@ public class HexGame extends Activity {
             	    }
             	};
 
-            	AlertDialog.Builder builder = new AlertDialog.Builder(HexGame.this);
+            	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(HexGame.this, android.R.style.Theme_Light));
             	builder.setMessage(HexGame.this.getString(R.string.confirmNewgame)).setPositiveButton(HexGame.this.getString(R.string.yes), dialogClickListener).setNegativeButton(HexGame.this.getString(R.string.no), dialogClickListener).show();
             }
         });
@@ -486,7 +487,7 @@ public class HexGame extends Activity {
     	    }
     	};
 
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
     	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
     }
 }
