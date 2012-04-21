@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application name -->
+    <string name="app_name"> Hex </string>
+    
+    <!-- Preferences -->
+    <string name="preferences"> Configuración </string>
+    <string name="gameLocationTitle"> modo de juego </string>
+    <string name="gameLocationSummary"> Jugar en el mismo dispositivo, a través de LAN o en Internet </string>
+    <string name="gameSizeTitle"> Tamaño del juego </string>
+    <string name="gameSizeSummary"> Elija un tamaño para el tablero de juego (actual: 7x7) </string>
+    <string name="gameSizeSummary_onChange"> Elija un tamaño para el tablero de juego (actual: </string>
+    <string name="customGameSizeSummary"> Introduzca un tamaño de la cuadrícula (Ex. 9) </string>
+    <string name="player1NameTitle"> Jugador 1\'s Name </string>
+    <string name="player1NameSummary">Nombre: Jugador 1 </string>
+    <string name="player1NameSummary_onChange">Nombre: </string>
+    <string name="player1TypeTitle"> Jugador 1\'s Tipo </string>
+    <string name="player1TypeSummary"> interruptor entre el jugador y el ordenador </string>
+    <string name="player1ColorTitle"> Jugador 1\'s de color </string>
+    <string name="player1ColorSummary"> Elija un color para el Jugador 1 </string>
+    <string name="player2NameTitle"> Jugador 2\'s Name </string>
+    <string name="player2NameSummary"> Nombre: Jugador 2 </string>
+    <string name="player2NameSummary_onChange"> Nombre: </string>
+    <string name="player2TypeTitle"> Jugador 2\'s Tipo </string>
+    <string name="player2TypeSummary"> interruptor entre el jugador y el ordenador </string>
+    <string name="player2ColorTitle"> Jugador 2\'s de color </string>
+    <string name="player2ColorSummary"> Elija un color para el Jugador 2 </string>
+    <string name="replayTitle"> Replay </string>
+    <string name="replaySummary"> Replay el juego actual </string>
+    <string name="loadReplayTitle"> Carga una repetición </string>
+    <string name="loadReplaySummary"> Carga una repetición de la tarjeta sd </string>
+    <string name="resetTitle"> Restaurar valores predeterminados </string>
+    <string name="resetSummary"> Restablecer todas las configuraciones a sus valores predeterminados </string>
+    
+    <!-- Local lobby -->
+    <string name="local"> Lobby Local </string>
+    <string name="customIP"> Introduzca una dirección IP directamente </string>
+    
+    <!-- Main page -->
+    <string name="frontpage"> Bienvenido a Hex </string>
+    <string name="frontpage2"> Bienvenido a Hex </string>
+    
+    <!-- Buttons from top to bottom -->
+    <string name="start"> Start Game </string>
+    <string name="resume"> Juego de residencia </string>
+    <string name="rules"> Cómo jugar </string>
+    <string name="options"> Opciones </string>
+    
+    <!-- Menu choices -->
+    <string name="undo"> Deshacer </string>
+    <string name="newgame"> New Game </string>
+    <string name="replay"> Replay </string>
+    <string name="loadReplay"> Carga </string>
+    <string name="saveReplay"> Guardar </string>
+    <string name="settings"> Configuración </string>
+    <string name="quit"> Salir </string>
+    
+    <!-- Game instructions -->
+    <string name="instructions"> Hex es jugado por dos jugadores, que se turnan para colocar las piezas en el tablero. Los jugadores tienen diferentes colores, digamos rojo y azul. (Los jugadores mismos se denominan a veces como rojo y azul) Los cuatro bordes de la placa son de color con los mismos colores, de tal manera que los bordes paralelos tienen el mismo color. Rojo gana si se puede construir una cadena continua entre los dos bordes rojos, azules y gana si puede construir una cadena entre los bordes azules. \n \n
+        (Tomado de <a href="http://www.hexwiki.org/index.php?title=Rules"> hexwiki.org </a>) </string>
+    
+    <!-- Color Picker -->
+    <string name="dialog_color_picker"> Selector de color </string>
+    <string name="press_color_to_apply"> Prensa de Color para aplicar </string>
+    
+    <!-- Preferences -->
+    <string name="pref_category"> Categoría </string>
+    <string name="color1_title"> color 1 </string>
+    <string name="color1_summary"> color negro de forma predeterminada, fija tomando como referencia </string>
+    <string name="color2_title"> color 2 </string>
+    <string name="color2_summary"> no el color persistente \ deslizante nalpha añadido a través del código </string>
+    <string name="color3_title"> color 3 </string>
+    <string name="color3_summary"> selector con el deslizador alfa </string>
+    <string name="color4_title"> color 4 </string>
+    <string name="color4_summary"> de color conjunto con código hexadecimal en xml </string>
+</resources>

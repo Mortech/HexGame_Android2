@@ -1,6 +1,8 @@
 package com.sam.hex.net;
 
 import java.util.ArrayList;
+
+import com.sam.hex.R;
  
 public class ParsedDataset {
 	//Logging in
@@ -21,11 +23,12 @@ public class ParsedDataset {
         	this.uid = uid;
     	}
     	public String toString(){
-    		String str = "";
-    		for(int i=0;i<members.size();i++){
-    			str+=members.get(i).toString()+" ";
+    		if(state.equals("INIT")){
+    			return NetLobbyActivity.context.getString(R.string.waiting);
     		}
-    		return str;
+    		else{
+    			return NetLobbyActivity.context.getString(R.string.active);
+    		}
     	}
     }
     public class Member{

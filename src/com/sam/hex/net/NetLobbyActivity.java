@@ -47,7 +47,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Spinner;
 
 public class NetLobbyActivity extends Activity {
-	Context context;
+	public static Context context;
 	private boolean loginSucceeded = false;
 	RefreshPlayerlist refreshPlayers;
 	final Handler handler = new Handler();
@@ -237,7 +237,39 @@ public class NetLobbyActivity extends Activity {
         lobby.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				
+				new Thread(new Runnable(){
+	        		@Override
+	        		public void run() {
+    	        		try {
+	    	        		String registrationUrl = String.format("http://www.iggamecenter.com/api_board_random.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&gid=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.gid);
+	    	        		URL url = new URL(registrationUrl);
+	    	        		SAXParserFactory spf = SAXParserFactory.newInstance();
+	    	        		SAXParser parser = spf.newSAXParser();
+	    	        		XMLReader reader = parser.getXMLReader();
+	    	        		XMLHandler xmlHandler = new XMLHandler();
+	    	        		reader.setContentHandler(xmlHandler);
+	    	        		reader.parse(new InputSource(url.openStream()));
+	
+	    	        		ParsedDataset parsedDataset = xmlHandler.getParsedData();
+	    	        		if(!parsedDataset.error){
+		    	        		NetGlobal.sid = parsedDataset.getSid();
+		    	        		NetGlobal.server = parsedDataset.getServer();
+		    	        		startActivity(new Intent(getBaseContext(),HexGame.class));
+		    	        		finish();
+	    	        		}
+	    	        		else{
+	    	        			System.out.println(parsedDataset.getErrorMessage());
+	    	        		}
+    	        		} catch (MalformedURLException e) {
+    	        		e.printStackTrace();
+    	        		} catch (ParserConfigurationException e) {
+    	        		e.printStackTrace();
+    	        		} catch (SAXException e) {
+    	        		e.printStackTrace();
+    	        		} catch (IOException e) {
+    	        		e.printStackTrace();
+    	        		}
+	        		}}).start();
 			}
         });
     }
@@ -280,8 +312,6 @@ public class NetLobbyActivity extends Activity {
     	        		public void run() {
 	    	        		NetGlobal.gridSize = Integer.parseInt(getResources().getStringArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()]);
 	    	        		NetGlobal.place = Integer.parseInt(getResources().getStringArray(R.array.netPositionValues)[position.getSelectedItemPosition()]);
-	    	        		System.out.println(NetGlobal.gridSize);
-	    	        		System.out.println(NetGlobal.place);
 	    	        		try {
 		    	        		String registrationUrl = String.format("http://www.iggamecenter.com/api_board_create.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&gid=%s&place=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.gid, NetGlobal.place);
 		    	        		URL url = new URL(registrationUrl);
