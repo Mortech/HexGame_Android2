@@ -79,11 +79,12 @@ public class Preferences extends PreferenceActivity {
 			if(newValue.toString().equals("0")){
 				//Custom value needed
 				showInputDialog(getApplicationContext().getString(R.string.customGameSizeSummary));
+				return false;
 			}
 			else{
 				preference.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), newValue.toString()));
+				return true;
 			}
-			return true;
 		}
     }
     
@@ -180,15 +181,21 @@ public class Preferences extends PreferenceActivity {
         .setPositiveButton("OK", new OnClickListener(){
     		@Override
     		public void onClick(DialogInterface dialog, int which) {
-    			int input = Integer.decode(editText.getText().toString());
-    			if(input>30){
-    				input = 30;
+    			if(!editText.getText().toString().equals("")){
+	    			int input = Integer.decode(editText.getText().toString());
+	    			if(input>30){
+	    				input = 30;
+	    			}
+	    			else if(input<4){
+	    				input = 4;
+	    			}
+	    			settings.edit().putString("customGameSizePref", input+"").commit();
+	    			settings.edit().putString("gameSizePref", "0").commit();
+	    			gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
+	        		screen.removeAll();
+	            	loadPreferences();
+	            	setListeners();
     			}
-    			else if(input<4){
-    				input = 4;
-    			}
-    			settings.edit().putString("customGameSizePref", input+"").commit();
-    			gridPref.setSummary(GameAction.InsertName.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("customGameSizePref", "7")));
     		}
         })
         .setNegativeButton("Cancel", null)

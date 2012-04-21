@@ -25,22 +25,26 @@ public class GameObject implements Runnable {
 	public void run() {
 		while(threadAlive){//Keeps the thread alive even if the game has ended
 			while(game){//Loop the game
-				if (Global.currentPlayer == 1) {
-					Global.player1.getPlayerTurn();
-					if (GameAction.checkWinPlayer(1)){
+				if(Global.currentPlayer == 1){
+					if(GameAction.checkWinPlayer(2)){
+						game=false;
+						Global.player1.lose();
+						Global.player2.win();
+						announceWinner(2);
+					}
+					else{
+						Global.player1.getPlayerTurn();
+					}
+				}
+				else{
+					if(GameAction.checkWinPlayer(1)){
 						game=false;
 						Global.player1.win();
 						Global.player2.lose();
 						announceWinner(1);
 					}
-				}
-				else {
-					Global.player2.getPlayerTurn();
-					if (GameAction.checkWinPlayer(2)){
-						game=false;
-						Global.player1.lose();
-						Global.player2.win();
-						announceWinner(2);
+					else{
+						Global.player2.getPlayerTurn();
 					}
 				}
 				Global.currentPlayer=(Global.currentPlayer%2)+1;
@@ -65,6 +69,6 @@ public class GameObject implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		new Thread(new GameAction.AnnounceWinner(team)).start();
+		new GameAction.AnnounceWinner(team);
 	}
 }

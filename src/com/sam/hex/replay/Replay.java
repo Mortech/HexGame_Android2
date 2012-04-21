@@ -16,8 +16,6 @@ public class Replay implements Runnable {
 		HexGame.stopGame();
 		Global.moveList.replay(time);
 		GameAction.checkedFlagReset();
-		if(HexGame.replayRunning)if(GameAction.checkWinPlayer(1)){GameObject.announceWinner(1); return;}
-		if(HexGame.replayRunning)if(GameAction.checkWinPlayer(2)){GameObject.announceWinner(2); return;}
 		Global.board.postInvalidate();
 		GameAction.hex=null;
 		HexGame.replayRunning = false;

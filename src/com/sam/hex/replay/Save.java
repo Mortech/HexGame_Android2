@@ -52,20 +52,20 @@ public class Save{
 					outputStream.writeObject(Global.gridSize);
 					outputStream.writeObject(Global.moveNumber);
 					if(Global.player1.supportsSave()){
-						outputStream.writeObject(Global.player1);
 						outputStream.writeObject(Global.player1Type);
+						outputStream.writeObject(Global.player1);
 					}
 					else{
-						outputStream.writeObject(new PlayerObject((byte)1));
 						outputStream.writeObject((byte)0);
+						outputStream.writeObject(new PlayerObject((byte)1));
 					}
 					if(Global.player2.supportsSave()){
-						outputStream.writeObject(Global.player2);
 						outputStream.writeObject(Global.player2Type);
+						outputStream.writeObject(Global.player2);
 					}
 					else {
-						outputStream.writeObject(new PlayerObject((byte)2));
 						outputStream.writeObject((byte)0);
+						outputStream.writeObject(new PlayerObject((byte)2));
 					}
 					
 					outputStream.flush();

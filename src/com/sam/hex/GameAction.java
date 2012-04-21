@@ -216,7 +216,6 @@ public class GameAction {
 			//Reset the game if it's already ended
 			if(Global.gameOver){
 				Global.moveList.replay(0);
-				Global.currentPlayer = (Global.currentPlayer%2)+1;
 				Global.game.start();
 			}
 		}
@@ -229,6 +228,8 @@ public class GameAction {
 		int team;
 		public AnnounceWinner(int team){
 			this.team = team;
+			
+			new Thread(this).start();
 		}
 		
 		@Override
