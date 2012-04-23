@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="preferences">
+    <PreferenceCategory android:key="generalCategory"
+        android:title=" ">
         <ListPreference
             android:title="@string/gameSizeTitle"
             android:summary="@string/gameSizeSummary"
@@ -22,4 +24,5 @@
             android:key="timerPref"
             android:defaultValue="0" 
             android:inputType="number"/>
+    </PreferenceCategory>
 </PreferenceScreen>

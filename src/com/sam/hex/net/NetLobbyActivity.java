@@ -231,17 +231,19 @@ public class NetLobbyActivity extends Activity {
     
     private void updateResultsInUi(){
     	final ListView lobby = (ListView) findViewById(R.id.players);
-        ArrayAdapter<ParsedDataset.GameSession> adapter = new ArrayAdapter<ParsedDataset.GameSession>(this,R.layout.simple_list_item_1, NetGlobal.sessions);
+        ArrayAdapter<ParsedDataset.GameSession> adapter = new ArrayAdapter<ParsedDataset.GameSession>(this,R.layout.simple_list_item_1, R.id.text1, NetGlobal.sessions);
         lobby.setAdapter(adapter);
         
         lobby.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				new Thread(new Runnable(){
+			public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+	        	new Thread(new Runnable(){
 	        		@Override
 	        		public void run() {
     	        		try {
-	    	        		String registrationUrl = String.format("http://www.iggamecenter.com/api_board_random.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&gid=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.gid);
+    	        			NetGlobal.server = NetGlobal.sessions.get(position).server;
+    	        			NetGlobal.sid = NetGlobal.sessions.get(position).sid;
+	    	        		String registrationUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid);
 	    	        		URL url = new URL(registrationUrl);
 	    	        		SAXParserFactory spf = SAXParserFactory.newInstance();
 	    	        		SAXParser parser = spf.newSAXParser();
@@ -252,8 +254,6 @@ public class NetLobbyActivity extends Activity {
 	
 	    	        		ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	    	        		if(!parsedDataset.error){
-		    	        		NetGlobal.sid = parsedDataset.getSid();
-		    	        		NetGlobal.server = parsedDataset.getServer();
 		    	        		startActivity(new Intent(getBaseContext(),HexGame.class));
 		    	        		finish();
 	    	        		}
@@ -267,6 +267,8 @@ public class NetLobbyActivity extends Activity {
     	        		} catch (SAXException e) {
     	        		e.printStackTrace();
     	        		} catch (IOException e) {
+    	        		e.printStackTrace();
+    	        		} catch (IndexOutOfBoundsException e){
     	        		e.printStackTrace();
     	        		}
 	        		}}).start();

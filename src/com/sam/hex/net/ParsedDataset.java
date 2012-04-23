@@ -1,8 +1,6 @@
 package com.sam.hex.net;
 
 import java.util.ArrayList;
-
-import com.sam.hex.R;
  
 public class ParsedDataset {
 	//Logging in
@@ -17,17 +15,33 @@ public class ParsedDataset {
     	public String state = null;
     	public int sid = 0;
     	public int uid = 0;
-    	public GameSession(String state, int sid, int uid){
+    	public String server = null;
+    	public GameSession(String state, int sid, int uid, String server){
         	this.state = state;
         	this.sid = sid;
         	this.uid = uid;
+        	this.server = server;
     	}
     	public String toString(){
-    		if(state.equals("INIT")){
-    			return NetLobbyActivity.context.getString(R.string.waiting);
+    		String str = "";
+    		for(int i=0;i<members.size();i++){
+    			if(members.get(i).position==1){
+    				str+="Player 1: "+members.get(i).name;
+    			}
     		}
+    		for(int i=0;i<members.size();i++){
+    			if(members.get(i).position==2){
+    	    		if(!str.equals("")) str+="\n";
+    				str+="Player 2: "+members.get(i).name;
+    			}
+    		}
+    		if(!str.equals("")) return str;
     		else{
-    			return NetLobbyActivity.context.getString(R.string.active);
+    			str+="Spectating: "+members.get(0).name;
+    			for(int i=1;i<members.size();i++){
+        			str+=", "+members.get(i).name;
+        		}
+    			return str;
     		}
     	}
     }
@@ -52,8 +66,8 @@ public class ParsedDataset {
     		return "Watching: "+name;
     	}
     }
-    public void addSession(String state, int sid, int uid){
-    	sessions.add(new GameSession(state, sid, uid));
+    public void addSession(String state, int sid, int uid, String server){
+    	sessions.add(new GameSession(state, sid, uid, server));
     }
     public void addSessionMember(int position, int uid, String name, String state){
     	sessions.get(sessions.size()-1).members.add(new Member(position, uid, name, state));

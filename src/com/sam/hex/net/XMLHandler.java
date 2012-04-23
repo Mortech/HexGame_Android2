@@ -60,7 +60,7 @@ public class XMLHandler extends DefaultHandler{
     	else if(in_sessionList){
 	    	if (localName.equals("session")){
 	    		if(atts.getValue("stat").equals("ACTIVE") || atts.getValue("stat").equals("INIT")){
-	    			parsedDataset.addSession(atts.getValue("stat"), Integer.parseInt(atts.getValue("sid")), Integer.parseInt(atts.getValue("uid")));
+	    			parsedDataset.addSession(atts.getValue("stat"), Integer.parseInt(atts.getValue("sid")), Integer.parseInt(atts.getValue("uid")), atts.getValue("serv"));
 		    		this.in_session = true;
 	    		}
 	    	}

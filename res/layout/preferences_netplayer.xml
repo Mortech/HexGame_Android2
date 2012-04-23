@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="preferences">
         <PreferenceCategory
-            	android:key="lanPlayerCategory"
+            	android:key="netPlayerCategory"
                 android:title=" ">
 	        <EditTextPreference
 	            android:title="@string/netUsernameTitle"

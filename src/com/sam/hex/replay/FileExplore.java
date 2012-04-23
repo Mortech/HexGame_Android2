@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
@@ -211,7 +212,7 @@ public class FileExplore extends Activity {
 		    	    	    	    case DialogInterface.BUTTON_NEUTRAL:
 		    	    	    	    	final EditText editText = new EditText(FileExplore.this);
 		    	    	    	        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-		    	    	    	        AlertDialog.Builder builder = new AlertDialog.Builder(FileExplore.this);
+		    	    	    	        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(FileExplore.this, android.R.style.Theme_Light));
 		    	    	    	        builder     
 		    	    	    	        .setTitle(chosenFile)
 		    	    	    	        .setView(editText)

@@ -9,6 +9,7 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
@@ -28,6 +29,7 @@ public class Preferences extends PreferenceActivity {
 	Preference resetPref;
 	EditTextPreference customGridPref;
 	PreferenceScreen screen;
+	PreferenceCategory general;
 	Preference gridPref;
 	Preference replayPref;
 	Preference loadReplayPref;
@@ -153,8 +155,9 @@ public class Preferences extends PreferenceActivity {
     	
     	//Hide custom grid size preference
         customGridPref = (EditTextPreference) findPreference("customGameSizePref");
+        general = (PreferenceCategory) findPreference("generalCategory");
         screen = (PreferenceScreen) findPreference("preferences");
-        if(customGridPref!=null) screen.removePreference(customGridPref);
+        if(customGridPref!=null) general.removePreference(customGridPref);
         
         Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
