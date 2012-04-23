@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.graphics.Point;
 
 import com.sam.hex.ai.bee.BeeGameAI;
@@ -104,6 +105,11 @@ public class HexGame extends Activity {
         
         Global.player1Icon = (ImageButton) this.findViewById(R.id.p1);
         Global.player2Icon = (ImageButton) this.findViewById(R.id.p2);
+        
+        if(Global.timer==0){
+        	TextView timer = (TextView) this.findViewById(R.id.timer);
+        	timer.setVisibility(View.GONE);
+        }
     }
     
     class TouchListener implements OnTouchListener{
@@ -151,6 +157,7 @@ public class HexGame extends Activity {
     	setGrid(prefs);
     	GameAction.hex = null;
     	Global.moveNumber = 1;
+    	Global.timer = Integer.parseInt(prefs.getString("timerPref", "0"));
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
 	    applyBoard();
     	
@@ -411,7 +418,8 @@ public class HexGame extends Activity {
     				|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
     				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
-    				|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type;
+    	    		|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type 
+    	    	    || Integer.decode(prefs.getString("timerPref", "0")) != Global.timer;
     	}
     }
     

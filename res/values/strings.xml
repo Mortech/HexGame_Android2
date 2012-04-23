@@ -16,6 +16,8 @@
     <string name="customGameSizeSummary">Enter a grid size (Ex. 9)</string>
     <string name="swapTitle">Swap</string>
     <string name="swapSummary">Allow the second player to swap places during their first move</string>
+    <string name="timerTitle">Timer</string>
+    <string name="timerSummary">Limit the amount of time a player has (in minutes)</string>
     
     <string name="player1NameTitle">Player1\'s Name</string>
     <string name="player1NameSummary">Name: Player1</string>

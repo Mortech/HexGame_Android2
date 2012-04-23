@@ -16,4 +16,10 @@
             android:summary="@string/swapSummary"
             android:defaultValue="true"
             android:key="swapPref" />
+        <EditTextPreference
+            android:title="@string/timerTitle"
+            android:summary="@string/timerSummary"
+            android:key="timerPref"
+            android:defaultValue="0" 
+            android:inputType="number"/>
 </PreferenceScreen>

@@ -19,6 +19,7 @@ public class Global {
 	public static int moveNumber = 1;
 	public static MoveList moveList = new MoveList();
 	public static boolean swap = true;
+	public static int timer = 0;
 	
 	//Player 1
 	public static PlayingEntity player1;

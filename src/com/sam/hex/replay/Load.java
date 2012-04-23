@@ -10,7 +10,6 @@ import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.MoveList;
 import com.sam.hex.PlayerObject;
-import com.sam.hex.PlayingEntity;
 
 public class Load implements Runnable{
 	@Override
