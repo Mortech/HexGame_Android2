@@ -82,10 +82,10 @@ public class GameAI implements PlayingEntity {
 	}
 	
 	private boolean right(){
-		return m[0]+2 <= gameBoard.length-1 && m[1]+2 <= gameBoard.length-1 && m[1]-1 >= 0;
+		return m[0]+2 <= gameBoard.length-1 && m[1]+1 <= gameBoard.length-1 && m[1]-1 >= 0;
 	}
 	private boolean left(){
-		return n[0]-2 >= 0 && n[1]-1 >= 0 && n[1]+2 <= gameBoard.length-1;
+		return n[0]-2 >= 0 && n[1]-1 >= 0 && n[1]+1 <= gameBoard.length-1;
 	}
 
 	private void makeMove(){

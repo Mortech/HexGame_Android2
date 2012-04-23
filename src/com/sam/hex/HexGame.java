@@ -112,6 +112,9 @@ public class HexGame extends Activity {
         	TextView timer = (TextView) this.findViewById(R.id.timer);
         	timer.setVisibility(View.GONE);
         }
+        else{
+        	Global.timerText = (TextView) this.findViewById(R.id.timer);
+        }
     }
     
     class TouchListener implements OnTouchListener{
@@ -145,35 +148,29 @@ public class HexGame extends Activity {
     	//Set game location
     	Global.gameLocation = Integer.parseInt(prefs.getString("gameLocation", "0"));
     	
-    	//Return to the first player
-    	Global.currentPlayer = 1;
-    	
-    	//Set game mode
     	setType(prefs);
-    	
-    	//Set player names
     	setNames(prefs);
-    	
-    	//Set player colors
     	setColors(prefs);
     	
     	//Create our board
     	setGrid(prefs);
     	GameAction.hex = null;
     	Global.moveNumber = 1;
-    	Global.timer = Integer.parseInt(prefs.getString("timerPref", "0"));
-    	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
-	    applyBoard();
-    	
-    	//Make sure the board is empty and defaults are set
+    	Global.currentPlayer = 1;
     	Global.moveList=new MoveList();
     	replayRunning=false;
     	Global.swap = prefs.getBoolean("swapPref", true);
+    	Global.timer = Integer.parseInt(prefs.getString("timerPref", "0"));
+    	Global.player1Time=Global.timer*60*1000;
+    	Global.player2Time=Global.timer*60*1000;
+    	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
+	    applyBoard();
     	
     	setPlayer1();
     	setPlayer2();
     	
         //Create the game object
+    	Global.startTime = System.currentTimeMillis();
         Global.game = new GameObject(); 
     }
     

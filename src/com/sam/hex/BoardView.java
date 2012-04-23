@@ -21,12 +21,11 @@ public class BoardView extends View{
 		super(context);
 		calculateGrid();
 	}
-	public BoardView(Context context, AttributeSet attrs)
-    {
+	public BoardView(Context context, AttributeSet attrs){
         super(context, attrs);
         calculateGrid();
     }
-    public BoardView(Context context, AttributeSet attrs, int defStyle) {
+    public BoardView(Context context, AttributeSet attrs, int defStyle){
         super(context, attrs, defStyle);
         calculateGrid();
     }
@@ -47,12 +46,10 @@ public class BoardView extends View{
 		if(Global.currentPlayer==1 && !Global.gameOver){
 			Global.player1Icon.setColorFilter(Global.player1Color);
 			Global.player1Icon.setAlpha(255);
-//			Global.player2Icon.setColorFilter(Color.TRANSPARENT);
 			Global.player2Icon.setColorFilter(Global.player2Color);
 			Global.player2Icon.setAlpha(80);
 		}
 		else if(Global.currentPlayer==2 && !Global.gameOver){
-//			Global.player1Icon.setColorFilter(Color.TRANSPARENT);
 			Global.player1Icon.setColorFilter(Global.player1Color);
 			Global.player1Icon.setAlpha(80);
 			Global.player2Icon.setColorFilter(Global.player2Color);
@@ -61,6 +58,32 @@ public class BoardView extends View{
 		else{
 			Global.player1Icon.setAlpha(80);
 			Global.player2Icon.setAlpha(80);
+		}
+		if(Global.timer!=0){
+			if(Global.currentPlayer==1 && !Global.gameOver){
+				long elapsedMillis = System.currentTimeMillis() - Global.startTime;
+				long millis = Global.player1Time-elapsedMillis;
+		        int seconds = (int) (millis / 1000);
+		        int minutes = seconds / 60;
+		        seconds = seconds % 60;
+		        System.out.println(getContext().getString(R.string.timer));
+		        System.out.println(String.format("%d:%02d", minutes, seconds));
+		        System.out.println(GameAction.InsertName.insert(getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
+				Global.timerText.setText(GameAction.InsertName.insert(getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
+				Global.timerText.postInvalidate();
+			}
+			else if(Global.currentPlayer==2 && !Global.gameOver){
+				long elapsedMillis = System.currentTimeMillis() - Global.startTime;
+				long millis = Global.player2Time-elapsedMillis;
+		        int seconds = (int) (millis / 1000);
+		        int minutes = seconds / 60;
+		        seconds = seconds % 60;
+				Global.timerText.setText(GameAction.InsertName.insert(getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
+				Global.timerText.postInvalidate();
+			}
+			else{
+				Global.timerText.setVisibility(View.GONE);
+			}
 		}
 	}
 	@Override
