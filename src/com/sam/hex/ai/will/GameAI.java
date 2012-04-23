@@ -16,7 +16,6 @@ import android.graphics.Point;
 
 public class GameAI implements PlayingEntity { 
 	byte team;//1 is left-right, 2 is top-down
-	byte difficalty;
 	byte[][] gameBoard;
 	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
 	List<List<List<Integer>>> pairs = new ArrayList<List<List<Integer>>>();//List of pair-pieces
@@ -24,9 +23,8 @@ public class GameAI implements PlayingEntity {
 	int rand_a = 0;
 	int rand_b = 0;
 	
-	public GameAI(byte team, byte difficalty){
+	public GameAI(byte team){
 		this.team=team;
-		this.difficalty=difficalty;
 		
 		while(rand_a==0 && rand_b==0){
 			rand_a = new Random().nextInt(3)-1;

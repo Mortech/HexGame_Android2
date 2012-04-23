@@ -24,7 +24,9 @@ import com.sam.hex.ai.will.GameAI;
 import com.sam.hex.lan.LANGlobal;
 import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
+import com.sam.hex.net.NetGlobal;
 import com.sam.hex.net.NetLobbyActivity;
+import com.sam.hex.net.NetPlayerObject;
 import com.sam.hex.replay.FileExplore;
 import com.sam.hex.replay.Replay;
 import com.sam.hex.replay.Save;
@@ -114,18 +116,20 @@ public class HexGame extends Activity {
     
     class TouchListener implements OnTouchListener{
     	public boolean onTouch(View v, MotionEvent event){
-    		int x = (int)event.getX();
-			int y = (int)event.getY();
-			for(int xc = 0; xc < Global.gamePiece.length; xc++){
-				for(int yc=0; yc<Global.gamePiece[0].length; yc++)
-					if(Global.gamePiece[xc][yc].contains(x, y)){
-						if(Global.game!=null)GameAction.setPiece(new Point(xc,yc));
-						//Return false. We got our point. (True is used for gestures)
-						return false;
-					}
-			}
-			//Return false. We got our point. (True is used for gestures)
-			return false;
+    		int eventaction = event.getAction();
+    		if(eventaction==MotionEvent.ACTION_UP){
+    			int x = (int)event.getX();
+				int y = (int)event.getY();
+				for(int xc = 0; xc < Global.gamePiece.length; xc++){
+					for(int yc=0; yc<Global.gamePiece[0].length; yc++)
+						if(Global.gamePiece[xc][yc].contains(x, y)){
+							if(Global.game!=null)GameAction.setPiece(new Point(xc,yc));
+							return false;
+						}
+				}
+    		}
+    		
+			return true;
     	}
     }
     
@@ -321,6 +325,17 @@ public class HexGame extends Activity {
         		Global.player2Name = LANGlobal.localPlayer.playerName;
     		}
     	}
+    	else if(Global.gameLocation==2){
+    		//Playing over the net
+    		for(int i=0;i<NetGlobal.members.size();i++){
+    			if(NetGlobal.members.get(i).position==1){
+    				Global.player1Name = NetGlobal.members.get(i).name;
+    			}
+    			else if(NetGlobal.members.get(i).position==2){
+    				Global.player2Name = NetGlobal.members.get(i).name;
+    			}
+    		}
+    	}
     	else{
     		//Playing on the same phone
     		Global.player1Name = prefs.getString("player1Name", "Player1");
@@ -344,6 +359,11 @@ public class HexGame extends Activity {
         		Global.player2Color = LANGlobal.localPlayer.playerColor;
     		}
     	}
+    	else if(Global.gameLocation==2){
+    		//Playing on the net
+    		Global.player1Color = Global.player1DefaultColor;
+    		Global.player2Color = Global.player2DefaultColor;
+    	}
     	else{
     		//Playing on the same phone
     		Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
@@ -361,6 +381,9 @@ public class HexGame extends Activity {
     			Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
     		}
     	}
+    	else if(Global.gameLocation==2){
+    		Global.gridSize = NetGlobal.gridSize;
+    	}
     	else{
     		//Playing on the same phone
     		Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
@@ -373,8 +396,35 @@ public class HexGame extends Activity {
     
     private void setType(SharedPreferences prefs){
     	if(Global.gameLocation==1){
-    		Global.player1Type=(byte)Integer.parseInt(prefs.getString("lanPlayerType", "0"));
-        	Global.player2Type=(byte)Integer.parseInt(prefs.getString("lanPlayerType", "0"));
+    		if(LANGlobal.localPlayer.firstMove){
+    			Global.player1Type=(byte)2;
+    			Global.player2Type=(byte)Integer.parseInt(prefs.getString("lanPlayerType", "0"));
+    		}
+    		else{
+    			Global.player1Type=(byte)Integer.parseInt(prefs.getString("lanPlayerType", "0"));
+    			Global.player2Type=(byte)2;
+    		}
+    	}
+    	else if(Global.gameLocation==2){
+    		//Playing over the net
+    		for(int i=0;i<NetGlobal.members.size();i++){
+    			if(NetGlobal.members.get(i).position==1){
+    				if(prefs.getString("netUsername", "").equals(NetGlobal.members.get(i).name)){
+    					Global.player1Type=(byte)0;
+    				}
+    				else{
+    					Global.player1Type=(byte)3;
+    				}
+    			}
+    			else if(NetGlobal.members.get(i).position==2){
+    				if(prefs.getString("netUsername", "").equals(NetGlobal.members.get(i).name)){
+    					Global.player2Type=(byte)0;
+    				}
+    				else{
+    					Global.player2Type=(byte)3;
+    				}
+    			}
+    		}
     	}
     	else{
     		Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
@@ -382,9 +432,25 @@ public class HexGame extends Activity {
     	}
     }
     
+    private void setPlayer1(){
+    	if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
+		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1);
+		else if(Global.player1Type==(byte) 2) Global.player1=new LocalPlayerObject((byte)1);
+		else if(Global.player1Type==(byte) 3) Global.player1=new NetPlayerObject((byte)1);
+		else if(Global.player1Type==(byte) 4) Global.player1=new BeeGameAI(1);
+    }
+    
+    private void setPlayer2(){
+		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
+		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2);
+		else if(Global.player2Type==(byte) 2) Global.player2=new LocalPlayerObject((byte)2);
+		else if(Global.player2Type==(byte) 3) Global.player2=new NetPlayerObject((byte)2);
+		else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(2);
+    }
+    
     private void undo(){
     	if(Global.player1.supportsUndo() && Global.player2.supportsUndo())
-	    		GameAction.undo();
+	    	GameAction.undo();
     }
     
     private void newGame(){
@@ -423,7 +489,7 @@ public class HexGame extends Activity {
     	}
     }
     
-    Thread replayThread;
+    private Thread replayThread;
     private void replay(int time){
     	//Create our board
     	GameAction.hex = null;
@@ -435,46 +501,6 @@ public class HexGame extends Activity {
     	replayRunning = true;
 		replayThread = new Thread(new Replay(time), "replay");
 		replayThread.start();
-    }
-    
-    private void setPlayer1(){
-    	if(Global.gameLocation==1){
-    		//Playing over LAN
-    		if(LANGlobal.localPlayer.firstMove){
-    			Global.player1=new LocalPlayerObject((byte)1);
-    		}
-    		else{
-    			if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
-        		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1,(byte)1);
-        		else if(Global.player1Type==(byte) 4) Global.player1=new BeeGameAI(1);
-    		}
-    	}
-    	else{
-    		//Playing on the same phone
-    		if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
-    		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1,(byte)1);
-    		else if(Global.player1Type==(byte) 4) Global.player1=new BeeGameAI(1);
-    	}
-    }
-    
-    private void setPlayer2(){
-    	if(Global.gameLocation==1){
-    		//Playing over LAN
-    		if(LANGlobal.localPlayer.firstMove){
-    			if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
-    			else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
-    			else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(1);
-    		}
-    		else{
-    			Global.player2=new LocalPlayerObject((byte)2);
-    		}
-    	}
-    	else{
-    		//Playing on the same phone
-    		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
-    		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2,(byte)1);
-    		else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(2);
-    	}
     }
     
     private void quit(){

@@ -80,11 +80,12 @@ public class GameAction {
 			Global.moveList.replay(0);
 			Global.moveNumber--;
 			
-			//Determine who is a human
-			boolean p1 = Global.player1 instanceof PlayerObject;
-			boolean p2 = Global.player2 instanceof PlayerObject;
-			
 			if(Global.gameLocation==0){
+				//Determine who is a human
+				boolean p1 = Global.player1 instanceof PlayerObject;
+				boolean p2 = Global.player2 instanceof PlayerObject;
+				if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
+				
 				if(Global.currentPlayer==1 && p1){//It's a human's turn
 					Global.player2.undoCalled();//Tell the other player we're going back a turn
 					
@@ -98,8 +99,6 @@ public class GameAction {
 						else{
 							GameAction.hex = new Point(-1,-1);
 						}
-						
-						if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
 					}
 					else{
 						//Otherwise, cede the turn to the other player
@@ -126,8 +125,6 @@ public class GameAction {
 						else{
 							GameAction.hex = new Point(-1,-1);
 						}
-						
-						if(Global.gameOver) Global.currentPlayer = (Global.currentPlayer%2)+1;
 					}
 					else{
 						//Otherwise, cede the turn to the other player
@@ -139,6 +136,7 @@ public class GameAction {
 						Global.player2.undoCalled();
 					}
 				}
+				if(Global.gameOver && ((Global.currentPlayer==2 && p1) || (Global.currentPlayer==1 && p2))) Global.currentPlayer = (Global.currentPlayer%2)+1;
 			}
 			if(Global.gameLocation==1){//Inside a LAN game
 				if(Global.currentPlayer==1){//First player's turn
