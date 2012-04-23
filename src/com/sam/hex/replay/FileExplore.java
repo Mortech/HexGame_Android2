@@ -4,22 +4,26 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
-import com.sam.hex.HexGame;
+import com.sam.hex.DialogBox;
 import com.sam.hex.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class FileExplore extends Activity {
@@ -35,20 +39,20 @@ public class FileExplore extends Activity {
 	private Item[] fileList;
 	private File path = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator);
 	public static String chosenFile;
-	private static final int DIALOG_LOAD_FILE = 1000;
 	
 	ListAdapter adapter;
+	ListView view;
+	Handler handle;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-	
 		super.onCreate(savedInstanceState);
-		
+		handle = new Handler();
 		loadFileList();
+		view = new ListView(this);
+		refreshView();
 		
-		showDialog(DIALOG_LOAD_FILE);
-		Log.d(TAG, path.getAbsolutePath());
-	
+		setContentView(view);
 	}
 	
 	private void loadFileList() {
@@ -140,24 +144,12 @@ public class FileExplore extends Activity {
 		}
 	}
 	
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		Dialog dialog = null;
-		AlertDialog.Builder builder = new Builder(this);
-		
-		if (fileList == null) {
-			Log.e(TAG, "No files loaded");
-			dialog = builder.create();
-			return dialog;
-		}
-		
-		switch (id) {
-			case DIALOG_LOAD_FILE:
-			builder.setTitle("Choose your file");
-			builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+	private void refreshView(){
+		view.setAdapter(adapter);
+		view.setOnItemClickListener(new OnItemClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					chosenFile = fileList[which].file;
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+					chosenFile = fileList[position].file;
 					File sel = new File(path + "/" + chosenFile);
 					if (sel.isDirectory()) {
 						firstLvl = false;
@@ -169,10 +161,7 @@ public class FileExplore extends Activity {
 						
 						loadFileList();
 						
-						removeDialog(DIALOG_LOAD_FILE);
-						showDialog(DIALOG_LOAD_FILE);
-						Log.d(TAG, path.getAbsolutePath());
-					
+						refreshView();
 					}
 					
 					// Checks if 'up' was clicked
@@ -192,29 +181,65 @@ public class FileExplore extends Activity {
 							firstLvl = true;
 						}
 						loadFileList();
-						
-						removeDialog(DIALOG_LOAD_FILE);
-						showDialog(DIALOG_LOAD_FILE);
-						Log.d(TAG, path.getAbsolutePath());
-					
+						refreshView();
 					}
 					// File picked
 					else {
-						Thread loading = new Thread(new ThreadGroup("Load"), new Load(), "loading", 200000);
-						loading.start();
-						try {
-							loading.join();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						startActivity(new Intent(getBaseContext(),HexGame.class));
-			        	finish();
+						new DialogBox(FileExplore.this, chosenFile, new DialogInterface.OnClickListener() {
+	    	    	    	    public void onClick(DialogInterface dialog, int which) {
+	    	    	    	        switch (which){
+	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
+	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(), "loading", 200000);
+	    	    						loading.start();
+	    	    						try {
+	    	    							loading.join();
+	    	    						} catch (InterruptedException e) {
+	    	    							e.printStackTrace();
+	    	    						}
+	    	    			        	finish();
+	    	    	    	            break;
+	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
+	    	    	    	        	new File(path + "/" + chosenFile).delete();
+		    	    	    	    	loadFileList();
+		    							handle.post(new Runnable(){
+		    								public void run(){
+		    									loadFileList();
+		    									refreshView();
+		    								}
+		    							});
+	    	    	    	            break;
+		    	    	    	    case DialogInterface.BUTTON_NEUTRAL:
+		    	    	    	    	final EditText editText = new EditText(FileExplore.this);
+		    	    	    	        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+		    	    	    	        AlertDialog.Builder builder = new AlertDialog.Builder(FileExplore.this);
+		    	    	    	        builder     
+		    	    	    	        .setTitle(chosenFile)
+		    	    	    	        .setView(editText)
+		    	    	    	        .setPositiveButton(getApplicationContext().getString(R.string.okay), new OnClickListener(){
+		    	    	    	    		@Override
+		    	    	    	    		public void onClick(DialogInterface dialog, int which) {
+		    	    	    	    			if(!editText.getText().toString().equals("")){
+		    	    	    	    				String fileName = editText.getText().toString();
+		    	    	    	        			if(!fileName.toLowerCase().endsWith(".rhex")){
+		    	    	    	        			    fileName += ".rhex";
+		    	    	    	        			}
+		    	    	    	        			new File(path + "/" + chosenFile).renameTo(new File(path + "/" + fileName));
+		    	    	    	        			handle.post(new Runnable(){
+		    		    								public void run(){
+		    		    									loadFileList();
+		    		    									refreshView();
+		    		    								}
+		    		    							});
+		    	    	    	    			}
+		    	    	    	    		}
+		    	    	    	        })
+		    	    	    	        .setNegativeButton(getApplicationContext().getString(R.string.cancel), null)
+		    	    	    	        .show();
+	    	    	    	            break;
+	    	    	    	        }
+	    	    	    	    }
+	    	    	    	}, getApplicationContext().getString(R.string.loadReplay), getApplicationContext().getString(R.string.rename), getApplicationContext().getString(R.string.delete));
 					}
-				}
-			});
-			break;
-		}
-		dialog = builder.show();
-		return dialog;
+				}});
 	}
 }

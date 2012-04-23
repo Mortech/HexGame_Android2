@@ -70,6 +70,7 @@
     <!-- In game notifications -->
     <string name="winner"># wins!</string>
     <string name="timer">Time Left: #</string>
+    <string name="saved">Saved!</string>
     
     <!-- Game instructions -->
     <string name="instructions">Hex is played by two players, who take turns placing pieces on the board. The players have different colours, say red and blue. (The players themselves are sometimes referred to as Red and Blue) The four edges of the board are coloured with the same colours, in such a way that parallel edges have the same colour. Red wins if he can build a continuous chain between the two red edges, and blue wins if he can build such a chain between the blue edges.\n\n
@@ -104,7 +105,7 @@
     <string name="net">Net Lobby</string>
     <string name="createBoard">Create a Game Board</string>
     <string name="position">Position</string>
-    <string name="waiting">Waiting...</string>
+    <string name="waiting">Waiting…</string>
     <string name="active">Active</string>
     
     <string name="register">Register</string>
@@ -126,6 +127,8 @@
     <string name="okay">Okay</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
     
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>

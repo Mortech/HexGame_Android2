@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.sam.hex.Global;
 import com.sam.hex.PlayerObject;
+import com.sam.hex.R;
 
 public class Save{
 	public static String fileName;
@@ -28,7 +29,7 @@ public class Save{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		showSavedDialog("Saved!");
+		showSavedDialog(Global.board.getContext().getString(R.string.saved));
 	}
     
     class save implements Runnable{
@@ -104,15 +105,10 @@ public class Save{
     		@Override
     		public void onClick(DialogInterface dialog, int which) {
     			fileName = editText.getText().toString();
-    			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName);
-    			String filePath = file.getPath();
-    			if(!filePath.toLowerCase().endsWith(".rhex")){
-    			    file = new File(filePath + ".rhex");
-    			}
     			saveGame(fileName);
     		}
         })
-        .setNegativeButton("Cancel", null)
+        .setNegativeButton(Global.board.getContext().getString(R.string.cancel), null)
         .show();
     }
 	
@@ -120,7 +116,7 @@ public class Save{
         AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
         builder     
         .setTitle(message)
-        .setNeutralButton("Okay", null)
+        .setNeutralButton(Global.board.getContext().getString(R.string.okay), null)
         .show();
     }
 }

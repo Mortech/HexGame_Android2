@@ -178,7 +178,7 @@ public class Preferences extends PreferenceActivity {
         builder     
         .setTitle(message)
         .setView(editText)
-        .setPositiveButton("OK", new OnClickListener(){
+        .setPositiveButton(getApplicationContext().getString(R.string.okay), new OnClickListener(){
     		@Override
     		public void onClick(DialogInterface dialog, int which) {
     			if(!editText.getText().toString().equals("")){
@@ -198,7 +198,7 @@ public class Preferences extends PreferenceActivity {
     			}
     		}
         })
-        .setNegativeButton("Cancel", null)
+        .setNegativeButton(getApplicationContext().getString(R.string.cancel), null)
         .show();
     } 
 }

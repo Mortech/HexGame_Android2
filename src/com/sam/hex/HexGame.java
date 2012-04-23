@@ -264,7 +264,6 @@ public class HexGame extends Activity {
             return true;
         case R.id.loadReplay:
         	startActivity(new Intent(getBaseContext(),FileExplore.class));
-        	finish();
             return true;
         case R.id.saveReplay:
         	Save save = new Save();
