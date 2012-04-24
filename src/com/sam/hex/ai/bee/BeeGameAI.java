@@ -802,6 +802,12 @@ public class BeeGameAI implements PlayingEntity
 //		}
 		return false;
 	}
+
+
+	@Override
+	public void endMove() {
+		skipMove = true;
+	}
 }
 
 

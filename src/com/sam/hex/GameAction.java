@@ -12,6 +12,7 @@ public class GameAction {
 
 	public static synchronized boolean checkWinPlayer(int team) {
 		if(team==1){
+			if(Global.totalTimerTime!=0 && Global.player2Time<0) return true;
 			for (int i = 0; i < Global.gridSize; i++) {
 				if (RegularPolygonGameObject.checkWinTeam((byte) 1, Global.gridSize, i, Global.gamePiece)) {
 					System.out.println("Player one wins");
@@ -24,6 +25,7 @@ public class GameAction {
 			return false;
 		}
 		else{
+			if(Global.totalTimerTime!=0 && Global.player1Time<0) return true;
 			for (int i = 0; i < Global.gridSize; i++) {
 				if (RegularPolygonGameObject.checkWinTeam((byte) 2, i, Global.gridSize, Global.gamePiece)) {
 					System.out.println("Player two wins");
@@ -50,9 +52,10 @@ public class GameAction {
 	}
 	
 	private static void setTeam(byte t,int x,int y) {
-		Global.moveList.makeMove(x, y, t);
+		Global.moveList.makeMove(x, y, t, System.currentTimeMillis()-Global.game.moveStart);
 		Global.gamePiece[x][y].setTeam(t);
 		Global.moveNumber++;
+		Global.board.postInvalidate();
 	}
 	
 	public static boolean makeMove(PlayingEntity player, byte team, Point hex){

@@ -118,4 +118,9 @@ public class LocalPlayerObject implements PlayingEntity {
 	public boolean supportsSave() {
 		return false;
 	}
+
+	@Override
+	public void endMove() {
+		LANGlobal.hex = new Point(-1,-1);
+	}
 }

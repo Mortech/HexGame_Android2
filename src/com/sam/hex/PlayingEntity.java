@@ -87,4 +87,10 @@ public interface PlayingEntity {
 	 * until quit() is called.
 	 **/
 	public void lose();
+	
+	/**
+	 * Quickly stop making a move.
+	 * Do not run GameAction.makeMove()
+	 * */
+	public void endMove();
 }

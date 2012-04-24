@@ -10,15 +10,15 @@ public class MoveList implements Serializable {
 		
 	}
 	
-	public MoveList(int x,int y,byte teamNumber){
+	public MoveList(int x, int y, byte teamNumber){
 		thisMove= new Move(x,y,teamNumber,Global.moveNumber);
 	}
 	
-	public MoveList(MoveList oldMove,int x,int y,byte teamNumber){
+	public MoveList(MoveList oldMove, int x, int y, byte teamNumber){
 		thisMove= new Move(x,y,teamNumber,Global.moveNumber);
 		nextMove=oldMove;
 	}
-	public MoveList(MoveList oldMove,Move thisMove){
+	public MoveList(MoveList oldMove, Move thisMove){
 		this.thisMove= thisMove;
 		nextMove=oldMove;
 	}
@@ -27,9 +27,9 @@ public class MoveList implements Serializable {
 	}
 	/* do not use makeMove might not work with
 	 * base cases and is not tested*/
-	public void makeMove(int x,int y,byte teamNumber){
-		nextMove=new MoveList(nextMove,thisMove);
-		thisMove= new Move(x,y,teamNumber,Global.moveNumber);
+	public void makeMove(int x, int y, byte teamNumber, long moveLength){
+		nextMove=new MoveList(nextMove, thisMove);
+		thisMove= new Move(x, y, teamNumber, moveLength);
 	}
 	public void undo(){
 		if (thisMove==null) return; 

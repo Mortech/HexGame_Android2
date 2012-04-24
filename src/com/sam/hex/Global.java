@@ -11,7 +11,8 @@ public class Global {
 	public static RegularPolygonGameObject[][] gamePiece = new RegularPolygonGameObject[7][7];
 	public static BoardView board;
 	public static int gameLocation = 0;
-	public static int timer = 0;
+	public static int totalTimerTime = 0;
+	public static TextView timerText;
 	
 	//Game
 	public static int currentPlayer = 1;
@@ -21,8 +22,7 @@ public class Global {
 	public static int moveNumber = 1;
 	public static MoveList moveList = new MoveList();
 	public static boolean swap = true;
-	public static TextView timerText;
-	public static long startTime;
+	public static Timer timer;
 	
 	//Player 1
 	public static PlayingEntity player1;

@@ -79,4 +79,9 @@ public class PlayerObject implements PlayingEntity {
 	public boolean supportsSave() {
 		return false;
 	}
+
+	@Override
+	public void endMove() {
+		GameAction.hex = new Point(-1,-1);
+	}
 }

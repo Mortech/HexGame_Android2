@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -108,7 +109,7 @@ public class HexGame extends Activity {
         Global.player1Icon = (ImageButton) this.findViewById(R.id.p1);
         Global.player2Icon = (ImageButton) this.findViewById(R.id.p2);
         
-        if(Global.timer==0){
+        if(Global.totalTimerTime==0){
         	TextView timer = (TextView) this.findViewById(R.id.timer);
         	timer.setVisibility(View.GONE);
         }
@@ -160,9 +161,9 @@ public class HexGame extends Activity {
     	Global.moveList=new MoveList();
     	replayRunning=false;
     	Global.swap = prefs.getBoolean("swapPref", true);
-    	Global.timer = Integer.parseInt(prefs.getString("timerPref", "0"));
-    	Global.player1Time=Global.timer*60*1000;
-    	Global.player2Time=Global.timer*60*1000;
+    	Global.totalTimerTime = Integer.parseInt(prefs.getString("timerPref", "0"));
+    	Global.player1Time=Global.totalTimerTime*60*1000;
+    	Global.player2Time=Global.totalTimerTime*60*1000;
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
 	    applyBoard();
     	
@@ -170,7 +171,7 @@ public class HexGame extends Activity {
     	setPlayer2();
     	
         //Create the game object
-    	Global.startTime = System.currentTimeMillis();
+    	if(Global.totalTimerTime!=0) Global.timer = new Timer(new Handler());
         Global.game = new GameObject(); 
     }
     
@@ -482,7 +483,7 @@ public class HexGame extends Activity {
     				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
     	    		|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type 
-    	    	    || Integer.decode(prefs.getString("timerPref", "0")) != Global.timer;
+    	    	    || Integer.decode(prefs.getString("timerPref", "0")) != Global.totalTimerTime;
     	}
     }
     

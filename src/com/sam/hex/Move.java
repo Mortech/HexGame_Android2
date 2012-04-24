@@ -6,18 +6,18 @@ public class Move implements Serializable {
 	private static final long serialVersionUID = -7439386690818203133L;
 	private  int x;
 	private int y;
-	private int time;
+	private long time;
 	private byte team;
-	public Move(int x, int y, byte team, int time){
+	public Move(int x, int y, byte team, long time){
 		this.setX(x);
 		this.setY(y);
 		this.setTime(time);
 		this.setTeam(team);
 	}
-	protected void setTime(int time) {
+	protected void setTime(long time) {
 		this.time = time;
 	}
-	public int getTime() {
+	public long getTime() {
 		return time;
 	}
 	protected void setX(int x) {

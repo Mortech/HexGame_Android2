@@ -481,6 +481,11 @@ public class GameAI implements PlayingEntity {
 //		}
 		return false;
 	}
+
+	@Override
+	public void endMove() {
+		skipMove = true;
+	}
 	
 	/*  Bah, ignore this for now.
 	private void nickMove(){

@@ -89,4 +89,9 @@ public class NetPlayerObject implements PlayingEntity {
 	public boolean supportsSave() {
 		return false;
 	}
+
+	@Override
+	public void endMove() {
+		NetGlobal.hex = new Point(-1,-1);
+	}
 }
