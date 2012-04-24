@@ -30,6 +30,7 @@
         <activity android:label="@string/app_name" android:name=".net.LoginActivity" android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity android:label="@string/app_name" android:name=".net.RegistrationActivity" android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity android:label="@string/app_name" android:name=".net.NetLobbyActivity" android:theme="@style/ListFont" />
+        <activity android:label="@string/app_name" android:name=".net.WaitingRoomActivity" android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity android:label="@string/app_name" android:name=".replay.FileExplore" />
         <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize">
         	<meta-data

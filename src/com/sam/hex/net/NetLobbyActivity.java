@@ -38,7 +38,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -254,7 +253,7 @@ public class NetLobbyActivity extends Activity {
 	
 	    	        		ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	    	        		if(!parsedDataset.error){
-		    	        		startActivity(new Intent(getBaseContext(),HexGame.class));
+		    	        		startActivity(new Intent(getBaseContext(),WaitingRoomActivity.class));
 		    	        		finish();
 	    	        		}
 	    	        		else{
@@ -289,8 +288,8 @@ public class NetLobbyActivity extends Activity {
     }
     
     private void createBoard(){
-    	LayoutInflater inflater = getLayoutInflater();
-    	View dialoglayout = inflater.inflate(R.layout.netlobby_createboard, (ViewGroup) getCurrentFocus());
+    	LayoutInflater inflater = (LayoutInflater) NetLobbyActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+    	View dialoglayout = inflater.inflate(R.layout.netlobby_createboard, null);
     	final Spinner gameSize = (Spinner)dialoglayout.findViewById(R.id.gameSize);
         ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, R.layout.spinner_text);
         gameSizeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
@@ -328,7 +327,7 @@ public class NetLobbyActivity extends Activity {
 		    	        		if(!parsedDataset.error){
 			    	        		NetGlobal.sid = parsedDataset.getSid();
 			    	        		NetGlobal.server = parsedDataset.getServer();
-			    	        		startActivity(new Intent(getBaseContext(),HexGame.class));
+			    	        		startActivity(new Intent(getBaseContext(),WaitingRoomActivity.class));
 			    	        		finish();
 		    	        		}
 	    	        		} catch (MalformedURLException e) {

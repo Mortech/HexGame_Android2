@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.graphics.Point;
 
@@ -109,13 +110,15 @@ public class HexGame extends Activity {
         Global.player1Icon = (ImageButton) this.findViewById(R.id.p1);
         Global.player2Icon = (ImageButton) this.findViewById(R.id.p2);
         
+        Global.timerText = (TextView) this.findViewById(R.id.timer);
         if(Global.totalTimerTime==0){
-        	TextView timer = (TextView) this.findViewById(R.id.timer);
-        	timer.setVisibility(View.GONE);
+        	Global.timerText.setVisibility(View.GONE);
         }
-        else{
-        	Global.timerText = (TextView) this.findViewById(R.id.timer);
-        }
+
+        Global.replayForward = (ImageButton) this.findViewById(R.id.replayForward);
+        Global.replayPlayPause = (ImageButton) this.findViewById(R.id.replayPlayPause);
+        Global.replayBack = (ImageButton) this.findViewById(R.id.replayBack);
+        Global.replayButtons = (RelativeLayout) this.findViewById(R.id.replayButtons);
     }
     
     class TouchListener implements OnTouchListener{
@@ -497,7 +500,7 @@ public class HexGame extends Activity {
     	if(Global.moveNumber>1) Global.currentPlayer=(Global.currentPlayer%2)+1;
 	    
     	replayRunning = true;
-		replayThread = new Thread(new Replay(time), "replay");
+		replayThread = new Thread(new Replay(time, new Handler()), "replay");
 		replayThread.start();
     }
     

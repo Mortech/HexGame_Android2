@@ -2,6 +2,7 @@ package com.sam.hex;
 
 import android.graphics.Color;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class Global {
@@ -13,6 +14,10 @@ public class Global {
 	public static int gameLocation = 0;
 	public static int totalTimerTime = 0;
 	public static TextView timerText;
+	public static ImageButton replayForward;
+	public static ImageButton replayPlayPause;
+	public static ImageButton replayBack;
+	public static RelativeLayout replayButtons;
 	
 	//Game
 	public static int currentPlayer = 1;

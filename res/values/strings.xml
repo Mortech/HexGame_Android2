@@ -122,6 +122,8 @@
     <string name="login_field_password">Password:</string>
     <string name="loginFailed">We couldn\'t log you in</string>
     
+    <string name="waitingroom">Waiting Room</string>
+    
     <!-- Dialog Options -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
