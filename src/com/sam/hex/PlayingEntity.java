@@ -52,20 +52,6 @@ public interface PlayingEntity {
 	public boolean supportsSave();
 	
 	/**
-	 * The player's color has been changed!
-	 * Locally, all the pieces have been swapped to the new color.
-	 * This is only useful for LAN play.
-	 * */
-	public void colorChanged();
-	
-	/**
-	 * The player's name has been changed!
-	 * Locally, the new name has been switched to.
-	 * This is only useful for LAN play.
-	 * */
-	public void nameChanged();
-	
-	/**
 	 * The game is over. Die gracefully.
 	 * */
 	public void quit();
@@ -93,4 +79,36 @@ public interface PlayingEntity {
 	 * Do not run GameAction.makeMove()
 	 * */
 	public void endMove();
+	
+	//Standard variables
+	
+	/**
+	 * Sets the player's name
+	 * */
+	public void setName(String name);
+	
+	/**
+	 * Returns the player's name
+	 * */
+	public String getName();
+	
+	/**
+	 * Sets the player's color
+	 * */
+	public void setColor(int color);
+	
+	/**
+	 * Returns the player's color
+	 * */
+	public int getColor();
+	
+	/**
+	 * Sets the player's time left
+	 * */
+	public void setTime(long time);
+	
+	/**
+	 * Returns the player's time left
+	 * */
+	public long getTime();
 }

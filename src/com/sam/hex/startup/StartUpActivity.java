@@ -1,6 +1,5 @@
 package com.sam.hex.startup;
 
-import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
@@ -67,9 +66,5 @@ public class StartUpActivity extends Activity {
         else{ 
         	startButton.setText(R.string.resume);
         }
-        
-        //Set player names
-    	Global.player1Name = prefs.getString("player1Name", "Player1");
-    	Global.player2Name = prefs.getString("player2Name", "Player2");
     }
 }

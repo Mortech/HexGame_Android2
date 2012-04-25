@@ -1,5 +1,7 @@
 package com.sam.hex;
 
+import android.os.Handler;
+
 public class GameObject implements Runnable {
 	private boolean game=true;
 	private boolean threadAlive=true;
@@ -26,6 +28,7 @@ public class GameObject implements Runnable {
 	}
 	
 	public void run() {
+    	if(Global.totalTimerTime!=0) Global.timer = new Timer(new Handler());
 		while(threadAlive){//Keeps the thread alive even if the game has ended
 			while(game){//Loop the game
 				if(!checkForWinner()){

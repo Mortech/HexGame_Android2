@@ -7,9 +7,11 @@ import com.sam.hex.Global;
 import com.sam.hex.PlayingEntity;
 
 public class LocalPlayerObject implements PlayingEntity {
-	byte[][] gameBoard; 
-	byte team;
-	PlayerUnicastListener listener;
+	private String name;
+	private int color;
+	private long timeLeft;
+	private byte team;
+	private PlayerUnicastListener listener;
 	
 	public LocalPlayerObject(byte team) {
 		this.team=team;//Set the player's team
@@ -70,34 +72,6 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 
 	@Override
-	public void colorChanged() {
-		if(team==1){
-			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("I changed my color to "+Global.player2Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		}
-		else{
-			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("I changed my color to "+Global.player1Color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		}
-	}
-
-	@Override
-	public void nameChanged() {
-		if(team==1){
-			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("I changed my name to "+Global.player1Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		}
-		else{
-			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("I changed my name to "+Global.player2Name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		}
-	}
-
-	@Override
 	public void quit() {
 		new LANMessage("Quitting", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		listener.stop();
@@ -122,5 +96,41 @@ public class LocalPlayerObject implements PlayingEntity {
 	@Override
 	public void endMove() {
 		LANGlobal.hex = new Point(-1,-1);
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+		new LANMessage("I changed my name to "+name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("I changed my name to "+name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("I changed my name to "+name, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setColor(int color) {
+		this.color = color;
+		new LANMessage("I changed my color to "+color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("I changed my color to "+color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("I changed my color to "+color, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+	}
+
+	@Override
+	public int getColor() {
+		return color;
+	}
+
+	@Override
+	public void setTime(long time) {
+		this.timeLeft = time;
+	}
+
+	@Override
+	public long getTime() {
+		return timeLeft;
 	}
 }

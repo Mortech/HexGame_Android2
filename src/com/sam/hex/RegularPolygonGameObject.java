@@ -46,9 +46,9 @@ public class RegularPolygonGameObject {
 	public void setTeam(byte t) {
 		teamNumber = t;
 		if (teamNumber == 1)
-			setColor(Global.player1Color);
+			setColor(Global.player1.getColor());
 		else if(teamNumber==2)
-			setColor(Global.player2Color);
+			setColor(Global.player2.getColor());
 		else
 			setColor(Color.WHITE);
 	}

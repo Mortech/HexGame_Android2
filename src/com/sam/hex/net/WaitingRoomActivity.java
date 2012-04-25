@@ -97,11 +97,7 @@ public class WaitingRoomActivity extends Activity {
 		    	            
 		    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
 		    	        	if(!parsedDataset.error){
-//		    	        		localPlayerReady = true;
-//		    	        		if(localPlayerReady && netPlayerReady){
-			    	        		startActivity(new Intent(getBaseContext(),HexGame.class));
-			    	        		finish();
-//		    	        		}
+		    	        		localPlayerReady = true;
 		    	        	}
 		    	        	else{
 		    	        		System.out.println(parsedDataset.getErrorMessage());

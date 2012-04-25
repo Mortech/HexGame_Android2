@@ -25,6 +25,9 @@ public class BeeGameAI implements PlayingEntity
     private int team;
     private LinkedList<AIHistoryObject> history = new LinkedList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
     private int gridSize;
+    private String name;
+	private int color;
+	private long timeLeft;
 
     /** Constructor for the Bee object
     *@param game    the currently running game
@@ -765,17 +768,6 @@ public class BeeGameAI implements PlayingEntity
 	return value;
     }
 
-
-	@Override
-	public void colorChanged() {
-	}
-
-
-	@Override
-	public void nameChanged() {
-	}
-
-
 	@Override
 	public void quit() {
 		skipMove = true;
@@ -807,6 +799,37 @@ public class BeeGameAI implements PlayingEntity
 	@Override
 	public void endMove() {
 		skipMove = true;
+	}
+
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	@Override
+	public int getColor() {
+		return color;
+	}
+
+	@Override
+	public void setTime(long time) {
+		this.timeLeft = time;
+	}
+
+	@Override
+	public long getTime() {
+		return timeLeft;
 	}
 }
 

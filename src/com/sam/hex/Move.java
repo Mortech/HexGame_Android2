@@ -8,11 +8,14 @@ public class Move implements Serializable {
 	private int y;
 	private long time;
 	private byte team;
-	public Move(int x, int y, byte team, long time){
+	private int moveNumber;
+	public Move(int x, int y, byte team, long time, int moveNumber){
 		this.setX(x);
 		this.setY(y);
 		this.setTime(time);
 		this.setTeam(team);
+		this.setMoveNumber(moveNumber);
+		
 	}
 	protected void setTime(long time) {
 		this.time = time;
@@ -37,5 +40,11 @@ public class Move implements Serializable {
 	}
 	public byte getTeam() {
 		return team;
+	}
+	public int getMoveNumber() {
+		return moveNumber;
+	}
+	public void setMoveNumber(int moveNumber) {
+		this.moveNumber = moveNumber;
 	}
 }

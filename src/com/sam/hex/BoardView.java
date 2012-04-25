@@ -44,15 +44,15 @@ public class BoardView extends View{
 				mDrawable[xc][yc].draw(canvas);
 			}
 		if(Global.currentPlayer==1 && !Global.gameOver){
-			Global.player1Icon.setColorFilter(Global.player1Color);
+			Global.player1Icon.setColorFilter(Global.player1.getColor());
 			Global.player1Icon.setAlpha(255);
-			Global.player2Icon.setColorFilter(Global.player2Color);
+			Global.player2Icon.setColorFilter(Global.player2.getColor());
 			Global.player2Icon.setAlpha(80);
 		}
 		else if(Global.currentPlayer==2 && !Global.gameOver){
-			Global.player1Icon.setColorFilter(Global.player1Color);
+			Global.player1Icon.setColorFilter(Global.player1.getColor());
 			Global.player1Icon.setAlpha(80);
-			Global.player2Icon.setColorFilter(Global.player2Color);
+			Global.player2Icon.setColorFilter(Global.player2.getColor());
 			Global.player2Icon.setAlpha(255);
 		}
 		else{
@@ -150,14 +150,14 @@ public class BoardView extends View{
 	
 	private void colorBackground(){
 		if(Global.windowHeight>Global.windowWidth){
-	        backgroundTopBottom.getPaint().setColor(Global.player2Color);
-	        backgroundLeft.getPaint().setColor(Global.player1Color);
-	        backgroundRight.getPaint().setColor(Global.player1Color);
+	        backgroundTopBottom.getPaint().setColor(Global.player2.getColor());
+	        backgroundLeft.getPaint().setColor(Global.player1.getColor());
+	        backgroundRight.getPaint().setColor(Global.player1.getColor());
         }
         else{
-	        backgroundTopBottom.getPaint().setColor(Global.player1Color);
-	        backgroundLeft.getPaint().setColor(Global.player2Color);
-	        backgroundRight.getPaint().setColor(Global.player2Color);
+	        backgroundTopBottom.getPaint().setColor(Global.player1.getColor());
+	        backgroundLeft.getPaint().setColor(Global.player2.getColor());
+	        backgroundRight.getPaint().setColor(Global.player2.getColor());
         }
 	}
 }

@@ -35,11 +35,11 @@ public class Timer implements Runnable{
 		while(game){
 			elapsedTime = System.currentTimeMillis()-startTime;
 			if(Global.currentPlayer==1 && !Global.gameOver){
-				Global.player1Time = Global.totalTimerTime*60*1000-elapsedTime+Global.totalTimerTime*60*1000-Global.player2Time;
-				if(Global.player1Time>0){
+				Global.player1.setTime(Global.totalTimerTime*60*1000-elapsedTime+Global.totalTimerTime*60*1000-Global.player2.getTime());
+				if(Global.player1.getTime()>0){
 					handler.post(new Runnable(){
 						public void run(){
-							long millis = Global.player1Time;
+							long millis = Global.player1.getTime();
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
@@ -53,11 +53,11 @@ public class Timer implements Runnable{
 				}
 			}
 			else if(Global.currentPlayer==2 && !Global.gameOver){
-				Global.player2Time = Global.totalTimerTime*60*1000-elapsedTime+Global.totalTimerTime*60*1000-Global.player1Time;
-				if(Global.player2Time>0){
+				Global.player2.setTime(Global.totalTimerTime*60*1000-elapsedTime+Global.totalTimerTime*60*1000-Global.player1.getTime());
+				if(Global.player2.getTime()>0){
 					handler.post(new Runnable(){
 						public void run(){
-							long millis = Global.player2Time;
+							long millis = Global.player2.getTime();
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;

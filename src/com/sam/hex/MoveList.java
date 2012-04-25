@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 public class MoveList implements Serializable {
 	private static final long serialVersionUID = 1L;
-	Move thisMove;
-	MoveList nextMove;
+	public Move thisMove;
+	public MoveList nextMove;
 	public MoveList(){
 		
 	}
 	
-	public MoveList(int x, int y, byte teamNumber){
-		thisMove= new Move(x,y,teamNumber,Global.moveNumber);
+	public MoveList(int x, int y, byte teamNumber, long time){
+		thisMove= new Move(x,y,teamNumber, time, Global.moveNumber);
 	}
 	
-	public MoveList(MoveList oldMove, int x, int y, byte teamNumber){
-		thisMove= new Move(x,y,teamNumber,Global.moveNumber);
+	public MoveList(MoveList oldMove, int x, int y, byte teamNumber, long time){
+		thisMove= new Move(x,y,teamNumber, time, Global.moveNumber);
 		nextMove=oldMove;
 	}
 	public MoveList(MoveList oldMove, Move thisMove){
@@ -27,9 +27,9 @@ public class MoveList implements Serializable {
 	}
 	/* do not use makeMove might not work with
 	 * base cases and is not tested*/
-	public void makeMove(int x, int y, byte teamNumber, long moveLength){
+	public void makeMove(int x, int y, byte teamNumber, long time){
 		nextMove=new MoveList(nextMove, thisMove);
-		thisMove= new Move(x, y, teamNumber, moveLength);
+		thisMove= new Move(x, y, teamNumber, time, Global.moveNumber);
 	}
 	public void undo(){
 		if (thisMove==null) return; 

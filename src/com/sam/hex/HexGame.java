@@ -149,32 +149,30 @@ public class HexGame extends Activity {
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
-    	//Set game location
+    	//Set defaults
     	Global.gameLocation = Integer.parseInt(prefs.getString("gameLocation", "0"));
-    	
-    	setType(prefs);
-    	setNames(prefs);
-    	setColors(prefs);
-    	
-    	//Create our board
-    	setGrid(prefs);
-    	GameAction.hex = null;
+    	Global.totalTimerTime = Integer.parseInt(prefs.getString("timerPref", "0"));
     	Global.moveNumber = 1;
     	Global.currentPlayer = 1;
     	Global.moveList=new MoveList();
     	replayRunning=false;
     	Global.swap = prefs.getBoolean("swapPref", true);
-    	Global.totalTimerTime = Integer.parseInt(prefs.getString("timerPref", "0"));
-    	Global.player1Time=Global.totalTimerTime*60*1000;
-    	Global.player2Time=Global.totalTimerTime*60*1000;
+    	
+    	//Set players
+    	setType(prefs);
+    	setPlayer1();
+    	setPlayer2();
+    	setNames(prefs);
+    	setColors(prefs);
+    	Global.player1.setTime(Global.totalTimerTime*60*1000);
+    	Global.player2.setTime(Global.totalTimerTime*60*1000);
+    	
+    	//Create our board
+    	setGrid(prefs);
     	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
 	    applyBoard();
     	
-    	setPlayer1();
-    	setPlayer2();
-    	
         //Create the game object
-    	if(Global.totalTimerTime!=0) Global.timer = new Timer(new Handler());
         Global.game = new GameObject(); 
     }
     
@@ -196,12 +194,14 @@ public class HexGame extends Activity {
     	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 1){
     		//Go to the local lobby
     		Global.gameLocation = 1;
+    		startNewGame = true;
         	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
         	finish();
     	}
     	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 2){
     		//Go to the net lobby
     		Global.gameLocation = 2;
+    		startNewGame = true;
         	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
         	finish();
     	}
@@ -213,37 +213,13 @@ public class HexGame extends Activity {
     		initializeNewGame();
     	}
     	else{//Apply minor changes without stopping the current game
-    		if(Global.gameLocation==0){
-	    		setColors(prefs);
-	    		setNames(prefs);
-	    		Global.moveList.replay(0);
-	    		GameAction.checkedFlagReset();
-	    		GameAction.checkWinPlayer(1);
-	    		GameAction.checkWinPlayer(2);
-	    		GameAction.checkedFlagReset();
-    		}
-    		else if(Global.gameLocation==1){
-    			int p1Color = Global.player1Color;
-    			int p2Color = Global.player2Color;
-    			setColors(prefs);
-    			Global.moveList.replay(0);
-    			GameAction.checkedFlagReset();
-	    		GameAction.checkWinPlayer(1);
-	    		GameAction.checkWinPlayer(2);
-	    		GameAction.checkedFlagReset();
-    			if(p1Color!=Global.player1Color || p2Color!=Global.player2Color){
-    				Global.player1.colorChanged();
-    				Global.player2.colorChanged();
-    			}
-    			
-    			String p1Name = Global.player1Name;
-    			String p2Name = Global.player2Name;
-    			setNames(prefs);
-    			if(!p1Name.equals(Global.player1Name) || !p2Name.equals(Global.player2Name)){
-    				Global.player1.nameChanged();
-    				Global.player2.nameChanged();
-    			}
-    		}
+    		setColors(prefs);
+    		setNames(prefs);
+    		Global.moveList.replay(0);
+    		GameAction.checkedFlagReset();
+    		GameAction.checkWinPlayer(1);
+    		GameAction.checkWinPlayer(2);
+    		GameAction.checkedFlagReset();
 	    	
 	    	//Apply everything
 	    	Global.board.invalidate();
@@ -318,29 +294,29 @@ public class HexGame extends Activity {
     	if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
-    			Global.player1Name = LANGlobal.localPlayer.playerName;
-        		Global.player2Name = prefs.getString("lanPlayerName", "Player");
+    			Global.player1.setName(LANGlobal.localPlayer.playerName);
+        		Global.player2.setName(prefs.getString("lanPlayerName", "Player"));
     		}
     		else{
-    			Global.player1Name = prefs.getString("lanPlayerName", "Player");
-        		Global.player2Name = LANGlobal.localPlayer.playerName;
+    			Global.player1.setName(prefs.getString("lanPlayerName", "Player"));
+        		Global.player2.setName(LANGlobal.localPlayer.playerName);
     		}
     	}
     	else if(Global.gameLocation==2){
     		//Playing over the net
     		for(int i=0;i<NetGlobal.members.size();i++){
     			if(NetGlobal.members.get(i).position==1){
-    				Global.player1Name = NetGlobal.members.get(i).name;
+    				Global.player1.setName(NetGlobal.members.get(i).name);
     			}
     			else if(NetGlobal.members.get(i).position==2){
-    				Global.player2Name = NetGlobal.members.get(i).name;
+    				Global.player2.setName(NetGlobal.members.get(i).name);
     			}
     		}
     	}
     	else{
     		//Playing on the same phone
-    		Global.player1Name = prefs.getString("player1Name", "Player1");
-    		Global.player2Name = prefs.getString("player2Name", "Player2");
+    		Global.player1.setName(prefs.getString("player1Name", "Player1"));
+    		Global.player2.setName(prefs.getString("player2Name", "Player2"));
     	}
     }
     
@@ -352,23 +328,23 @@ public class HexGame extends Activity {
     	if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
-    			Global.player1Color = LANGlobal.localPlayer.playerColor;
-        		Global.player2Color = prefs.getInt("lanPlayerColor", Global.player1DefaultColor);
+    			Global.player1.setColor(LANGlobal.localPlayer.playerColor);
+        		Global.player2.setColor(prefs.getInt("lanPlayerColor", Global.player1DefaultColor));
     		}
     		else{
-    			Global.player1Color = prefs.getInt("lanPlayerColor", Global.player1DefaultColor);
-        		Global.player2Color = LANGlobal.localPlayer.playerColor;
+    			Global.player1.setColor(prefs.getInt("lanPlayerColor", Global.player1DefaultColor));
+        		Global.player2.setColor(LANGlobal.localPlayer.playerColor);
     		}
     	}
     	else if(Global.gameLocation==2){
     		//Playing on the net
-    		Global.player1Color = Global.player1DefaultColor;
-    		Global.player2Color = Global.player2DefaultColor;
+    		Global.player1.setColor(Global.player1DefaultColor);
+    		Global.player2.setColor(Global.player2DefaultColor);
     	}
     	else{
     		//Playing on the same phone
-    		Global.player1Color = prefs.getInt("player1Color", Global.player1DefaultColor);
-    		Global.player2Color = prefs.getInt("player2Color", Global.player2DefaultColor);
+    		Global.player1.setColor(prefs.getInt("player1Color", Global.player1DefaultColor));
+    		Global.player2.setColor(prefs.getInt("player2Color", Global.player2DefaultColor));
     	}
     }
     

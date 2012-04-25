@@ -12,7 +12,7 @@ public class GameAction {
 
 	public static synchronized boolean checkWinPlayer(int team) {
 		if(team==1){
-			if(Global.totalTimerTime!=0 && Global.player2Time<0) return true;
+			if(Global.totalTimerTime!=0 && Global.player2.getTime()<0) return true;
 			for (int i = 0; i < Global.gridSize; i++) {
 				if (RegularPolygonGameObject.checkWinTeam((byte) 1, Global.gridSize, i, Global.gamePiece)) {
 					System.out.println("Player one wins");
@@ -25,7 +25,7 @@ public class GameAction {
 			return false;
 		}
 		else{
-			if(Global.totalTimerTime!=0 && Global.player1Time<0) return true;
+			if(Global.totalTimerTime!=0 && Global.player1.getTime()<0) return true;
 			for (int i = 0; i < Global.gridSize; i++) {
 				if (RegularPolygonGameObject.checkWinTeam((byte) 2, i, Global.gridSize, Global.gamePiece)) {
 					System.out.println("Player two wins");
@@ -238,12 +238,7 @@ public class GameAction {
 			if(handler!=null) handler.getLooper().quit();
 			Looper.prepare();
 			handler = new Handler();
-			if(team==1){
-				Toast.makeText(Global.board.getContext(), InsertName.insert(Global.board.getContext().getString(R.string.winner), Global.player1Name), Toast.LENGTH_SHORT).show();
-			}
-			else{
-				Toast.makeText(Global.board.getContext(), InsertName.insert(Global.board.getContext().getString(R.string.winner), Global.player2Name), Toast.LENGTH_SHORT).show();
-			}
+			Toast.makeText(Global.board.getContext(), InsertName.insert(Global.board.getContext().getString(R.string.winner), getPlayer(team).getName()), Toast.LENGTH_SHORT).show();
 			Looper.loop();
 		}
 	}

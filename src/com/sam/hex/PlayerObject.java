@@ -3,9 +3,10 @@ package com.sam.hex;
 import android.graphics.Point;
 
 public class PlayerObject implements PlayingEntity {
-	
-	byte[][] gameBoard; 
-	byte team;
+	private String name;
+	private int color;
+	private long timeLeft;
+	private byte team;
 	
 	public PlayerObject(byte i) {
 		this.team=i;//Set the player's team
@@ -55,14 +56,6 @@ public class PlayerObject implements PlayingEntity {
 	}
 
 	@Override
-	public void colorChanged() {
-	}
-
-	@Override
-	public void nameChanged() {
-	}
-
-	@Override
 	public void quit() {
 		GameAction.hex = new Point(-1,-1);
 	}
@@ -83,5 +76,35 @@ public class PlayerObject implements PlayingEntity {
 	@Override
 	public void endMove() {
 		GameAction.hex = new Point(-1,-1);
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	@Override
+	public int getColor() {
+		return color;
+	}
+
+	@Override
+	public void setTime(long time) {
+		this.timeLeft = time;
+	}
+
+	@Override
+	public long getTime() {
+		return timeLeft;
 	}
 }

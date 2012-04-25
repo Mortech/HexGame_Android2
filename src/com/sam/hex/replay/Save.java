@@ -45,29 +45,25 @@ public class Save{
 				try {
 					ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
 					
-					outputStream.writeObject(Global.player1Color);
-					outputStream.writeObject(Global.player2Color);
-					outputStream.writeObject(Global.player1Name);
-					outputStream.writeObject(Global.player2Name);
+					outputStream.writeObject(Global.player1.getColor());
+					outputStream.writeObject(Global.player2.getColor());
+					outputStream.writeObject(Global.player1.getName());
+					outputStream.writeObject(Global.player2.getName());
 					outputStream.writeObject(Global.moveList);
 					outputStream.writeObject(Global.gridSize);
 					outputStream.writeObject(Global.moveNumber);
-					if(Global.player1.supportsSave()){
-						outputStream.writeObject(Global.player1Type);
-						outputStream.writeObject(Global.player1);
-					}
-					else{
-						outputStream.writeObject((byte)0);
-						outputStream.writeObject(new PlayerObject((byte)1));
-					}
-					if(Global.player2.supportsSave()){
-						outputStream.writeObject(Global.player2Type);
-						outputStream.writeObject(Global.player2);
-					}
-					else {
-						outputStream.writeObject((byte)0);
-						outputStream.writeObject(new PlayerObject((byte)2));
-					}
+//					if(Global.player1.supportsSave()){
+//						outputStream.writeObject(Global.player1);
+//					}
+//					else{
+//						outputStream.writeObject(new PlayerObject((byte)1));
+//					}
+//					if(Global.player2.supportsSave()){
+//						outputStream.writeObject(Global.player2);
+//					}
+//					else {
+//						outputStream.writeObject(new PlayerObject((byte)2));
+//					}
 					
 					outputStream.flush();
                     outputStream.close();

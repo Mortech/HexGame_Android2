@@ -332,9 +332,9 @@ public class NetLobbyActivity extends Activity {
 			    	        		NetGlobal.sid = parsedDataset.getSid();
 			    	        		NetGlobal.server = parsedDataset.getServer();
 			    	        		
-//			    	        		//Apply board size
-//			    	        		String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&board=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize);
-//			    	        		new URL(boardUrl).openStream();
+			    	        		//Apply board size
+			    	        		String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize);
+			    	        		new URL(boardUrl).openStream();
 			    	        		
 		    	        			WaitingRoomActivity.messages = new LinkedList<String>();
 			    	        		startActivity(new Intent(getBaseContext(),WaitingRoomActivity.class));

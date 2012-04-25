@@ -15,13 +15,17 @@ import android.graphics.Point;
 
 
 public class GameAI implements PlayingEntity { 
-	byte team;//1 is left-right, 2 is top-down
-	byte[][] gameBoard;
-	int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
-	List<List<List<Integer>>> pairs = new ArrayList<List<List<Integer>>>();//List of pair-pieces
-	List<AIHistoryObject> history = new LinkedList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
-	int rand_a = 0;
-	int rand_b = 0;
+	private String name;
+	private int color;
+	private long timeLeft;
+	private byte team;//1 is left-right, 2 is top-down
+	private byte[][] gameBoard;
+	private int[] n={BoardTools.teamGrid().length-1,BoardTools.teamGrid().length-2},m = {0,0};//n is the leftmost AI move, m is the rightmost AI move
+	private List<List<List<Integer>>> pairs = new ArrayList<List<List<Integer>>>();//List of pair-pieces
+	private List<AIHistoryObject> history = new LinkedList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
+	private int rand_a = 0;
+	private int rand_b = 0;
+	private boolean skipMove = false;
 	
 	public GameAI(byte team){
 		this.team=team;
@@ -51,15 +55,6 @@ public class GameAI implements PlayingEntity {
 			return pairs.toString()+" : "+n.toString()+" : "+m.toString();
 		}
 	}
-
-	public void getPlayerTurn(byte[][] gameBoard) {//For net play
-		 this.gameBoard=gameBoard;
-		 makeMove();
-	}
-	
-	public Point getPlayerTurn(Point hex) {//For net play
-		return new Point(-1,-1);
-	}
 	
 	public void getPlayerTurn() {//Without net play
 		skipMove = false;
@@ -69,7 +64,6 @@ public class GameAI implements PlayingEntity {
 		makeMove();
 	}
 	
-	boolean skipMove = false;
 	public void undoCalled(){
 		if(history.size()>0){
 			AIHistoryObject previousState = history.get(history.size()-1);
@@ -451,14 +445,6 @@ public class GameAI implements PlayingEntity {
 	}
 
 	@Override
-	public void colorChanged() {
-	}
-
-	@Override
-	public void nameChanged() {
-	}
-
-	@Override
 	public void quit() {
 		skipMove = true;
 	}
@@ -485,6 +471,36 @@ public class GameAI implements PlayingEntity {
 	@Override
 	public void endMove() {
 		skipMove = true;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	@Override
+	public int getColor() {
+		return color;
+	}
+
+	@Override
+	public void setTime(long time) {
+		this.timeLeft = time;
+	}
+
+	@Override
+	public long getTime() {
+		return timeLeft;
 	}
 	
 	/*  Bah, ignore this for now.
