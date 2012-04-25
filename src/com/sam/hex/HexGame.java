@@ -396,7 +396,12 @@ public class HexGame extends Activity {
     }
     
     private void setType(SharedPreferences prefs){
-    	if(Global.gameLocation==1){
+    	if(Global.gameLocation==0){
+    		Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
+        	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
+    	}
+    	else if(Global.gameLocation==1){
+    		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			Global.player1Type=(byte)2;
     			Global.player2Type=(byte)Integer.parseInt(prefs.getString("lanPlayerType", "0"));
@@ -410,7 +415,7 @@ public class HexGame extends Activity {
     		//Playing over the net
     		for(int i=0;i<NetGlobal.members.size();i++){
     			if(NetGlobal.members.get(i).position==1){
-    				if(prefs.getString("netUsername", "").equals(NetGlobal.members.get(i).name)){
+    				if(prefs.getString("netUsername", "").toLowerCase().equals(NetGlobal.members.get(i).name.toLowerCase())){
     					Global.player1Type=(byte)0;
     				}
     				else{
@@ -418,7 +423,7 @@ public class HexGame extends Activity {
     				}
     			}
     			else if(NetGlobal.members.get(i).position==2){
-    				if(prefs.getString("netUsername", "").equals(NetGlobal.members.get(i).name)){
+    				if(prefs.getString("netUsername", "").toLowerCase().equals(NetGlobal.members.get(i).name.toLowerCase())){
     					Global.player2Type=(byte)0;
     				}
     				else{
@@ -426,10 +431,6 @@ public class HexGame extends Activity {
     				}
     			}
     		}
-    	}
-    	else{
-    		Global.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
-        	Global.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
     	}
     }
     

@@ -45,6 +45,8 @@ import android.widget.AdapterView.OnItemClickListener;
 public class WaitingRoomActivity extends Activity {
 	public static LinkedList<String> messages = new LinkedList<String>();
 	private RefreshGamePlayerlist refreshPlayers;
+	public static boolean netPlayerReady = false;
+	public static boolean localPlayerReady = false;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,8 +83,40 @@ public class WaitingRoomActivity extends Activity {
     	start.setText(this.getString(R.string.start));
     	start.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				startActivity(new Intent(getBaseContext(),HexGame.class));
-        		finish();
+				new Thread(new Runnable(){
+		    		public void run(){
+		    			try {
+		    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=START", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid);
+		    				URL url = new URL(lobbyUrl);
+		    				SAXParserFactory spf = SAXParserFactory.newInstance();
+		    	            SAXParser parser = spf.newSAXParser();
+		    	            XMLReader reader = parser.getXMLReader();
+		    	            XMLHandler xmlHandler = new XMLHandler();
+		    	            reader.setContentHandler(xmlHandler);
+		    	            reader.parse(new InputSource(url.openStream()));
+		    	            
+		    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+		    	        	if(!parsedDataset.error){
+//		    	        		localPlayerReady = true;
+//		    	        		if(localPlayerReady && netPlayerReady){
+			    	        		startActivity(new Intent(getBaseContext(),HexGame.class));
+			    	        		finish();
+//		    	        		}
+		    	        	}
+		    	        	else{
+		    	        		System.out.println(parsedDataset.getErrorMessage());
+		    	        	}
+		    			} catch (MalformedURLException e) {
+		    				e.printStackTrace();
+		    			} catch (ParserConfigurationException e) {
+		    				e.printStackTrace();
+		    			} catch (SAXException e) {
+		    				e.printStackTrace();
+		    			} catch (IOException e) {
+		    				e.printStackTrace();
+		    			}
+		    		}
+		    	}).start();
 			}
 		});
     	lobby.addFooterView(start);
@@ -95,6 +129,10 @@ public class WaitingRoomActivity extends Activity {
     		public void run(){
     			refreshPlayers();
     			refreshMessages();
+    			if(localPlayerReady && netPlayerReady){
+	        		startActivity(new Intent(getBaseContext(),HexGame.class));
+	        		finish();
+        		}
     		}});
     }
     

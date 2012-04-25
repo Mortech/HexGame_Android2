@@ -3,6 +3,8 @@ package com.sam.hex.net;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.sam.hex.GameAction;
      
 public class XMLHandler extends DefaultHandler{
 	private boolean in_errorMessage = false;
@@ -17,6 +19,7 @@ public class XMLHandler extends DefaultHandler{
     private boolean in_server = false;
     private boolean in_handlerData = false;
     private boolean in_playerList = false;
+    private boolean in_guestList = false;
     private boolean in_eventList = false;
        
     private ParsedDataset parsedDataset = new ParsedDataset();
@@ -95,18 +98,28 @@ public class XMLHandler extends DefaultHandler{
     		if(localName.equals("playerList")){
     			this.in_playerList = true;
     		}
-    		if(in_playerList){
+    		else if(in_playerList){
     			if(localName.equals("player")){
     				parsedDataset.addPlayer(Integer.parseInt(atts.getValue("place")), Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), atts.getValue("stat"));
+    			}
+    		}
+    		if(localName.equals("guestList")){
+    			this.in_guestList = true;
+    		}
+    		else if(in_guestList){
+    			if(localName.equals("guest")){
+    				parsedDataset.addPlayer(0, Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), "Spectating");
     			}
     		}
     		//Events during game
     		if(localName.equals("eventList")){
     			this.in_eventList = true;
     		}
-    		if(in_eventList){
+    		else if(in_eventList){
     			if(localName.equals("event")){
     				NetGlobal.lasteid = Integer.parseInt(atts.getValue("eid"));
+    				
+    				//Messages
     				if(atts.getValue("type").equals("MSG")){
     					int uid = Integer.parseInt(atts.getValue("uid"));
     					String name = "";
@@ -116,6 +129,17 @@ public class XMLHandler extends DefaultHandler{
     						}
     					}
     					parsedDataset.addMessage(atts.getValue("data"), uid, name);
+    				}
+    				
+    				//Moves
+    				if(atts.getValue("type").equals("MOVE")){
+    					String point = atts.getValue("data");
+    					parsedDataset.setMove(GameAction.stringToPoint(point));
+    				}
+    				
+    				//Notice
+    				if(atts.getValue("type").equals("NOTICE")){
+    					WaitingRoomActivity.netPlayerReady = true;
     				}
     			}
     		}
@@ -161,6 +185,9 @@ public class XMLHandler extends DefaultHandler{
     	}
     	else if(localName.equals("playerList")){
     		this.in_playerList = false;
+    	}
+    	else if(localName.equals("guestList")){
+    		this.in_guestList = false;
     	}
     	else if(localName.equals("eventList")){
     		this.in_eventList = false;

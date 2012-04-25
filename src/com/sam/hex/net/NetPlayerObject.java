@@ -1,5 +1,18 @@
 package com.sam.hex.net;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
 import com.sam.hex.GameAction;
 import com.sam.hex.Global;
 import com.sam.hex.PlayingEntity;
@@ -16,8 +29,36 @@ public class NetPlayerObject implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {
-		if(Global.moveNumber>1){
-			//TODO Send our move
+		if(Global.moveNumber>1 && !(GameAction.getPlayer(team%2+1) instanceof NetPlayerObject)){
+			new Thread(new Runnable(){
+	    		public void run(){
+	    			try {
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(GameAction.pointToString(new Point(Global.moveList.getmove().getX(),Global.moveList.getmove().getY())),"UTF-8"));
+	    				URL url = new URL(lobbyUrl);
+	    				SAXParserFactory spf = SAXParserFactory.newInstance();
+	    	            SAXParser parser = spf.newSAXParser();
+	    	            XMLReader reader = parser.getXMLReader();
+	    	            XMLHandler xmlHandler = new XMLHandler();
+	    	            reader.setContentHandler(xmlHandler);
+	    	            reader.parse(new InputSource(url.openStream()));
+	    	            
+	    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+	    	        	if(!parsedDataset.error){
+	    	        	}
+	    	        	else{
+	    	        		System.out.println(parsedDataset.getErrorMessage());
+	    	        	}
+	    			} catch (MalformedURLException e) {
+	    				e.printStackTrace();
+	    			} catch (ParserConfigurationException e) {
+	    				e.printStackTrace();
+	    			} catch (SAXException e) {
+	    				e.printStackTrace();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+	    	}).start();
 		}
 		
 		NetGlobal.hex = null;
@@ -82,7 +123,37 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void lose() {
-		//TODO Send move
+		if(Global.moveNumber>1 && !(GameAction.getPlayer(team%2+1) instanceof NetPlayerObject)){
+			new Thread(new Runnable(){
+	    		public void run(){
+	    			try {
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(Global.moveList.getmove().getX()+"-"+Global.moveList.getmove().getY(),"UTF-8"));
+	    				URL url = new URL(lobbyUrl);
+	    				SAXParserFactory spf = SAXParserFactory.newInstance();
+	    	            SAXParser parser = spf.newSAXParser();
+	    	            XMLReader reader = parser.getXMLReader();
+	    	            XMLHandler xmlHandler = new XMLHandler();
+	    	            reader.setContentHandler(xmlHandler);
+	    	            reader.parse(new InputSource(url.openStream()));
+	    	            
+	    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+	    	        	if(!parsedDataset.error){
+	    	        	}
+	    	        	else{
+	    	        		System.out.println(parsedDataset.getErrorMessage());
+	    	        	}
+	    			} catch (MalformedURLException e) {
+	    				e.printStackTrace();
+	    			} catch (ParserConfigurationException e) {
+	    				e.printStackTrace();
+	    			} catch (SAXException e) {
+	    				e.printStackTrace();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+	    	}).start();
+		}
 	}
 
 	@Override

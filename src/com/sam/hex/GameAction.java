@@ -254,4 +254,31 @@ public class GameAction {
 			return inserted;
 		}
 	}
+	
+	public static PlayingEntity getPlayer(int i){
+		if(i==1){
+			return Global.player1;
+		}
+		else if(i==2){
+			return Global.player2;
+		}
+		else{
+			return null;
+		}
+	}
+
+	final static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static String pointToString(Point p){
+		String str = "";
+		str += alphabet.charAt(p.y);
+		str += (p.x+1);
+		return str;
+	}
+	
+	public static Point stringToPoint(String str){
+		int x = Integer.parseInt(str.substring(1))-1;
+		char y = str.charAt(0);
+		
+		return new Point(x, alphabet.indexOf(y));
+	}
 }

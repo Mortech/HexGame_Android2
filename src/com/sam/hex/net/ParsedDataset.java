@@ -1,6 +1,8 @@
 package com.sam.hex.net;
 
 import java.util.ArrayList;
+
+import android.graphics.Point;
  
 public class ParsedDataset {
 	//Logging in
@@ -37,7 +39,7 @@ public class ParsedDataset {
     		}
     		if(!str.equals("")) return str;
     		else{
-    			str+="Spectating: "+members.get(0).name;
+    			if(members.size()>0) str+="Spectating: "+members.get(0).name;
     			for(int i=1;i<members.size();i++){
         			str+=", "+members.get(i).name;
         		}
@@ -88,6 +90,7 @@ public class ParsedDataset {
     public void addMessage(String msg, int uid, String name){
     	messages.add(new Message(msg, uid, name));
     }
+    private Point move;
     
     //Errors
     public boolean error = false;
@@ -135,5 +138,11 @@ public class ParsedDataset {
 	}
 	public void setServer(String server) {
 		this.server = server;
+	}
+	public Point getMove() {
+		return move;
+	}
+	public void setMove(Point move) {
+		this.move = move;
 	}
 }
