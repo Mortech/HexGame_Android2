@@ -20,6 +20,7 @@ import com.sam.hex.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,14 +41,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class WaitingRoomActivity extends Activity {
 	public static LinkedList<String> messages = new LinkedList<String>();
 	private RefreshGamePlayerlist refreshPlayers;
-	public static boolean netPlayerReady = false;
-	public static boolean localPlayerReady = false;
+	public static boolean Player1Ready = false;
+	public static boolean Player2Ready = false;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,13 @@ public class WaitingRoomActivity extends Activity {
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	finish();
+            }
+        });
+        
+        Button options = (Button) findViewById(R.id.options);
+        options.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	editBoard();
             }
         });
         
@@ -80,7 +90,7 @@ public class WaitingRoomActivity extends Activity {
     	
     	ListView lobby = (ListView) findViewById(R.id.players);
     	Button start = new Button(this);
-    	start.setText(this.getString(R.string.start));
+    	start.setText(this.getString(R.string.ready));
     	start.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				new Thread(new Runnable(){
@@ -97,7 +107,8 @@ public class WaitingRoomActivity extends Activity {
 		    	            
 		    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
 		    	        	if(!parsedDataset.error){
-		    	        		localPlayerReady = true;
+		    	        		if(NetGlobal.place==1) Player1Ready = true;
+		    	        		else if(NetGlobal.place==2) Player2Ready = true;
 		    	        	}
 		    	        	else{
 		    	        		System.out.println(parsedDataset.getErrorMessage());
@@ -125,9 +136,32 @@ public class WaitingRoomActivity extends Activity {
     		public void run(){
     			refreshPlayers();
     			refreshMessages();
-    			if(localPlayerReady && netPlayerReady){
-	        		startActivity(new Intent(getBaseContext(),HexGame.class));
-	        		finish();
+    			if(Player1Ready && Player2Ready){
+    				messages.add("3");
+        			refreshMessages();
+        			try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+    				messages.add("2");
+        			refreshMessages();
+        			try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+    				messages.add("1");
+        			refreshMessages();
+        			try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+        			if(Player1Ready && Player2Ready){
+		        		startActivity(new Intent(getBaseContext(),HexGame.class));
+		        		finish();
+        			}
         		}
     		}});
     }
@@ -246,5 +280,67 @@ public class WaitingRoomActivity extends Activity {
 	        	
 			}
         });
+    }
+    
+    private void editBoard(){
+    	LayoutInflater inflater = (LayoutInflater) WaitingRoomActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+    	View dialoglayout = inflater.inflate(R.layout.netlobby_createboard, null);
+    	final Spinner gameSize = (Spinner)dialoglayout.findViewById(R.id.gameSize);
+        ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, R.layout.spinner_text);
+        gameSizeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        gameSize.setAdapter(gameSizeAdapter);
+        final Spinner position = (Spinner)dialoglayout.findViewById(R.id.position);
+        ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, R.layout.spinner_text);
+        positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        position.setAdapter(positionAdapter);
+    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
+    	builder.setView(dialoglayout);
+		builder.setMessage(this.getText(R.string.createBoard));
+		
+		
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+    	    public void onClick(DialogInterface dialog, int which) {
+    	        switch (which){
+    	        case DialogInterface.BUTTON_POSITIVE:
+    	            //Yes button clicked
+    	        	new Thread(new Runnable(){
+    	        		@Override
+    	        		public void run() {
+	    	        		NetGlobal.gridSize = Integer.parseInt(getResources().getStringArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()]);
+	    	        		NetGlobal.place = Integer.parseInt(getResources().getStringArray(R.array.netPositionValues)[position.getSelectedItemPosition()]);
+	    	        		try {
+	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.place);
+		    	        		URL url = new URL(boardUrl);
+		    	        		SAXParserFactory spf = SAXParserFactory.newInstance();
+		    	        		SAXParser parser = spf.newSAXParser();
+		    	        		XMLReader reader = parser.getXMLReader();
+		    	        		XMLHandler xmlHandler = new XMLHandler();
+		    	        		reader.setContentHandler(xmlHandler);
+		    	        		reader.parse(new InputSource(url.openStream()));
+		
+		    	        		ParsedDataset parsedDataset = xmlHandler.getParsedData();
+		    	        		if(!parsedDataset.error){
+		    	        		}
+	    	        		} catch (MalformedURLException e) {
+	    	        		e.printStackTrace();
+	    	        		} catch (ParserConfigurationException e) {
+	    	        		e.printStackTrace();
+	    	        		} catch (SAXException e) {
+	    	        		e.printStackTrace();
+	    	        		} catch (IOException e) {
+	    	        		e.printStackTrace();
+	    	        		}
+    	        		}}).start();
+    	            break;
+    	        case DialogInterface.BUTTON_NEGATIVE:
+    	            //No button clicked
+    	        	//Do nothing
+    	            break;
+    	        }
+    	    }
+    	};
+		builder.setPositiveButton(this.getText(R.string.okay), dialogClickListener);
+		builder.setNegativeButton(this.getText(R.string.cancel), dialogClickListener);
+    	builder.show();
     }
 }

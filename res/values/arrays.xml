@@ -78,21 +78,13 @@
         <item>19</item>
     </string-array>
     <string-array name="netPositionArray">
+        <item>Spectator</item>
         <item>First Player</item>
         <item>Second Player</item>
     </string-array>
     <string-array name="netPositionValues">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
-    </string-array>
-    
-    <string-array name="netOptionsArray">
-        <item>Board Size</item>
-        <item>Position</item>
-    </string-array>
-    
-    <string-array name="netOptionsValues">
-        <item>Board Size</item>
-        <item>Position</item>
     </string-array>
 </resources>

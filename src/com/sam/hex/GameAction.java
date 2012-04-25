@@ -264,6 +264,7 @@ public class GameAction {
 
 	final static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static String pointToString(Point p){
+		if(Global.moveNumber==2 && Global.moveList.thisMove.equals(Global.moveList.nextMove.thisMove)) return "SWAP";
 		String str = "";
 		str += alphabet.charAt(p.y);
 		str += (p.x+1);
@@ -271,6 +272,7 @@ public class GameAction {
 	}
 	
 	public static Point stringToPoint(String str){
+		if(str.equals("SWAP")) return new Point(Global.moveList.thisMove.getX(),Global.moveList.thisMove.getY());
 		int x = Integer.parseInt(str.substring(1))-1;
 		char y = str.charAt(0);
 		

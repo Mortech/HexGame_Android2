@@ -139,7 +139,13 @@ public class XMLHandler extends DefaultHandler{
     				
     				//Notice
     				if(atts.getValue("type").equals("NOTICE")){
-    					WaitingRoomActivity.netPlayerReady = true;
+    					int uid = Integer.parseInt(atts.getValue("uid"));
+    					for(int i=0;i<parsedDataset.players.size();i++){
+    						if(parsedDataset.players.get(i).uid==uid){
+    							if(parsedDataset.players.get(i).place==1) WaitingRoomActivity.Player1Ready = true;
+    							else if(parsedDataset.players.get(i).place==2) WaitingRoomActivity.Player2Ready = true;
+    						}
+    					}
     				}
     			}
     		}

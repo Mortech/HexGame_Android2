@@ -124,6 +124,8 @@
     
     <string name="waitingroom">Waiting Room</string>
     <string name="sendAMessage">Send a message</string>
+    <string name="ready">Ready</string>
+    <string name="unready">Unready</string>
     
     <!-- Dialog Options -->
     <string name="yes">Yes</string>

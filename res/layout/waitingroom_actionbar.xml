@@ -15,14 +15,11 @@
         android:textColor="@color/white"
         android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
-    <Spinner 
+    <Button 
         style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:id="@+id/dropdown"
-        android:defaultValue="1"
-        android:entries="@array/netOptionsArray"
-        android:entryValues="@array/netOptionsValues" 
+        android:id="@+id/options"
         android:background="@drawable/ic_menu_moreoverflow_normal_holo_light"/>
 </RelativeLayout>

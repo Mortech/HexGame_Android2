@@ -27,12 +27,12 @@ public class ParsedDataset {
     	public String toString(){
     		String str = "";
     		for(int i=0;i<members.size();i++){
-    			if(members.get(i).position==1){
+    			if(members.get(i).place==1){
     				str+="Player 1: "+members.get(i).name;
     			}
     		}
     		for(int i=0;i<members.size();i++){
-    			if(members.get(i).position==2){
+    			if(members.get(i).place==2){
     	    		if(!str.equals("")) str+="\n";
     				str+="Player 2: "+members.get(i).name;
     			}
@@ -48,12 +48,12 @@ public class ParsedDataset {
     	}
     }
     public class Member{
-    	public int position = 9;
+    	public int place = 9;
     	public int uid = 0;
     	public String name = null;
     	public String state = null;
-    	public Member(int position, int uid, String name, String state){
-    		this.position = position;
+    	public Member(int place, int uid, String name, String state){
+    		this.place = place;
         	this.uid = uid;
         	this.name = name;
         	this.state = state;

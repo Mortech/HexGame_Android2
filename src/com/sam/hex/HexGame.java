@@ -205,11 +205,7 @@ public class HexGame extends Activity {
         	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
         	finish();
     	}
-    	else if(HexGame.startNewGame){
-    		initializeNewGame();
-    	}
-    	else if(somethingChanged(prefs)){
-    		//Reset the game
+    	else if(HexGame.startNewGame || somethingChanged(prefs)){
     		initializeNewGame();
     	}
     	else{//Apply minor changes without stopping the current game
@@ -270,7 +266,7 @@ public class HexGame extends Activity {
     	super.onPause();
     	
     	//If the board's empty, just trigger "startNewGame"
-    	if(Global.moveNumber==1 && Global.gameLocation!=1) HexGame.startNewGame=true;
+    	if(Global.moveNumber==1 && Global.gameLocation==0) HexGame.startNewGame=true;
     }
     
     public static void stopGame(){
@@ -305,10 +301,10 @@ public class HexGame extends Activity {
     	else if(Global.gameLocation==2){
     		//Playing over the net
     		for(int i=0;i<NetGlobal.members.size();i++){
-    			if(NetGlobal.members.get(i).position==1){
+    			if(NetGlobal.members.get(i).place==1){
     				Global.player1.setName(NetGlobal.members.get(i).name);
     			}
-    			else if(NetGlobal.members.get(i).position==2){
+    			else if(NetGlobal.members.get(i).place==2){
     				Global.player2.setName(NetGlobal.members.get(i).name);
     			}
     		}
@@ -390,7 +386,7 @@ public class HexGame extends Activity {
     	else if(Global.gameLocation==2){
     		//Playing over the net
     		for(int i=0;i<NetGlobal.members.size();i++){
-    			if(NetGlobal.members.get(i).position==1){
+    			if(NetGlobal.members.get(i).place==1){
     				if(prefs.getString("netUsername", "").toLowerCase().equals(NetGlobal.members.get(i).name.toLowerCase())){
     					Global.player1Type=(byte)0;
     				}
@@ -398,7 +394,7 @@ public class HexGame extends Activity {
     					Global.player1Type=(byte)3;
     				}
     			}
-    			else if(NetGlobal.members.get(i).position==2){
+    			else if(NetGlobal.members.get(i).place==2){
     				if(prefs.getString("netUsername", "").toLowerCase().equals(NetGlobal.members.get(i).name.toLowerCase())){
     					Global.player2Type=(byte)0;
     				}
