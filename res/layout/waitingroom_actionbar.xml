@@ -16,12 +16,13 @@
         android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
     <Spinner 
+        style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:id="@+id/dropdown"
         android:defaultValue="1"
-        android:entries="@array/netPositionArray"
-        android:entryValues="@array/netPositionValues" 
+        android:entries="@array/netOptionsArray"
+        android:entryValues="@array/netOptionsValues" 
         android:background="@drawable/ic_menu_moreoverflow_normal_holo_light"/>
 </RelativeLayout>

@@ -57,13 +57,7 @@ public class ParsedDataset {
         	this.state = state;
     	}
     	public String toString(){
-    		if(position==1){
-    			return "Player 1: "+name;
-    		}
-    		else if(position==2){
-    			return "Player 2: "+name;
-    		}
-    		return "Watching: "+name;
+    		return name;
     	}
     }
     public void addSession(String state, int sid, int uid, String server){
@@ -76,6 +70,24 @@ public class ParsedDataset {
     //Playing a game
     private int sid;
     private String server = null;
+    public ArrayList<Member> players = new ArrayList<Member>();
+    public void addPlayer(int position, int uid, String name, String state){
+    	players.add(new Member(position, uid, name, state));
+    }
+    public ArrayList<Message> messages = new ArrayList<Message>();
+    public class Message{
+    	public String msg;
+    	public int uid;
+    	public String name;
+    	public Message(String msg, int uid, String name){
+    		this.msg = msg;
+    		this.uid = uid;
+    		this.name = name;
+    	}
+    }
+    public void addMessage(String msg, int uid, String name){
+    	messages.add(new Message(msg, uid, name));
+    }
     
     //Errors
     public boolean error = false;

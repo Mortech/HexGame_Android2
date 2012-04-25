@@ -112,6 +112,7 @@ public class LoginActivity extends Activity {
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	startActivity(new Intent(getBaseContext(),RegistrationActivity.class));
+            	finish();
             }
         });
     }

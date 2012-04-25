@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.LinkedList;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -146,6 +147,7 @@ public class NetLobbyActivity extends Activity {
     	                	loginSucceeded = true;
     	                }
     	                else{
+    	                	System.out.println(parsedDataset.getErrorMessage());
     	                	new DialogBox(NetLobbyActivity.this, context.getString(R.string.loginFailed), new DialogInterface.OnClickListener() {
     	                	    public void onClick(DialogInterface dialog, int which) {
     	                	        switch (which){
@@ -253,6 +255,8 @@ public class NetLobbyActivity extends Activity {
 	
 	    	        		ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	    	        		if(!parsedDataset.error){
+	    	        			NetGlobal.members = NetGlobal.sessions.get(position).members;
+	    	        			WaitingRoomActivity.messages = new LinkedList<String>();
 		    	        		startActivity(new Intent(getBaseContext(),WaitingRoomActivity.class));
 		    	        		finish();
 	    	        		}
@@ -327,6 +331,7 @@ public class NetLobbyActivity extends Activity {
 		    	        		if(!parsedDataset.error){
 			    	        		NetGlobal.sid = parsedDataset.getSid();
 			    	        		NetGlobal.server = parsedDataset.getServer();
+		    	        			WaitingRoomActivity.messages = new LinkedList<String>();
 			    	        		startActivity(new Intent(getBaseContext(),WaitingRoomActivity.class));
 			    	        		finish();
 		    	        		}

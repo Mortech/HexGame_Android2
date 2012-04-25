@@ -123,6 +123,7 @@
     <string name="loginFailed">We couldn\'t log you in</string>
     
     <string name="waitingroom">Waiting Room</string>
+    <string name="sendAMessage">Send a message</string>
     
     <!-- Dialog Options -->
     <string name="yes">Yes</string>

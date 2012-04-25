@@ -16,8 +16,8 @@
     	android:layout_alignParentBottom="true"
     	android:layout_toLeftOf="@id/submit"
     	android:id="@+id/sendMessage"
-    	android:hint="Send a message"
-    	android:inputType="text"/>
+    	android:hint="@string/sendAMessage"
+    	android:inputType="textMultiLine"/>
     <LinearLayout android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
     	android:layout_above="@id/sendMessage">
