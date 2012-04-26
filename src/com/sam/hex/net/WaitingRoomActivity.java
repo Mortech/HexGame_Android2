@@ -309,23 +309,11 @@ public class WaitingRoomActivity extends Activity {
 	    	        		NetGlobal.gridSize = Integer.parseInt(getResources().getStringArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()]);
 	    	        		NetGlobal.place = Integer.parseInt(getResources().getStringArray(R.array.netPositionValues)[position.getSelectedItemPosition()]);
 	    	        		try {
-	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.place);
-		    	        		URL url = new URL(boardUrl);
-		    	        		SAXParserFactory spf = SAXParserFactory.newInstance();
-		    	        		SAXParser parser = spf.newSAXParser();
-		    	        		XMLReader reader = parser.getXMLReader();
-		    	        		XMLHandler xmlHandler = new XMLHandler();
-		    	        		reader.setContentHandler(xmlHandler);
-		    	        		reader.parse(new InputSource(url.openStream()));
-		
-		    	        		ParsedDataset parsedDataset = xmlHandler.getParsedData();
-		    	        		if(!parsedDataset.error){
-		    	        		}
+	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize);
+	    	        			String placeUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=PLACE&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.place);
+	    	        			new URL(boardUrl).openStream();
+	    	        			new URL(placeUrl).openStream();
 	    	        		} catch (MalformedURLException e) {
-	    	        		e.printStackTrace();
-	    	        		} catch (ParserConfigurationException e) {
-	    	        		e.printStackTrace();
-	    	        		} catch (SAXException e) {
 	    	        		e.printStackTrace();
 	    	        		} catch (IOException e) {
 	    	        		e.printStackTrace();

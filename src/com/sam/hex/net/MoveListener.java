@@ -50,7 +50,7 @@ public class MoveListener implements Runnable{
 			}
 			
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(6000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
