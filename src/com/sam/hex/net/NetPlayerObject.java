@@ -122,7 +122,7 @@ public class NetPlayerObject implements PlayingEntity {
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
-	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(Global.moveList.getmove().getX()+"-"+Global.moveList.getmove().getY(),"UTF-8"));
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(GameAction.pointToString(new Point(Global.moveList.getmove().getX(),Global.moveList.getmove().getY())),"UTF-8"));
 	    				URL url = new URL(lobbyUrl);
 	    				SAXParserFactory spf = SAXParserFactory.newInstance();
 	    	            SAXParser parser = spf.newSAXParser();

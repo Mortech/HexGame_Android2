@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,6 +15,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
@@ -24,6 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -34,11 +37,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -48,8 +53,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class WaitingRoomActivity extends Activity {
 	public static LinkedList<String> messages = new LinkedList<String>();
 	private RefreshGamePlayerlist refreshPlayers;
-	public static boolean Player1Ready = false;
-	public static boolean Player2Ready = false;
+	public static boolean gameActive = false;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,8 +111,6 @@ public class WaitingRoomActivity extends Activity {
 		    	            
 		    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
 		    	        	if(!parsedDataset.error){
-		    	        		if(NetGlobal.place==1) Player1Ready = true;
-		    	        		else if(NetGlobal.place==2) Player2Ready = true;
 		    	        	}
 		    	        	else{
 		    	        		System.out.println(parsedDataset.getErrorMessage());
@@ -136,7 +138,7 @@ public class WaitingRoomActivity extends Activity {
     		public void run(){
     			refreshPlayers();
     			refreshMessages();
-    			if(Player1Ready && Player2Ready){
+    			if(gameActive){
     				messages.add("3");
         			refreshMessages();
         			try {
@@ -158,10 +160,8 @@ public class WaitingRoomActivity extends Activity {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-        			if(Player1Ready && Player2Ready){
-		        		startActivity(new Intent(getBaseContext(),HexGame.class));
-		        		finish();
-        			}
+        			startActivity(new Intent(getBaseContext(),HexGame.class));
+		        	finish();
         		}
     		}});
     }
@@ -271,7 +271,7 @@ public class WaitingRoomActivity extends Activity {
     
     private void refreshPlayers(){
     	ListView lobby = (ListView) findViewById(R.id.players);
-    	ArrayAdapter<ParsedDataset.Member> adapter = new ArrayAdapter<ParsedDataset.Member>(this,R.layout.simple_list_item_1, R.id.text1, NetGlobal.members);
+    	GamePlayerlistAdapter adapter = new GamePlayerlistAdapter(this,R.layout.waitingroom_list_item, NetGlobal.members);
         lobby.setAdapter(adapter);
         
         lobby.setOnItemClickListener(new OnItemClickListener() {
@@ -306,12 +306,13 @@ public class WaitingRoomActivity extends Activity {
     	        	new Thread(new Runnable(){
     	        		@Override
     	        		public void run() {
+    	        			int previousGridSize = NetGlobal.gridSize;
 	    	        		NetGlobal.gridSize = Integer.parseInt(getResources().getStringArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()]);
 	    	        		NetGlobal.place = Integer.parseInt(getResources().getStringArray(R.array.netPositionValues)[position.getSelectedItemPosition()]);
 	    	        		try {
 	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize);
 	    	        			String placeUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=PLACE&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.place);
-	    	        			new URL(boardUrl).openStream();
+	    	        			if(previousGridSize!=NetGlobal.gridSize) new URL(boardUrl).openStream();
 	    	        			new URL(placeUrl).openStream();
 	    	        		} catch (MalformedURLException e) {
 	    	        		e.printStackTrace();
@@ -330,5 +331,38 @@ public class WaitingRoomActivity extends Activity {
 		builder.setPositiveButton(this.getText(R.string.okay), dialogClickListener);
 		builder.setNegativeButton(this.getText(R.string.cancel), dialogClickListener);
     	builder.show();
+    }
+
+    private class GamePlayerlistAdapter extends ArrayAdapter<ParsedDataset.Member> {
+            private ArrayList<ParsedDataset.Member> items;
+            
+            public GamePlayerlistAdapter(Context context, int textViewResourceId, ArrayList<ParsedDataset.Member> items) {
+                    super(context, textViewResourceId, items);
+                    this.items = items;
+            }
+            
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                    View v = convertView;
+                    if (v == null) {
+                        LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        v = vi.inflate(R.layout.waitingroom_list_item, null);
+                    }
+                    ParsedDataset.Member o = items.get(position);
+                    if (o != null) {
+                            TextView name = (TextView) v.findViewById(R.id.text1);
+                            ImageButton image = (ImageButton) v.findViewById(R.id.image1);
+                            if (name != null) {
+                                  name.setText(o.name);
+                                  if(o.state.equals("OFFERSTART")) name.setTextColor(Color.GREEN);
+                            }
+                            if(image != null){
+                                  if(o.place==0) image.setColorFilter(Color.TRANSPARENT);
+                                  else if(o.place==1) image.setColorFilter(Global.player1DefaultColor);
+                                  else if(o.place==2) image.setColorFilter(Global.player2DefaultColor);
+                            }
+                    }
+                    return v;
+            }
     }
 }

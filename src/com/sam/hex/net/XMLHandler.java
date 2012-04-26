@@ -77,23 +77,21 @@ public class XMLHandler extends DefaultHandler{
 		    	}
 	    	}
     	}
-    	//For creating a new game
-    	else if(localName.equals("sessionInfo")){
-    		this.in_sessionInfo = true;
-    	}
-    	else if(in_sessionInfo){
-    		if(localName.equals("sid")){
-    			this.in_sid = true;
-    		}
-    		else if(localName.equals("server")){
-    			this.in_server = true;
-    		}
-    	}
     	//For playing a game
     	else if(localName.equals("handlerData")){
     		this.in_handlerData = true;
     	}
     	else if(in_handlerData){
+    		//Game status
+    		if(localName.equals("sessionInfo")){
+    			System.out.println(atts.getValue("status"));
+    			if(atts.getValue("status").equals("INIT")){
+    				WaitingRoomActivity.gameActive = false;
+    			}
+    			else{
+    				WaitingRoomActivity.gameActive = true;
+    			}
+    		}
     		//Players in game
     		if(localName.equals("playerList")){
     			this.in_playerList = true;
@@ -136,18 +134,19 @@ public class XMLHandler extends DefaultHandler{
     					String point = atts.getValue("data");
     					parsedDataset.setMove(GameAction.stringToPoint(point));
     				}
-    				
-    				//Notice
-    				if(atts.getValue("type").equals("NOTICE")){
-    					int uid = Integer.parseInt(atts.getValue("uid"));
-    					for(int i=0;i<parsedDataset.players.size();i++){
-    						if(parsedDataset.players.get(i).uid==uid){
-    							if(parsedDataset.players.get(i).place==1) WaitingRoomActivity.Player1Ready = true;
-    							else if(parsedDataset.players.get(i).place==2) WaitingRoomActivity.Player2Ready = true;
-    						}
-    					}
-    				}
     			}
+    		}
+    	}
+    	//For creating a new game
+    	else if(localName.equals("sessionInfo")){
+    		this.in_sessionInfo = true;
+    	}
+    	else if(in_sessionInfo){
+    		if(localName.equals("sid")){
+    			this.in_sid = true;
+    		}
+    		else if(localName.equals("server")){
+    			this.in_server = true;
     		}
     	}
     }
