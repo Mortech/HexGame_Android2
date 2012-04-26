@@ -173,6 +173,7 @@ public class HexGame extends Activity {
 	    applyBoard();
     	
         //Create the game object
+	    if(Global.totalTimerTime!=0) Global.timer = new Timer(new Handler());
         Global.game = new GameObject(); 
     }
     
