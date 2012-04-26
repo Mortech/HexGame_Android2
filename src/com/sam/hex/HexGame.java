@@ -267,7 +267,7 @@ public class HexGame extends Activity {
     	super.onPause();
     	
     	//If the board's empty, just trigger "startNewGame"
-    	if(Global.moveNumber==1 && Global.gameLocation==0) HexGame.startNewGame=true;
+    	if(Global.moveNumber==1 && Global.gameLocation==0 && Global.totalTimerTime==0) HexGame.startNewGame=true;
     }
     
     public static void stopGame(){
@@ -346,7 +346,12 @@ public class HexGame extends Activity {
     }
     
     private void setGrid(SharedPreferences prefs){
-    	if(Global.gameLocation==1){
+    	if(Global.gameLocation==0){
+    		//Playing on the same phone
+    		Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    		if(Global.gridSize==0) Global.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
+    	}
+    	else if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			Global.gridSize=LANGlobal.localPlayer.gridSize;
@@ -356,12 +361,8 @@ public class HexGame extends Activity {
     		}
     	}
     	else if(Global.gameLocation==2){
+    		//Playing over the net
     		Global.gridSize = NetGlobal.gridSize;
-    	}
-    	else{
-    		//Playing on the same phone
-    		Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
-    		if(Global.gridSize==0) Global.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
     	}
     	
     	//We don't want 0x0 games

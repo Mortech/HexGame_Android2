@@ -91,6 +91,8 @@ public class ParsedDataset {
     	messages.add(new Message(msg, uid, name));
     }
     private Point move;
+    public boolean undoRequested = false;
+    public boolean undoAccepted = false;
     
     //Errors
     public boolean error = false;

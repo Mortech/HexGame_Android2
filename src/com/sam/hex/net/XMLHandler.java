@@ -130,9 +130,17 @@ public class XMLHandler extends DefaultHandler{
     				}
     				
     				//Moves
-    				if(atts.getValue("type").equals("MOVE")){
+    				else if(atts.getValue("type").equals("MOVE")){
     					String point = atts.getValue("data");
     					parsedDataset.setMove(GameAction.stringToPoint(point));
+    				}
+    				
+    				//Undo
+    				else if(atts.getValue("type").equals("UNDOASK")){
+    					parsedDataset.undoRequested=true;
+    				}
+    				else if(atts.getValue("type").equals("UNDODONE")){
+    					parsedDataset.undoAccepted=true;
     				}
     			}
     		}

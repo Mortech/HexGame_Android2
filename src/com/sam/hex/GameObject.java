@@ -1,7 +1,5 @@
 package com.sam.hex;
 
-import android.os.Handler;
-
 public class GameObject implements Runnable {
 	private boolean game=true;
 	private boolean threadAlive=true;

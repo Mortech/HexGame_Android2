@@ -97,7 +97,35 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public boolean supportsUndo() {
-		//TODO Ask to undo
+		new Thread(new Runnable(){
+    		public void run(){
+    			try {
+    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ASK&move_ind=", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, (Global.moveNumber-1));
+    				URL url = new URL(lobbyUrl);
+    				SAXParserFactory spf = SAXParserFactory.newInstance();
+    	            SAXParser parser = spf.newSAXParser();
+    	            XMLReader reader = parser.getXMLReader();
+    	            XMLHandler xmlHandler = new XMLHandler();
+    	            reader.setContentHandler(xmlHandler);
+    	            reader.parse(new InputSource(url.openStream()));
+    	            
+    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+    	        	if(!parsedDataset.error){
+    	        	}
+    	        	else{
+    	        		System.out.println(parsedDataset.getErrorMessage());
+    	        	}
+    			} catch (MalformedURLException e) {
+    				e.printStackTrace();
+    			} catch (ParserConfigurationException e) {
+    				e.printStackTrace();
+    			} catch (SAXException e) {
+    				e.printStackTrace();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}).start();
 		return false;
 	}
 
@@ -164,6 +192,7 @@ public class NetPlayerObject implements PlayingEntity {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+		NetGlobal.netPlayerName = name;
 	}
 
 	@Override
