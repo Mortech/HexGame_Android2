@@ -20,6 +20,9 @@ public class Load implements Runnable{
     		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + FileExplore.chosenFile);
     		if(file!=null){
     	        try {
+    	        	Global.player1=new PlayerObject((byte)1);
+    	        	Global.player2=new PlayerObject((byte)2);
+    	        	
     	            //Construct the ObjectInputStream object
     	        	ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
     	            
@@ -33,10 +36,10 @@ public class Load implements Runnable{
 //    				Global.player1 = (PlayingEntity) inputStream.readObject();
 //    				Global.player2 = (PlayingEntity) inputStream.readObject();
 //    				if(Global.player1==null){
-    					Global.player1=new PlayerObject((byte)1);
+//    					Global.player1=new PlayerObject((byte)1);
 //    				}
 //    				if(Global.player2==null){
-    					Global.player2=new PlayerObject((byte)2);
+//    					Global.player2=new PlayerObject((byte)2);
 //    				}
     				
     				inputStream.close();
