@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import android.content.DialogInterface;
+import android.os.Handler;
 
 import com.sam.hex.DialogBox;
 import com.sam.hex.GameAction;
@@ -22,7 +23,11 @@ import com.sam.hex.R;
 
 public class MoveListener implements Runnable{
 	private boolean listen = true;
-	public MoveListener(){
+	private Handler handler;
+	private Runnable newgame;
+	public MoveListener(Handler handler, Runnable newgame){
+		this.handler = handler;
+		this.newgame = newgame;
 		new Thread(this).start();
 	}
 
@@ -85,6 +90,9 @@ public class MoveListener implements Runnable{
 		    					null, 
 		    					Global.board.getContext().getString(R.string.okay));
     				}
+    				if(parsedDataset.restart){
+    					handler.post(newgame);
+    				}
 	        	}
 	        	else{
 	        		System.out.println(parsedDataset.getErrorMessage());
@@ -100,7 +108,7 @@ public class MoveListener implements Runnable{
 			}
 			
 			try {
-				Thread.sleep(6000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

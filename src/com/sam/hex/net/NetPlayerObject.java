@@ -18,6 +18,7 @@ import com.sam.hex.Global;
 import com.sam.hex.PlayingEntity;
 
 import android.graphics.Point;
+import android.os.Handler;
 
 public class NetPlayerObject implements PlayingEntity {
 	private String name;
@@ -26,11 +27,12 @@ public class NetPlayerObject implements PlayingEntity {
 	private int team;
 	private MoveListener listener;
 	
-	public NetPlayerObject(int i) {
-		this.team=i;//Set the player's team
-		this.listener = new MoveListener();
+	public NetPlayerObject(int team, Handler handler, Runnable newgame) {
+		this.team=team;//Set the player's team
+		this.listener = new MoveListener(handler, newgame);
 	}
-	
+
+	@Override
 	public void getPlayerTurn() {
 		if(Global.moveNumber>1 && !(GameAction.getPlayer(team%2+1) instanceof NetPlayerObject)){
 			new Thread(new Runnable(){
@@ -87,10 +89,12 @@ public class NetPlayerObject implements PlayingEntity {
 			NetGlobal.hex = null;
 		}
 	}
-	
+
+	@Override
 	public void undoCalled(){
 	}
 
+	@Override
 	public void newgameCalled() {
 		GameAction.hex = new Point(-1,-1);
 	}
@@ -131,12 +135,102 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public boolean supportsNewgame() {
-		//TODO Ask for a new game
-		return false;
+		if(!Global.gameOver){
+			new Thread(new Runnable(){
+	    		public void run(){
+	    			try {
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=END&type=GIVEUP", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid);
+	    				URL url = new URL(lobbyUrl);
+	    				SAXParserFactory spf = SAXParserFactory.newInstance();
+	    	            SAXParser parser = spf.newSAXParser();
+	    	            XMLReader reader = parser.getXMLReader();
+	    	            XMLHandler xmlHandler = new XMLHandler();
+	    	            reader.setContentHandler(xmlHandler);
+	    	            reader.parse(new InputSource(url.openStream()));
+	    	            
+	    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+	    	        	if(!parsedDataset.error){
+	    	        	}
+	    	        	else{
+	    	        		System.out.println(parsedDataset.getErrorMessage());
+	    	        	}
+	    			} catch (MalformedURLException e) {
+	    				e.printStackTrace();
+	    			} catch (ParserConfigurationException e) {
+	    				e.printStackTrace();
+	    			} catch (SAXException e) {
+	    				e.printStackTrace();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+	    	}).start();
+		}
+		new Thread(new Runnable(){
+    		public void run(){
+    			try {
+    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=RESTART", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid);
+    				URL url = new URL(lobbyUrl);
+    				SAXParserFactory spf = SAXParserFactory.newInstance();
+    	            SAXParser parser = spf.newSAXParser();
+    	            XMLReader reader = parser.getXMLReader();
+    	            XMLHandler xmlHandler = new XMLHandler();
+    	            reader.setContentHandler(xmlHandler);
+    	            reader.parse(new InputSource(url.openStream()));
+    	            
+    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+    	        	if(!parsedDataset.error){
+    	        	}
+    	        	else{
+    	        		System.out.println(parsedDataset.getErrorMessage());
+    	        	}
+    			} catch (MalformedURLException e) {
+    				e.printStackTrace();
+    			} catch (ParserConfigurationException e) {
+    				e.printStackTrace();
+    			} catch (SAXException e) {
+    				e.printStackTrace();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}).start();
+		return true;
 	}
 
 	@Override
 	public void quit() {
+		if(!Global.gameOver){
+			new Thread(new Runnable(){
+	    		public void run(){
+	    			try {
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=END&type=GIVEUP", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid);
+	    				URL url = new URL(lobbyUrl);
+	    				SAXParserFactory spf = SAXParserFactory.newInstance();
+	    	            SAXParser parser = spf.newSAXParser();
+	    	            XMLReader reader = parser.getXMLReader();
+	    	            XMLHandler xmlHandler = new XMLHandler();
+	    	            reader.setContentHandler(xmlHandler);
+	    	            reader.parse(new InputSource(url.openStream()));
+	    	            
+	    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+	    	        	if(!parsedDataset.error){
+	    	        	}
+	    	        	else{
+	    	        		System.out.println(parsedDataset.getErrorMessage());
+	    	        	}
+	    			} catch (MalformedURLException e) {
+	    				e.printStackTrace();
+	    			} catch (ParserConfigurationException e) {
+	    				e.printStackTrace();
+	    			} catch (SAXException e) {
+	    				e.printStackTrace();
+	    			} catch (IOException e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+	    	}).start();
+		}
 		listener.stop();
 	}
 

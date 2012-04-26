@@ -93,6 +93,7 @@ public class ParsedDataset {
     private Point move;
     public boolean undoRequested = false;
     public boolean undoAccepted = false;
+    public boolean restart = false;
     
     //Errors
     public boolean error = false;

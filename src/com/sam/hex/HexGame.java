@@ -412,7 +412,11 @@ public class HexGame extends Activity {
     	if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
 		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1);
 		else if(Global.player1Type==(byte) 2) Global.player1=new LocalPlayerObject((byte)1);
-		else if(Global.player1Type==(byte) 3) Global.player1=new NetPlayerObject((byte)1);
+		else if(Global.player1Type==(byte) 3) Global.player1=new NetPlayerObject((byte)1, new Handler(), new Runnable(){
+			public void run(){
+				initializeNewGame();
+			}
+		});
 		else if(Global.player1Type==(byte) 4) Global.player1=new BeeGameAI(1);
     }
     
@@ -420,7 +424,11 @@ public class HexGame extends Activity {
 		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
 		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2);
 		else if(Global.player2Type==(byte) 2) Global.player2=new LocalPlayerObject((byte)2);
-		else if(Global.player2Type==(byte) 3) Global.player2=new NetPlayerObject((byte)2);
+		else if(Global.player2Type==(byte) 3) Global.player2=new NetPlayerObject((byte)2, new Handler(), new Runnable(){
+			public void run(){
+				initializeNewGame();
+			}
+		});
 		else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(2);
     }
     

@@ -142,6 +142,11 @@ public class XMLHandler extends DefaultHandler{
     				else if(atts.getValue("type").equals("UNDODONE")){
     					parsedDataset.undoAccepted=true;
     				}
+    				
+    				//New game
+    				else if(atts.getValue("type").equals("RESTART")){
+    					parsedDataset.restart=true;
+    				}
     			}
     		}
     	}

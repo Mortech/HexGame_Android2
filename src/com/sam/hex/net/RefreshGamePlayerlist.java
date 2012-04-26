@@ -61,7 +61,7 @@ public class RefreshGamePlayerlist implements Runnable{
 			}
 			
 			try {
-				Thread.sleep(6000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
