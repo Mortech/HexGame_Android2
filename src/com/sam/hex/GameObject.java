@@ -15,7 +15,6 @@ public class GameObject implements Runnable {
 	public int gridSize;
 	public boolean swap;
 	public Timer timer;
-	public int totalTimerTime;
 	public RegularPolygonGameObject[][] gamePiece;
 
 	public GameObject() {
@@ -36,7 +35,7 @@ public class GameObject implements Runnable {
 		});
 		gameOver=false;
 		game=true;
-		if(totalTimerTime!=0) timer.start();
+		timer.start();
 		gameThread = new Thread(this, "runningGame");
 		gameThread.start();
 	}
@@ -44,7 +43,7 @@ public class GameObject implements Runnable {
 	public void stop(){
 		game=false;
 		gameOver=true;
-		if(totalTimerTime!=0) timer.stop();
+		timer.stop();
 		player1.quit();
 		player2.quit();
 	}
@@ -54,6 +53,10 @@ public class GameObject implements Runnable {
 			if(!checkForWinner()){
 				moveStart = System.currentTimeMillis();
 				GameAction.getPlayer(currentPlayer).getPlayerTurn();
+				if(timer.type==1){
+					timer.startTime = System.currentTimeMillis();
+					GameAction.getPlayer(currentPlayer).setTime(timer.totalTime);
+				}
 			}
 			
 			currentPlayer=(currentPlayer%2)+1;

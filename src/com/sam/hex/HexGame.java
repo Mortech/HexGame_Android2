@@ -111,7 +111,7 @@ public class HexGame extends Activity {
         Global.player2Icon = (ImageButton) this.findViewById(R.id.p2);
         
         Global.timerText = (TextView) this.findViewById(R.id.timer);
-        if(Global.game.totalTimerTime==0 || Global.game.gameOver){
+        if(Global.game.timer.type==0 || Global.game.gameOver){
         	Global.timerText.setVisibility(View.GONE);
         } 
         Global.winnerText = (TextView) this.findViewById(R.id.winner);
@@ -157,7 +157,6 @@ public class HexGame extends Activity {
     	
     	//Set defaults
     	Global.gameLocation = Integer.parseInt(prefs.getString("gameLocation", "0"));
-    	Global.game.totalTimerTime = Integer.parseInt(prefs.getString("timerPref", "0"));
     	Global.game.swap = prefs.getBoolean("swapPref", true);
     	replayRunning=false;
     	
@@ -167,8 +166,7 @@ public class HexGame extends Activity {
     	setPlayer2();
     	setNames(prefs);
     	setColors(prefs);
-    	Global.game.player1.setTime(Global.game.totalTimerTime*60*1000);
-    	Global.game.player2.setTime(Global.game.totalTimerTime*60*1000);
+	    Global.game.timer = new Timer(new Handler(), Global.game, Integer.parseInt(prefs.getString("timerPref", "0")),Integer.parseInt(prefs.getString("timerTypePref", "0")));
     	
     	//Create our board
     	setGrid(prefs);
@@ -176,7 +174,6 @@ public class HexGame extends Activity {
 	    applyBoard();
     	
         //Create the game object
-	    if(Global.game.totalTimerTime!=0) Global.game.timer = new Timer(new Handler());
 	    Global.game.start();
     }
     
@@ -270,7 +267,7 @@ public class HexGame extends Activity {
     	super.onPause();
     	
     	//If the board's empty, just trigger "startNewGame"
-    	if(Global.game.moveNumber==1 && Global.gameLocation==0 && Global.game.totalTimerTime==0) HexGame.startNewGame=true;
+    	if(Global.game.moveNumber==1 && Global.gameLocation==0 && Global.game.timer.type==0) HexGame.startNewGame=true;
     }
     
     public static void stopGame(){
@@ -464,7 +461,7 @@ public class HexGame extends Activity {
     				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
     	    		|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type 
-    	    	    || Integer.decode(prefs.getString("timerPref", "0")) != Global.game.totalTimerTime;
+    	    	    || Integer.decode(prefs.getString("timerTypePref", "0")) != Global.game.timer.type;
     	}
     	if(Global.gameLocation==1){
     		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation

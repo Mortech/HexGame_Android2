@@ -30,7 +30,7 @@ public class Replay implements Runnable {
 		Global.game.start();
 		handler.post(new Runnable(){
 			public void run() {
-				if(Global.game.totalTimerTime!=0) Global.timerText.setVisibility(View.VISIBLE);
+				if(Global.game.timer.type!=0) Global.timerText.setVisibility(View.VISIBLE);
 //				Global.replayButtons.setVisibility(View.GONE);
 			}
 		});

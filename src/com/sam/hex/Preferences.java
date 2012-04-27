@@ -1,11 +1,11 @@
 package com.sam.hex;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -15,24 +15,26 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.text.InputType;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class Preferences extends PreferenceActivity {
 	SharedPreferences settings;
+	PreferenceScreen screen;
 	Preference p1Pref;
 	Preference p2Pref;
 	Preference lanPlPref;
 	Preference resetPref;
-	EditTextPreference customGridPref;
-	PreferenceScreen screen;
-	PreferenceCategory general;
 	Preference gridPref;
-	Preference replayPref;
-	Preference loadReplayPref;
+	Preference timerPref;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,47 @@ public class Preferences extends PreferenceActivity {
 		}
     }
     
+    class timerListener implements OnPreferenceClickListener{        
+        @Override
+        public boolean onPreferenceClick(Preference pref) {
+        	LayoutInflater inflater = (LayoutInflater) Preferences.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+        	View dialoglayout = inflater.inflate(R.layout.preferences_timer, null);
+        	final Spinner timerType = (Spinner) dialoglayout.findViewById(R.id.timerType);
+        	final EditText timer = (EditText) dialoglayout.findViewById(R.id.timer);
+        	timer.setText(settings.getString("timerPref", "0"));
+        	timerType.setSelection(Integer.parseInt(settings.getString("timerTypePref", "0")));
+        	timerType.setOnItemSelectedListener(new OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> adapterView, View view, int arg2, long arg3) {
+					if(arg2>0){
+						timer.setVisibility(View.VISIBLE);
+					}
+					else{
+						timer.setVisibility(View.GONE);
+					}
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					timer.setVisibility(View.GONE);
+				}
+			});
+        	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Preferences.this, android.R.style.Theme_Light));
+            builder
+            .setView(dialoglayout)
+            .setPositiveButton(getApplicationContext().getString(R.string.okay), new OnClickListener(){
+        		@Override
+        		public void onClick(DialogInterface dialog, int which) {
+        			settings.edit().putString("timerTypePref", getResources().getStringArray(R.array.timerTypeValues)[timerType.getSelectedItemPosition()]).commit();
+        			settings.edit().putString("timerPref", timer.getText().toString()).commit();
+        		}
+            })
+            .setNegativeButton(getApplicationContext().getString(R.string.cancel), null)
+            .show();
+            return true;
+        }
+    }
+    
     @Override
     public void onResume(){
     	super.onResume();
@@ -130,6 +173,11 @@ public class Preferences extends PreferenceActivity {
         	else gridPref.setSummary(GameAction.insert(getApplicationContext().getString(R.string.gameSizeSummary_onChange), settings.getString("gameSizePref", "7")));
         	gridPref.setOnPreferenceChangeListener(new gridListener());
         }
+        
+        timerPref = findPreference("timerOptionsPref");
+        if(timerPref!=null){
+	        timerPref.setOnPreferenceClickListener(new timerListener());
+        }
     }
     
     private void loadPreferences(){
@@ -142,10 +190,22 @@ public class Preferences extends PreferenceActivity {
         	addPreferencesFromResource(R.layout.preferences_general);
         	addPreferencesFromResource(R.layout.preferences_player1);
     		addPreferencesFromResource(R.layout.preferences_player2);
+    		
+    		//Hide custom grid size preference
+        	PreferenceCategory general = (PreferenceCategory) findPreference("generalCategory");
+            general.removePreference(findPreference("customGameSizePref"));
+            general.removePreference(findPreference("timerTypePref"));
+            general.removePreference(findPreference("timerPref"));
     	}
         else if(val.getValue().equals("1")){
         	addPreferencesFromResource(R.layout.preferences_general);
         	addPreferencesFromResource(R.layout.preferences_lanplayer);
+
+    		//Hide custom grid size preference
+        	PreferenceCategory general = (PreferenceCategory) findPreference("generalCategory");
+            general.removePreference(findPreference("customGameSizePref"));
+            general.removePreference(findPreference("timerTypePref"));
+            general.removePreference(findPreference("timerPref"));
         }
         else if(val.getValue().equals("2")){
             title.setText(this.getText(R.string.preferences_net));
@@ -153,11 +213,7 @@ public class Preferences extends PreferenceActivity {
         }
     	addPreferencesFromResource(R.layout.preferences_reset);
     	
-    	//Hide custom grid size preference
-        customGridPref = (EditTextPreference) findPreference("customGameSizePref");
-        general = (PreferenceCategory) findPreference("generalCategory");
         screen = (PreferenceScreen) findPreference("preferences");
-        if(customGridPref!=null) general.removePreference(customGridPref);
         
         Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +233,7 @@ public class Preferences extends PreferenceActivity {
     private void showInputDialog(String message){
         final EditText editText = new EditText(this);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Preferences.this, android.R.style.Theme_Light));
         builder     
         .setTitle(message)
         .setView(editText)

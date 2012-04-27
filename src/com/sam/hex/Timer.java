@@ -5,26 +5,35 @@ import android.view.View;
 
 public class Timer implements Runnable{
 	private boolean game = true;
-	private long startTime;
+	public long startTime;
 	private long elapsedTime;
 	private Handler handler;
+	public int type;
+	public long totalTime;
+	private GameObject gameObject;
 	
-	public Timer(Handler handler){
+	public Timer(Handler handler, GameObject gameObject, long totalTime, int type){
 		this.handler = handler;
+		this.gameObject = gameObject;
+		this.totalTime = totalTime*60*1000;
+		this.type = type;
 		startTime = System.currentTimeMillis();
-		new Thread(this).start();
+		gameObject.player1.setTime(this.totalTime);
+		gameObject.player2.setTime(this.totalTime);
+		
+		start();
 	}
 	
 	public void start(){
 		game=true;
-		if(Global.game.totalTimerTime!=0){
+		if(type!=0){
 			handler.post(new Runnable(){
 				public void run(){
 					Global.timerText.setVisibility(View.VISIBLE);
 				}
 			});
+			new Thread(this).start();
 		}
-		new Thread(this).start();
 	}
 	
 	public void stop(){
@@ -34,12 +43,12 @@ public class Timer implements Runnable{
 	public void run(){
 		while(game){
 			elapsedTime = System.currentTimeMillis()-startTime;
-			if(Global.game.currentPlayer==1 && !Global.game.gameOver){
-				Global.game.player1.setTime(Global.game.totalTimerTime*60*1000-elapsedTime+Global.game.totalTimerTime*60*1000-Global.game.player2.getTime());
-				if(Global.game.player1.getTime()>0){
+			if(gameObject.currentPlayer==1 && !gameObject.gameOver){
+				gameObject.player1.setTime(totalTime-elapsedTime+totalTime-gameObject.player2.getTime());
+				if(gameObject.player1.getTime()>0){
 					handler.post(new Runnable(){
 						public void run(){
-							long millis = Global.game.player1.getTime();
+							long millis = gameObject.player1.getTime();
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
@@ -49,15 +58,15 @@ public class Timer implements Runnable{
 					});
 				}
 				else{
-					Global.game.player1.endMove();
+					gameObject.player1.endMove();
 				}
 			}
-			else if(Global.game.currentPlayer==2 && !Global.game.gameOver){
-				Global.game.player2.setTime(Global.game.totalTimerTime*60*1000-elapsedTime+Global.game.totalTimerTime*60*1000-Global.game.player1.getTime());
-				if(Global.game.player2.getTime()>0){
+			else if(gameObject.currentPlayer==2 && !gameObject.gameOver){
+				gameObject.player2.setTime(totalTime-elapsedTime+totalTime-gameObject.player1.getTime());
+				if(gameObject.player2.getTime()>0){
 					handler.post(new Runnable(){
 						public void run(){
-							long millis = Global.game.player2.getTime();
+							long millis = gameObject.player2.getTime();
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
@@ -67,7 +76,7 @@ public class Timer implements Runnable{
 					});
 				}
 				else{
-					Global.game.player2.endMove();
+					gameObject.player2.endMove();
 				}
 			}
 			else{
@@ -79,7 +88,7 @@ public class Timer implements Runnable{
 			}
 			
 			try {
-				Thread.sleep(80);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
