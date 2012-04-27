@@ -111,9 +111,12 @@ public class HexGame extends Activity {
         Global.player2Icon = (ImageButton) this.findViewById(R.id.p2);
         
         Global.timerText = (TextView) this.findViewById(R.id.timer);
-        if(Global.totalTimerTime==0){
+        if(Global.totalTimerTime==0 || Global.gameOver){
         	Global.timerText.setVisibility(View.GONE);
-        }
+        } 
+        Global.winnerText = (TextView) this.findViewById(R.id.winner);
+        if(Global.gameOver) Global.winnerText.setText(Global.winnerMsg);
+        GameAction.handler = new Handler();
 
         Global.replayForward = (ImageButton) this.findViewById(R.id.replayForward);
         Global.replayPlayPause = (ImageButton) this.findViewById(R.id.replayPlayPause);

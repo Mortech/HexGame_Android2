@@ -43,7 +43,7 @@ public class Timer implements Runnable{
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
-							Global.timerText.setText(GameAction.InsertName.insert(Global.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
+							Global.timerText.setText(GameAction.insert(Global.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
 							Global.timerText.invalidate();
 						}
 					});
@@ -61,7 +61,7 @@ public class Timer implements Runnable{
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
-							Global.timerText.setText(GameAction.InsertName.insert(Global.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
+							Global.timerText.setText(GameAction.insert(Global.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
 							Global.timerText.invalidate();
 						}
 					});

@@ -85,20 +85,8 @@ public class RegistrationActivity extends Activity {
 				            	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
 				            	finish();
 			            	}
-			            	else if(parsedDataset.getErrorMessage().equals("DUPLICATE_NICK")){
-			            		
-			            	}
-			            	else if(parsedDataset.getErrorMessage().equals("DUPLICATE_EMAIL")){
-			            		
-			            	}
-			            	else if(parsedDataset.getErrorMessage().equals("NICK_TOO_LONG") || parsedDataset.getErrorMessage().equals("NICK_INVALID_SYMBOLS") || parsedDataset.getErrorMessage().equals("NICK_NO_ENG_LETTERS")){
-			            		
-			            	}
-			            	else if(parsedDataset.getErrorMessage().equals("INVALID_EMAIL")){
-			            		
-			            	}
-			            	else if(parsedDataset.getErrorMessage().equals("INVALID_BIRTH_DATE")){
-			            		
+			            	else{
+			                	new AlertDialog.Builder(new ContextThemeWrapper(RegistrationActivity.this, android.R.style.Theme_Light)).setMessage(parsedDataset.getErrorMessage()).setNeutralButton(RegistrationActivity.this.getString(R.string.okay), null).show();
 			            	}
 						} catch (MalformedURLException e) {
 							e.printStackTrace();

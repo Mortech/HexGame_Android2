@@ -43,16 +43,14 @@ public class BoardView extends View{
 				mDrawable[xc][yc].getPaint().setColor(Global.gamePiece[xc][yc].getColor());
 				mDrawable[xc][yc].draw(canvas);
 			}
+		Global.player1Icon.setColorFilter(Global.player1.getColor());
+		Global.player2Icon.setColorFilter(Global.player2.getColor());
 		if(Global.currentPlayer==1 && !Global.gameOver){
-			Global.player1Icon.setColorFilter(Global.player1.getColor());
 			Global.player1Icon.setAlpha(255);
-			Global.player2Icon.setColorFilter(Global.player2.getColor());
 			Global.player2Icon.setAlpha(80);
 		}
 		else if(Global.currentPlayer==2 && !Global.gameOver){
-			Global.player1Icon.setColorFilter(Global.player1.getColor());
 			Global.player1Icon.setAlpha(80);
-			Global.player2Icon.setColorFilter(Global.player2.getColor());
 			Global.player2Icon.setAlpha(255);
 		}
 		else{

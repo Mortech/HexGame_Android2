@@ -251,7 +251,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(GameAction.InsertName.insert(getApplicationContext().getString(R.string.sendChallenge), player.playerName)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
+    	builder.setMessage(GameAction.insert(getApplicationContext().getString(R.string.sendChallenge), player.playerName)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
     }
     
     private void challengeRecieved(){
@@ -272,7 +272,7 @@ public class LocalLobbyActivity extends Activity {
     	};
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(GameAction.InsertName.insert(getApplicationContext().getString(R.string.challenger), LANGlobal.localPlayer.playerName)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
+    	builder.setMessage(GameAction.insert(getApplicationContext().getString(R.string.challenger), LANGlobal.localPlayer.playerName)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
     }
     
     private void updateResultsInUi(){
@@ -316,6 +316,6 @@ public class LocalLobbyActivity extends Activity {
     	};
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(GameAction.InsertName.insert(getApplicationContext().getString(R.string.yourIP), LANGlobal.LANipAddress)).setView(editText).setPositiveButton(getApplicationContext().getString(R.string.enter), dialogClickListener).show();
+    	builder.setMessage(GameAction.insert(getApplicationContext().getString(R.string.yourIP), LANGlobal.LANipAddress)).setView(editText).setPositiveButton(getApplicationContext().getString(R.string.enter), dialogClickListener).show();
     }
 }

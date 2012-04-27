@@ -14,6 +14,8 @@ public class Global {
 	public static int gameLocation = 0;
 	public static int totalTimerTime = 0;
 	public static TextView timerText;
+	public static TextView winnerText;
+	public static String winnerMsg;
 	public static ImageButton replayForward;
 	public static ImageButton replayPlayPause;
 	public static ImageButton replayBack;

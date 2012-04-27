@@ -1,5 +1,7 @@
 package com.sam.hex;
 
+import android.view.View;
+
 public class GameObject implements Runnable {
 	private boolean game=true;
 	private boolean threadAlive=true;
@@ -12,6 +14,11 @@ public class GameObject implements Runnable {
 	}
 	
 	public void start(){
+		if(Global.gameOver) GameAction.handler.post(new Runnable(){
+			public void run(){
+				Global.winnerText.setVisibility(View.GONE);
+			}
+		});
 		Global.gameOver = false;
 		game=true;
 		if(Global.totalTimerTime!=0) Global.timer.start();

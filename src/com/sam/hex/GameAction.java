@@ -4,11 +4,11 @@ import com.sam.hex.lan.LANGlobal;
 
 import android.graphics.Point;
 import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
+import android.view.View;
 
 public class GameAction {
 	public static Point hex;
+	public static Handler handler;
 
 	public static synchronized boolean checkWinPlayer(int team) {
 		if(team==1){
@@ -224,30 +224,22 @@ public class GameAction {
 		Global.board.postInvalidate();
 	}
 	
-	public static class AnnounceWinner implements Runnable{
-		private static Handler handler;
-		int team;
-		public AnnounceWinner(int team){
-			this.team = team;
-			
-			new Thread(this).start();
-		}
-		
-		@Override
-		public void run(){
-			if(handler!=null) handler.getLooper().quit();
-			Looper.prepare();
-			handler = new Handler();
-			Toast.makeText(Global.board.getContext(), InsertName.insert(Global.board.getContext().getString(R.string.winner), getPlayer(team).getName()), Toast.LENGTH_SHORT).show();
-			Looper.loop();
+	public static class AnnounceWinner{
+		public AnnounceWinner(final int team){
+			GameAction.handler.post(new Runnable(){
+				public void run(){
+					Global.winnerMsg = insert(Global.board.getContext().getString(R.string.winner), getPlayer(team).getName());
+					Global.winnerText.setText(Global.winnerMsg);
+					Global.winnerText.setVisibility(View.VISIBLE);
+					Global.winnerText.invalidate();
+				}
+			});
 		}
 	}
 	
-	public static class InsertName{
-		public static String insert(String text, String name){
-			String inserted = text.replaceAll("#",name);
-			return inserted;
-		}
+	public static String insert(String text, String name){
+		String inserted = text.replaceAll("#",name);
+		return inserted;
 	}
 	
 	public static PlayingEntity getPlayer(int i){

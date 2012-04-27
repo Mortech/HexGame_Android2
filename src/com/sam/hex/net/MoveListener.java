@@ -49,7 +49,7 @@ public class MoveListener implements Runnable{
         			NetGlobal.hex = parsedDataset.getMove();
         			if(parsedDataset.undoRequested){
         				new DialogBox(Global.board.getContext(), 
-    	    					GameAction.InsertName.insert(Global.board.getContext().getString(R.string.LANUndo), NetGlobal.netPlayerName), 
+    	    					GameAction.insert(Global.board.getContext().getString(R.string.LANUndo), NetGlobal.netPlayerName), 
     	    					new DialogInterface.OnClickListener() {
     	    	    	    	    public void onClick(DialogInterface dialog, int which) {
     	    	    	    	        switch (which){
