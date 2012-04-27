@@ -56,7 +56,8 @@ public class GameAI implements PlayingEntity {
 		}
 	}
 	
-	public void getPlayerTurn() {//Without net play
+	@Override
+	public void getPlayerTurn() {
 		skipMove = false;
 		this.gameBoard=BoardTools.teamGrid();
 		AIHistoryObject state = new AIHistoryObject(pairs, n, m);
@@ -64,6 +65,7 @@ public class GameAI implements PlayingEntity {
 		makeMove();
 	}
 	
+	@Override
 	public void undoCalled(){
 		if(history.size()>0){
 			AIHistoryObject previousState = history.get(history.size()-1);
@@ -501,6 +503,10 @@ public class GameAI implements PlayingEntity {
 	@Override
 	public long getTime() {
 		return timeLeft;
+	}
+
+	@Override
+	public void setMove(Point hex) {
 	}
 	
 	/*  Bah, ignore this for now.

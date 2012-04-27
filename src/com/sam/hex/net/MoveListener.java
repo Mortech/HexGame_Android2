@@ -46,7 +46,7 @@ public class MoveListener implements Runnable{
 	            
 	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	        	if(!parsedDataset.error){
-        			NetGlobal.hex = parsedDataset.getMove();
+	        		GameAction.getPlayer(Global.game.currentPlayer).setMove(parsedDataset.getMove());
         			if(parsedDataset.undoRequested){
         				new DialogBox(Global.board.getContext(), 
     	    					GameAction.insert(Global.board.getContext().getString(R.string.LANUndo), NetGlobal.netPlayerName), 

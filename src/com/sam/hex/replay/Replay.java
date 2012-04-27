@@ -3,7 +3,6 @@ package com.sam.hex.replay;
 import android.os.Handler;
 import android.view.View;
 
-import com.sam.hex.GameAction;
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 
@@ -26,9 +25,7 @@ public class Replay implements Runnable {
 			}
 		});
 		Global.game.moveList.replay(time);
-		GameAction.checkedFlagReset();
 		Global.board.postInvalidate();
-		GameAction.hex=null;
 		HexGame.replayRunning = false;
 		Global.game.start();
 		handler.post(new Runnable(){

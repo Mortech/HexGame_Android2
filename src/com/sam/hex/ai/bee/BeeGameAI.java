@@ -831,6 +831,11 @@ public class BeeGameAI implements PlayingEntity
 	public long getTime() {
 		return timeLeft;
 	}
+
+
+	@Override
+	public void setMove(Point hex) {
+	}
 }
 
 

@@ -481,7 +481,6 @@ public class HexGame extends Activity {
     private Thread replayThread;
     private void replay(int time){
     	//Create our board
-    	GameAction.hex = null;
     	Global.game.gamePiece=new RegularPolygonGameObject[Global.game.gridSize][Global.game.gridSize];
     	applyBoard();
         

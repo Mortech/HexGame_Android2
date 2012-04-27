@@ -13,12 +13,11 @@ public class PlayerObject implements PlayingEntity {
 		this.team=i;//Set the player's team
 	}
 	
+	@Override
 	public void getPlayerTurn() {
-		GameAction.hex = null;
+		hex = null;
 		while (true) {
-			Point hex = GameAction.hex;
 			while (hex == null) {
-				hex = GameAction.hex;
 				try {
 					Thread.sleep(80);
 				} catch (InterruptedException e) {
@@ -26,23 +25,25 @@ public class PlayerObject implements PlayingEntity {
 				}
 			}
 			if (hex.equals(new Point(-1,-1))){
-				GameAction.hex = null;
+				hex = null;
 				break;
 			}
 			if (GameAction.makeMove(this, team, hex)) {
-				GameAction.hex = null;
+				hex = null;
 				break;
 			}
-			GameAction.hex = null;
+			hex = null;
 		}
 	}
 	
+	@Override
 	public void undoCalled(){
-		GameAction.hex = new Point(-1,-1);
+		hex = new Point(-1,-1);
 	}
-
+	
+	@Override
 	public void newgameCalled() {
-		GameAction.hex = new Point(-1,-1);
+		hex = new Point(-1,-1);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class PlayerObject implements PlayingEntity {
 
 	@Override
 	public void quit() {
-		GameAction.hex = new Point(-1,-1);
+		hex = new Point(-1,-1);
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public class PlayerObject implements PlayingEntity {
 
 	@Override
 	public void endMove() {
-		GameAction.hex = new Point(-1,-1);
+		hex = new Point(-1,-1);
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class PlayerObject implements PlayingEntity {
 		return timeLeft;
 	}
 
-//	@Override
+	@Override
 	public void setMove(Point hex) {
 		this.hex = hex;
 	}

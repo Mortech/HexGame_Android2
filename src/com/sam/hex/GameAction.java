@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.view.View;
 
 public class GameAction {
-	public static Point hex;
 	public static Handler handler;
 
 	public static synchronized boolean checkWinPlayer(int team) {
@@ -48,8 +47,7 @@ public class GameAction {
 	}
 	
 	public static void setPiece(Point p) {
-//		getPlayer(Global.game.currentPlayer).setMove(p);
-		hex = p;
+		getPlayer(Global.game.currentPlayer).setMove(p);
 	}
 	
 	private static void setTeam(byte t,int x,int y) {
@@ -101,12 +99,12 @@ public class GameAction {
 							Global.game.moveNumber--;
 						}
 						else{
-							GameAction.hex = new Point(-1,-1);
+							getPlayer(Global.game.currentPlayer).endMove();
 						}
 					}
 					else{
 						//Otherwise, cede the turn to the other player
-						GameAction.hex = new Point(-1,-1);
+						getPlayer(Global.game.currentPlayer).endMove();
 					}
 				}
 				else if(Global.game.currentPlayer==1 && !p1){
@@ -127,12 +125,12 @@ public class GameAction {
 							Global.game.moveNumber--;
 						}
 						else{
-							GameAction.hex = new Point(-1,-1);
+							getPlayer(Global.game.currentPlayer).endMove();
 						}
 					}
 					else{
 						//Otherwise, cede the turn to the other player
-						GameAction.hex = new Point(-1,-1);
+						getPlayer(Global.game.currentPlayer).endMove();
 					}
 				}
 				else if(Global.game.currentPlayer==2 && !p2){
@@ -157,13 +155,13 @@ public class GameAction {
 						}
 						else{//Second player requested the undo
 							//undo once, switch players
-							LANGlobal.hex = new Point(-1,-1);
+							GameAction.getPlayer(Global.game.currentPlayer).endMove();
 						}
 					}
 					else{//First player is local (not on the network)
 						if(LANGlobal.undoRequested){//Second player requested the undo
 							//undo once, switch players
-							GameAction.hex = new Point(-1,-1);
+							getPlayer(Global.game.currentPlayer).endMove();
 						}
 						else{//First player requested the undo
 							//undo twice, don't switch players
@@ -181,7 +179,7 @@ public class GameAction {
 					if(LANGlobal.localPlayer.firstMove){//Second player is local (not on the network)
 						if(LANGlobal.undoRequested){//First player requested the undo
 							//undo once, switch players
-							GameAction.hex = new Point(-1,-1);
+							getPlayer(Global.game.currentPlayer).endMove();
 						}
 						else{//Second player requested the undo
 							//undo twice, don't switch players
@@ -207,7 +205,7 @@ public class GameAction {
 						}
 						else{//First player requested the undo
 							//undo once, switch players
-							LANGlobal.hex = new Point(-1,-1);
+							GameAction.getPlayer(Global.game.currentPlayer).endMove();
 						}
 					}
 				}

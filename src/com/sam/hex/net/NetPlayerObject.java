@@ -26,6 +26,7 @@ public class NetPlayerObject implements PlayingEntity {
 	private long timeLeft;
 	private int team;
 	private MoveListener listener;
+	private Point hex;
 	
 	public NetPlayerObject(int team, Handler handler, Runnable newgame) {
 		this.team=team;//Set the player's team
@@ -66,27 +67,24 @@ public class NetPlayerObject implements PlayingEntity {
 	    	}).start();
 		}
 		
-		NetGlobal.hex = null;
-		looper: while (true) {
-			Point hex = NetGlobal.hex;
+		hex = null;
+		while (true) {
 			while (hex == null) {
-				hex = NetGlobal.hex;
 				try {
 					Thread.sleep(80);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(Global.game.gameOver) break looper;
 			}
 			if (hex.equals(new Point(-1,-1))){
-				NetGlobal.hex = null;
+				hex = null;
 				break;
 			}
 			else if (GameAction.makeMove(this, (byte) team, hex)) {
-				NetGlobal.hex = null;
+				hex = null;
 				break;
 			}
-			NetGlobal.hex = null;
+			hex = null;
 		}
 	}
 
@@ -96,7 +94,7 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void newgameCalled() {
-		GameAction.hex = new Point(-1,-1);
+		hex = new Point(-1,-1);
 	}
 
 	@Override
@@ -280,7 +278,7 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void endMove() {
-		NetGlobal.hex = new Point(-1,-1);
+		hex = new Point(-1,-1);
 	}
 
 	@Override
@@ -312,5 +310,10 @@ public class NetPlayerObject implements PlayingEntity {
 	@Override
 	public long getTime() {
 		return timeLeft;
+	}
+
+	@Override
+	public void setMove(Point hex) {
+		this.hex = hex;
 	}
 }

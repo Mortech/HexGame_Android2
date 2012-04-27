@@ -30,14 +30,4 @@ public class Global {
 	public static byte player2Type=0;//0 Human, 1 AI, 2 Local Human, 3 Internet Human, 4 AI;
 	final public static int player2DefaultColor=Color.RED;
 	public static ImageButton player2Icon;
-	
-//	public static void set(int gridSize, int windowHeight, int windowWidth) {
-//		if (gridSize > 0)
-//			Global.gridSize = gridSize;
-//		if (windowHeight > 10)
-//			Global.windowHeight = windowHeight;
-//		if (windowWidth > 10)
-//			Global.windowWidth = windowWidth;
-//		gamePiece = new RegularPolygonGameObject[gridSize][gridSize];
-//	}
 }

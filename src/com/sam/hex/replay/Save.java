@@ -15,7 +15,6 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import com.sam.hex.Global;
-import com.sam.hex.PlayerObject;
 import com.sam.hex.R;
 
 public class Save{
@@ -45,6 +44,8 @@ public class Save{
 				try {
 					ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
 					
+					outputStream.writeObject(Global.player1Type);
+					outputStream.writeObject(Global.player2Type);
 					outputStream.writeObject(Global.game.player1.getColor());
 					outputStream.writeObject(Global.game.player2.getColor());
 					outputStream.writeObject(Global.game.player1.getName());
@@ -52,18 +53,6 @@ public class Save{
 					outputStream.writeObject(Global.game.moveList);
 					outputStream.writeObject(Global.game.gridSize);
 					outputStream.writeObject(Global.game.moveNumber);
-//					if(Global.player1.supportsSave()){
-//						outputStream.writeObject(Global.player1);
-//					}
-//					else{
-//						outputStream.writeObject(new PlayerObject((byte)1));
-//					}
-//					if(Global.player2.supportsSave()){
-//						outputStream.writeObject(Global.player2);
-//					}
-//					else {
-//						outputStream.writeObject(new PlayerObject((byte)2));
-//					}
 					
 					outputStream.flush();
                     outputStream.close();

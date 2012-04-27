@@ -54,7 +54,7 @@ public class PlayerUnicastListener implements Runnable {
 	    		if(message.contains("Move: ")){
 	    			int x = Integer.decode(message.substring(6,message.indexOf(",")));
 					int y = Integer.decode(message.substring(message.indexOf(",")+1));
-					LANGlobal.hex = new Point(x,y);
+					GameAction.getPlayer(Global.game.currentPlayer).setMove(new Point(x,y));
 	    		}
 	    		else if(message.contains("I changed my color to ")){
 	    			//Full message looks like: I changed my color to _color_
@@ -185,32 +185,19 @@ public class PlayerUnicastListener implements Runnable {
 		else{
 			int turn = Global.game.currentPlayer;
 			if(turn==2){
-				if(LANGlobal.localPlayer.firstMove){
-					GameAction.hex = new Point(-1,-1);
-		    		while(turn == Global.game.currentPlayer){
-						try {
-							Thread.sleep(80);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+	    		GameAction.getPlayer(Global.game.currentPlayer).endMove();
+	    		while(turn == Global.game.currentPlayer){
+					try {
+						Thread.sleep(80);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
-		    	else{
-		    		LANGlobal.hex = new Point(-1,-1);
-		    		while(turn == Global.game.currentPlayer){
-						try {
-							Thread.sleep(80);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-		    	}
 			}
 			
 			//Make sure defaults are set
 	    	Global.game.moveList=new MoveList();
 	    	Global.game.currentPlayer = 1;
-	    	GameAction.hex = null;
 	    	Global.game.moveNumber = 1;
 	    	
 	    	//Clear the board
