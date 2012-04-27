@@ -99,7 +99,7 @@ public class GameAI implements PlayingEntity {
 		try {
 			for(int i=0;i<10;i++){
     			Thread.sleep(50);
-    			if(Global.gameOver) break;
+    			if(Global.game.gameOver) break;
     		}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -432,10 +432,10 @@ public class GameAI implements PlayingEntity {
 	@Override
 	public boolean supportsUndo() {
 		if(team==1){
-			return Global.player2 instanceof PlayerObject;
+			return Global.game.player2 instanceof PlayerObject;
 		}
 		else{
-			return Global.player1 instanceof PlayerObject;
+			return Global.game.player1 instanceof PlayerObject;
 		}
 	}
 

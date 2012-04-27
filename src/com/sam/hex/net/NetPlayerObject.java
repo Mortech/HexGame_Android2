@@ -34,11 +34,11 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void getPlayerTurn() {
-		if(Global.moveNumber>1 && !(GameAction.getPlayer(team%2+1) instanceof NetPlayerObject)){
+		if(Global.game.moveNumber>1 && !(GameAction.getPlayer(team%2+1) instanceof NetPlayerObject)){
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
-	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(GameAction.pointToString(new Point(Global.moveList.getmove().getX(),Global.moveList.getmove().getY())),"UTF-8"));
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(GameAction.pointToString(new Point(Global.game.moveList.getmove().getX(),Global.game.moveList.getmove().getY())),"UTF-8"));
 	    				URL url = new URL(lobbyUrl);
 	    				SAXParserFactory spf = SAXParserFactory.newInstance();
 	    	            SAXParser parser = spf.newSAXParser();
@@ -76,7 +76,7 @@ public class NetPlayerObject implements PlayingEntity {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(Global.gameOver) break looper;
+				if(Global.game.gameOver) break looper;
 			}
 			if (hex.equals(new Point(-1,-1))){
 				NetGlobal.hex = null;
@@ -104,7 +104,7 @@ public class NetPlayerObject implements PlayingEntity {
 		new Thread(new Runnable(){
     		public void run(){
     			try {
-    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ASK&move_ind=", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, (Global.moveNumber-1));
+    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ASK&move_ind=", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, (Global.game.moveNumber-1));
     				URL url = new URL(lobbyUrl);
     				SAXParserFactory spf = SAXParserFactory.newInstance();
     	            SAXParser parser = spf.newSAXParser();
@@ -135,7 +135,7 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public boolean supportsNewgame() {
-		if(!Global.gameOver){
+		if(!Global.game.gameOver){
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
@@ -200,7 +200,7 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void quit() {
-		if(!Global.gameOver){
+		if(!Global.game.gameOver){
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
@@ -240,11 +240,11 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void lose() {
-		if(Global.moveNumber>1 && !(GameAction.getPlayer(team%2+1) instanceof NetPlayerObject)){
+		if(Global.game.moveNumber>1 && !(GameAction.getPlayer(team%2+1) instanceof NetPlayerObject)){
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
-	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(GameAction.pointToString(new Point(Global.moveList.getmove().getX(),Global.moveList.getmove().getY())),"UTF-8"));
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(GameAction.pointToString(new Point(Global.game.moveList.getmove().getX(),Global.game.moveList.getmove().getY())),"UTF-8"));
 	    				URL url = new URL(lobbyUrl);
 	    				SAXParserFactory spf = SAXParserFactory.newInstance();
 	    	            SAXParser parser = spf.newSAXParser();

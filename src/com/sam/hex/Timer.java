@@ -17,7 +17,7 @@ public class Timer implements Runnable{
 	
 	public void start(){
 		game=true;
-		if(Global.totalTimerTime!=0){
+		if(Global.game.totalTimerTime!=0){
 			handler.post(new Runnable(){
 				public void run(){
 					Global.timerText.setVisibility(View.VISIBLE);
@@ -34,12 +34,12 @@ public class Timer implements Runnable{
 	public void run(){
 		while(game){
 			elapsedTime = System.currentTimeMillis()-startTime;
-			if(Global.currentPlayer==1 && !Global.gameOver){
-				Global.player1.setTime(Global.totalTimerTime*60*1000-elapsedTime+Global.totalTimerTime*60*1000-Global.player2.getTime());
-				if(Global.player1.getTime()>0){
+			if(Global.game.currentPlayer==1 && !Global.game.gameOver){
+				Global.game.player1.setTime(Global.game.totalTimerTime*60*1000-elapsedTime+Global.game.totalTimerTime*60*1000-Global.game.player2.getTime());
+				if(Global.game.player1.getTime()>0){
 					handler.post(new Runnable(){
 						public void run(){
-							long millis = Global.player1.getTime();
+							long millis = Global.game.player1.getTime();
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
@@ -49,15 +49,15 @@ public class Timer implements Runnable{
 					});
 				}
 				else{
-					Global.player1.endMove();
+					Global.game.player1.endMove();
 				}
 			}
-			else if(Global.currentPlayer==2 && !Global.gameOver){
-				Global.player2.setTime(Global.totalTimerTime*60*1000-elapsedTime+Global.totalTimerTime*60*1000-Global.player1.getTime());
-				if(Global.player2.getTime()>0){
+			else if(Global.game.currentPlayer==2 && !Global.game.gameOver){
+				Global.game.player2.setTime(Global.game.totalTimerTime*60*1000-elapsedTime+Global.game.totalTimerTime*60*1000-Global.game.player1.getTime());
+				if(Global.game.player2.getTime()>0){
 					handler.post(new Runnable(){
 						public void run(){
-							long millis = Global.player2.getTime();
+							long millis = Global.game.player2.getTime();
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
@@ -67,7 +67,7 @@ public class Timer implements Runnable{
 					});
 				}
 				else{
-					Global.player2.endMove();
+					Global.game.player2.endMove();
 				}
 			}
 			else{

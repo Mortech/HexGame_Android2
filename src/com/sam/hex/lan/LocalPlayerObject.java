@@ -19,11 +19,11 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 	
 	public void getPlayerTurn() {
-		if(Global.moveNumber>1){
+		if(Global.game.moveNumber>1){
 			//Three times for reliability (I've really got to switch to tcp)
-			new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		}
 		
 		LANGlobal.hex = null;
@@ -36,7 +36,7 @@ public class LocalPlayerObject implements PlayingEntity {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(Global.gameOver) break looper;
+				if(Global.game.gameOver) break looper;
 			}
 			if (hex.equals(new Point(-1,-1))){
 				LANGlobal.hex = null;
@@ -60,7 +60,7 @@ public class LocalPlayerObject implements PlayingEntity {
 	
 	public boolean supportsUndo() {
 		//If they're Red, Blue played first, and that's the only move played so far, no, you cannot undo.
-		if(!(Global.moveNumber==2 && LANGlobal.localPlayer.firstMove)) new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		if(!(Global.game.moveNumber==2 && LANGlobal.localPlayer.firstMove)) new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		
 		return false;
 	}
@@ -83,9 +83,9 @@ public class LocalPlayerObject implements PlayingEntity {
 	
 	@Override
 	public void lose() {
-		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		new LANMessage("Move: "+Global.moveList.getmove().getX()+","+Global.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	}
 
 	@Override

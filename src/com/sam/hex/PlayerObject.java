@@ -7,6 +7,7 @@ public class PlayerObject implements PlayingEntity {
 	private int color;
 	private long timeLeft;
 	private byte team;
+	private Point hex;
 	
 	public PlayerObject(byte i) {
 		this.team=i;//Set the player's team
@@ -14,7 +15,7 @@ public class PlayerObject implements PlayingEntity {
 	
 	public void getPlayerTurn() {
 		GameAction.hex = null;
-		looper: while (true) {
+		while (true) {
 			Point hex = GameAction.hex;
 			while (hex == null) {
 				hex = GameAction.hex;
@@ -23,7 +24,6 @@ public class PlayerObject implements PlayingEntity {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(Global.gameOver) break looper;
 			}
 			if (hex.equals(new Point(-1,-1))){
 				GameAction.hex = null;
@@ -106,5 +106,10 @@ public class PlayerObject implements PlayingEntity {
 	@Override
 	public long getTime() {
 		return timeLeft;
+	}
+
+//	@Override
+	public void setMove(Point hex) {
+		this.hex = hex;
 	}
 }

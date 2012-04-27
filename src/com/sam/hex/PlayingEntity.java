@@ -3,6 +3,8 @@
  */
 package com.sam.hex;
 
+import android.graphics.Point;
+
 /**
  * @author Sam Laane
  *
@@ -111,4 +113,9 @@ public interface PlayingEntity {
 	 * Returns the player's time left
 	 * */
 	public long getTime();
+	
+	/**
+	 * Store a point to play when its your turn
+	 * */
+//	public void setMove(Point hex);
 }

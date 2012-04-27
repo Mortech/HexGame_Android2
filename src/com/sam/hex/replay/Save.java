@@ -45,13 +45,13 @@ public class Save{
 				try {
 					ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
 					
-					outputStream.writeObject(Global.player1.getColor());
-					outputStream.writeObject(Global.player2.getColor());
-					outputStream.writeObject(Global.player1.getName());
-					outputStream.writeObject(Global.player2.getName());
-					outputStream.writeObject(Global.moveList);
-					outputStream.writeObject(Global.gridSize);
-					outputStream.writeObject(Global.moveNumber);
+					outputStream.writeObject(Global.game.player1.getColor());
+					outputStream.writeObject(Global.game.player2.getColor());
+					outputStream.writeObject(Global.game.player1.getName());
+					outputStream.writeObject(Global.game.player2.getName());
+					outputStream.writeObject(Global.game.moveList);
+					outputStream.writeObject(Global.game.gridSize);
+					outputStream.writeObject(Global.game.moveNumber);
 //					if(Global.player1.supportsSave()){
 //						outputStream.writeObject(Global.player1);
 //					}

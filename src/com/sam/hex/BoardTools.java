@@ -22,8 +22,8 @@ public class BoardTools {
 	
 	public static Bitmap getBackground(int w, int h) {
 		Bitmap background =Bitmap.createBitmap(Global.windowWidth, Global.windowHeight,Bitmap.Config.ARGB_8888); //the background is drawn to this bitmap. 
-		RegularPolygonGameObject[][] gamePeace = Global.gamePiece;
-		double radius = BoardTools.radiusCalculator(Global.windowWidth, Global.windowHeight,Global.gridSize);
+		RegularPolygonGameObject[][] gamePeace = Global.game.gamePiece;
+		double radius = BoardTools.radiusCalculator(Global.windowWidth, Global.windowHeight,Global.game.gridSize);
 		double hrad = radius * Math.sqrt(3) / 2; // Horizontal radius
 		int yOffset = (int) ((Global.windowHeight - ((3 * radius / 2)
 				* (gamePeace[0].length - 1) + 2 * radius)) / 2);
@@ -51,9 +51,9 @@ public class BoardTools {
 						+ (cY - cX * slope2)) { // if above line 1 == above line
 					// 2
 					// if((y+x)/(((double)h+(double)w))<.5==((double)h/(double)w>y/x)){
-					background.setPixel((int) x, (int) y, Global.player1.getColor());
+					background.setPixel((int) x, (int) y, Global.game.player1.getColor());
 				} else {
-					background.setPixel((int) x, (int) y, Global.player2.getColor());
+					background.setPixel((int) x, (int) y, Global.game.player2.getColor());
 				}
 				// (((h*w)-h)>y/x)
 			}
@@ -63,21 +63,21 @@ public class BoardTools {
 	}
 
 	public static byte[][] teamGrid() { //not yet in use but will be used to send netcode
-		byte[][] loyalty = new byte[Global.gridSize][Global.gridSize];
-		RegularPolygonGameObject[][] gamePeace = Global.gamePiece;
+		byte[][] loyalty = new byte[Global.game.gridSize][Global.game.gridSize];
+		RegularPolygonGameObject[][] gamePeace = Global.game.gamePiece;
 		for (int x = 0; x < gamePeace.length; x++)
 			for (int y = 0; y < gamePeace[0].length; y++)
 				loyalty[x][y] = gamePeace[x][y].getTeam();
 		return loyalty;
 	}
 	public static void clearBoard(){
-		for(RegularPolygonGameObject[] things:Global.gamePiece)
+		for(RegularPolygonGameObject[] things:Global.game.gamePiece)
 			for(RegularPolygonGameObject guy:things)
 				if(guy!=null)guy.setTeam((byte)0);
 	}
 	@SuppressWarnings("unused")
 	public static void setBoard(){
-		for(RegularPolygonGameObject[] things:Global.gamePiece)
+		for(RegularPolygonGameObject[] things:Global.game.gamePiece)
 			for(RegularPolygonGameObject guy:things)
 				guy= new RegularPolygonGameObject();
 	}

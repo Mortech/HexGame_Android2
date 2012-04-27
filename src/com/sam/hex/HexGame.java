@@ -111,11 +111,11 @@ public class HexGame extends Activity {
         Global.player2Icon = (ImageButton) this.findViewById(R.id.p2);
         
         Global.timerText = (TextView) this.findViewById(R.id.timer);
-        if(Global.totalTimerTime==0 || Global.gameOver){
+        if(Global.game.totalTimerTime==0 || Global.game.gameOver){
         	Global.timerText.setVisibility(View.GONE);
         } 
         Global.winnerText = (TextView) this.findViewById(R.id.winner);
-        if(Global.gameOver) Global.winnerText.setText(Global.winnerMsg);
+        if(Global.game.gameOver) Global.winnerText.setText(Global.winnerMsg);
         GameAction.handler = new Handler();
 
         Global.replayForward = (ImageButton) this.findViewById(R.id.replayForward);
@@ -130,9 +130,9 @@ public class HexGame extends Activity {
     		if(eventaction==MotionEvent.ACTION_UP){
     			int x = (int)event.getX();
 				int y = (int)event.getY();
-				for(int xc = 0; xc < Global.gamePiece.length; xc++){
-					for(int yc=0; yc<Global.gamePiece[0].length; yc++)
-						if(Global.gamePiece[xc][yc].contains(x, y)){
+				for(int xc = 0; xc < Global.game.gamePiece.length; xc++){
+					for(int yc=0; yc<Global.game.gamePiece[0].length; yc++)
+						if(Global.game.gamePiece[xc][yc].contains(x, y)){
 							if(Global.game!=null)GameAction.setPiece(new Point(xc,yc));
 							return false;
 						}
@@ -149,17 +149,17 @@ public class HexGame extends Activity {
     	//Stop the old game
     	stopGame();
     	
+    	//Create a new game object
+    	Global.game = new GameObject(); 
+    	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Set defaults
     	Global.gameLocation = Integer.parseInt(prefs.getString("gameLocation", "0"));
-    	Global.totalTimerTime = Integer.parseInt(prefs.getString("timerPref", "0"));
-    	Global.moveNumber = 1;
-    	Global.currentPlayer = 1;
-    	Global.moveList=new MoveList();
+    	Global.game.totalTimerTime = Integer.parseInt(prefs.getString("timerPref", "0"));
+    	Global.game.swap = prefs.getBoolean("swapPref", true);
     	replayRunning=false;
-    	Global.swap = prefs.getBoolean("swapPref", true);
     	
     	//Set players
     	setType(prefs);
@@ -167,17 +167,17 @@ public class HexGame extends Activity {
     	setPlayer2();
     	setNames(prefs);
     	setColors(prefs);
-    	Global.player1.setTime(Global.totalTimerTime*60*1000);
-    	Global.player2.setTime(Global.totalTimerTime*60*1000);
+    	Global.game.player1.setTime(Global.game.totalTimerTime*60*1000);
+    	Global.game.player2.setTime(Global.game.totalTimerTime*60*1000);
     	
     	//Create our board
     	setGrid(prefs);
-    	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
+    	Global.game.gamePiece=new RegularPolygonGameObject[Global.game.gridSize][Global.game.gridSize];
 	    applyBoard();
     	
         //Create the game object
-	    if(Global.totalTimerTime!=0) Global.timer = new Timer(new Handler());
-        Global.game = new GameObject(); 
+	    if(Global.game.totalTimerTime!=0) Global.game.timer = new Timer(new Handler());
+	    Global.game.start();
     }
     
     @Override
@@ -215,7 +215,7 @@ public class HexGame extends Activity {
     	else{//Apply minor changes without stopping the current game
     		setColors(prefs);
     		setNames(prefs);
-    		Global.moveList.replay(0);
+    		Global.game.moveList.replay(0);
     		GameAction.checkedFlagReset();
     		GameAction.checkWinPlayer(1);
     		GameAction.checkWinPlayer(2);
@@ -270,19 +270,17 @@ public class HexGame extends Activity {
     	super.onPause();
     	
     	//If the board's empty, just trigger "startNewGame"
-    	if(Global.moveNumber==1 && Global.gameLocation==0 && Global.totalTimerTime==0) HexGame.startNewGame=true;
+    	if(Global.game.moveNumber==1 && Global.gameLocation==0 && Global.game.totalTimerTime==0) HexGame.startNewGame=true;
     }
     
     public static void stopGame(){
-    	if(Global.gameThread!=null){
-    		Global.gameOver=true;
+    	if(Global.game!=null){
     		Global.game.stop();
     		try {
-				Global.gameThread.join();
+				Global.game.gameThread.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-	    	Global.gameOver=false;
     	}
     }
     
@@ -294,29 +292,29 @@ public class HexGame extends Activity {
     	if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
-    			Global.player1.setName(LANGlobal.localPlayer.playerName);
-        		Global.player2.setName(prefs.getString("lanPlayerName", "Player"));
+    			Global.game.player1.setName(LANGlobal.localPlayer.playerName);
+        		Global.game.player2.setName(prefs.getString("lanPlayerName", "Player"));
     		}
     		else{
-    			Global.player1.setName(prefs.getString("lanPlayerName", "Player"));
-        		Global.player2.setName(LANGlobal.localPlayer.playerName);
+    			Global.game.player1.setName(prefs.getString("lanPlayerName", "Player"));
+        		Global.game.player2.setName(LANGlobal.localPlayer.playerName);
     		}
     	}
     	else if(Global.gameLocation==2){
     		//Playing over the net
     		for(int i=0;i<NetGlobal.members.size();i++){
     			if(NetGlobal.members.get(i).place==1){
-    				Global.player1.setName(NetGlobal.members.get(i).name);
+    				Global.game.player1.setName(NetGlobal.members.get(i).name);
     			}
     			else if(NetGlobal.members.get(i).place==2){
-    				Global.player2.setName(NetGlobal.members.get(i).name);
+    				Global.game.player2.setName(NetGlobal.members.get(i).name);
     			}
     		}
     	}
     	else{
     		//Playing on the same phone
-    		Global.player1.setName(prefs.getString("player1Name", "Player1"));
-    		Global.player2.setName(prefs.getString("player2Name", "Player2"));
+    		Global.game.player1.setName(prefs.getString("player1Name", "Player1"));
+    		Global.game.player2.setName(prefs.getString("player2Name", "Player2"));
     	}
     }
     
@@ -328,48 +326,48 @@ public class HexGame extends Activity {
     	if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
-    			Global.player1.setColor(LANGlobal.localPlayer.playerColor);
-        		Global.player2.setColor(prefs.getInt("lanPlayerColor", Global.player1DefaultColor));
+    			Global.game.player1.setColor(LANGlobal.localPlayer.playerColor);
+        		Global.game.player2.setColor(prefs.getInt("lanPlayerColor", Global.player1DefaultColor));
     		}
     		else{
-    			Global.player1.setColor(prefs.getInt("lanPlayerColor", Global.player1DefaultColor));
-        		Global.player2.setColor(LANGlobal.localPlayer.playerColor);
+    			Global.game.player1.setColor(prefs.getInt("lanPlayerColor", Global.player1DefaultColor));
+        		Global.game.player2.setColor(LANGlobal.localPlayer.playerColor);
     		}
     	}
     	else if(Global.gameLocation==2){
     		//Playing on the net
-    		Global.player1.setColor(Global.player1DefaultColor);
-    		Global.player2.setColor(Global.player2DefaultColor);
+    		Global.game.player1.setColor(Global.player1DefaultColor);
+    		Global.game.player2.setColor(Global.player2DefaultColor);
     	}
     	else{
     		//Playing on the same phone
-    		Global.player1.setColor(prefs.getInt("player1Color", Global.player1DefaultColor));
-    		Global.player2.setColor(prefs.getInt("player2Color", Global.player2DefaultColor));
+    		Global.game.player1.setColor(prefs.getInt("player1Color", Global.player1DefaultColor));
+    		Global.game.player2.setColor(prefs.getInt("player2Color", Global.player2DefaultColor));
     	}
     }
     
     private void setGrid(SharedPreferences prefs){
     	if(Global.gameLocation==0){
     		//Playing on the same phone
-    		Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
-    		if(Global.gridSize==0) Global.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
+    		Global.game.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    		if(Global.game.gridSize==0) Global.game.gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
     	}
     	else if(Global.gameLocation==1){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
-    			Global.gridSize=LANGlobal.localPlayer.gridSize;
+    			Global.game.gridSize=LANGlobal.localPlayer.gridSize;
     		}
     		else{
-    			Global.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
+    			Global.game.gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
     		}
     	}
     	else if(Global.gameLocation==2){
     		//Playing over the net
-    		Global.gridSize = NetGlobal.gridSize;
+    		Global.game.gridSize = NetGlobal.gridSize;
     	}
     	
     	//We don't want 0x0 games
-    	if(Global.gridSize<=0) Global.gridSize=1;
+    	if(Global.game.gridSize<=0) Global.game.gridSize=1;
     }
     
     private void setType(SharedPreferences prefs){
@@ -412,36 +410,36 @@ public class HexGame extends Activity {
     }
     
     private void setPlayer1(){
-    	if(Global.player1Type==(byte) 0) Global.player1=new PlayerObject((byte)1);
-		else if(Global.player1Type==(byte) 1) Global.player1=new GameAI((byte)1);
-		else if(Global.player1Type==(byte) 2) Global.player1=new LocalPlayerObject((byte)1);
-		else if(Global.player1Type==(byte) 3) Global.player1=new NetPlayerObject((byte)1, new Handler(), new Runnable(){
+    	if(Global.player1Type==(byte) 0) Global.game.player1=new PlayerObject((byte)1);
+		else if(Global.player1Type==(byte) 1) Global.game.player1=new GameAI((byte)1);
+		else if(Global.player1Type==(byte) 2) Global.game.player1=new LocalPlayerObject((byte)1);
+		else if(Global.player1Type==(byte) 3) Global.game.player1=new NetPlayerObject((byte)1, new Handler(), new Runnable(){
 			public void run(){
 				initializeNewGame();
 			}
 		});
-		else if(Global.player1Type==(byte) 4) Global.player1=new BeeGameAI(1);
+		else if(Global.player1Type==(byte) 4) Global.game.player1=new BeeGameAI(1);
     }
     
     private void setPlayer2(){
-		if(Global.player2Type==(byte) 0) Global.player2=new PlayerObject((byte)2);
-		else if(Global.player2Type==(byte) 1) Global.player2=new GameAI((byte)2);
-		else if(Global.player2Type==(byte) 2) Global.player2=new LocalPlayerObject((byte)2);
-		else if(Global.player2Type==(byte) 3) Global.player2=new NetPlayerObject((byte)2, new Handler(), new Runnable(){
+		if(Global.player2Type==(byte) 0) Global.game.player2=new PlayerObject((byte)2);
+		else if(Global.player2Type==(byte) 1) Global.game.player2=new GameAI((byte)2);
+		else if(Global.player2Type==(byte) 2) Global.game.player2=new LocalPlayerObject((byte)2);
+		else if(Global.player2Type==(byte) 3) Global.game.player2=new NetPlayerObject((byte)2, new Handler(), new Runnable(){
 			public void run(){
 				initializeNewGame();
 			}
 		});
-		else if(Global.player2Type==(byte) 4) Global.player2=new BeeGameAI(2);
+		else if(Global.player2Type==(byte) 4) Global.game.player2=new BeeGameAI(2);
     }
     
     private void undo(){
-    	if(Global.player1.supportsUndo() && Global.player2.supportsUndo())
+    	if(Global.game.player1.supportsUndo() && Global.game.player2.supportsUndo())
 	    	GameAction.undo();
     }
     
     private void newGame(){
-    	if(Global.player1.supportsNewgame() && Global.player2.supportsNewgame()){
+    	if(Global.game.player1.supportsNewgame() && Global.game.player2.supportsNewgame()){
 			if(replayRunning){
 				replayRunning = false;
 				try {
@@ -459,6 +457,15 @@ public class HexGame extends Activity {
      * Returns true if a major setting was changed
      * */
     public static boolean somethingChanged(SharedPreferences prefs){
+    	if(Global.game==null) return true;
+    	if(Global.gameLocation==0){
+    		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
+    				|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
+    				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
+    	    		|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type 
+    	    	    || Integer.decode(prefs.getString("timerPref", "0")) != Global.game.totalTimerTime;
+    	}
     	if(Global.gameLocation==1){
     		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
         			|| !(Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) Global.player1Type || Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) Global.player2Type);
@@ -467,12 +474,7 @@ public class HexGame extends Activity {
     		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation;
     	}
     	else{
-    		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
-    				|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
-    				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
-    				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
-    	    		|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type 
-    	    	    || Integer.decode(prefs.getString("timerPref", "0")) != Global.totalTimerTime;
+    		return true;
     	}
     }
     
@@ -480,10 +482,10 @@ public class HexGame extends Activity {
     private void replay(int time){
     	//Create our board
     	GameAction.hex = null;
-    	Global.gamePiece=new RegularPolygonGameObject[Global.gridSize][Global.gridSize];
+    	Global.game.gamePiece=new RegularPolygonGameObject[Global.game.gridSize][Global.game.gridSize];
     	applyBoard();
         
-    	if(Global.moveNumber>1) Global.currentPlayer=(Global.currentPlayer%2)+1;
+    	if(Global.game.moveNumber>1) Global.game.currentPlayer=(Global.game.currentPlayer%2)+1;
 	    
     	replayRunning = true;
 		replayThread = new Thread(new Replay(time, new Handler()), "replay");

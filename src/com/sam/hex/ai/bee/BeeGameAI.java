@@ -38,7 +38,7 @@ public class BeeGameAI implements PlayingEntity
     {
 	    this.team = team;
 		// Creates the pieces array that stores the board inside Bee
-	    gridSize = Global.gridSize;
+	    gridSize = Global.game.gridSize;
 		pieces = new int [gridSize + 2] [gridSize + 2];
 		for (int i = 1 ; i < pieces.length - 1 ; i++)
 		{
@@ -74,11 +74,11 @@ public class BeeGameAI implements PlayingEntity
     	skipMove = false;
     	AIHistoryObject state = new AIHistoryObject(pieces, lookUpTable);
 		history.add(state);
-		int moveNumber = Global.moveNumber;
+		int moveNumber = Global.game.moveNumber;
     	
 	    Point lastMove;
 		try{
-			if(moveNumber>1) lastMove = new Point(gridSize-1-Global.moveList.getmove().getY(), Global.moveList.getmove().getX());
+			if(moveNumber>1) lastMove = new Point(gridSize-1-Global.game.moveList.getmove().getY(), Global.game.moveList.getmove().getX());
 			else lastMove=null;
 		}
 		catch(Exception e){
@@ -131,10 +131,10 @@ public class BeeGameAI implements PlayingEntity
 	@Override
 	public boolean supportsUndo() {
 		if(team==1){
-			return Global.player2 instanceof PlayerObject;
+			return Global.game.player2 instanceof PlayerObject;
 		}
 		else{
-			return Global.player1 instanceof PlayerObject;
+			return Global.game.player1 instanceof PlayerObject;
 		}
 	}
 

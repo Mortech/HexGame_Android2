@@ -46,9 +46,9 @@ public class RegularPolygonGameObject {
 	public void setTeam(byte t) {
 		teamNumber = t;
 		if (teamNumber == 1)
-			setColor(Global.player1.getColor());
+			setColor(Global.game.player1.getColor());
 		else if(teamNumber==2)
-			setColor(Global.player2.getColor());
+			setColor(Global.game.player2.getColor());
 		else
 			setColor(Color.WHITE);
 	}
@@ -187,7 +187,7 @@ public class RegularPolygonGameObject {
 			case dd:  y+=1; x-=1;break;
 			case ud:  y-=1; x+=1; break;
 			}
-			Global.gamePiece[x][y].setColor(Color.GREEN);
+			Global.game.gamePiece[x][y].setColor(Color.GREEN);
 			path=path.substring(2,path.length());
 		} System.out.println("done");
 	}

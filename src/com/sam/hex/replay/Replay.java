@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.view.View;
 
 import com.sam.hex.GameAction;
-import com.sam.hex.GameObject;
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 
@@ -22,20 +21,21 @@ public class Replay implements Runnable {
 		handler.post(new Runnable(){
 			public void run() {
 				Global.timerText.setVisibility(View.GONE);
+				Global.winnerText.setVisibility(View.GONE);
 //				Global.replayButtons.setVisibility(View.VISIBLE);
 			}
 		});
-		Global.moveList.replay(time);
+		Global.game.moveList.replay(time);
 		GameAction.checkedFlagReset();
 		Global.board.postInvalidate();
 		GameAction.hex=null;
 		HexGame.replayRunning = false;
+		Global.game.start();
 		handler.post(new Runnable(){
 			public void run() {
-				if(Global.totalTimerTime!=0) Global.timerText.setVisibility(View.VISIBLE);
+				if(Global.game.totalTimerTime!=0) Global.timerText.setVisibility(View.VISIBLE);
 //				Global.replayButtons.setVisibility(View.GONE);
 			}
 		});
-		Global.game = new GameObject();
 	}
 }

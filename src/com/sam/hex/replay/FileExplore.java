@@ -49,11 +49,16 @@ public class FileExplore extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		handle = new Handler();
-		loadFileList();
-		view = new ListView(this);
-		refreshView();
+		try {
+			loadFileList();
+			view = new ListView(this);
+			refreshView();
+			
+			setContentView(view);
+		} catch(NullPointerException e){
+			e.printStackTrace();
+		}
 		
-		setContentView(view);
 	}
 	
 	private void loadFileList() {
