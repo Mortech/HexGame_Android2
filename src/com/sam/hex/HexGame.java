@@ -461,7 +461,8 @@ public class HexGame extends Activity {
     				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
     	    		|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type 
-    	    	    || Integer.decode(prefs.getString("timerTypePref", "0")) != Global.game.timer.type;
+    	    	    || Integer.decode(prefs.getString("timerTypePref", "0")) != Global.game.timer.type
+    	    	    || Integer.decode(prefs.getString("timerPref", "0"))*60*1000 != Global.game.timer.totalTime;
     	}
     	if(Global.gameLocation==1){
     		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation

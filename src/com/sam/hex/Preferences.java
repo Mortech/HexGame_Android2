@@ -191,7 +191,7 @@ public class Preferences extends PreferenceActivity {
         	addPreferencesFromResource(R.layout.preferences_player1);
     		addPreferencesFromResource(R.layout.preferences_player2);
     		
-    		//Hide custom grid size preference
+    		//Hide hidden preferences
         	PreferenceCategory general = (PreferenceCategory) findPreference("generalCategory");
             general.removePreference(findPreference("customGameSizePref"));
             general.removePreference(findPreference("timerTypePref"));
@@ -201,7 +201,7 @@ public class Preferences extends PreferenceActivity {
         	addPreferencesFromResource(R.layout.preferences_general);
         	addPreferencesFromResource(R.layout.preferences_lanplayer);
 
-    		//Hide custom grid size preference
+        	//Hide hidden preferences
         	PreferenceCategory general = (PreferenceCategory) findPreference("generalCategory");
             general.removePreference(findPreference("customGameSizePref"));
             general.removePreference(findPreference("timerTypePref"));
@@ -210,6 +210,11 @@ public class Preferences extends PreferenceActivity {
         else if(val.getValue().equals("2")){
             title.setText(this.getText(R.string.preferences_net));
         	addPreferencesFromResource(R.layout.preferences_netplayer);
+        	
+        	//Hide hidden preferences
+        	PreferenceCategory general = (PreferenceCategory) findPreference("netPlayerCategory");
+            general.removePreference(findPreference("netPosition"));
+            general.removePreference(findPreference("netGridSize"));
         }
     	addPreferencesFromResource(R.layout.preferences_reset);
     	

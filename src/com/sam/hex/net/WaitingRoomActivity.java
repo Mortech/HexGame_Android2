@@ -289,10 +289,16 @@ public class WaitingRoomActivity extends Activity {
         ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, R.layout.spinner_text);
         gameSizeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         gameSize.setAdapter(gameSizeAdapter);
+        int pos = 0;
+        while(NetGlobal.gridSize!=getResources().getIntArray(R.array.netGameSizeValues)[pos]){
+        	pos++;
+        }
+        gameSize.setSelection(pos);
         final Spinner position = (Spinner)dialoglayout.findViewById(R.id.position);
         ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, R.layout.spinner_text);
         positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         position.setAdapter(positionAdapter);
+        position.setSelection(NetGlobal.place);
     	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
     	builder.setView(dialoglayout);
 		builder.setMessage(this.getText(R.string.createBoard));
@@ -307,8 +313,8 @@ public class WaitingRoomActivity extends Activity {
     	        		@Override
     	        		public void run() {
     	        			int previousGridSize = NetGlobal.gridSize;
-	    	        		NetGlobal.gridSize = Integer.parseInt(getResources().getStringArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()]);
-	    	        		NetGlobal.place = Integer.parseInt(getResources().getStringArray(R.array.netPositionValues)[position.getSelectedItemPosition()]);
+	    	        		NetGlobal.gridSize = getResources().getIntArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()];
+	    	        		NetGlobal.place = getResources().getIntArray(R.array.netPositionValues)[position.getSelectedItemPosition()];
 	    	        		try {
 	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize);
 	    	        			String placeUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=PLACE&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.place);

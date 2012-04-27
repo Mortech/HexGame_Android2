@@ -66,7 +66,7 @@
         <item>15x15</item>
         <item>19x19</item>
     </string-array>
-    <string-array name="netGameSizeValues">
+    <integer-array name="netGameSizeValues">
         <item>8</item>
         <item>9</item>
         <item>10</item>
@@ -76,17 +76,17 @@
         <item>14</item>
         <item>15</item>
         <item>19</item>
-    </string-array>
+    </integer-array>
     <string-array name="netPositionArray">
         <item>Spectator</item>
         <item>First Player</item>
         <item>Second Player</item>
     </string-array>
-    <string-array name="netPositionValues">
+    <integer-array name="netPositionValues">
         <item>0</item>
         <item>1</item>
         <item>2</item>
-    </string-array>
+    </integer-array>
     <string-array name="timerTypeArray">
         <item>No timer</item>
         <item>Per move</item>

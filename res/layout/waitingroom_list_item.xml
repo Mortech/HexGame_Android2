@@ -18,6 +18,5 @@
 	    android:paddingLeft="6dip"
 	    android:textColor="@color/black"
 	    android:background="@drawable/background_drawable"
-	    android:minHeight="?android:attr/listPreferredItemHeight"
-	/>
+	    android:minHeight="?android:attr/listPreferredItemHeight" />
 </LinearLayout>

@@ -292,16 +292,19 @@ public class NetLobbyActivity extends Activity {
     }
     
     private void createBoard(){
+    	final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(NetLobbyActivity.this);
     	LayoutInflater inflater = (LayoutInflater) NetLobbyActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
     	View dialoglayout = inflater.inflate(R.layout.netlobby_createboard, null);
     	final Spinner gameSize = (Spinner)dialoglayout.findViewById(R.id.gameSize);
         ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, R.layout.spinner_text);
         gameSizeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         gameSize.setAdapter(gameSizeAdapter);
+        gameSize.setSelection(Integer.parseInt(settings.getString("netGridSize", "0")));
         final Spinner position = (Spinner)dialoglayout.findViewById(R.id.position);
         ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, R.layout.spinner_text);
         positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         position.setAdapter(positionAdapter);
+        position.setSelection(Integer.parseInt(settings.getString("netPosition", "0")));
     	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
     	builder.setView(dialoglayout);
 		builder.setMessage(this.getText(R.string.createBoard));
@@ -315,8 +318,10 @@ public class NetLobbyActivity extends Activity {
     	        	new Thread(new Runnable(){
     	        		@Override
     	        		public void run() {
-	    	        		NetGlobal.gridSize = Integer.parseInt(getResources().getStringArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()]);
-	    	        		NetGlobal.place = Integer.parseInt(getResources().getStringArray(R.array.netPositionValues)[position.getSelectedItemPosition()]);
+	    	        		NetGlobal.gridSize = getResources().getIntArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()];
+	    	        		settings.edit().putString("netGridSize", gameSize.getSelectedItemPosition()+"").commit();
+	    	        		NetGlobal.place = getResources().getIntArray(R.array.netPositionValues)[position.getSelectedItemPosition()];
+			            	settings.edit().putString("netPosition", position.getSelectedItemPosition()+"").commit();
 	    	        		try {
 		    	        		String registrationUrl = String.format("http://www.iggamecenter.com/api_board_create.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&gid=%s&place=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.gid, NetGlobal.place);
 		    	        		URL url = new URL(registrationUrl);

@@ -15,5 +15,11 @@
 	            android:key="netPassword"
 	            android:defaultValue=""
 	            android:inputType="textPassword" />
+	        <EditTextPreference
+	            android:key="netPosition"
+	            android:defaultValue="0" />
+	        <EditTextPreference
+	            android:key="netGridSize"
+	            android:defaultValue="0" />
 	    </PreferenceCategory>
 </PreferenceScreen>

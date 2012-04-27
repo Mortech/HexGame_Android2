@@ -29,7 +29,6 @@
             android:entryValues="@array/timerTypeValues" />
         <EditTextPreference
             android:key="timerPref"
-            android:defaultValue="0" 
-            android:inputType="number"/>
+            android:defaultValue="0" />
     </PreferenceCategory>
 </PreferenceScreen>

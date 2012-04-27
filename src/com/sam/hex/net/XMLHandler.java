@@ -21,6 +21,8 @@ public class XMLHandler extends DefaultHandler{
     private boolean in_playerList = false;
     private boolean in_guestList = false;
     private boolean in_eventList = false;
+    private boolean in_gameOptions = false;
+    private boolean in_boardSize = false;
        
     private ParsedDataset parsedDataset = new ParsedDataset();
  
@@ -84,7 +86,6 @@ public class XMLHandler extends DefaultHandler{
     	else if(in_handlerData){
     		//Game status
     		if(localName.equals("sessionInfo")){
-    			System.out.println(atts.getValue("status"));
     			if(atts.getValue("status").equals("INIT")){
     				WaitingRoomActivity.gameActive = false;
     			}
@@ -149,6 +150,15 @@ public class XMLHandler extends DefaultHandler{
     				}
     			}
     		}
+    		//Changing board configurations
+			else if(localName.equals("gameOptions")){
+				this.in_gameOptions = true;
+			}
+			else if(in_gameOptions){
+				if(localName.equals("boardSize")){
+					this.in_boardSize = true;
+				}
+			}
     	}
     	//For creating a new game
     	else if(localName.equals("sessionInfo")){
@@ -210,6 +220,12 @@ public class XMLHandler extends DefaultHandler{
     	else if(localName.equals("eventList")){
     		this.in_eventList = false;
     	}
+    	else if(localName.equals("gameOptions")){
+    		this.in_gameOptions = false;
+    	}
+    	else if(localName.equals("boardSize")){
+    		this.in_boardSize = false;
+    	}
     }
        
     /** Gets be called on the following structure:
@@ -226,6 +242,13 @@ public class XMLHandler extends DefaultHandler{
 	    	else if(this.in_session_id){
 	    		parsedDataset.setSession_id(new String(ch, start, length));
 	    	}
+    	}
+    	else if(this.in_handlerData){
+    		if(this.in_gameOptions){
+    			if(this.in_boardSize){
+    				NetGlobal.gridSize = Integer.parseInt(new String(ch, start, length));
+    			}
+    		}
     	}
     	else if(this.in_sessionInfo){
     		if(this.in_sid) {

@@ -24,7 +24,7 @@
     	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:layout_weight="3"
+	    android:layout_weight="35"
     	android:isScrollContainer="true"
     	android:id="@+id/messageScroller">
 	        <TextView android:layout_width="fill_parent"
@@ -37,7 +37,7 @@
 	    </ScrollView>
 	    <ListView android:layout_width="fill_parent"
 	    	android:layout_height="fill_parent"
-	    	android:layout_weight="7"
+	    	android:layout_weight="65"
 	    	android:id="@+id/players"
         	android:entries="@array/availablePlayers"/>
     </LinearLayout>
