@@ -12,6 +12,7 @@
         android:layout_toRightOf="@id/home"
         android:text="@string/register"
         android:textColor="@color/white"
+        android:padding="5dp"
         android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 </RelativeLayout>

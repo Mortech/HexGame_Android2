@@ -3,9 +3,9 @@
     <!-- <item android:id="@+id/undo"
           android:title="@string/undo" />
     <item android:id="@+id/newgame"
-          android:title="@string/newgame" />
+          android:title="@string/newgame" /> -->
     <item android:id="@+id/settings"
-          android:title="@string/settings" /> -->
+          android:title="@string/settings" />
     <item android:id="@+id/replay"
           android:title="@string/replay" />
     <item android:id="@+id/loadReplay"

@@ -10,6 +10,12 @@
         style="@style/DashboardButton"
         android:text="@string/start"
         android:drawableTop="@drawable/start_drawable" />
+    
+    <Button
+        android:id="@+id/onlineButton"
+        style="@style/DashboardButton"
+        android:text="@string/online"
+        android:drawableTop="@drawable/online_drawable" />
     <Button
         android:id="@+id/instructionsButton"
         style="@style/DashboardButton"

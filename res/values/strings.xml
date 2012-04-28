@@ -57,8 +57,9 @@
     <!-- Buttons from top to bottom -->
     <string name="start">Start Game</string>
     <string name="resume">Resume Game</string>
+    <string name="online">Play Online</string>
     <string name="rules">How to Play</string>
-    <string name="options">Player Settings</string>
+    <string name="options">Settings</string>
     
     <!-- Menu choices -->
     <string name="undo">Undo</string>

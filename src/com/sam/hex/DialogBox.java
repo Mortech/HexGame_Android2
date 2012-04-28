@@ -12,7 +12,7 @@ public class DialogBox implements Runnable{
 	AlertDialog.Builder builder;
 	public Thread thread;
 	public DialogBox(Context context, String message, DialogInterface.OnClickListener clickListener, String positiveButtonText, String neutralButtonText, String negativeButtonText){
-		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Light));
+		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo_Light_NoActionBar));
 		builder.setMessage(message);
 		builder.setPositiveButton(positiveButtonText, clickListener);
 		builder.setNeutralButton(neutralButtonText, clickListener);
@@ -22,7 +22,7 @@ public class DialogBox implements Runnable{
 		thread.start();
 	}
 	public DialogBox(Context context, String message, DialogInterface.OnClickListener clickListener, String positiveButtonText, String neutralButtonText, String negativeButtonText, boolean cancelable){
-		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Light));
+		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo_Light_NoActionBar));
 		builder.setMessage(message);
 		builder.setPositiveButton(positiveButtonText, clickListener);
 		builder.setNeutralButton(neutralButtonText, clickListener);
@@ -33,7 +33,7 @@ public class DialogBox implements Runnable{
 		thread.start();
 	}
 	public DialogBox(Context context, String message, DialogInterface.OnClickListener clickListener, String positiveButtonText, String negativeButtonText){
-		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Light));
+		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo_Light_NoActionBar));
 		builder.setMessage(message);
 		builder.setPositiveButton(positiveButtonText, clickListener);
 		builder.setNegativeButton(negativeButtonText, clickListener);
@@ -42,7 +42,7 @@ public class DialogBox implements Runnable{
 		thread.start();
 	}
 	public DialogBox(Context context, String message, DialogInterface.OnClickListener clickListener, String positiveButtonText, String negativeButtonText, boolean cancelable){
-		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Light));
+		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo_Light_NoActionBar));
 		builder.setMessage(message);
 		builder.setPositiveButton(positiveButtonText, clickListener);
 		builder.setNegativeButton(negativeButtonText, clickListener);
@@ -52,7 +52,7 @@ public class DialogBox implements Runnable{
 		thread.start();
 	}
 	public DialogBox(Context context, String message, DialogInterface.OnClickListener clickListener, String neutralButtonText){
-		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Light));
+		builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo_Light_NoActionBar));
 		builder.setMessage(message);
 		builder.setNeutralButton(neutralButtonText, clickListener);
 		

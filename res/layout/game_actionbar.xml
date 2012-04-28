@@ -12,6 +12,7 @@
         android:layout_toRightOf="@id/home"
         android:text="@string/app_name"
         android:textColor="@color/white"
+        android:padding="5dp"
         android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
     <Button 
@@ -24,12 +25,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_toLeftOf="@id/quit"
-        android:id="@+id/settings"
-        android:background="@drawable/actionbar_settings"/>
-    <Button 
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_toLeftOf="@id/settings"
         android:id="@+id/newgame"
         android:background="@drawable/actionbar_newgame"/>
     <Button 

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,11 +23,10 @@ import android.graphics.Point;
 import com.sam.hex.ai.bee.BeeGameAI;
 import com.sam.hex.ai.will.GameAI;
 import com.sam.hex.lan.LANGlobal;
-import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.lan.LocalPlayerObject;
 import com.sam.hex.net.NetGlobal;
-import com.sam.hex.net.NetLobbyActivity;
 import com.sam.hex.net.NetPlayerObject;
+import com.sam.hex.net.WaitingRoomActivity;
 import com.sam.hex.replay.FileExplore;
 import com.sam.hex.replay.Replay;
 import com.sam.hex.replay.Save;
@@ -88,15 +86,8 @@ public class HexGame extends Activity {
             	    }
             	};
 
-            	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(HexGame.this, android.R.style.Theme_Light));
+            	AlertDialog.Builder builder = new AlertDialog.Builder(HexGame.this);
             	builder.setMessage(HexGame.this.getString(R.string.confirmNewgame)).setPositiveButton(HexGame.this.getString(R.string.yes), dialogClickListener).setNegativeButton(HexGame.this.getString(R.string.no), dialogClickListener).show();
-            }
-        });
-        
-        Button settings = (Button) findViewById(R.id.settings);
-        settings.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	startActivity(new Intent(getBaseContext(),Preferences.class));
             }
         });
         
@@ -156,7 +147,6 @@ public class HexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Set defaults
-    	Global.gameLocation = Integer.parseInt(prefs.getString("gameLocation", "0"));
     	Global.game.swap = prefs.getBoolean("swapPref", true);
     	replayRunning=false;
     	
@@ -166,7 +156,9 @@ public class HexGame extends Activity {
     	setPlayer2();
     	setNames(prefs);
     	setColors(prefs);
-	    Global.game.timer = new Timer(new Handler(), Global.game, Integer.parseInt(prefs.getString("timerPref", "0")),Integer.parseInt(prefs.getString("timerTypePref", "0")));
+    	int timerType = Integer.parseInt(prefs.getString("timerTypePref", "0"));
+    	if(Global.gameLocation!=0) timerType = 0;
+	    Global.game.timer = new Timer(new Handler(), Global.game, Integer.parseInt(prefs.getString("timerPref", "0")),timerType);
     	
     	//Create our board
     	setGrid(prefs);
@@ -191,20 +183,6 @@ public class HexGame extends Activity {
     	 else if(replay){
     		replay = false;
     		replay(800);
-    	}
-    	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 1){
-    		//Go to the local lobby
-    		Global.gameLocation = 1;
-    		startNewGame = true;
-        	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
-        	finish();
-    	}
-    	else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 2){
-    		//Go to the net lobby
-    		Global.gameLocation = 2;
-    		startNewGame = true;
-        	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
-        	finish();
     	}
     	else if(HexGame.startNewGame || somethingChanged(prefs)){
     		initializeNewGame();
@@ -456,8 +434,7 @@ public class HexGame extends Activity {
     public static boolean somethingChanged(SharedPreferences prefs){
     	if(Global.game==null) return true;
     	if(Global.gameLocation==0){
-    		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
-    				|| (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
+    		return (Integer.decode(prefs.getString("gameSizePref", "7")) != Global.game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
     				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != Global.game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) Global.player1Type 
     	    		|| Integer.decode(prefs.getString("player2Type", "0")) != (int) Global.player2Type 
@@ -465,11 +442,11 @@ public class HexGame extends Activity {
     	    	    || Integer.decode(prefs.getString("timerPref", "0"))*60*1000 != Global.game.timer.totalTime;
     	}
     	if(Global.gameLocation==1){
-    		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation
-        			|| !(Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) Global.player1Type || Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) Global.player2Type);
+    		return !(Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) Global.player1Type || Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) Global.player2Type);
     	}
     	else if(Global.gameLocation==2){
-    		return Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation;
+    		return (Global.game!=null && Global.game.gameOver)
+    				|| !WaitingRoomActivity.gameActive;
     	}
     	else{
     		return true;
@@ -506,7 +483,7 @@ public class HexGame extends Activity {
     	    }
     	};
 
-    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
     }
 }

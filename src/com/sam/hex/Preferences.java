@@ -15,7 +15,6 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.text.InputType;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -117,7 +116,7 @@ public class Preferences extends PreferenceActivity {
 					timer.setVisibility(View.GONE);
 				}
 			});
-        	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Preferences.this, android.R.style.Theme_Light));
+        	AlertDialog.Builder builder = new AlertDialog.Builder(Preferences.this);
             builder
             .setView(dialoglayout)
             .setPositiveButton(getApplicationContext().getString(R.string.okay), new OnClickListener(){
@@ -238,7 +237,7 @@ public class Preferences extends PreferenceActivity {
     private void showInputDialog(String message){
         final EditText editText = new EditText(this);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Preferences.this, android.R.style.Theme_Light));
+        AlertDialog.Builder builder = new AlertDialog.Builder(Preferences.this);
         builder     
         .setTitle(message)
         .setView(editText)

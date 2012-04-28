@@ -25,9 +25,20 @@ public class MoveListener implements Runnable{
 	private boolean listen = true;
 	private Handler handler;
 	private Runnable newgame;
-	public MoveListener(Handler handler, Runnable newgame){
+	private NetPlayerObject player;
+	private String server;
+	private int uid;
+	private String session_id;
+	private int sid;
+	private int lasteid;
+	public MoveListener(Handler handler, Runnable newgame, NetPlayerObject player, String server, int uid, String session_id, int sid){
 		this.handler = handler;
 		this.newgame = newgame;
+		this.player = player;
+		this.server = server;
+		this.uid = uid;
+		this.session_id = session_id;
+		this.sid = sid;
 		new Thread(this).start();
 	}
 
@@ -35,7 +46,7 @@ public class MoveListener implements Runnable{
 	public void run() {
 		while(listen){
 			try {
-				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&lasteid=%s", URLEncoder.encode(NetGlobal.server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.lasteid);
+				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&lasteid=%s", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
 				URL url = new URL(lobbyUrl);
 				SAXParserFactory spf = SAXParserFactory.newInstance();
 	            SAXParser parser = spf.newSAXParser();
@@ -46,10 +57,10 @@ public class MoveListener implements Runnable{
 	            
 	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	        	if(!parsedDataset.error){
-	        		GameAction.getPlayer(Global.game.currentPlayer).setMove(parsedDataset.getMove());
+	        		player.setMove(parsedDataset.getMove());
         			if(parsedDataset.undoRequested){
         				new DialogBox(Global.board.getContext(), 
-    	    					GameAction.insert(Global.board.getContext().getString(R.string.LANUndo), NetGlobal.netPlayerName), 
+    	    					GameAction.insert(Global.board.getContext().getString(R.string.LANUndo), player.getName()), 
     	    					new DialogInterface.OnClickListener() {
     	    	    	    	    public void onClick(DialogInterface dialog, int which) {
     	    	    	    	        switch (which){
@@ -58,7 +69,7 @@ public class MoveListener implements Runnable{
     	    	    		    			NetGlobal.undoRequested = true;
     	    	    	    	        	GameAction.undo();
     	    	    	    	        	try {
-    	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ACCEPT", URLEncoder.encode(NetGlobal.server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.lasteid);
+    	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ACCEPT", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
 												new URL(undoUrl).openStream();
 											} catch (MalformedURLException e) {
 												e.printStackTrace();
@@ -69,7 +80,7 @@ public class MoveListener implements Runnable{
     	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
     	    	    	    	            //No button clicked
     	    	    	    	        	try {
-    	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=DENY", URLEncoder.encode(NetGlobal.server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.lasteid);
+    	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=DENY", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
 												new URL(undoUrl).openStream();
 											} catch (MalformedURLException e) {
 												e.printStackTrace();

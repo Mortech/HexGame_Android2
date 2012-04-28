@@ -1,9 +1,9 @@
 package com.sam.hex.startup;
 
+import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
-import com.sam.hex.lan.LocalLobbyActivity;
 import com.sam.hex.net.NetLobbyActivity;
 
 import android.app.Activity;
@@ -36,6 +36,14 @@ public class StartUpActivity extends Activity {
             	startActivity(new Intent(getBaseContext(),Preferences.class));
             }
         });
+        
+        //Fourth button
+        final Button onlineButton = (Button) findViewById(R.id.onlineButton);
+        onlineButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
+            }
+        });
     }
     
     @Override
@@ -48,19 +56,12 @@ public class StartUpActivity extends Activity {
         final Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	if(Integer.parseInt(prefs.getString("gameLocation", "0")) == 1 && (HexGame.somethingChanged(prefs) || HexGame.startNewGame)){
-                	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
-            	}
-            	else if(Integer.parseInt(prefs.getString("gameLocation", "0")) == 2 && (HexGame.somethingChanged(prefs) || HexGame.startNewGame)){
-                	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
-            	}
-            	else{
-            		startActivity(new Intent(getBaseContext(),HexGame.class));
-            	}
+            	startActivity(new Intent(getBaseContext(),HexGame.class));
             }
         });
         if(HexGame.somethingChanged(prefs) || HexGame.startNewGame){
         	HexGame.startNewGame = true;
+        	Global.gameLocation=0;
         	startButton.setText(R.string.start);
     	}
         else{ 

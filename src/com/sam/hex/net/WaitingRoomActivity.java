@@ -30,7 +30,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -136,33 +135,16 @@ public class WaitingRoomActivity extends Activity {
     	super.onResume();
     	refreshPlayers = new RefreshGamePlayerlist(new Handler(), new Runnable(){
     		public void run(){
-    			refreshPlayers();
-    			refreshMessages();
     			if(gameActive){
-    				messages.add("3");
-        			refreshMessages();
-        			try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-    				messages.add("2");
-        			refreshMessages();
-        			try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-    				messages.add("1");
-        			refreshMessages();
-        			try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+    		        Global.gameLocation = 2;
+    		        HexGame.startNewGame = true;
         			startActivity(new Intent(getBaseContext(),HexGame.class));
 		        	finish();
         		}
+    			else{
+    				refreshPlayers();
+    				refreshMessages();
+    			}
     		}});
     }
     
@@ -203,7 +185,7 @@ public class WaitingRoomActivity extends Activity {
         	    }
         	};
 
-        	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
             return true;
         default:
@@ -299,7 +281,7 @@ public class WaitingRoomActivity extends Activity {
         positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         position.setAdapter(positionAdapter);
         position.setSelection(NetGlobal.place);
-    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setView(dialoglayout);
 		builder.setMessage(this.getText(R.string.createBoard));
 		

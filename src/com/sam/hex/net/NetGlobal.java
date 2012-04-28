@@ -22,7 +22,6 @@ public class NetGlobal{
 	public static int lasteid;
 	public static ArrayList<ParsedDataset.GameSession> sessions;
 	public static ArrayList<ParsedDataset.Member> members = new ArrayList<ParsedDataset.Member>();
-	public static String netPlayerName;
 	public static boolean undoRequested = false;
 	
 	//Unique identifier for each phone

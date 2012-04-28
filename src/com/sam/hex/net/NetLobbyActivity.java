@@ -15,11 +15,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.sam.hex.DialogBox;
-import com.sam.hex.Global;
-import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
-import com.sam.hex.lan.LocalLobbyActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,7 +30,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,7 +43,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Spinner;
 
 public class NetLobbyActivity extends Activity {
-	public static Context context;
 	private boolean loginSucceeded = false;
 	RefreshPlayerlist refreshPlayers;
 	final Handler handler = new Handler();
@@ -79,8 +74,6 @@ public class NetLobbyActivity extends Activity {
             }
         });
         
-        context = getApplicationContext();
-        Global.gameLocation = 2;
         NetGlobal.android_id = Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
     }
     
@@ -94,18 +87,6 @@ public class NetLobbyActivity extends Activity {
         	startActivity(new Intent(getBaseContext(),LoginActivity.class));
         	finish();
         }
-        else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 0){
-    		//Go into a normal game
-    		Global.gameLocation = 0;
-        	startActivity(new Intent(getBaseContext(),HexGame.class));
-        	finish();
-    	}
-        else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 1){
-    		//Go to the local lobby
-    		Global.gameLocation = 1;
-        	startActivity(new Intent(getBaseContext(),LocalLobbyActivity.class));
-        	finish();
-    	}
         else{
         	if(!isOnline()){
         		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -123,7 +104,7 @@ public class NetLobbyActivity extends Activity {
             	    }
             	};
 
-            	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
+            	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             	builder.setMessage(getApplicationContext().getString(R.string.cantConnect)).setPositiveButton(getApplicationContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getApplicationContext().getString(R.string.no), dialogClickListener).show();
         	}
         	new Thread(new Runnable(){
@@ -148,7 +129,7 @@ public class NetLobbyActivity extends Activity {
     	                }
     	                else{
     	                	System.out.println(parsedDataset.getErrorMessage());
-    	                	new DialogBox(NetLobbyActivity.this, context.getString(R.string.loginFailed), new DialogInterface.OnClickListener() {
+    	                	new DialogBox(NetLobbyActivity.this, NetLobbyActivity.this.getString(R.string.loginFailed), new DialogInterface.OnClickListener() {
     	                	    public void onClick(DialogInterface dialog, int which) {
     	                	        switch (which){
     	                	        case DialogInterface.BUTTON_POSITIVE:
@@ -167,7 +148,7 @@ public class NetLobbyActivity extends Activity {
     	                	        	break;
     	                	        }
     	                	    }
-    	                	}, context.getString(R.string.register), context.getString(R.string.login), context.getString(R.string.cancel),false);
+    	                	}, NetLobbyActivity.this.getString(R.string.register), NetLobbyActivity.this.getString(R.string.login), NetLobbyActivity.this.getString(R.string.cancel),false);
     	            	}
     				} catch (MalformedURLException e) {
     					e.printStackTrace();
@@ -222,7 +203,7 @@ public class NetLobbyActivity extends Activity {
         	    }
         	};
 
-        	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
             return true;
         default:
@@ -305,7 +286,7 @@ public class NetLobbyActivity extends Activity {
         positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         position.setAdapter(positionAdapter);
         position.setSelection(Integer.parseInt(settings.getString("netPosition", "0")));
-    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Light));
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setView(dialoglayout);
 		builder.setMessage(this.getText(R.string.createBoard));
 		

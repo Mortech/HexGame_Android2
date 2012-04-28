@@ -30,7 +30,7 @@ public class NetPlayerObject implements PlayingEntity {
 	
 	public NetPlayerObject(int team, Handler handler, Runnable newgame) {
 		this.team=team;//Set the player's team
-		this.listener = new MoveListener(handler, newgame);
+		this.listener = new MoveListener(handler, newgame, this, NetGlobal.server, NetGlobal.uid, NetGlobal.session_id, NetGlobal.sid);
 	}
 
 	@Override
@@ -284,7 +284,6 @@ public class NetPlayerObject implements PlayingEntity {
 	@Override
 	public void setName(String name) {
 		this.name = name;
-		NetGlobal.netPlayerName = name;
 	}
 
 	@Override
