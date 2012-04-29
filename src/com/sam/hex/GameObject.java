@@ -78,11 +78,11 @@ public class GameObject implements Runnable {
 		while(game){//Loop the game
 			if(!checkForWinner()){
 				moveStart = System.currentTimeMillis();
-				GameAction.getPlayer(currentPlayer, this).getPlayerTurn();
 				if(timer.type==1){
 					timer.startTime = System.currentTimeMillis();
 					GameAction.getPlayer(currentPlayer, this).setTime(timer.totalTime);
 				}
+				GameAction.getPlayer(currentPlayer, this).getPlayerTurn();
 			}
 			
 			currentPlayer=(currentPlayer%2)+1;

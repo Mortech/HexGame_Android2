@@ -307,6 +307,8 @@ public class GameAction {
 					game.winnerText.setText(game.winnerMsg);
 					game.winnerText.setVisibility(View.VISIBLE);
 					game.winnerText.invalidate();
+					game.timerText.setVisibility(View.GONE);
+					game.timerText.invalidate();
 				}
 			});
 		}

@@ -54,6 +54,7 @@ public class Timer implements Runnable{
 				}
 				else{
 					gameObject.player1.endMove();
+					gameObject.board.postInvalidate();
 				}
 			}
 			else if(gameObject.currentPlayer==2 && !gameObject.gameOver){
@@ -72,6 +73,7 @@ public class Timer implements Runnable{
 				}
 				else{
 					gameObject.player2.endMove();
+					gameObject.board.postInvalidate();
 				}
 			}
 			else{
