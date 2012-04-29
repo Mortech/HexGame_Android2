@@ -25,6 +25,6 @@ public class LANGlobal {
 	
 	public static int undoNumber = 0;
 	
-	public static final int gameLocation = 1;
+	public static final int GAME_LOCATION = 1;
 	public static GameObject game;
 }

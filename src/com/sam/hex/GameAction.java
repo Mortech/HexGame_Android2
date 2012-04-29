@@ -86,7 +86,7 @@ public class GameAction {
 			game.moveList.replay(0,game);
 			game.moveNumber--;
 			
-			if(gameLocation==0){
+			if(gameLocation==Global.GAME_LOCATION){
 				//Determine who is a human
 				boolean p1 = game.player1 instanceof PlayerObject;
 				boolean p2 = game.player2 instanceof PlayerObject;
@@ -144,7 +144,7 @@ public class GameAction {
 				}
 				if(game.gameOver && ((game.currentPlayer==2 && p1) || (game.currentPlayer==1 && p2))) game.currentPlayer = (game.currentPlayer%2)+1;
 			}
-			else if(gameLocation==1){//Inside a LAN game
+			else if(gameLocation==LANGlobal.GAME_LOCATION){//Inside a LAN game
 				if(game.currentPlayer==1){//First player's turn
 					if(game.player1 instanceof LocalPlayerObject){//First player is on the network (not local)
 						if(LANGlobal.undoRequested){//First player requested the undo
@@ -216,7 +216,7 @@ public class GameAction {
 				
 				LANGlobal.undoRequested = false;
 			}
-			else if(gameLocation==2){//Inside a net game
+			else if(gameLocation==NetGlobal.GAME_LOCATION){//Inside a net game
 				if(game.currentPlayer==1){//First player's turn
 					if(game.player1 instanceof NetPlayerObject){//First player is on the network (not local)
 						if(NetGlobal.undoRequested){//First player requested the undo

@@ -52,7 +52,7 @@ public class StartUpActivity extends Activity {
             	startActivity(new Intent(getBaseContext(),HexGame.class));
             }
         });
-        if(HexGame.startNewGame || HexGame.somethingChanged(prefs, Global.gameLocation, Global.game)){
+        if(HexGame.startNewGame || HexGame.somethingChanged(prefs, Global.GAME_LOCATION, Global.game)){
         	HexGame.startNewGame = true;
         	startButton.setText(R.string.start);
     	}
@@ -62,7 +62,7 @@ public class StartUpActivity extends Activity {
         
         //Refresh fourth button
         final Button onlineButton = (Button) findViewById(R.id.onlineButton);
-        if(HexGame.somethingChanged(prefs, NetGlobal.gameLocation, NetGlobal.game)){
+        if(HexGame.somethingChanged(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game)){
         	onlineButton.setText(R.string.online);
         	onlineButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

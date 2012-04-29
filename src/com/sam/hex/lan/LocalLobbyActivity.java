@@ -98,12 +98,12 @@ public class LocalLobbyActivity extends Activity {
     	
     	//Load preferences
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 0){
+    	if(Integer.decode(prefs.getString("gameLocation", "0")) != LANGlobal.GAME_LOCATION && Integer.decode(prefs.getString("gameLocation", "0")) == 0){
     		//Go into a normal game
         	startActivity(new Intent(getBaseContext(),HexGame.class));
         	finish();
     	}
-        else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 2){
+        else if(Integer.decode(prefs.getString("gameLocation", "0")) != LANGlobal.GAME_LOCATION && Integer.decode(prefs.getString("gameLocation", "0")) == 2){
     		//Go to the local lobby
         	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
         	finish();

@@ -26,7 +26,7 @@ public class NetGlobal{
 	
 	//Game object
 	public static GameObject game;
-	public static final int gameLocation = 2;
+	public static final int GAME_LOCATION = 2;
 	
 	//Unique identifier for each phone
 	public static String android_id;

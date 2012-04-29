@@ -82,7 +82,7 @@ public class MoveListener implements Runnable{
     	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
     	    	    	    	            //Yes button clicked
     	    	    		    			NetGlobal.undoRequested = true;
-    	    	    	    	        	GameAction.undo(NetGlobal.gameLocation,NetGlobal.game);
+    	    	    	    	        	GameAction.undo(NetGlobal.GAME_LOCATION,NetGlobal.game);
     	    	    	    	        	try {
     	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ACCEPT", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
 												new URL(undoUrl).openStream();
@@ -110,7 +110,7 @@ public class MoveListener implements Runnable{
     	    					game.board.getContext().getString(R.string.no));
         			}
     				if(parsedDataset.undoAccepted){
-    					GameAction.undo(NetGlobal.gameLocation,NetGlobal.game);
+    					GameAction.undo(NetGlobal.GAME_LOCATION,NetGlobal.game);
 	    				new DialogBox(game.board.getContext(), 
 		    					game.board.getContext().getString(R.string.LANundoAccepted), 
 		    					null, 

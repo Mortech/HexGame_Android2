@@ -47,7 +47,7 @@ public class HexGame extends Activity {
     }
     
     private void applyBoard(){
-    	Global.viewLocation = Global.gameLocation;
+    	Global.viewLocation = Global.GAME_LOCATION;
     	setContentView(R.layout.game);
     	Global.game.board=(BoardView) findViewById(R.id.board);
     	Global.game.board.setOnTouchListener(new TouchListener(Global.game));
@@ -145,10 +145,10 @@ public class HexGame extends Activity {
     	stopGame(Global.game);
     	
     	//Create a new game object
-    	Global.game = new GameObject(setGrid(prefs, Global.gameLocation), prefs.getBoolean("swapPref", true));
+    	Global.game = new GameObject(setGrid(prefs, Global.GAME_LOCATION), prefs.getBoolean("swapPref", true));
     	
     	//Set players
-    	setType(prefs, Global.gameLocation, Global.game);
+    	setType(prefs, Global.GAME_LOCATION, Global.game);
     	setPlayer1(Global.game, new Runnable(){
 			public void run(){
 				initializeNewGame();
@@ -159,8 +159,8 @@ public class HexGame extends Activity {
 				initializeNewGame();
 			}
 		});
-    	setNames(prefs, Global.gameLocation, Global.game);
-    	setColors(prefs, Global.gameLocation, Global.game);
+    	setNames(prefs, Global.GAME_LOCATION, Global.game);
+    	setColors(prefs, Global.GAME_LOCATION, Global.game);
     	int timerType = Integer.parseInt(prefs.getString("timerTypePref", "0"));
 	    Global.game.timer = new Timer(Global.game, Integer.parseInt(prefs.getString("timerPref", "0")),timerType);
 	    
@@ -182,13 +182,13 @@ public class HexGame extends Activity {
     		replay = false;
     		replay(800);
     	}
-    	else if(HexGame.startNewGame || somethingChanged(prefs, Global.gameLocation, Global.game)){
+    	else if(HexGame.startNewGame || somethingChanged(prefs, Global.GAME_LOCATION, Global.game)){
     		initializeNewGame();
     		applyBoard();
     	}
     	else{//Apply minor changes without stopping the current game
-    		setColors(prefs, Global.gameLocation, Global.game);
-    		setNames(prefs, Global.gameLocation, Global.game);
+    		setColors(prefs, Global.GAME_LOCATION, Global.game);
+    		setNames(prefs, Global.GAME_LOCATION, Global.game);
     		Global.game.moveList.replay(0, Global.game);
     		GameAction.checkedFlagReset(Global.game);
     		GameAction.checkWinPlayer(1,Global.game);
@@ -267,7 +267,12 @@ public class HexGame extends Activity {
      * Does not invalidate the board
      * */
     public static void setNames(SharedPreferences prefs, int gameLocation, GameObject game){
-    	if(gameLocation==1){
+    	if(gameLocation==Global.GAME_LOCATION){
+    		//Playing on the same phone
+    		game.player1.setName(prefs.getString("player1Name", "Player1"));
+    		game.player2.setName(prefs.getString("player2Name", "Player2"));
+    	}
+    	if(gameLocation==LANGlobal.GAME_LOCATION){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			game.player1.setName(LANGlobal.localPlayer.playerName);
@@ -278,7 +283,7 @@ public class HexGame extends Activity {
         		game.player2.setName(LANGlobal.localPlayer.playerName);
     		}
     	}
-    	else if(gameLocation==2){
+    	else if(gameLocation==NetGlobal.GAME_LOCATION){
     		//Playing over the net
     		for(int i=0;i<NetGlobal.members.size();i++){
     			if(NetGlobal.members.get(i).place==1){
@@ -288,11 +293,6 @@ public class HexGame extends Activity {
     				game.player2.setName(NetGlobal.members.get(i).name);
     			}
     		}
-    	}
-    	else{
-    		//Playing on the same phone
-    		game.player1.setName(prefs.getString("player1Name", "Player1"));
-    		game.player2.setName(prefs.getString("player2Name", "Player2"));
     	}
     }
     
@@ -326,12 +326,12 @@ public class HexGame extends Activity {
     
     public static int setGrid(SharedPreferences prefs, int gameLocation){
     	int gridSize = 0;
-    	if(gameLocation==0){
+    	if(gameLocation==Global.GAME_LOCATION){
     		//Playing on the same phone
     		gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
     		if(gridSize==0) gridSize=Integer.decode(prefs.getString("customGameSizePref", "7"));
     	}
-    	else if(gameLocation==1){
+    	else if(gameLocation==LANGlobal.GAME_LOCATION){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			gridSize=LANGlobal.localPlayer.gridSize;
@@ -340,7 +340,7 @@ public class HexGame extends Activity {
     			gridSize=Integer.decode(prefs.getString("gameSizePref", "7"));
     		}
     	}
-    	else if(gameLocation==2){
+    	else if(gameLocation==NetGlobal.GAME_LOCATION){
     		//Playing over the net
     		gridSize = NetGlobal.gridSize;
     	}
@@ -352,11 +352,11 @@ public class HexGame extends Activity {
     }
     
     public static void setType(SharedPreferences prefs, int gameLocation, GameObject game){
-    	if(gameLocation==0){
+    	if(gameLocation==Global.GAME_LOCATION){
     		game.player1Type=(byte)Integer.parseInt(prefs.getString("player1Type", "0"));
         	game.player2Type=(byte)Integer.parseInt(prefs.getString("player2Type", "0"));
     	}
-    	else if(gameLocation==1){
+    	else if(gameLocation==LANGlobal.GAME_LOCATION){
     		//Playing over LAN
     		if(LANGlobal.localPlayer.firstMove){
     			game.player1Type=(byte)2;
@@ -367,7 +367,7 @@ public class HexGame extends Activity {
     			game.player2Type=(byte)2;
     		}
     	}
-    	else if(gameLocation==2){
+    	else if(gameLocation==NetGlobal.GAME_LOCATION){
     		//Playing over the net
     		for(int i=0;i<NetGlobal.members.size();i++){
     			if(NetGlobal.members.get(i).place==1){
@@ -407,7 +407,7 @@ public class HexGame extends Activity {
     }
     
     private void undo(){
-    	GameAction.undo(Global.gameLocation,Global.game);
+    	GameAction.undo(Global.GAME_LOCATION,Global.game);
     }
     
     private void newGame(){
@@ -423,7 +423,7 @@ public class HexGame extends Activity {
      * */
     public static boolean somethingChanged(SharedPreferences prefs, int gameLocation, GameObject game){
     	if(game==null) return true;
-    	if(gameLocation==0){
+    	if(gameLocation==Global.GAME_LOCATION){
     		return (Integer.decode(prefs.getString("gameSizePref", "7")) != game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
     				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
     				|| Integer.decode(prefs.getString("player1Type", "0")) != (int) game.player1Type 
@@ -431,10 +431,10 @@ public class HexGame extends Activity {
     	    	    || Integer.decode(prefs.getString("timerTypePref", "0")) != game.timer.type
     	    	    || Integer.decode(prefs.getString("timerPref", "0"))*60*1000 != game.timer.totalTime;
     	}
-    	if(gameLocation==1){
+    	if(gameLocation==LANGlobal.GAME_LOCATION){
     		return !(Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) game.player1Type || Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) game.player2Type);
     	}
-    	else if(gameLocation==2){
+    	else if(gameLocation==NetGlobal.GAME_LOCATION){
     		return (game!=null && game.gameOver);
     	}
     	else{

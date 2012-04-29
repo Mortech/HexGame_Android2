@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import com.sam.hex.DialogBox;
 import com.sam.hex.GameAction;
 import com.sam.hex.GameObject;
+import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.MoveList;
 import com.sam.hex.R;
@@ -122,7 +123,7 @@ public class PlayerUnicastListener implements Runnable {
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
 	    	    	    	            //Yes button clicked
 	    	    		    			LANGlobal.undoRequested = true;
-	    	    	    	        	GameAction.undo(LANGlobal.gameLocation,LANGlobal.game);
+	    	    	    	        	GameAction.undo(LANGlobal.GAME_LOCATION,LANGlobal.game);
 	    	    	    	        	new LANMessage("Sure, undo"+LANGlobal.undoNumber, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	    	    	    	        	new LANMessage("Sure, undo"+LANGlobal.undoNumber, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	    	    	    	        	new LANMessage("Sure, undo"+LANGlobal.undoNumber, LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
@@ -142,7 +143,7 @@ public class PlayerUnicastListener implements Runnable {
 	    			int num = Integer.parseInt(message.substring(10));
 	    			if(num==LANGlobal.undoNumber){
 	    				LANGlobal.undoNumber++;
-	    				GameAction.undo(LANGlobal.gameLocation,LANGlobal.game);
+	    				GameAction.undo(LANGlobal.GAME_LOCATION,LANGlobal.game);
 	    				new DialogBox(game.board.getContext(), 
 		    					game.board.getContext().getString(R.string.LANundoAccepted), 
 		    					null, 

@@ -8,7 +8,7 @@ public class Global {
 	
 	//Game
 	public static GameObject game;
-	public static final int gameLocation = 0;
+	public static final int GAME_LOCATION = 0;
 	final public static int player1DefaultColor=Color.BLUE;
 	final public static int player2DefaultColor=Color.RED;
 	

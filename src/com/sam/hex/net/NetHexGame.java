@@ -49,7 +49,7 @@ public class NetHexGame extends Activity {
     }
     
     public void applyBoard(){
-    	Global.viewLocation = NetGlobal.gameLocation;
+    	Global.viewLocation = NetGlobal.GAME_LOCATION;
     	setContentView(R.layout.game);
     	NetGlobal.game.board=(BoardView) findViewById(R.id.board);
     	NetGlobal.game.board.setOnTouchListener(new HexGame.TouchListener(NetGlobal.game));
@@ -124,10 +124,10 @@ public class NetHexGame extends Activity {
     	HexGame.stopGame(NetGlobal.game);
     	
     	//Create a new game object
-    	NetGlobal.game = new GameObject(HexGame.setGrid(prefs, NetGlobal.gameLocation), true); 
+    	NetGlobal.game = new GameObject(HexGame.setGrid(prefs, NetGlobal.GAME_LOCATION), true); 
     	
     	//Set players
-    	HexGame.setType(prefs, NetGlobal.gameLocation, NetGlobal.game);
+    	HexGame.setType(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
     	HexGame.setPlayer1(NetGlobal.game, new Runnable(){
 			public void run(){
 				initializeNewGame();
@@ -138,8 +138,8 @@ public class NetHexGame extends Activity {
 				initializeNewGame();
 			}
 		});
-    	HexGame.setNames(prefs, NetGlobal.gameLocation, NetGlobal.game);
-    	HexGame.setColors(prefs, NetGlobal.gameLocation, NetGlobal.game);
+    	HexGame.setNames(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
+    	HexGame.setColors(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
 	    NetGlobal.game.timer = new Timer(NetGlobal.game, 0,0);
     	
 	    //Display board
@@ -161,12 +161,12 @@ public class NetHexGame extends Activity {
     		replay = false;
     		replay(800);
     	}
-    	else if(startNewGame || HexGame.somethingChanged(prefs, NetGlobal.gameLocation, NetGlobal.game)){
+    	else if(startNewGame || HexGame.somethingChanged(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game)){
     		initializeNewGame();
     	}
     	else{//Apply minor changes without stopping the current game
-    		HexGame.setColors(prefs, NetGlobal.gameLocation, NetGlobal.game);
-    		HexGame.setNames(prefs, NetGlobal.gameLocation, NetGlobal.game);
+    		HexGame.setColors(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
+    		HexGame.setNames(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
     		NetGlobal.game.moveList.replay(0,NetGlobal.game);
     		GameAction.checkedFlagReset(NetGlobal.game);
     		GameAction.checkWinPlayer(1,NetGlobal.game);
@@ -218,7 +218,7 @@ public class NetHexGame extends Activity {
     }
     
     private void undo(){
-    	GameAction.undo(NetGlobal.gameLocation, NetGlobal.game);
+    	GameAction.undo(NetGlobal.GAME_LOCATION, NetGlobal.game);
     }
     
     private void newGame(){
