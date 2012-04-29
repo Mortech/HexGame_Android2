@@ -265,7 +265,7 @@ public class WaitingRoomActivity extends Activity {
     	LayoutInflater inflater = (LayoutInflater) WaitingRoomActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
     	View dialoglayout = inflater.inflate(R.layout.netlobby_createboard, null);
     	final Spinner gameSize = (Spinner)dialoglayout.findViewById(R.id.gameSize);
-        ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, R.layout.spinner_text);
+        ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, android.R.layout.simple_spinner_item);
         gameSizeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         gameSize.setAdapter(gameSizeAdapter);
         int pos = 0;
@@ -274,7 +274,7 @@ public class WaitingRoomActivity extends Activity {
         }
         gameSize.setSelection(pos);
         final Spinner position = (Spinner)dialoglayout.findViewById(R.id.position);
-        ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, R.layout.spinner_text);
+        ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, android.R.layout.simple_spinner_item);
         positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         position.setAdapter(positionAdapter);
         position.setSelection(NetGlobal.place);

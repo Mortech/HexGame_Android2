@@ -117,7 +117,7 @@ public class XMLHandler extends DefaultHandler{
     		}
     		else if(in_eventList){
     			if(localName.equals("event")){
-    				NetGlobal.lasteid = Integer.parseInt(atts.getValue("eid"));
+    				parsedDataset.lasteid = Integer.parseInt(atts.getValue("eid"));
     				
     				//Messages
     				if(atts.getValue("type").equals("MSG")){
@@ -132,9 +132,19 @@ public class XMLHandler extends DefaultHandler{
     				}
     				
     				//Moves
-    				else if(atts.getValue("type").equals("MOVE")){
+    				else if(atts.getValue("type").equals("MOVE") && NetGlobal.game!=null){
     					String point = atts.getValue("data");
-    					parsedDataset.setMove(GameAction.stringToPoint(point, NetGlobal.game));
+    					for(int i=0;i<parsedDataset.players.size();i++){
+    						if(parsedDataset.players.get(i).uid==Integer.parseInt(atts.getValue("uid"))){
+    							if(parsedDataset.players.get(i).place==1){
+    								parsedDataset.p1moves.add(GameAction.stringToPoint(point, NetGlobal.game));
+    							}
+    							else if(parsedDataset.players.get(i).place==2){
+    								parsedDataset.p2moves.add(GameAction.stringToPoint(point, NetGlobal.game));
+    							}
+    							break;
+    						}
+    					}
     				}
     				
     				//Undo

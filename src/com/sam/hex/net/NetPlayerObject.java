@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.LinkedList;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -26,7 +27,7 @@ public class NetPlayerObject implements PlayingEntity {
 	private long timeLeft;
 	private int team;
 	private MoveListener listener;
-	private Point hex;
+	private LinkedList<Point> hex = new LinkedList<Point>();
 	private GameObject game;
 	private String server;
 	private int uid;
@@ -40,7 +41,18 @@ public class NetPlayerObject implements PlayingEntity {
 		this.uid = NetGlobal.uid;
 		this.session_id = NetGlobal.session_id;
 		this.sid = NetGlobal.sid;
-		this.listener = new MoveListener(game, handler, newgame, this, server, uid, session_id, sid);
+		this.listener = new MoveListener(game, team, handler, newgame, this, server, uid, session_id, sid);
+	}
+	
+	public NetPlayerObject(int team, GameObject game, Handler handler, Runnable newgame, LinkedList<Point> hex) {
+		this.team = team;
+		this.game = game;
+		this.server = NetGlobal.server;
+		this.uid = NetGlobal.uid;
+		this.session_id = NetGlobal.session_id;
+		this.sid = NetGlobal.sid;
+		this.listener = new MoveListener(game, team, handler, newgame, this, server, uid, session_id, sid);
+		this.hex = hex;
 	}
 
 	@Override
@@ -77,24 +89,23 @@ public class NetPlayerObject implements PlayingEntity {
 	    	}).start();
 		}
 		
-		hex = null;
 		while (true) {
-			while (hex == null) {
+			while (hex.size()==0) {
 				try {
 					Thread.sleep(80);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-			if (hex.equals(new Point(-1,-1))){
-				hex = null;
+			if (hex.get(0).equals(new Point(-1,-1))){
+				hex.remove(0);
 				break;
 			}
-			else if (GameAction.makeMove(this, (byte) team, hex, game)) {
-				hex = null;
+			else if (GameAction.makeMove(this, (byte) team, hex.get(0), game)) {
+				hex.remove(0);
 				break;
 			}
-			hex = null;
+			hex.remove(0);
 		}
 	}
 
@@ -104,7 +115,7 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void newgameCalled() {
-		hex = new Point(-1,-1);
+		hex.add(new Point(-1,-1));
 	}
 
 	@Override
@@ -288,7 +299,7 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void endMove() {
-		hex = new Point(-1,-1);
+		hex.add(new Point(-1,-1));
 	}
 
 	@Override
@@ -323,6 +334,6 @@ public class NetPlayerObject implements PlayingEntity {
 
 	@Override
 	public void setMove(Object o, Point hex) {
-		if(o instanceof MoveListener) this.hex = hex;
+		if(o instanceof MoveListener) this.hex.add(hex);
 	}
 }

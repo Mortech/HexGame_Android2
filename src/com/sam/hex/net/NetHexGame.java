@@ -240,6 +240,7 @@ public class NetHexGame extends Activity {
     private void replay(int time){
     	//Create our board
     	NetGlobal.game.clearBoard();
+    	applyBoard();
         
     	if(NetGlobal.game.moveNumber>1) NetGlobal.game.currentPlayer=(NetGlobal.game.currentPlayer%2)+1;
 	    

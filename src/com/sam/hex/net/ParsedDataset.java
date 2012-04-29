@@ -1,6 +1,7 @@
 package com.sam.hex.net;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import android.graphics.Point;
  
@@ -71,6 +72,7 @@ public class ParsedDataset {
     
     //Playing a game
     public boolean gameActive = false;
+    public int lasteid;
     private int sid;
     private String server = null;
     public ArrayList<Member> players = new ArrayList<Member>();
@@ -91,7 +93,8 @@ public class ParsedDataset {
     public void addMessage(String msg, int uid, String name){
     	messages.add(new Message(msg, uid, name));
     }
-    private Point move;
+    public LinkedList<Point> p1moves = new LinkedList<Point>();
+    public LinkedList<Point> p2moves = new LinkedList<Point>();
     public boolean undoRequested = false;
     public boolean undoAccepted = false;
     public boolean restart = false;
@@ -142,11 +145,5 @@ public class ParsedDataset {
 	}
 	public void setServer(String server) {
 		this.server = server;
-	}
-	public Point getMove() {
-		return move;
-	}
-	public void setMove(Point move) {
-		this.move = move;
 	}
 }

@@ -260,6 +260,7 @@ public class GameAction {
 	}
 	
 	public static Point stringToPoint(String str, GameObject game){
+		if(game.moveNumber==1 && str.equals("SWAP")) return new Point(-1,-1);
 		if(str.equals("SWAP")) return new Point(game.moveList.thisMove.getX(),game.moveList.thisMove.getY());
 		int x = Integer.parseInt(str.substring(1))-1;
 		char y = str.charAt(0);

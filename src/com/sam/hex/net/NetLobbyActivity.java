@@ -277,12 +277,12 @@ public class NetLobbyActivity extends Activity {
     	LayoutInflater inflater = (LayoutInflater) NetLobbyActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
     	View dialoglayout = inflater.inflate(R.layout.netlobby_createboard, null);
     	final Spinner gameSize = (Spinner)dialoglayout.findViewById(R.id.gameSize);
-        ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, R.layout.spinner_text);
+        ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, android.R.layout.simple_spinner_item);
         gameSizeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         gameSize.setAdapter(gameSizeAdapter);
         gameSize.setSelection(Integer.parseInt(settings.getString("netGridSize", "0")));
         final Spinner position = (Spinner)dialoglayout.findViewById(R.id.position);
-        ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, R.layout.spinner_text);
+        ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, android.R.layout.simple_spinner_item);
         positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         position.setAdapter(positionAdapter);
         position.setSelection(Integer.parseInt(settings.getString("netPosition", "0")));

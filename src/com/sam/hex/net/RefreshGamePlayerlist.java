@@ -17,6 +17,7 @@ import android.os.Handler;
 
 public class RefreshGamePlayerlist implements Runnable{
 	private boolean refresh = true;
+	private int lasteid = 0;
 	Handler handler;
 	Runnable updateResults;
 	Runnable startGame;
@@ -32,7 +33,7 @@ public class RefreshGamePlayerlist implements Runnable{
 	public void run() {
 		while(refresh){
 			try {
-				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.lasteid);
+				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, lasteid);
 				URL url = new URL(lobbyUrl);
 				SAXParserFactory spf = SAXParserFactory.newInstance();
 	            SAXParser parser = spf.newSAXParser();
@@ -43,6 +44,7 @@ public class RefreshGamePlayerlist implements Runnable{
 	            
 	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	        	if(!parsedDataset.error){
+	        		lasteid = parsedDataset.lasteid;
         			NetGlobal.members = parsedDataset.players;
         			for(int i=0;i<parsedDataset.messages.size();i++){
         				WaitingRoomActivity.messages.add(parsedDataset.messages.get(i).name+": "+parsedDataset.messages.get(i).msg);
