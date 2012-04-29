@@ -70,6 +70,7 @@ public class ParsedDataset {
     }
     
     //Playing a game
+    public boolean gameActive = false;
     private int sid;
     private String server = null;
     public ArrayList<Member> players = new ArrayList<Member>();

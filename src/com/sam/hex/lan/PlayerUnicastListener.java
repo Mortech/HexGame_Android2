@@ -56,7 +56,7 @@ public class PlayerUnicastListener implements Runnable {
 	    		if(message.contains("Move: ")){
 	    			int x = Integer.decode(message.substring(6,message.indexOf(",")));
 					int y = Integer.decode(message.substring(message.indexOf(",")+1));
-					GameAction.getPlayer(game.currentPlayer,LANGlobal.game).setMove(new Point(x,y));
+					GameAction.getPlayer(game.currentPlayer,LANGlobal.game).setMove(this, new Point(x,y));
 	    		}
 	    		else if(message.contains("I changed my color to ")){
 	    			//Full message looks like: I changed my color to _color_

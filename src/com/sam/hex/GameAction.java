@@ -44,7 +44,7 @@ public class GameAction {
 	}
 	
 	public static void setPiece(Point p, GameObject game) {
-		getPlayer(game.currentPlayer, game).setMove(p);
+		getPlayer(game.currentPlayer, game).setMove(new GameAction(),p);
 	}
 	
 	private static void setTeam(byte t,int x,int y, GameObject game) {

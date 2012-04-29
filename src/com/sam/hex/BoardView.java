@@ -22,30 +22,30 @@ public class BoardView extends View{
 	
 	public BoardView(Context context){
 		super(context);
-		if(Global.viewLocation==0){
+		if(Global.viewLocation==Global.gameLocation){
 			game = Global.game;
 		}
-		else if(Global.viewLocation==2){
+		else if(Global.viewLocation==NetGlobal.gameLocation){
 			game = NetGlobal.game;
 		}
 		calculateGrid();
 	}
 	public BoardView(Context context, AttributeSet attrs){
         super(context, attrs);
-        if(Global.viewLocation==0){
+        if(Global.viewLocation==Global.gameLocation){
 			game = Global.game;
 		}
-		else if(Global.viewLocation==2){
+		else if(Global.viewLocation==NetGlobal.gameLocation){
 			game = NetGlobal.game;
 		}
         calculateGrid();
     }
     public BoardView(Context context, AttributeSet attrs, int defStyle){
         super(context, attrs, defStyle);
-        if(Global.viewLocation==0){
+        if(Global.viewLocation==Global.gameLocation){
 			game = Global.game;
 		}
-		else if(Global.viewLocation==2){
+		else if(Global.viewLocation==NetGlobal.gameLocation){
 			game = NetGlobal.game;
 		}
         calculateGrid();

@@ -507,7 +507,7 @@ public class GameAI implements PlayingEntity {
 	}
 
 	@Override
-	public void setMove(Point hex) {
+	public void setMove(Object o, Point hex) {
 	}
 	
 	/*  Bah, ignore this for now.

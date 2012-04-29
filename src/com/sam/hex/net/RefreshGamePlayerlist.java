@@ -19,9 +19,11 @@ public class RefreshGamePlayerlist implements Runnable{
 	private boolean refresh = true;
 	Handler handler;
 	Runnable updateResults;
-	public RefreshGamePlayerlist(Handler handler, Runnable updateResults){
+	Runnable startGame;
+	public RefreshGamePlayerlist(Handler handler, Runnable updateResults, Runnable startGame){
 		this.handler = handler;
 		this.updateResults = updateResults;
+		this.startGame = startGame;
 		
 		new Thread(this).start();
 	}
@@ -45,7 +47,8 @@ public class RefreshGamePlayerlist implements Runnable{
         			for(int i=0;i<parsedDataset.messages.size();i++){
         				WaitingRoomActivity.messages.add(parsedDataset.messages.get(i).name+": "+parsedDataset.messages.get(i).msg);
         			}
-	        		handler.post(updateResults);
+        			if(parsedDataset.gameActive) handler.post(startGame);
+        			else handler.post(updateResults);
 	        	}
 	        	else{
 	        		System.out.println(parsedDataset.getErrorMessage());

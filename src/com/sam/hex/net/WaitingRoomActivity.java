@@ -51,7 +51,13 @@ import android.widget.AdapterView.OnItemClickListener;
 public class WaitingRoomActivity extends Activity {
 	public static LinkedList<String> messages = new LinkedList<String>();
 	private RefreshGamePlayerlist refreshPlayers;
-	public static boolean gameActive = false;
+	private Runnable startGame = new Runnable(){
+		public void run(){
+			NetHexGame.startNewGame = true;
+			startActivity(new Intent(getBaseContext(),NetHexGame.class));
+        	finish();
+		}
+	};
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,16 +140,9 @@ public class WaitingRoomActivity extends Activity {
     	super.onResume();
     	refreshPlayers = new RefreshGamePlayerlist(new Handler(), new Runnable(){
     		public void run(){
-    			if(gameActive){
-    		        NetHexGame.startNewGame = true;
-        			startActivity(new Intent(getBaseContext(),NetHexGame.class));
-		        	finish();
-        		}
-    			else{
-    				refreshPlayers();
-    				refreshMessages();
-    			}
-    		}});
+				refreshPlayers();
+				refreshMessages();
+    		}}, startGame);
     }
     
     @Override

@@ -117,5 +117,5 @@ public interface PlayingEntity {
 	/**
 	 * Store a point to play when its your turn
 	 * */
-	public void setMove(Point hex);
+	public void setMove(Object o, Point hex);
 }

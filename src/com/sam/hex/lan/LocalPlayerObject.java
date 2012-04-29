@@ -139,8 +139,7 @@ public class LocalPlayerObject implements PlayingEntity {
 	}
 
 	@Override
-	public void setMove(Point hex) {
-		// TODO Auto-generated method stub
-		
+	public void setMove(Object o, Point hex) {
+		if(o instanceof PlayerUnicastListener) this.hex = hex;
 	}
 }

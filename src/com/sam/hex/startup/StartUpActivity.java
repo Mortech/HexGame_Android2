@@ -7,7 +7,6 @@ import com.sam.hex.R;
 import com.sam.hex.net.NetGlobal;
 import com.sam.hex.net.NetHexGame;
 import com.sam.hex.net.NetLobbyActivity;
-import com.sam.hex.net.WaitingRoomActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -63,7 +62,7 @@ public class StartUpActivity extends Activity {
         
         //Refresh fourth button
         final Button onlineButton = (Button) findViewById(R.id.onlineButton);
-        if(!WaitingRoomActivity.gameActive || HexGame.somethingChanged(prefs, NetGlobal.gameLocation, NetGlobal.game)){
+        if(HexGame.somethingChanged(prefs, NetGlobal.gameLocation, NetGlobal.game)){
         	onlineButton.setText(R.string.online);
         	onlineButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

@@ -26,7 +26,6 @@ import com.sam.hex.lan.LANGlobal;
 import com.sam.hex.lan.LocalPlayerObject;
 import com.sam.hex.net.NetGlobal;
 import com.sam.hex.net.NetPlayerObject;
-import com.sam.hex.net.WaitingRoomActivity;
 import com.sam.hex.replay.FileExplore;
 import com.sam.hex.replay.Replay;
 import com.sam.hex.replay.Save;
@@ -406,7 +405,7 @@ public class HexGame extends Activity {
 		else if(game.player2Type==4) game.player2=new BeeGameAI(2,game);
     }
     
-    private static void undo(){
+    private void undo(){
     	GameAction.undo(Global.gameLocation,Global.game);
     }
     
@@ -435,8 +434,7 @@ public class HexGame extends Activity {
     		return !(Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) game.player1Type || Integer.decode(prefs.getString("lanPlayerType", "0")) == (int) game.player2Type);
     	}
     	else if(gameLocation==2){
-    		return (game!=null && game.gameOver)
-    				|| !WaitingRoomActivity.gameActive;
+    		return (game!=null && game.gameOver);
     	}
     	else{
     		return true;

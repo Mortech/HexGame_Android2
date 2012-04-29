@@ -59,7 +59,7 @@ public class MoveListener implements Runnable{
 	            
 	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	        	if(!parsedDataset.error){
-	        		player.setMove(parsedDataset.getMove());
+	        		player.setMove(this, parsedDataset.getMove());
         			if(parsedDataset.undoRequested){
         				new DialogBox(game.board.getContext(), 
     	    					GameAction.insert(game.board.getContext().getString(R.string.LANUndo), player.getName()), 
