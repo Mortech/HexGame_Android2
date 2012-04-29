@@ -17,16 +17,14 @@ import android.os.Handler;
 
 public class RefreshGamePlayerlist implements Runnable{
 	private boolean refresh = true;
-	private int lasteid = 0;
-	Handler handler;
-	Runnable updateResults;
-	Runnable startGame;
+	public int lasteid = 0;
+	private Handler handler;
+	private Runnable updateResults;
+	private Runnable startGame;
 	public RefreshGamePlayerlist(Handler handler, Runnable updateResults, Runnable startGame){
 		this.handler = handler;
 		this.updateResults = updateResults;
 		this.startGame = startGame;
-		
-		new Thread(this).start();
 	}
 
 	@Override
@@ -44,7 +42,7 @@ public class RefreshGamePlayerlist implements Runnable{
 	            
 	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	        	if(!parsedDataset.error){
-	        		lasteid = parsedDataset.lasteid;
+	        		if(parsedDataset.lasteid!=0) lasteid = parsedDataset.lasteid;
         			NetGlobal.members = parsedDataset.players;
         			for(int i=0;i<parsedDataset.messages.size();i++){
         				WaitingRoomActivity.messages.add(parsedDataset.messages.get(i).name+": "+parsedDataset.messages.get(i).msg);
@@ -71,6 +69,11 @@ public class RefreshGamePlayerlist implements Runnable{
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void start(){
+		refresh = true;
+		new Thread(this).start();
 	}
 	
 	public void stop(){

@@ -24,11 +24,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -133,16 +131,18 @@ public class WaitingRoomActivity extends Activity {
 			}
 		});
     	lobby.addFooterView(start);
-    }
-    
-    @Override
-    public void onResume(){
-    	super.onResume();
+    	
     	refreshPlayers = new RefreshGamePlayerlist(new Handler(), new Runnable(){
     		public void run(){
 				refreshPlayers();
 				refreshMessages();
     		}}, startGame);
+    }
+    
+    @Override
+    public void onResume(){
+    	super.onResume();
+    	refreshPlayers.start();
     }
     
     @Override
@@ -191,11 +191,8 @@ public class WaitingRoomActivity extends Activity {
     }
     
     private void sendMessage(TextView v){
-    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	final String username = prefs.getString("netUsername", "");
     	final String message = v.getText().toString();
     	if(!message.equals("")){
-			messages.add(username+": "+message);
         	v.setText("");
         	refreshMessages();
 		}
@@ -203,7 +200,7 @@ public class WaitingRoomActivity extends Activity {
     	new Thread(new Runnable(){
     		public void run(){
     			try {
-    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MSG&message=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(message,"UTF-8"));
+    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MSG&message=%s&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(message,"UTF-8"), refreshPlayers.lasteid);
     				URL url = new URL(lobbyUrl);
     				SAXParserFactory spf = SAXParserFactory.newInstance();
     	            SAXParser parser = spf.newSAXParser();
@@ -214,6 +211,11 @@ public class WaitingRoomActivity extends Activity {
     	            
     	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
     	        	if(!parsedDataset.error){
+    	        		if(parsedDataset.lasteid!=0) refreshPlayers.lasteid = parsedDataset.lasteid;
+    	        		NetGlobal.members = parsedDataset.players;
+            			for(int i=0;i<parsedDataset.messages.size();i++){
+            				WaitingRoomActivity.messages.add(parsedDataset.messages.get(i).name+": "+parsedDataset.messages.get(i).msg);
+            			}
     	        	}
     	        	else{
     	        		System.out.println(parsedDataset.getErrorMessage());

@@ -116,6 +116,7 @@ public class XMLHandler extends DefaultHandler{
     		}
     		else if(in_eventList){
     			if(localName.equals("event")){
+    				System.out.println(atts.getValue("eid"));
     				parsedDataset.lasteid = Integer.parseInt(atts.getValue("eid"));
     				
     				//Messages
