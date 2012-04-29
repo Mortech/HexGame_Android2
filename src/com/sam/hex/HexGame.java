@@ -165,6 +165,7 @@ public class HexGame extends Activity {
 	    Global.game.timer = new Timer(Global.game, Integer.parseInt(prefs.getString("timerPref", "0")),timerType);
 	    
 	    applyBoard();
+	    Global.game.timer.start();
 	    Global.game.start();
     }
     
