@@ -1,6 +1,7 @@
 package com.sam.hex.net;
 
 import java.util.ArrayList;
+import com.sam.hex.GameObject;
 
 public class NetGlobal{
 	//Our ids to connect to igGC
@@ -23,6 +24,10 @@ public class NetGlobal{
 	public static ArrayList<ParsedDataset.GameSession> sessions;
 	public static ArrayList<ParsedDataset.Member> members = new ArrayList<ParsedDataset.Member>();
 	public static boolean undoRequested = false;
+	
+	//Game object
+	public static GameObject game;
+	public static final int gameLocation = 2;
 	
 	//Unique identifier for each phone
 	public static String android_id;

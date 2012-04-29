@@ -4,7 +4,10 @@ import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
+import com.sam.hex.net.NetGlobal;
+import com.sam.hex.net.NetHexGame;
 import com.sam.hex.net.NetLobbyActivity;
+import com.sam.hex.net.WaitingRoomActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,21 +39,12 @@ public class StartUpActivity extends Activity {
             	startActivity(new Intent(getBaseContext(),Preferences.class));
             }
         });
-        
-        //Fourth button
-        final Button onlineButton = (Button) findViewById(R.id.onlineButton);
-        onlineButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
-            }
-        });
     }
     
     @Override
     public void onResume(){
     	super.onResume();
-
-    	final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	//Refresh first button
         final Button startButton = (Button) findViewById(R.id.startButton);
@@ -59,13 +53,31 @@ public class StartUpActivity extends Activity {
             	startActivity(new Intent(getBaseContext(),HexGame.class));
             }
         });
-        if(HexGame.somethingChanged(prefs) || HexGame.startNewGame){
+        if(HexGame.startNewGame || HexGame.somethingChanged(prefs, Global.gameLocation, Global.game)){
         	HexGame.startNewGame = true;
-        	Global.gameLocation=0;
         	startButton.setText(R.string.start);
     	}
         else{ 
         	startButton.setText(R.string.resume);
+        }
+        
+        //Refresh fourth button
+        final Button onlineButton = (Button) findViewById(R.id.onlineButton);
+        if(!WaitingRoomActivity.gameActive || HexGame.somethingChanged(prefs, NetGlobal.gameLocation, NetGlobal.game)){
+        	onlineButton.setText(R.string.online);
+        	onlineButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
+                }
+            });
+    	}
+        else{ 
+        	onlineButton.setText(R.string.resume);
+        	onlineButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                	startActivity(new Intent(getBaseContext(),NetHexGame.class));
+                }
+            });
         }
     }
 }

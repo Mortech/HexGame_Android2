@@ -14,11 +14,16 @@ import android.os.Environment;
 import android.text.InputType;
 import android.widget.EditText;
 
-import com.sam.hex.Global;
+import com.sam.hex.GameObject;
 import com.sam.hex.R;
 
 public class Save{
 	public static String fileName;
+	private GameObject game;
+	
+	public Save(GameObject game){
+		this.game = game;
+	}
 	
 	private void saveGame(String fileName){
     	Thread saving = new Thread(new ThreadGroup("Save"), new save(), "saving", 200000);
@@ -28,7 +33,7 @@ public class Save{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		showSavedDialog(Global.board.getContext().getString(R.string.saved));
+		showSavedDialog(game.board.getContext().getString(R.string.saved));
 	}
     
     class save implements Runnable{
@@ -43,16 +48,17 @@ public class Save{
 				}
 				try {
 					ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-					
-					outputStream.writeObject(Global.player1Type);
-					outputStream.writeObject(Global.player2Type);
-					outputStream.writeObject(Global.game.player1.getColor());
-					outputStream.writeObject(Global.game.player2.getColor());
-					outputStream.writeObject(Global.game.player1.getName());
-					outputStream.writeObject(Global.game.player2.getName());
-					outputStream.writeObject(Global.game.moveList);
-					outputStream.writeObject(Global.game.gridSize);
-					outputStream.writeObject(Global.game.moveNumber);
+
+					outputStream.writeObject(game.gridSize);
+					outputStream.writeObject(game.swap);
+					outputStream.writeObject(game.player1Type);
+					outputStream.writeObject(game.player2Type);
+					outputStream.writeObject(game.player1.getColor());
+					outputStream.writeObject(game.player2.getColor());
+					outputStream.writeObject(game.player1.getName());
+					outputStream.writeObject(game.player2.getName());
+					outputStream.writeObject(game.moveList);
+					outputStream.writeObject(game.moveNumber);
 					
 					outputStream.flush();
                     outputStream.close();
@@ -77,12 +83,12 @@ public class Save{
 	}
 	
 	public void showSavingDialog(){
-        final EditText editText = new EditText(Global.board.getContext());
+        final EditText editText = new EditText(game.board.getContext());
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         editText.setText(dateFormat.format(date) + "");
-        AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(game.board.getContext());
         builder     
         .setTitle("Enter a filename")
         .setView(editText)
@@ -93,15 +99,15 @@ public class Save{
     			saveGame(fileName);
     		}
         })
-        .setNegativeButton(Global.board.getContext().getString(R.string.cancel), null)
+        .setNegativeButton(game.board.getContext().getString(R.string.cancel), null)
         .show();
     }
 	
 	private void showSavedDialog(String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(Global.board.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(game.board.getContext());
         builder     
         .setTitle(message)
-        .setNeutralButton(Global.board.getContext().getString(R.string.okay), null)
+        .setNeutralButton(game.board.getContext().getString(R.string.okay), null)
         .show();
     }
 }

@@ -3,32 +3,33 @@ package com.sam.hex.lan;
 import android.graphics.Point;
 
 import com.sam.hex.GameAction;
-import com.sam.hex.Global;
+import com.sam.hex.GameObject;
 import com.sam.hex.PlayingEntity;
 
 public class LocalPlayerObject implements PlayingEntity {
 	private String name;
 	private int color;
 	private long timeLeft;
-	private byte team;
+	private int team;
 	private PlayerUnicastListener listener;
 	private Point hex;
+	private GameObject game;
 	
-	public LocalPlayerObject(byte team) {
-		this.team=team;//Set the player's team
-		listener = new PlayerUnicastListener(team);
+	public LocalPlayerObject(int team, GameObject game) {
+		this.team = team;
+		this.game = game;
+		listener = new PlayerUnicastListener(team,game);
 	}
 	
 	@Override
 	public void getPlayerTurn() {
-		if(Global.game.moveNumber>1){
+		if(game.moveNumber>1){
 			//Three times for reliability (I've really got to switch to tcp)
-			new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-			new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("Move: "+game.moveList.getmove().getX()+","+game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("Move: "+game.moveList.getmove().getX()+","+game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+			new LANMessage("Move: "+game.moveList.getmove().getX()+","+game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		}
 		
-		hex = null;
 		while (true) {
 			while (hex == null) {
 				try {
@@ -41,7 +42,7 @@ public class LocalPlayerObject implements PlayingEntity {
 				hex = null;
 				break;
 			}
-			else if (GameAction.makeMove(this, team, hex)) {
+			else if (GameAction.makeMove(this, (byte) team, hex, game)) {
 				hex = null;
 				break;
 			}
@@ -62,7 +63,7 @@ public class LocalPlayerObject implements PlayingEntity {
 	@Override
 	public boolean supportsUndo() {
 		//If they're Red, Blue played first, and that's the only move played so far, no, you cannot undo.
-		if(!(Global.game.moveNumber==2 && LANGlobal.localPlayer.firstMove)) new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		if(!(game.moveNumber==2 && LANGlobal.localPlayer.firstMove)) new LANMessage("Can I undo?", LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 		
 		return false;
 	}
@@ -86,9 +87,9 @@ public class LocalPlayerObject implements PlayingEntity {
 	
 	@Override
 	public void lose() {
-		new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
-		new LANMessage("Move: "+Global.game.moveList.getmove().getX()+","+Global.game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("Move: "+game.moveList.getmove().getX()+","+game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("Move: "+game.moveList.getmove().getX()+","+game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
+		new LANMessage("Move: "+game.moveList.getmove().getX()+","+game.moveList.getmove().getY(), LANGlobal.localPlayer.ip, LANGlobal.PLAYERPORT);
 	}
 
 	@Override

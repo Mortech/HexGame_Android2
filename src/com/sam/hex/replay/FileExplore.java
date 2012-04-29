@@ -5,18 +5,20 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 import com.sam.hex.DialogBox;
+import com.sam.hex.Global;
+import com.sam.hex.HexGame;
 import com.sam.hex.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
@@ -195,13 +197,14 @@ public class FileExplore extends Activity {
 	    	    	    	    public void onClick(DialogInterface dialog, int which) {
 	    	    	    	        switch (which){
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
-	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(), "loading", 200000);
+	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(Global.game), "loading", 200000);
 	    	    						loading.start();
 	    	    						try {
 	    	    							loading.join();
 	    	    						} catch (InterruptedException e) {
 	    	    							e.printStackTrace();
 	    	    						}
+	    	    						startActivity(new Intent(getBaseContext(),HexGame.class));
 	    	    			        	finish();
 	    	    	    	            break;
 	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
@@ -217,7 +220,7 @@ public class FileExplore extends Activity {
 		    	    	    	    case DialogInterface.BUTTON_NEUTRAL:
 		    	    	    	    	final EditText editText = new EditText(FileExplore.this);
 		    	    	    	        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-		    	    	    	        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(FileExplore.this, android.R.style.Theme_Light));
+		    	    	    	        AlertDialog.Builder builder = new AlertDialog.Builder(FileExplore.this);
 		    	    	    	        builder     
 		    	    	    	        .setTitle(chosenFile)
 		    	    	    	        .setView(editText)

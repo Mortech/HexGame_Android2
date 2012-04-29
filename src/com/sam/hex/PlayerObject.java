@@ -6,11 +6,13 @@ public class PlayerObject implements PlayingEntity {
 	private String name;
 	private int color;
 	private long timeLeft;
-	private byte team;
+	private int team;
 	private Point hex;
+	private GameObject game;
 	
-	public PlayerObject(byte i) {
-		this.team=i;//Set the player's team
+	public PlayerObject(int team, GameObject game) {
+		this.team=team;
+		this.game=game;
 	}
 	
 	@Override
@@ -28,7 +30,7 @@ public class PlayerObject implements PlayingEntity {
 				hex = null;
 				break;
 			}
-			if (GameAction.makeMove(this, team, hex)) {
+			if (GameAction.makeMove(this, (byte) team, hex, game)) {
 				hex = null;
 				break;
 			}

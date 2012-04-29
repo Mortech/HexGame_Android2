@@ -12,8 +12,8 @@ public class Timer implements Runnable{
 	public long totalTime;
 	private GameObject gameObject;
 	
-	public Timer(Handler handler, GameObject gameObject, long totalTime, int type){
-		this.handler = handler;
+	public Timer(GameObject gameObject, long totalTime, int type){
+		this.handler = gameObject.handler;
 		this.gameObject = gameObject;
 		this.totalTime = totalTime*60*1000;
 		this.type = type;
@@ -29,7 +29,7 @@ public class Timer implements Runnable{
 		if(type!=0){
 			handler.post(new Runnable(){
 				public void run(){
-					Global.timerText.setVisibility(View.VISIBLE);
+					gameObject.timerText.setVisibility(View.VISIBLE);
 				}
 			});
 			new Thread(this).start();
@@ -52,8 +52,8 @@ public class Timer implements Runnable{
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
-							Global.timerText.setText(GameAction.insert(Global.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
-							Global.timerText.invalidate();
+					        gameObject.timerText.setText(GameAction.insert(gameObject.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
+					        gameObject.timerText.invalidate();
 						}
 					});
 				}
@@ -70,8 +70,8 @@ public class Timer implements Runnable{
 					        int seconds = (int) (millis / 1000);
 					        int minutes = seconds / 60;
 					        seconds = seconds % 60;
-							Global.timerText.setText(GameAction.insert(Global.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
-							Global.timerText.invalidate();
+					        gameObject.timerText.setText(GameAction.insert(gameObject.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
+					        gameObject.timerText.invalidate();
 						}
 					});
 				}
@@ -82,7 +82,7 @@ public class Timer implements Runnable{
 			else{
 				handler.post(new Runnable(){
 					public void run(){
-						Global.timerText.setVisibility(View.GONE);
+						gameObject.timerText.setVisibility(View.GONE);
 					}
 				});
 			}

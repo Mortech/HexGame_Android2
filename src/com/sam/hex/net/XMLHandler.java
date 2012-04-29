@@ -133,7 +133,7 @@ public class XMLHandler extends DefaultHandler{
     				//Moves
     				else if(atts.getValue("type").equals("MOVE")){
     					String point = atts.getValue("data");
-    					parsedDataset.setMove(GameAction.stringToPoint(point));
+    					parsedDataset.setMove(GameAction.stringToPoint(point, NetGlobal.game));
     				}
     				
     				//Undo

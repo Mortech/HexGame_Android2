@@ -4,10 +4,8 @@ import android.graphics.Color;
 
 import sl.shapes.RegularPolygon;
 
-
 public class RegularPolygonGameObject {
-
-	RegularPolygon Hex;
+	private RegularPolygon Hex;
 	private byte teamNumber=0; // 1 is left-right, 2 is top-down
 	private int objectColor = Color.WHITE;
 	boolean checkedflage = false;
@@ -15,23 +13,25 @@ public class RegularPolygonGameObject {
 	double y;
 	double radius;
 
-	
 	public RegularPolygonGameObject() {
 		x=0;
 		y=0;
 		radius=0;
 	}
+	
 	public RegularPolygonGameObject(double x, double y, double r) {
 		this.x=x;
 		this.y=y;
 		radius=r;
 	}
+	
 	public void set(double x, double y, double r){
 		this.x=x;
 		this.y=y;
 		radius=r;
 		update(x,y,r,6, Math.PI / 2);
 	}
+	
 	public RegularPolygonGameObject(double x, double y, double r, int vertexCount) {
 		Hex = new RegularPolygon(x, y, r, vertexCount);
 	}
@@ -43,12 +43,12 @@ public class RegularPolygonGameObject {
 	public void update(double x, double y, double r, int vertexCount, double startAngle) {
 		Hex = new RegularPolygon(x, y, r, vertexCount, startAngle);
 	}
-	public void setTeam(byte t) {
+	public void setTeam(byte t, GameObject game) {
 		teamNumber = t;
 		if (teamNumber == 1)
-			setColor(Global.game.player1.getColor());
+			setColor(game.player1.getColor());
 		else if(teamNumber==2)
-			setColor(Global.game.player2.getColor());
+			setColor(game.player2.getColor());
 		else
 			setColor(Color.WHITE);
 	}
@@ -176,7 +176,7 @@ public class RegularPolygonGameObject {
 		
 	}
 	
-	public static void colorPath(int x,int y, String path){
+	public static void colorPath(int x,int y, String path, GameObject game){
 		while (path!=null&&path.length()!=0){
 			switch (posDir.valueOf(path.substring(0,2))){
 			 //ud=y-1 & x+1  dd = y+1 & x-1  uy=y-1 dy=y+1 lx=x-1 rx=x+1
@@ -187,7 +187,7 @@ public class RegularPolygonGameObject {
 			case dd:  y+=1; x-=1;break;
 			case ud:  y-=1; x+=1; break;
 			}
-			Global.game.gamePiece[x][y].setColor(Color.GREEN);
+			game.gamePiece[x][y].setColor(Color.GREEN);
 			path=path.substring(2,path.length());
 		} System.out.println("done");
 	}

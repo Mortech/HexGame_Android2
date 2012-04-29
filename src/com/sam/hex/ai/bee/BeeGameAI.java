@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import android.graphics.Point;
 
 import com.sam.hex.GameAction;
+import com.sam.hex.GameObject;
 import com.sam.hex.Global;
 import com.sam.hex.PlayerObject;
 import com.sam.hex.PlayingEntity;
@@ -28,17 +29,19 @@ public class BeeGameAI implements PlayingEntity
     private String name;
 	private int color;
 	private long timeLeft;
+	private GameObject game;
 
     /** Constructor for the Bee object
     *@param game    the currently running game
     *@param board   the board that stores the currently running game
     *@param colour  the colour of Bee
     */
-    public BeeGameAI (int team)
+    public BeeGameAI (int team, GameObject game)
     {
 	    this.team = team;
+	    this.game = game;
 		// Creates the pieces array that stores the board inside Bee
-	    gridSize = Global.game.gridSize;
+	    gridSize = game.gridSize;
 		pieces = new int [gridSize + 2] [gridSize + 2];
 		for (int i = 1 ; i < pieces.length - 1 ; i++)
 		{
@@ -74,11 +77,11 @@ public class BeeGameAI implements PlayingEntity
     	skipMove = false;
     	AIHistoryObject state = new AIHistoryObject(pieces, lookUpTable);
 		history.add(state);
-		int moveNumber = Global.game.moveNumber;
+		int moveNumber = game.moveNumber;
     	
 	    Point lastMove;
 		try{
-			if(moveNumber>1) lastMove = new Point(gridSize-1-Global.game.moveList.getmove().getY(), Global.game.moveList.getmove().getX());
+			if(moveNumber>1) lastMove = new Point(gridSize-1-game.moveList.getmove().getY(), game.moveList.getmove().getX());
 			else lastMove=null;
 		}
 		catch(Exception e){
@@ -90,7 +93,7 @@ public class BeeGameAI implements PlayingEntity
 		if (lastMove == null)
 		{
 		    pieces [pieces.length / 2] [pieces.length / 2] = team;
-		    if(!skipMove) GameAction.makeMove(this, (byte) team, new Point(pieces.length / 2 - 1, pieces.length / 2 - 1));
+		    if(!skipMove) GameAction.makeMove(this, (byte) team, new Point(pieces.length / 2 - 1, pieces.length / 2 - 1), game);
 		}
 		// If a move has been made already,
 		// Bee records the move in the pieces array
@@ -105,7 +108,7 @@ public class BeeGameAI implements PlayingEntity
 		    int x = bestMove.x - 1;
 		    int y = bestMove.y - 1;
 		    
-		    if(!skipMove) GameAction.makeMove(this, (byte) team, new Point(y, gridSize-1-x));
+		    if(!skipMove) GameAction.makeMove(this, (byte) team, new Point(y, gridSize-1-x), game);
 		    System.out.println("My move: "+new Point(x,y));
 		}
 	}
@@ -131,10 +134,10 @@ public class BeeGameAI implements PlayingEntity
 	@Override
 	public boolean supportsUndo() {
 		if(team==1){
-			return Global.game.player2 instanceof PlayerObject;
+			return game.player2 instanceof PlayerObject;
 		}
 		else{
-			return Global.game.player1 instanceof PlayerObject;
+			return game.player1 instanceof PlayerObject;
 		}
 	}
 

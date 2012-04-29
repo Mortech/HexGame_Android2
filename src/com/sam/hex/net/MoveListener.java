@@ -18,7 +18,7 @@ import android.os.Handler;
 
 import com.sam.hex.DialogBox;
 import com.sam.hex.GameAction;
-import com.sam.hex.Global;
+import com.sam.hex.GameObject;
 import com.sam.hex.R;
 
 public class MoveListener implements Runnable{
@@ -31,7 +31,9 @@ public class MoveListener implements Runnable{
 	private String session_id;
 	private int sid;
 	private int lasteid;
-	public MoveListener(Handler handler, Runnable newgame, NetPlayerObject player, String server, int uid, String session_id, int sid){
+	private GameObject game;
+	public MoveListener(GameObject game, Handler handler, Runnable newgame, NetPlayerObject player, String server, int uid, String session_id, int sid){
+		this.game = game;
 		this.handler = handler;
 		this.newgame = newgame;
 		this.player = player;
@@ -59,15 +61,15 @@ public class MoveListener implements Runnable{
 	        	if(!parsedDataset.error){
 	        		player.setMove(parsedDataset.getMove());
         			if(parsedDataset.undoRequested){
-        				new DialogBox(Global.board.getContext(), 
-    	    					GameAction.insert(Global.board.getContext().getString(R.string.LANUndo), player.getName()), 
+        				new DialogBox(game.board.getContext(), 
+    	    					GameAction.insert(game.board.getContext().getString(R.string.LANUndo), player.getName()), 
     	    					new DialogInterface.OnClickListener() {
     	    	    	    	    public void onClick(DialogInterface dialog, int which) {
     	    	    	    	        switch (which){
     	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
     	    	    	    	            //Yes button clicked
     	    	    		    			NetGlobal.undoRequested = true;
-    	    	    	    	        	GameAction.undo();
+    	    	    	    	        	GameAction.undo(NetGlobal.gameLocation,NetGlobal.game);
     	    	    	    	        	try {
     	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ACCEPT", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
 												new URL(undoUrl).openStream();
@@ -91,15 +93,15 @@ public class MoveListener implements Runnable{
     	    	    	    	        }
     	    	    	    	    }
     	    	    	    	}, 
-    	    					Global.board.getContext().getString(R.string.yes), 
-    	    					Global.board.getContext().getString(R.string.no));
+    	    					game.board.getContext().getString(R.string.yes), 
+    	    					game.board.getContext().getString(R.string.no));
         			}
     				if(parsedDataset.undoAccepted){
-    					GameAction.undo();
-	    				new DialogBox(Global.board.getContext(), 
-		    					Global.board.getContext().getString(R.string.LANundoAccepted), 
+    					GameAction.undo(NetGlobal.gameLocation,NetGlobal.game);
+	    				new DialogBox(game.board.getContext(), 
+		    					game.board.getContext().getString(R.string.LANundoAccepted), 
 		    					null, 
-		    					Global.board.getContext().getString(R.string.okay));
+		    					game.board.getContext().getString(R.string.okay));
     				}
     				if(parsedDataset.restart){
     					handler.post(newgame);

@@ -2,6 +2,8 @@ package com.sam.hex.lan;
 
 import java.util.ArrayList;
 
+import com.sam.hex.GameObject;
+
 public class LANGlobal {
 	public static ArrayList<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
 	public static LocalNetworkObject localPlayer = new LocalNetworkObject();
@@ -22,4 +24,7 @@ public class LANGlobal {
 	public static int gridSize;
 	
 	public static int undoNumber = 0;
+	
+	public static final int gameLocation = 1;
+	public static GameObject game;
 }

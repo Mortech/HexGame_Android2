@@ -10,12 +10,12 @@ public class MoveList implements Serializable {
 		
 	}
 	
-	public MoveList(int x, int y, byte teamNumber, long time){
-		thisMove= new Move(x,y,teamNumber, time, Global.game.moveNumber);
+	public MoveList(int x, int y, byte teamNumber, long time, int moveNumber){
+		thisMove= new Move(x,y,teamNumber, time, moveNumber);
 	}
 	
-	public MoveList(MoveList oldMove, int x, int y, byte teamNumber, long time){
-		thisMove= new Move(x,y,teamNumber, time, Global.game.moveNumber);
+	public MoveList(MoveList oldMove, int x, int y, byte teamNumber, long time, int moveNumber){
+		thisMove= new Move(x,y,teamNumber, time, moveNumber);
 		nextMove=oldMove;
 	}
 	public MoveList(MoveList oldMove, Move thisMove){
@@ -27,32 +27,20 @@ public class MoveList implements Serializable {
 	}
 	/* do not use makeMove might not work with
 	 * base cases and is not tested*/
-	public void makeMove(int x, int y, byte teamNumber, long time){
+	public void makeMove(int x, int y, byte teamNumber, long time, int moveNumber){
 		nextMove=new MoveList(nextMove, thisMove);
-		thisMove= new Move(x, y, teamNumber, time, Global.game.moveNumber);
-	}
-	public void undo(){
-		if (thisMove==null) return; 
-		Global.game.gamePiece[thisMove.getX()][thisMove.getY()].setTeam((byte) 0);
-		thisMove=nextMove.thisMove;
-		nextMove=nextMove.nextMove;
-		
-	}
-	public void undoTwo(){
-		if (thisMove==null)return;
-		nextMove.undo();
-		undo();
+		thisMove= new Move(x, y, teamNumber, time, moveNumber);
 	}
 	//for replays
-	public void replay(int time){
+	public void replay(int time, GameObject game){
 		if (thisMove==null) return;
-		if (nextMove!=null) nextMove.replay(time);
+		if (nextMove!=null) nextMove.replay(time, game);
 		try {
 			if(HexGame.replayRunning) Thread.sleep(time);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		Global.game.gamePiece[thisMove.getX()][thisMove.getY()].setTeam(thisMove.getTeam());
-		Global.board.postInvalidate();
+		game.gamePiece[thisMove.getX()][thisMove.getY()].setTeam(thisMove.getTeam(),game);
+		game.board.postInvalidate();
 	}	
 }

@@ -16,7 +16,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.sam.hex.Global;
-import com.sam.hex.HexGame;
 import com.sam.hex.Preferences;
 import com.sam.hex.R;
 
@@ -136,9 +135,8 @@ public class WaitingRoomActivity extends Activity {
     	refreshPlayers = new RefreshGamePlayerlist(new Handler(), new Runnable(){
     		public void run(){
     			if(gameActive){
-    		        Global.gameLocation = 2;
-    		        HexGame.startNewGame = true;
-        			startActivity(new Intent(getBaseContext(),HexGame.class));
+    		        NetHexGame.startNewGame = true;
+        			startActivity(new Intent(getBaseContext(),NetHexGame.class));
 		        	finish();
         		}
     			else{

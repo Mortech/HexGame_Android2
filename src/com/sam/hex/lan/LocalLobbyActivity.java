@@ -57,7 +57,6 @@ public class LocalLobbyActivity extends Activity {
     };
     final Runnable startGame = new Runnable() {
         public void run() {
-        	Global.gameLocation=1;
         	HexGame.startNewGame = true;
         	startActivity(new Intent(getBaseContext(),HexGame.class));
         	finish();
@@ -101,13 +100,11 @@ public class LocalLobbyActivity extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 0){
     		//Go into a normal game
-    		Global.gameLocation = 0;
         	startActivity(new Intent(getBaseContext(),HexGame.class));
         	finish();
     	}
         else if(Integer.decode(prefs.getString("gameLocation", "0")) != Global.gameLocation && Integer.decode(prefs.getString("gameLocation", "0")) == 2){
     		//Go to the local lobby
-    		Global.gameLocation = 2;
         	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
         	finish();
     	}
