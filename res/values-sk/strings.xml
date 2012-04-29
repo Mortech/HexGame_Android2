@@ -13,6 +13,10 @@
     <string name="gameSizeSummary">Vyberte veľkosť hernej plochy (Momentálna: 7x7)</string>
     <string name="gameSizeSummary_onChange">Vyberte veľkosť hernej plochy (Momentálna: #x#)</string>
     <string name="customGameSizeSummary">Vložte veľkosť mriežky (Napr. 9)</string>
+    <string name="swapTitle">Swap</string>
+    <string name="swapSummary">Allow the second player to swap places during their first move</string>
+    <string name="timerTitle">Timer</string>
+    <string name="timerSummary">Limit the amount of time a player has (in minutes)</string>
     
     <string name="player1NameTitle">Meno hráča č.1</string>
     <string name="player1NameSummary">Meno: Hráč1</string>
@@ -52,6 +56,7 @@
     <!-- Buttons from top to bottom -->
     <string name="start">Začať novú hru</string>
     <string name="resume">Vrátiť sa do hry</string>
+    <string name="online">Play Online</string>
     <string name="rules">Ako hrať?</string>
     <string name="options">Nastavenia</string>
     
@@ -66,6 +71,8 @@
     
     <!-- In game notifications -->
     <string name="winner"># vyhral!</string>
+    <string name="timer">Time Left: #</string>
+    <string name="saved">Saved!</string>
     
     <!-- Game instructions -->
     <string name="instructions">Hes hrajú dvaja hráči, ktorí otáčajú tabličky naopak a umiestňujú ich na hracej doske. Hráči majú rozdielne farby (červená a modrá).  \n\n
@@ -73,6 +80,7 @@
     
     <!-- Quit -->
     <string name="confirmExit">Chcete skutočne skončiť?</string>
+    <string name="confirmNewgame">Do you want to start a new game?</string>
     
     <!-- Local lobby -->
     <string name="local">Lokálne</string>
@@ -92,10 +100,42 @@
     <string name="wifiOff">Wifi je vypnutý. Zapnúť?</string>
     <string name="yourIP">Vaša ip adresa je: #</string>
     <string name="yourIPWarning">Toto je tvoja vlastná adresa</string>
+    
+    <!-- Net play -->
+    <string name="cantConnect">Can\'t connect to the internet. Want to try wifi?</string>
+    
+    <string name="net">Net Lobby</string>
+    <string name="createBoard">Create a Game Board</string>
+    <string name="position">Position</string>
+    <string name="waiting">Waiting…</string>
+    <string name="active">Active</string>
+    
+    <string name="register">Register</string>
+    <string name="field_username">Username (required):</string>
+    <string name="field_password">Password (required):</string>
+    <string name="field_email">Email:</string>
+    <string name="field_birthday">Birthday:</string>
+    <string name="field_about">About:</string>
+    
+    <string name="login">Login</string>
+    <string name="login_field_username">Username:</string>
+    <string name="login_field_password">Password:</string>
+    <string name="loginFailed">We couldn\'t log you in</string>
+    
+    <string name="waitingroom">Waiting Room</string>
+    <string name="sendAMessage">Send a message</string>
+    <string name="ready">Ready</string>
+    <string name="unready">Unready</string>
+    
+    <!-- Dialog Options -->
     <string name="yes">Áno</string>
     <string name="no">Nie</string>
     <string name="enter">Vstúpiť</string>
     <string name="okay">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
     
     <!-- Color Picker -->
     <string name="dialog_color_picker">Výber farby</string>

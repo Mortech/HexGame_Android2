@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Please note, # represents a variable. For example, # wins will write out Alex wins (or whatever their name is) -->
+    
     <!-- Application name -->
     <string name="app_name"> Hex </string>
     
@@ -9,40 +11,52 @@
     <string name="gameLocationSummary"> воспроизведения на одном устройстве, по локальной сети или через Интернет </string>
     <string name="gameSizeTitle"> игры Размер </string>
     <string name="gameSizeSummary"> выбор размера игрового поля (ток: 7x7) </string>
-    <string name="gameSizeSummary_onChange"> выбор размера игрового поля (ток: </string>
+    <string name="gameSizeSummary_onChange"> выбор размера игрового поля (ток: #x#)</string>
     <string name="customGameSizeSummary"> Введите размер сетки (Исх. 9) </string>
+    <string name="swapTitle">Swap</string>
+    <string name="swapSummary">Allow the second player to swap places during their first move</string>
+    <string name="timerTitle">Timer</string>
+    <string name="timerSummary">Limit the amount of time a player has (in minutes)</string>
+    
     <string name="player1NameTitle"> Игрок1 \"Имя </string>
     <string name="player1NameSummary"> Имя: Player1 </string>
-    <string name="player1NameSummary_onChange"> Имя: </string>
+    <string name="player1NameSummary_onChange"> Имя: #</string>
     <string name="player1TypeTitle"> Игрок1 \'ы типа </string>
     <string name="player1TypeSummary"> Переключение между игроком и компьютером </string>
     <string name="player1ColorTitle"> Игрок1 \'ы Цвет </string>
     <string name="player1ColorSummary"> Выберите цвет для Player1 </string>
+    
     <string name="player2NameTitle"> Игрок2 \"Имя </string>
     <string name="player2NameSummary"> Имя: Игрок2 </string>
-    <string name="player2NameSummary_onChange"> Имя: </string>
+    <string name="player2NameSummary_onChange"> Имя: #</string>
     <string name="player2TypeTitle"> Игрок2 \'ы типа </string>
     <string name="player2TypeSummary"> Переключение между игроком и компьютером </string>
     <string name="player2ColorTitle"> Игрок2 \'ы Цвет </string>
     <string name="player2ColorSummary"> Выберите цвет для Игрок2 </string>
-    <string name="replayTitle"> Replay </string>
-    <string name="replaySummary"> Replay текущей игры </string>
-    <string name="loadReplayTitle"> Загрузить Replay </string>
-    <string name="loadReplaySummary"> Загрузка воспроизведение с карты памяти SD </string>
+    
+    <string name="lanPlayerNameTitle">Player\'s Name</string>
+    <string name="lanPlayerNameSummary">Name: Player</string>
+    <string name="lanPlayerNameSummary_onChange">Name: #</string>
+    <string name="lanPlayerTypeTitle">Player\'s Type</string>
+    <string name="lanPlayerTypeSummary">Switch between Player and Computer</string>
+    <string name="lanPlayerColorTitle">Player\'s Color</string>
+    <string name="lanPlayerColorSummary">Pick a color for Player</string>
+    
+    <string name="netUsernameTitle">Username</string>
+    <string name="netUsernameSummary">Username to sign into igGC</string>
+    <string name="netPasswordTitle">Password</string>
+    <string name="netPasswordSummary">Password to sign into igGC</string>
+    
     <string name="resetTitle"> Восстановить значения по умолчанию </string>
     <string name="resetSummary"> Сброс всех настроек к значениям по умолчанию </string>
     
-    <!-- Local lobby -->
-    <string name="local"> Местное лобби </string>
-    <string name="customIP"> Введите IP непосредственно </string>
-    
     <!-- Main page -->
     <string name="frontpage"> Добро пожаловать в Hex </string>
-    <string name="frontpage2"> Добро пожаловать в Hex </string>
     
     <!-- Buttons from top to bottom -->
     <string name="start"> Start Game </string>
     <string name="resume"> возобновления игры </string>
+    <string name="online">Play Online</string>
     <string name="rules"> Как играть </string>
     <string name="options"> параметры </string>
     
@@ -55,9 +69,73 @@
     <string name="settings"> Настройки </string>
     <string name="quit"> Quit </string>
     
+    <!-- In game notifications -->
+    <string name="winner"># wins!</string>
+    <string name="timer">Time Left: #</string>
+    <string name="saved">Saved!</string>
+    
     <!-- Game instructions -->
     <string name="instructions"> Hex играют два игрока, которые по очереди размещение фигур на доске. Игроки имеют разные цвета, например красный и синий. (Игроки сами иногда называют красный и синий), четырех краев платы окрашены в те же цвета, таким образом, что параллельные ребра имеют одинаковый цвет. Красный выигрывает, если он может создать непрерывную цепь между двумя красными краями и синим выигрывает, если он может построить такую ​​цепочку между синими краями. \n \n
         (Взято из <a href="http://www.hexwiki.org/index.php?title=Rules"> hexwiki.org </a>) </string>
+    
+    <!-- Confirmation -->
+    <string name="confirmExit">Are you sure you want to exit?</string>
+    <string name="confirmNewgame">Do you want to start a new game?</string>
+    
+    <!-- Local lobby -->
+    <string name="local">Local Lobby</string>
+    <string name="customIP">Enter an IP directly</string>
+    
+    <!-- LAN play -->
+    <string name="challenger"># challenges you. Accept?</string>
+    <string name="sendChallenge">Do you want to challenge #?</string>
+    <string name="challengeSent">Challenge sent</string>
+    <string name="newLANGame"># wants to play a new game. Accept?</string>
+    <string name="LANUndo"># wants to undo. Accept?</string>
+    <string name="LANplayAgain">The other player agreed to a new game.</string>
+    <string name="LANdontPlayAgain">The other player denied a new game.</string>
+    <string name="LANundoAccepted">The other player allowed an undo.</string>
+    <string name="LANundoDenied">The other player denied an undo.</string>
+    <string name="playerQuit">The other player left the game.</string>
+    <string name="wifiOff">Wifi is off. Enable?</string>
+    <string name="yourIP">Your ip address is: #</string>
+    <string name="yourIPWarning">That\'s your own ip</string>
+    
+    <!-- Net play -->
+    <string name="cantConnect">Can\'t connect to the internet. Want to try wifi?</string>
+    
+    <string name="net">Net Lobby</string>
+    <string name="createBoard">Create a Game Board</string>
+    <string name="position">Position</string>
+    <string name="waiting">Waiting…</string>
+    <string name="active">Active</string>
+    
+    <string name="register">Register</string>
+    <string name="field_username">Username (required):</string>
+    <string name="field_password">Password (required):</string>
+    <string name="field_email">Email:</string>
+    <string name="field_birthday">Birthday:</string>
+    <string name="field_about">About:</string>
+    
+    <string name="login">Login</string>
+    <string name="login_field_username">Username:</string>
+    <string name="login_field_password">Password:</string>
+    <string name="loginFailed">We couldn\'t log you in</string>
+    
+    <string name="waitingroom">Waiting Room</string>
+    <string name="sendAMessage">Send a message</string>
+    <string name="ready">Ready</string>
+    <string name="unready">Unready</string>
+    
+    <!-- Dialog Options -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="enter">Enter</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
     
     <!-- Color Picker -->
     <string name="dialog_color_picker"> Палитра цветов </string>
