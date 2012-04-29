@@ -86,7 +86,6 @@ public class XMLHandler extends DefaultHandler{
     	else if(in_handlerData){
     		//Game status
     		if(localName.equals("sessionInfo")){
-    			System.out.println(atts.getValue("status"));
     			if(atts.getValue("status").equals("INIT")){
     				parsedDataset.gameActive = false;
     			}

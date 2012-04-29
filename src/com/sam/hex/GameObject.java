@@ -67,11 +67,11 @@ public class GameObject implements Runnable {
 	}
 	
 	public void stop(){
-		game=false;
-		gameOver=true;
 		timer.stop();
 		player1.quit();
 		player2.quit();
+		game=false;
+		gameOver=true;
 	}
 	
 	public void run() {

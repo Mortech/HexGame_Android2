@@ -1,6 +1,13 @@
 package com.sam.hex;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import com.sam.hex.lan.LANGlobal;
+import com.sam.hex.lan.LocalPlayerObject;
+import com.sam.hex.net.NetGlobal;
+import com.sam.hex.net.NetPlayerObject;
 
 import android.graphics.Point;
 import android.view.View;
@@ -139,7 +146,7 @@ public class GameAction {
 			}
 			else if(gameLocation==1){//Inside a LAN game
 				if(game.currentPlayer==1){//First player's turn
-					if(LANGlobal.localPlayer.firstMove){//First player is on the network (not local)
+					if(game.player1 instanceof LocalPlayerObject){//First player is on the network (not local)
 						if(LANGlobal.undoRequested){//First player requested the undo
 							//undo twice, don't switch players
 							if(game.moveNumber>1){
@@ -173,7 +180,7 @@ public class GameAction {
 					}
 				}
 				else{//Second player's turn
-					if(LANGlobal.localPlayer.firstMove){//Second player is local (not on the network)
+					if(game.player2 instanceof LocalPlayerObject){//Second player is local (not on the network)
 						if(LANGlobal.undoRequested){//First player requested the undo
 							//undo once, switch players
 							getPlayer(game.currentPlayer, game).endMove();
@@ -208,6 +215,78 @@ public class GameAction {
 				}
 				
 				LANGlobal.undoRequested = false;
+			}
+			else if(gameLocation==2){//Inside a net game
+				if(game.currentPlayer==1){//First player's turn
+					if(game.player1 instanceof NetPlayerObject){//First player is on the network (not local)
+						if(NetGlobal.undoRequested){//First player requested the undo
+							//undo twice, don't switch players
+							if(game.moveNumber>1){
+								lastMove = game.moveList.thisMove;
+								game.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0,game);
+								game.moveList = game.moveList.nextMove;
+								game.moveNumber--;
+							}
+							if(game.gameOver) game.currentPlayer = (game.currentPlayer%2)+1;
+						}
+						else{//Second player requested the undo
+							//undo once, switch players
+							GameAction.getPlayer(game.currentPlayer, game).endMove();
+						}
+					}
+					else{//First player is local (not on the network)
+						if(NetGlobal.undoRequested){//Second player requested the undo
+							//undo once, switch players
+							getPlayer(game.currentPlayer, game).endMove();
+						}
+						else{//First player requested the undo
+							//undo twice, don't switch players
+							if(game.moveNumber>1){
+								lastMove = game.moveList.thisMove;
+								game.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0,game);
+								game.moveList = game.moveList.nextMove;
+								game.moveNumber--;
+							}
+							if(game.gameOver) game.currentPlayer = (game.currentPlayer%2)+1;
+						}
+					}
+				}
+				else{//Second player's turn
+					if(game.player2 instanceof NetPlayerObject){//Second player is local (not on the network)
+						if(NetGlobal.undoRequested){//First player requested the undo
+							//undo once, switch players
+							getPlayer(game.currentPlayer, game).endMove();
+						}
+						else{//Second player requested the undo
+							//undo twice, don't switch players
+							if(game.moveNumber>1){
+								lastMove = game.moveList.thisMove;
+								game.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0,game);
+								game.moveList = game.moveList.nextMove;
+								game.moveNumber--;
+							}
+							if(game.gameOver) game.currentPlayer = (game.currentPlayer%2)+1;
+						}
+					}
+					else{//Second player is on the network (not local)
+						if(NetGlobal.undoRequested){//Second player requested the undo
+							//undo twice, don't switch players
+							if(game.moveNumber>1){
+								lastMove = game.moveList.thisMove;
+								game.gamePiece[lastMove.getX()][lastMove.getY()].setTeam((byte)0,game);
+								game.moveList = game.moveList.nextMove;
+								game.moveNumber--;
+							}
+							if(game.gameOver) game.currentPlayer = (game.currentPlayer%2)+1;
+						}
+						else{//First player requested the undo
+							//undo once, switch players
+							GameAction.getPlayer(game.currentPlayer, game).endMove();
+						}
+					}
+				}
+				
+				NetGlobal.undoRequested = false;
 			}
 			
 			//Reset the game if it's already ended
@@ -267,4 +346,18 @@ public class GameAction {
 		
 		return new Point(x, alphabet.indexOf(y));
 	}
+	
+	public static String md5(String s) {
+		MessageDigest digest;
+	    try {
+	        digest = MessageDigest.getInstance("MD5");
+	        digest.update(s.getBytes(),0,s.length());
+	        String hash = new BigInteger(1, digest.digest()).toString(16);
+	        return hash;
+	    } catch (NoSuchAlgorithmException e) {
+	        e.printStackTrace();
+	    }
+	    return "";
+	}
+
 }

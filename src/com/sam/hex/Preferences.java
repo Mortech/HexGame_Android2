@@ -34,6 +34,7 @@ public class Preferences extends PreferenceActivity {
 	Preference resetPref;
 	Preference gridPref;
 	Preference timerPref;
+	Preference passwordPref;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class Preferences extends PreferenceActivity {
     class nameListener implements OnPreferenceChangeListener{        
         @Override
         public boolean onPreferenceChange(Preference pref, Object newValue) {
-            pref.setSummary(getApplicationContext().getString(R.string.player2NameSummary_onChange)+" "+newValue.toString());
+            pref.setSummary(GameAction.insert(getApplicationContext().getString(R.string.player2NameSummary_onChange),newValue.toString()));
             return true;
         }
     }
@@ -132,6 +133,14 @@ public class Preferences extends PreferenceActivity {
         }
     }
     
+    class passwordListener implements OnPreferenceChangeListener{        
+        @Override
+        public boolean onPreferenceChange(Preference pref, Object newValue) {
+        	settings.edit().putString("netPassword", GameAction.md5((String) newValue)).commit();
+            return false;
+        }
+    }
+    
     @Override
     public void onResume(){
     	super.onResume();
@@ -173,9 +182,16 @@ public class Preferences extends PreferenceActivity {
         	gridPref.setOnPreferenceChangeListener(new gridListener());
         }
         
+        //Give that custom popup for timers
         timerPref = findPreference("timerOptionsPref");
         if(timerPref!=null){
 	        timerPref.setOnPreferenceClickListener(new timerListener());
+        }
+        
+        //Encrypt the password
+        passwordPref = findPreference("visibleNetPassword");
+        if(passwordPref!=null){
+	        passwordPref.setOnPreferenceChangeListener(new passwordListener());
         }
     }
     
@@ -212,7 +228,8 @@ public class Preferences extends PreferenceActivity {
         	
         	//Hide hidden preferences
         	PreferenceCategory general = (PreferenceCategory) findPreference("netPlayerCategory");
-            general.removePreference(findPreference("netPosition"));
+        	general.removePreference(findPreference("netPassword"));
+        	general.removePreference(findPreference("netPosition"));
             general.removePreference(findPreference("netGridSize"));
         }
     	addPreferencesFromResource(R.layout.preferences_reset);

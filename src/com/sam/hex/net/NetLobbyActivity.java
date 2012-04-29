@@ -111,7 +111,7 @@ public class NetLobbyActivity extends Activity {
     			@Override
     			public void run() {
     				try {
-                		String loginUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s&networkuid=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(prefs.getString("netUsername", ""),"UTF-8"), URLEncoder.encode(prefs.getString("netPassword", ""),"UTF-8"), URLEncoder.encode(NetGlobal.android_id,"UTF-8"));
+                		String loginUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s&networkuid=%s&md5=1", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(prefs.getString("netUsername", ""),"UTF-8"), URLEncoder.encode(prefs.getString("netPassword", ""),"UTF-8"), URLEncoder.encode(NetGlobal.android_id,"UTF-8"));
     					URL url = new URL(loginUrl);
     					SAXParserFactory spf = SAXParserFactory.newInstance();
     	                SAXParser parser = spf.newSAXParser();

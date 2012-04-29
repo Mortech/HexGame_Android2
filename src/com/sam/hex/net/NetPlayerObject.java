@@ -43,17 +43,6 @@ public class NetPlayerObject implements PlayingEntity {
 		this.sid = NetGlobal.sid;
 		this.listener = new MoveListener(game, team, handler, newgame, this, server, uid, session_id, sid);
 	}
-	
-	public NetPlayerObject(int team, GameObject game, Handler handler, Runnable newgame, LinkedList<Point> hex) {
-		this.team = team;
-		this.game = game;
-		this.server = NetGlobal.server;
-		this.uid = NetGlobal.uid;
-		this.session_id = NetGlobal.session_id;
-		this.sid = NetGlobal.sid;
-		this.listener = new MoveListener(game, team, handler, newgame, this, server, uid, session_id, sid);
-		this.hex = hex;
-	}
 
 	@Override
 	public void getPlayerTurn() {

@@ -12,6 +12,12 @@
 	        <EditTextPreference
 	            android:title="@string/netPasswordTitle"
 	            android:summary="@string/netPasswordSummary"
+	            android:key="visibleNetPassword"
+	            android:defaultValue=""
+	            android:inputType="textPassword" />
+	        <EditTextPreference
+	            android:title="@string/netPasswordTitle"
+	            android:summary="@string/netPasswordSummary"
 	            android:key="netPassword"
 	            android:defaultValue=""
 	            android:inputType="textPassword" />

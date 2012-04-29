@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.sam.hex.DialogBox;
+import com.sam.hex.GameAction;
 import com.sam.hex.R;
 
 import android.app.Activity;
@@ -53,14 +54,15 @@ public class LoginActivity extends Activity {
         final EditText username = (EditText) findViewById(R.id.username);
         username.setText(settings.getString("netUsername", ""));
         final EditText password = (EditText) findViewById(R.id.password);
-        password.setText(settings.getString("netPassword", ""));
         enter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	new Thread(new Runnable(){
 					@Override
 					public void run() {
 						try {
-		            		String registrationUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(username.getText().toString(),"UTF-8"), URLEncoder.encode(password.getText().toString(),"UTF-8"));
+							String encryptedPassword = GameAction.md5(password.getText().toString());
+		            		String registrationUrl = String.format("http://www.iggamecenter.com/api_login.php?app_id=%s&app_code=%s&login=%s&password=%s&md5=1", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), URLEncoder.encode(username.getText().toString(),"UTF-8"), URLEncoder.encode(encryptedPassword,"UTF-8"));
+		            		System.out.println(registrationUrl);
 		            		URL url = new URL(registrationUrl);
 							SAXParserFactory spf = SAXParserFactory.newInstance();
 			                SAXParser parser = spf.newSAXParser();
@@ -72,7 +74,7 @@ public class LoginActivity extends Activity {
 			                ParsedDataset parsedDataset = handler.getParsedData();
 			            	if(!parsedDataset.error){
 				            	settings.edit().putString("netUsername", username.getText().toString()).commit();
-				            	settings.edit().putString("netPassword", password.getText().toString()).commit();
+				            	settings.edit().putString("netPassword", encryptedPassword).commit();
 				            	
 				            	startActivity(new Intent(getBaseContext(),NetLobbyActivity.class));
 				            	finish();
