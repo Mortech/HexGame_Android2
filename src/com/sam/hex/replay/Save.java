@@ -59,6 +59,8 @@ public class Save{
 					outputStream.writeObject(game.player2.getName());
 					outputStream.writeObject(game.moveList);
 					outputStream.writeObject(game.moveNumber);
+					outputStream.writeObject(game.timer.type);
+					outputStream.writeObject((game.timer.totalTime/60)/1000);
 					
 					outputStream.flush();
                     outputStream.close();

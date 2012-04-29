@@ -5,7 +5,6 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 import com.sam.hex.DialogBox;
-import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.R;
 
@@ -197,7 +196,7 @@ public class FileExplore extends Activity {
 	    	    	    	    public void onClick(DialogInterface dialog, int which) {
 	    	    	    	        switch (which){
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
-	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(Global.game), "loading", 200000);
+	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(), "loading", 200000);
 	    	    						loading.start();
 	    	    						try {
 	    	    							loading.join();

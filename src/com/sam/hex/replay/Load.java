@@ -7,54 +7,54 @@ import java.io.ObjectInputStream;
 import android.os.Environment;
 
 import com.sam.hex.GameObject;
+import com.sam.hex.Global;
 import com.sam.hex.HexGame;
 import com.sam.hex.MoveList;
 import com.sam.hex.PlayerObject;
+import com.sam.hex.Timer;
 
-class Load implements Runnable{	
-	GameObject game;
-	public Load(GameObject game){
-		this.game = game;
-	}
+class Load implements Runnable{
 	@Override
 	public void run() {
 		try {
-			HexGame.stopGame(game);
+			HexGame.stopGame(Global.game);
     		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + FileExplore.chosenFile);
     		if(file!=null){
-    	        try {
-    	            //Construct the ObjectInputStream object
-    	        	ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
+	            //Construct the ObjectInputStream object
+	        	ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
 
-    				int gridSize = (Integer) inputStream.readObject();
-    				boolean swap = (Boolean) inputStream.readObject();
+				int gridSize = (Integer) inputStream.readObject();
+				boolean swap = (Boolean) inputStream.readObject();
 
-    	        	game = new GameObject(gridSize, swap);
-    	        	game.player1=new PlayerObject((byte)1,game);
-    	        	game.player2=new PlayerObject((byte)2,game);
-    	        	
-    	        	game.player1Type = (Byte) inputStream.readObject();
-    	        	game.player2Type = (Byte) inputStream.readObject();
-    	            game.player1.setColor((Integer) inputStream.readObject());
-    				game.player2.setColor((Integer) inputStream.readObject());
-    				game.player1.setName((String) inputStream.readObject());
-    				game.player2.setName((String) inputStream.readObject());
-    				game.moveList = (MoveList) inputStream.readObject();
-    				game.moveNumber = (Integer) inputStream.readObject();
-    				
-    				inputStream.close();
-    				
-    				game.currentPlayer=(game.moveNumber%2)+1;
-    				HexGame.replay = true;
-    				HexGame.replayRunning = false;
-    				HexGame.startNewGame = false;
-    				
-    				//Does not support saving PlayingEntities yet
-    				game.player1Type = 0;
-    	        	game.player2Type = 0;
-    	        } catch(Exception e) {
-    	        	e.printStackTrace();
-    	        }
+				Global.game = new GameObject(gridSize, swap);
+				
+				Global.game.player1=new PlayerObject((byte)1,Global.game);
+				Global.game.player2=new PlayerObject((byte)2,Global.game);
+	        	
+				Global.game.player1Type = (Integer) inputStream.readObject();
+	        	Global.game.player2Type = (Integer) inputStream.readObject();
+	        	Global.game.player1.setColor((Integer) inputStream.readObject());
+	            Global.game.player2.setColor((Integer) inputStream.readObject());
+				Global.game.player1.setName((String) inputStream.readObject());
+				Global.game.player2.setName((String) inputStream.readObject());
+				Global.game.moveList = (MoveList) inputStream.readObject();
+				Global.game.moveNumber = (Integer) inputStream.readObject();
+				int timertype = (Integer) inputStream.readObject();
+				long timerlength = (Long) inputStream.readObject();
+				Global.game.timer = new Timer(Global.game, timerlength, timertype);
+				
+				inputStream.close();
+				
+				Global.game.currentPlayer=(Global.game.moveNumber%2)+1;
+				HexGame.replay = true;
+				HexGame.replayRunning = false;
+				HexGame.startNewGame = false;
+				
+				//Does not support saving PlayingEntities yet
+				Global.game.player1Type = 0;
+				Global.game.player2Type = 0;
+	        	Global.game.start();
+	        	Global.game.timer.start();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

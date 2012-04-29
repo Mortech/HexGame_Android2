@@ -181,7 +181,7 @@ public class NetHexGame extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.layout.menu, menu);
+        inflater.inflate(R.layout.menu_net, menu);
         return true;
     }
     
