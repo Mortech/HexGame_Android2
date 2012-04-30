@@ -445,8 +445,8 @@ public class HexGame extends Activity {
     private Thread replayThread;
     private void replay(int time){
     	//Create our board
-    	Global.game.clearBoard();
     	applyBoard();
+    	Global.game.clearBoard();
         
     	if(Global.game.moveNumber>1) Global.game.currentPlayer=(Global.game.currentPlayer%2)+1;
 	    

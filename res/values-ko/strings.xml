@@ -57,7 +57,7 @@
     <!-- Buttons from top to bottom -->
     <string name="start">게임 시작</string>
     <string name="resume">게임 다시시작</string>
-    <string name="online">Play Online</string>
+    <string name="online">온라인으로 게임하기</string>
     <string name="rules">게임 방법</string>
     <string name="options">선수 환경설정</string>
     

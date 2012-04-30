@@ -25,7 +25,7 @@ public class GameObject implements Runnable {
 	public BoardView board;
 	public TextView timerText;
 	public TextView winnerText;
-	public String winnerMsg;
+	public String winnerMsg = "";
 	public ImageButton replayForward;
 	public ImageButton replayPlayPause;
 	public ImageButton replayBack;

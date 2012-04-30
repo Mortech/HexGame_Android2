@@ -98,7 +98,7 @@ public class NetLobbyActivity extends Activity {
             	            break;
             	        case DialogInterface.BUTTON_NEGATIVE:
             	            //No button clicked
-            	        	android.os.Process.killProcess(android.os.Process.myPid());
+            	        	finish();
             	            break;
             	        }
             	    }

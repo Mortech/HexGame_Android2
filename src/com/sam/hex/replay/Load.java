@@ -53,8 +53,6 @@ class Load implements Runnable{
 				//Does not support saving PlayingEntities yet
 				Global.game.player1Type = 0;
 				Global.game.player2Type = 0;
-	        	Global.game.start();
-	        	Global.game.timer.start();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

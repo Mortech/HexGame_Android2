@@ -28,4 +28,14 @@
         android:padding="5dp"
         android:gravity="center_vertical|center_horizontal"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="@null"
+        android:id="@+id/winner"
+        android:textColor="@color/black"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 </RelativeLayout>
