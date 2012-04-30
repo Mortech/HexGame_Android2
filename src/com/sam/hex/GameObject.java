@@ -81,7 +81,7 @@ public class GameObject implements Runnable {
 				moveStart = System.currentTimeMillis();
 				if(timer.type==1){
 					timer.startTime = System.currentTimeMillis();
-					GameAction.getPlayer(currentPlayer, this).setTime(timer.totalTime);
+					GameAction.getPlayer((currentPlayer%2)+1, this).setTime(timer.totalTime);
 				}
 				board.postInvalidate();
 				GameAction.getPlayer(currentPlayer, this).getPlayerTurn();

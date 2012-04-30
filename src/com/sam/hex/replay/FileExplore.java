@@ -5,13 +5,11 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 import com.sam.hex.DialogBox;
-import com.sam.hex.HexGame;
 import com.sam.hex.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Environment;
@@ -203,7 +201,6 @@ public class FileExplore extends Activity {
 	    	    						} catch (InterruptedException e) {
 	    	    							e.printStackTrace();
 	    	    						}
-	    	    						startActivity(new Intent(getBaseContext(),HexGame.class));
 	    	    			        	finish();
 	    	    	    	            break;
 	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
