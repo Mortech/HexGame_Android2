@@ -3,28 +3,29 @@ package com.sam.hex;
 import android.view.View;
 
 public class Timer implements Runnable{
-	private boolean game = true;
+	private boolean refresh = true;
 	public long startTime;
 	private long elapsedTime;
 	public int type;
 	public long totalTime;
-	private GameObject gameObject;
+	private GameObject game;
+	private int currentPlayer;
 	
-	public Timer(GameObject gameObject, long totalTime, int type){
-		this.gameObject = gameObject;
+	public Timer(GameObject game, long totalTime, int type){
+		this.game = game;
 		this.totalTime = totalTime*60*1000;
 		this.type = type;
 		startTime = System.currentTimeMillis();
-		gameObject.player1.setTime(this.totalTime);
-		gameObject.player2.setTime(this.totalTime);
+		game.player1.setTime(this.totalTime);
+		game.player2.setTime(this.totalTime);
 	}
 	
 	public void start(){
-		game=true;
+		refresh=true;
 		if(type!=0){
-			gameObject.handler.post(new Runnable(){
+			game.handler.post(new Runnable(){
 				public void run(){
-					gameObject.timerText.setVisibility(View.VISIBLE);
+					game.timerText.setVisibility(View.VISIBLE);
 				}
 			});
 			new Thread(this).start();
@@ -32,56 +33,23 @@ public class Timer implements Runnable{
 	}
 	
 	public void stop(){
-		game=false;
+		refresh=false;
 	}
 	
 	public void run(){
-		while(game){
+		while(refresh){
 			elapsedTime = System.currentTimeMillis()-startTime;
-			if(gameObject.currentPlayer==1 && !gameObject.gameOver){
-				gameObject.player1.setTime(totalTime-elapsedTime+totalTime-gameObject.player2.getTime());
-				if(gameObject.player1.getTime()>0){
-					gameObject.handler.post(new Runnable(){
-						public void run(){
-							long millis = gameObject.player1.getTime();
-					        int seconds = (int) (millis / 1000);
-					        int minutes = seconds / 60;
-					        seconds = seconds % 60;
-					        gameObject.timerText.setText(GameAction.insert(gameObject.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
-					        gameObject.timerText.invalidate();
-						}
-					});
+			currentPlayer = game.currentPlayer;
+			
+			if(!game.gameOver){
+				GameAction.getPlayer(currentPlayer, game).setTime(calculatePlayerTime(currentPlayer));
+				if(GameAction.getPlayer(currentPlayer, game).getTime()>0){
+					displayTime();
 				}
 				else{
-					gameObject.player1.endMove();
-					gameObject.board.postInvalidate();
+					GameAction.getPlayer(currentPlayer, game).endMove();
+					game.board.postInvalidate();
 				}
-			}
-			else if(gameObject.currentPlayer==2 && !gameObject.gameOver){
-				gameObject.player2.setTime(totalTime-elapsedTime+totalTime-gameObject.player1.getTime());
-				if(gameObject.player2.getTime()>0){
-					gameObject.handler.post(new Runnable(){
-						public void run(){
-							long millis = gameObject.player2.getTime();
-					        int seconds = (int) (millis / 1000);
-					        int minutes = seconds / 60;
-					        seconds = seconds % 60;
-					        gameObject.timerText.setText(GameAction.insert(gameObject.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
-					        gameObject.timerText.invalidate();
-						}
-					});
-				}
-				else{
-					gameObject.player2.endMove();
-					gameObject.board.postInvalidate();
-				}
-			}
-			else{
-				gameObject.handler.post(new Runnable(){
-					public void run(){
-						gameObject.timerText.setVisibility(View.GONE);
-					}
-				});
 			}
 			
 			try {
@@ -90,5 +58,22 @@ public class Timer implements Runnable{
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private long calculatePlayerTime(int player){
+		return totalTime-elapsedTime+totalTime-GameAction.getPlayer(player%2+1, game).getTime();
+	}
+	
+	private void displayTime(){
+		game.handler.post(new Runnable(){
+			public void run(){
+				long millis = GameAction.getPlayer(game.currentPlayer, game).getTime();
+		        int seconds = (int) (millis / 1000);
+		        int minutes = seconds / 60;
+		        seconds = seconds % 60;
+		        game.timerText.setText(GameAction.insert(game.board.getContext().getString(R.string.timer),String.format("%d:%02d", minutes, seconds)));
+		        game.timerText.invalidate();
+			}
+		});
 	}
 }

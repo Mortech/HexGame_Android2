@@ -2,13 +2,11 @@ package com.sam.hex.ai.bee;
 
 import java.math.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import android.graphics.Point;
 
 import com.sam.hex.GameAction;
 import com.sam.hex.GameObject;
-import com.sam.hex.Global;
 import com.sam.hex.PlayerObject;
 import com.sam.hex.PlayingEntity;
 
@@ -19,10 +17,10 @@ import com.sam.hex.PlayingEntity;
  */
 public class BeeGameAI implements PlayingEntity
 {
-    private final static int RED = 1, BLUE = 2, EMPTY = 0;
-    private final static int MAX_DEPTH = 2, BEAM_SIZE = 5;
+    private final int RED = 1, BLUE = 2, EMPTY = 0;
+    private final int MAX_DEPTH = 2, BEAM_SIZE = 5;
     private int[] [] pieces;
-    private ConcurrentHashMap lookUpTable;
+    private HashMap lookUpTable;
     private int team;
     private LinkedList<AIHistoryObject> history = new LinkedList<AIHistoryObject>();//List of the AI's state. Used when Undo is called.
     private int gridSize;
@@ -30,6 +28,7 @@ public class BeeGameAI implements PlayingEntity
 	private int color;
 	private long timeLeft;
 	private GameObject game;
+    public static boolean skipMove = false;
 
     /** Constructor for the Bee object
     *@param game    the currently running game
@@ -50,14 +49,14 @@ public class BeeGameAI implements PlayingEntity
 		    pieces [i] [pieces.length - 1] = RED;
 		    pieces [pieces.length - 1] [i] = BLUE;
 		}
-		lookUpTable = new ConcurrentHashMap ();
+		lookUpTable = new HashMap ();
     }
     
     public class AIHistoryObject{
     	int[][] pieces;
-    	ConcurrentHashMap lookUpTable;
+    	HashMap lookUpTable;
     	
-    	public AIHistoryObject(int[][] pieces, ConcurrentHashMap lookUpTable) {
+    	public AIHistoryObject(int[][] pieces, HashMap lookUpTable) {
     		this.pieces = new int[pieces.length][pieces.length];
     		for(int i=0;i<pieces.length;i++){
     			for(int j=0;j<pieces.length;j++){
@@ -100,20 +99,16 @@ public class BeeGameAI implements PlayingEntity
 		// and makes its own move.
 		else
 		{
-		    pieces [lastMove.x + 1] [lastMove.y + 1] =
-			team == 1 ? 2:
-		    1;
+		    pieces [lastMove.x + 1] [lastMove.y + 1] = team == 1 ? 2: 1;
 		    Point bestMove = getBestMove ();
 		    pieces [bestMove.x] [bestMove.y] = team;
 		    int x = bestMove.x - 1;
 		    int y = bestMove.y - 1;
 		    
 		    if(!skipMove) GameAction.makeMove(this, (byte) team, new Point(y, gridSize-1-x), game);
-		    System.out.println("My move: "+new Point(x,y));
 		}
 	}
     
-    private boolean skipMove = false;
 	@Override
 	public void undoCalled() {
 		if(history.size()>0){
@@ -993,6 +988,3 @@ class EvaluationNode
 	return row == otherNode.row && column == otherNode.column;
     }
 }
-
-
-

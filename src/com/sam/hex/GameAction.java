@@ -13,6 +13,8 @@ import android.graphics.Point;
 import android.view.View;
 
 public class GameAction {
+	private GameAction(){}
+	
 	public static synchronized boolean checkWinPlayer(int team, GameObject game) {
 		if(team==1){
 			if(game.timer.type!=0 && game.player2.getTime()<0) return true;

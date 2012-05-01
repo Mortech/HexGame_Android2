@@ -253,7 +253,7 @@ public class HexGame extends Activity {
     public static void stopGame(GameObject game){
     	if(game!=null){
     		game.stop();
-    		//TODO WARNING. Phone can easily run out of memory if you don't wait for the old game to die.
+    		//TODO Delete join. Bee uses static methods which crashes everything.
 //    		try {
 //				game.gameThread.join();
 //			} catch (InterruptedException e) {
