@@ -28,7 +28,8 @@ public class BeeGameAI implements PlayingEntity
 	private int color;
 	private long timeLeft;
 	private GameObject game;
-    public static boolean skipMove = false;
+    private boolean skipMove = false;
+    private EvaluationNode[] [] nodesArray;
 
     /** Constructor for the Bee object
     *@param game    the currently running game
@@ -166,7 +167,7 @@ public class BeeGameAI implements PlayingEntity
 		// the game tree.
 		pieces [i] [j] = team;
 		int value = expand (1, bestValue, team == RED ? BLUE:
-		RED);
+		RED, nodesArray);
 		pieces [i] [j] = 0;
 
 		// Compares the last move to the best move so far
@@ -195,7 +196,7 @@ public class BeeGameAI implements PlayingEntity
     *@param currentColour   the player colour to which the current branch corresponds to
     *@return    the value of the current branch
     */
-    private int expand (int depth, int previousBest, int currentColour)
+    private int expand (int depth, int previousBest, int currentColour, EvaluationNode[] [] nodesArray)
     {
 	// If depth is maximum depth, evaluates the branch using
 	// a board evaluation instead of expanding it.
@@ -215,7 +216,7 @@ public class BeeGameAI implements PlayingEntity
 	    pieces [nextMove.row] [nextMove.column] = currentColour;
 	    int value = expand (depth + 1, bestValue,
 		    currentColour == RED ? BLUE:
-	    RED);
+	    RED, nodesArray);
 	    pieces [nextMove.row] [nextMove.column] = 0;
 
 	    // Compares the last move to the best move so far
@@ -243,7 +244,8 @@ public class BeeGameAI implements PlayingEntity
     private ArrayList getMoves ()
     {
 	// Builds the evaluation board for the current position
-	EvaluationNode.buildEvaluationBoard (pieces);
+    nodesArray = new EvaluationNode [pieces.length] [pieces.length];
+	EvaluationNode.buildEvaluationBoard (pieces, nodesArray);
 
 	// Generates the four two-distance arrays.
 	int[] [] redA = new int [pieces.length] [pieces.length];
@@ -293,8 +295,7 @@ public class BeeGameAI implements PlayingEntity
 		    // than the second minimum value of its neighbours.
 		    int min = 100000;
 		    int secondMin = 100000;
-		    Iterator iter =
-			EvaluationNode.nodesArray [i] [j].redNeighbours.iterator ();
+		    Iterator iter = nodesArray [i] [j].redNeighbours.iterator ();
 
 		    while (iter.hasNext ())
 		    {
@@ -338,8 +339,7 @@ public class BeeGameAI implements PlayingEntity
 			continue;
 		    int min = 100000;
 		    int secondMin = 100000;
-		    Iterator iter =
-			EvaluationNode.nodesArray [i] [j].redNeighbours.iterator ();
+		    Iterator iter = nodesArray [i] [j].redNeighbours.iterator ();
 
 		    while (iter.hasNext ())
 		    {
@@ -382,8 +382,7 @@ public class BeeGameAI implements PlayingEntity
 			continue;
 		    int min = 100000;
 		    int secondMin = 100000;
-		    Iterator iter =
-			EvaluationNode.nodesArray [i] [j].blueNeighbours.iterator ();
+		    Iterator iter = nodesArray [i] [j].blueNeighbours.iterator ();
 
 		    while (iter.hasNext ())
 		    {
@@ -425,8 +424,7 @@ public class BeeGameAI implements PlayingEntity
 			continue;
 		    int min = 100000;
 		    int secondMin = 100000;
-		    Iterator iter =
-			EvaluationNode.nodesArray [i] [j].blueNeighbours.iterator ();
+		    Iterator iter = nodesArray [i] [j].blueNeighbours.iterator ();
 
 		    while (iter.hasNext ())
 		    {
@@ -488,7 +486,8 @@ public class BeeGameAI implements PlayingEntity
 	    return piecesValue.intValue ();
 
 	// Builds the evaluation board for the current position
-	EvaluationNode.buildEvaluationBoard (pieces);
+	nodesArray = new EvaluationNode [pieces.length] [pieces.length];
+	EvaluationNode.buildEvaluationBoard (pieces, nodesArray);
 
 	// Builds the four two-distance arrays.
 	int[] [] redA = new int [pieces.length] [pieces.length];
@@ -538,8 +537,7 @@ public class BeeGameAI implements PlayingEntity
 		    // than the second minimum value of its neighbours.
 		    int min = 100000;
 		    int secondMin = 100000;
-		    Iterator iter =
-			EvaluationNode.nodesArray [i] [j].redNeighbours.iterator ();
+		    Iterator iter = nodesArray [i] [j].redNeighbours.iterator ();
 
 		    while (iter.hasNext ())
 		    {
@@ -583,8 +581,7 @@ public class BeeGameAI implements PlayingEntity
 			continue;
 		    int min = 100000;
 		    int secondMin = 100000;
-		    Iterator iter =
-			EvaluationNode.nodesArray [i] [j].redNeighbours.iterator ();
+		    Iterator iter = nodesArray [i] [j].redNeighbours.iterator ();
 
 		    while (iter.hasNext ())
 		    {
@@ -627,8 +624,7 @@ public class BeeGameAI implements PlayingEntity
 			continue;
 		    int min = 100000;
 		    int secondMin = 100000;
-		    Iterator iter =
-			EvaluationNode.nodesArray [i] [j].blueNeighbours.iterator ();
+		    Iterator iter = nodesArray [i] [j].blueNeighbours.iterator ();
 
 		    while (iter.hasNext ())
 		    {
@@ -671,8 +667,7 @@ public class BeeGameAI implements PlayingEntity
 			continue;
 		    int min = 100000;
 		    int secondMin = 100000;
-		    Iterator iter =
-			EvaluationNode.nodesArray [i] [j].blueNeighbours.iterator ();
+		    Iterator iter = nodesArray [i] [j].blueNeighbours.iterator ();
 
 		    while (iter.hasNext ())
 		    {
@@ -876,8 +871,6 @@ class Move implements Comparable
  */
 class EvaluationNode
 {
-    public static EvaluationNode[] [] nodesArray;
-    private static int[] [] pieces;
     public HashSet redNeighbours;
     public HashSet blueNeighbours;
     public int row;
@@ -899,11 +892,9 @@ class EvaluationNode
     /** Creates the evaluation board for the corresponding pieces board
     *@param pieces  the corresponding pieces board
     */
-    public static void buildEvaluationBoard (int[] [] pieces)
+    public static void buildEvaluationBoard (int[] [] pieces, EvaluationNode[] [] nodesArray)
     {
-	EvaluationNode.pieces = pieces;
 	// Initially creates all the EvaluationNodes without their neighbours
-	EvaluationNode.nodesArray = new EvaluationNode [pieces.length] [pieces.length];
 	for (int i = 0 ; i < nodesArray.length ; i++)
 	    for (int j = 0 ; j < nodesArray.length ; j++)
 		nodesArray [i] [j] = new EvaluationNode (i, j);
@@ -914,9 +905,9 @@ class EvaluationNode
 	    {
 		if (pieces [i] [j] != 0)
 		    continue;
-		nodesArray [i] [j].redNeighbours = nodesArray [i] [j].getNeighbours (1, new HashSet ());
+		nodesArray [i] [j].redNeighbours = nodesArray [i] [j].getNeighbours (1, new HashSet (), nodesArray, pieces);
 		nodesArray [i] [j].redNeighbours.remove (nodesArray [i] [j]);
-		nodesArray [i] [j].blueNeighbours = nodesArray [i] [j].getNeighbours (2, new HashSet ());
+		nodesArray [i] [j].blueNeighbours = nodesArray [i] [j].getNeighbours (2, new HashSet (), nodesArray, pieces);
 		nodesArray [i] [j].blueNeighbours.remove (nodesArray [i] [j]);
 	    }
     }
@@ -927,7 +918,7 @@ class EvaluationNode
     *@param piecesVisited   stores the pieces that have been visited already so that they are not touched again
     *@return    the neighbours of the piece in a HashSet
     */
-    private HashSet getNeighbours (int colour, HashSet piecesVisited)
+    private HashSet getNeighbours (int colour, HashSet piecesVisited, EvaluationNode[] [] nodesArray, int[] [] pieces)
     {
 	// If the current piece has been visited already,
 	// returns an empty HashSet
@@ -962,7 +953,7 @@ class EvaluationNode
 		// the same colour,
 		// adds all of its neighbours to the neighbours list.
 		else
-		    returnValue.addAll (nodesArray [row + a] [column + b].getNeighbours (colour, piecesVisited));
+		    returnValue.addAll (nodesArray [row + a] [column + b].getNeighbours (colour, piecesVisited, nodesArray, pieces));
 	    }
 	}
 	return returnValue;

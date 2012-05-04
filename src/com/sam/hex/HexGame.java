@@ -253,12 +253,6 @@ public class HexGame extends Activity {
     public static void stopGame(GameObject game){
     	if(game!=null){
     		game.stop();
-    		//TODO Delete join. Bee uses static methods which crashes everything.
-//    		try {
-//				game.gameThread.join();
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
     	}
     }
     
