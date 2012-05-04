@@ -34,6 +34,13 @@ public class NetHexGame extends Activity {
 	public static boolean startNewGame = true;
 	public static boolean replay = false;
 	public static boolean replayRunning = false;
+	private Runnable startnewgame = new Runnable(){
+		public void run(){
+			HexGame.stopGame(NetGlobal.game);
+			startActivity(new Intent(getBaseContext(),WaitingRoomActivity.class));
+			finish();
+		}
+	};
 	
     /** Called when the activity is first created. */
     @Override
@@ -76,7 +83,7 @@ public class NetHexGame extends Activity {
             	        switch (which){
             	        case DialogInterface.BUTTON_POSITIVE:
             	            //Yes button clicked
-            	        	initializeNewGame();
+            	        	startnewgame.run();
             	            break;
             	        case DialogInterface.BUTTON_NEGATIVE:
             	            //No button clicked
@@ -128,16 +135,8 @@ public class NetHexGame extends Activity {
     	
     	//Set players
     	HexGame.setType(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
-    	HexGame.setPlayer1(NetGlobal.game, new Runnable(){
-			public void run(){
-				initializeNewGame();
-			}
-		});
-    	HexGame.setPlayer2(NetGlobal.game, new Runnable(){
-			public void run(){
-				initializeNewGame();
-			}
-		});
+    	HexGame.setPlayer1(NetGlobal.game, startnewgame);
+    	HexGame.setPlayer2(NetGlobal.game, startnewgame);
     	HexGame.setNames(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
     	HexGame.setColors(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
 	    NetGlobal.game.timer = new Timer(NetGlobal.game, 0,0);
@@ -239,8 +238,8 @@ public class NetHexGame extends Activity {
     private Thread replayThread;
     private void replay(int time){
     	//Create our board
-    	NetGlobal.game.clearBoard();
     	applyBoard();
+    	NetGlobal.game.clearBoard();
         
     	if(NetGlobal.game.moveNumber>1) NetGlobal.game.currentPlayer=(NetGlobal.game.currentPlayer%2)+1;
 	    
@@ -256,7 +255,7 @@ public class NetHexGame extends Activity {
 				if(NetGlobal.game.timer.type!=0) NetGlobal.game.timerText.setVisibility(View.VISIBLE);
 //				Global.replayButtons.setVisibility(View.GONE);
 			}
-		},NetGlobal.game), "replay");
+		},NetGlobal.game, NetGlobal.GAME_LOCATION), "replay");
 		replayThread.start();
     }
     
@@ -267,6 +266,7 @@ public class NetHexGame extends Activity {
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
     	        	HexGame.stopGame(NetGlobal.game);
+    	        	startNewGame = true;
     	        	finish();
     	            break;
     	        case DialogInterface.BUTTON_NEGATIVE:

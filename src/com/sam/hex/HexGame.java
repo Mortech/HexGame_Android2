@@ -417,6 +417,7 @@ public class HexGame extends Activity {
      * */
     public static boolean somethingChanged(SharedPreferences prefs, int gameLocation, GameObject game){
     	if(game==null) return true;
+    	if(game.gridSize==1) return true;
     	if(gameLocation==Global.GAME_LOCATION){
     		return (Integer.decode(prefs.getString("gameSizePref", "7")) != game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) != 0) 
     				|| (Integer.decode(prefs.getString("customGameSizePref", "7")) != game.gridSize && Integer.decode(prefs.getString("gameSizePref", "7")) == 0)
@@ -456,7 +457,7 @@ public class HexGame extends Activity {
 				if(Global.game.timer.type!=0) Global.game.timerText.setVisibility(View.VISIBLE);
 //				Global.replayButtons.setVisibility(View.GONE);
 			}
-		},Global.game), "replay");
+		},Global.game, Global.GAME_LOCATION), "replay");
 		replayThread.start();
     }
     
@@ -467,7 +468,6 @@ public class HexGame extends Activity {
     	        case DialogInterface.BUTTON_POSITIVE:
     	            //Yes button clicked
     	        	stopGame(Global.game);
-    	        	Global.game = null;
     	        	startNewGame = true;
     	        	finish();
     	            break;

@@ -63,15 +63,13 @@ public class MoveListener implements Runnable{
 	        	if(!parsedDataset.error){
 	        		if(team==1){
 	        			if(parsedDataset.p1moves!=null)
-		        			for(int i=0;i<parsedDataset.p1moves.size();i++){
+		        			for(int i=0;i<parsedDataset.p1moves.size();i++)
 		        				player.setMove(this, parsedDataset.p1moves.get(i));
-		        			}
 	        		}
 	        		else if(team==2){
 	        			if(parsedDataset.p2moves!=null)
-		        			for(int i=0;i<parsedDataset.p2moves.size();i++){
+		        			for(int i=0;i<parsedDataset.p2moves.size();i++)
 		        				player.setMove(this, parsedDataset.p2moves.get(i));
-		        			}
 	        		}
         			if(parsedDataset.undoRequested){
         				new DialogBox(game.board.getContext(), 
