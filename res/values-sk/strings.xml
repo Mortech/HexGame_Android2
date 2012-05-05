@@ -13,10 +13,10 @@
     <string name="gameSizeSummary">Vyberte veľkosť hernej plochy (Momentálna: 7x7)</string>
     <string name="gameSizeSummary_onChange">Vyberte veľkosť hernej plochy (Momentálna: #x#)</string>
     <string name="customGameSizeSummary">Vložte veľkosť mriežky (Napr. 9)</string>
-    <string name="swapTitle">Swap</string>
-    <string name="swapSummary">Allow the second player to swap places during their first move</string>
-    <string name="timerTitle">Timer</string>
-    <string name="timerSummary">Limit the amount of time a player has (in minutes)</string>
+    <string name="swapTitle">Výmena</string>
+    <string name="swapSummary">Nechajte druhý hráč vymeniť miesta pri prvom pohybe</string>
+    <string name="timerTitle">Časovač</string>
+    <string name="timerSummary">Obmedziť množstvo času, hráč musí (v minútach)</string>
     
     <string name="player1NameTitle">Meno hráča č.1</string>
     <string name="player1NameSummary">Meno: Hráč1</string>
@@ -71,8 +71,8 @@
     
     <!-- In game notifications -->
     <string name="winner"># vyhral!</string>
-    <string name="timer">Time Left: #</string>
-    <string name="saved">Saved!</string>
+    <string name="timer">Čas vypršal: #</string>
+    <string name="saved">Uložené!</string>
     
     <!-- Game instructions -->
     <string name="instructions">Hes hrajú dvaja hráči, ktorí otáčajú tabličky naopak a umiestňujú ich na hracej doske. Hráči majú rozdielne farby (červená a modrá).  \n\n
@@ -80,7 +80,7 @@
     
     <!-- Quit -->
     <string name="confirmExit">Chcete skutočne skončiť?</string>
-    <string name="confirmNewgame">Do you want to start a new game?</string>
+    <string name="confirmNewgame">Chcete spustiť novú hru?</string>
     
     <!-- Local lobby -->
     <string name="local">Lokálne</string>
@@ -102,40 +102,40 @@
     <string name="yourIPWarning">Toto je tvoja vlastná adresa</string>
     
     <!-- Net play -->
-    <string name="cantConnect">Can\'t connect to the internet. Want to try wifi?</string>
+    <string name="cantConnect">Nedása pripojiť na internet. Skúsiť cez WiFi?</string>
     
-    <string name="net">Net Lobby</string>
-    <string name="createBoard">Create a Game Board</string>
-    <string name="position">Position</string>
-    <string name="waiting">Waiting…</string>
-    <string name="active">Active</string>
+    <string name="net">Aktívne hry</string>
+    <string name="createBoard">Vytvoriť hernú dosku</string>
+    <string name="position">Pozícia</string>
+    <string name="waiting">Čakajte…</string>
+    <string name="active">Aktívne</string>
     
-    <string name="register">Register</string>
-    <string name="field_username">Username (required):</string>
-    <string name="field_password">Password (required):</string>
+    <string name="register">Registrácia</string>
+    <string name="field_username">Užívateľské meno (povinné):</string>
+    <string name="field_password">Heslo (povinné):</string>
     <string name="field_email">Email:</string>
-    <string name="field_birthday">Birthday:</string>
-    <string name="field_about">About:</string>
+    <string name="field_birthday">Dátum narodenia:</string>
+    <string name="field_about">O hre:</string>
     
-    <string name="login">Login</string>
-    <string name="login_field_username">Username:</string>
-    <string name="login_field_password">Password:</string>
-    <string name="loginFailed">We couldn\'t log you in</string>
+    <string name="login">Prihlásenie</string>
+    <string name="login_field_username">Užívateľské meno:</string>
+    <string name="login_field_password">Heslo:</string>
+    <string name="loginFailed">Prihlásenie sa nepodarilo</string>
     
-    <string name="waitingroom">Waiting Room</string>
-    <string name="sendAMessage">Send a message</string>
-    <string name="ready">Ready</string>
-    <string name="unready">Unready</string>
+    <string name="waitingroom">Pripravené miesta</string>
+    <string name="sendAMessage">Poslať správu</string>
+    <string name="ready">Pripravené</string>
+    <string name="unready">Nepripravené</string>
     
     <!-- Dialog Options -->
     <string name="yes">Áno</string>
     <string name="no">Nie</string>
     <string name="enter">Vstúpiť</string>
     <string name="okay">Ok</string>
-    <string name="cancel">Cancel</string>
-    <string name="submit">Submit</string>
-    <string name="rename">Rename</string>
-    <string name="delete">Delete</string>
+    <string name="cancel">Naspäť</string>
+    <string name="submit">Potvrdiť</string>
+    <string name="rename">Premenovať</string>
+    <string name="delete">Vymazať</string>
     
     <!-- Color Picker -->
     <string name="dialog_color_picker">Výber farby</string>
