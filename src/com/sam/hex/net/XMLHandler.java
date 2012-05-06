@@ -117,6 +117,7 @@ public class XMLHandler extends DefaultHandler{
     		else if(in_eventList){
     			if(localName.equals("event")){
     				parsedDataset.lasteid = Integer.parseInt(atts.getValue("eid"));
+    				System.out.println("Event: "+atts.getValue("type")+", Value: "+atts.getValue("data"));
     				
     				//Messages
     				if(atts.getValue("type").equals("MSG")){
@@ -158,6 +159,22 @@ public class XMLHandler extends DefaultHandler{
     				else if(atts.getValue("type").equals("RESTART")){
     					parsedDataset.restart=true;
     					parsedDataset.setSid(Integer.parseInt(atts.getValue("data")));
+    				}
+    				
+    				//Player gives up
+    				else if(atts.getValue("type").equals("NOTICE")){
+    					if(atts.getValue("data").contains("PHRASE_GIVES_UP")){
+    						for(int i=0; i<parsedDataset.players.size();i++){
+    							if(parsedDataset.players.get(i).uid == Integer.parseInt(atts.getValue("uid"))){
+    								if(parsedDataset.players.get(i).place==1){
+    									parsedDataset.p1GaveUp = true;
+    								}
+    								else if(parsedDataset.players.get(i).place==2){
+    									parsedDataset.p2GaveUp = true;
+    								}
+    							}
+    						}
+    					}
     				}
     			}
     		}

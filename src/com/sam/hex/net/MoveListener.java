@@ -135,8 +135,21 @@ public class MoveListener implements Runnable{
 //		    					null, 
 //		    					game.board.getContext().getString(R.string.okay));
     				}
+    				if(team==1){
+	    				if(parsedDataset.p1GaveUp){
+	    					giveup = true;
+		    	        	GameAction.getPlayer(game.currentPlayer, game).endMove();
+	    				}
+    				}
+    				else if(team==2){
+    					if(parsedDataset.p2GaveUp){
+	    					giveup = true;
+		    	        	GameAction.getPlayer(game.currentPlayer, game).endMove();
+	    				}
+    				}
     				if(parsedDataset.restart){
     					if(NetHexGame.justStart){
+    						NetHexGame.justStart = false;
     						NetGlobal.sid = parsedDataset.getSid();
         					handler.post(newgame);
     					}
@@ -154,8 +167,6 @@ public class MoveListener implements Runnable{
 	    	    	    	    	            break;
 	    	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
 	    	    	    	    	            //No button clicked
-	    	    	    	    	        	giveup = true;
-	    	    	    	    	        	GameAction.getPlayer(game.currentPlayer, game).endMove();
 	    	    	    	    	            break;
 	    	    	    	    	        }
 	    	    	    	    	    }
