@@ -1,5 +1,9 @@
 package com.sam.hex;
 
+import java.util.LinkedList;
+
+import com.sam.hex.net.MoveListener;
+
 import android.graphics.Point;
 
 public class PlayerObject implements PlayingEntity {
@@ -7,7 +11,7 @@ public class PlayerObject implements PlayingEntity {
 	private int color;
 	private long timeLeft;
 	private int team;
-	private Point hex;
+	private LinkedList<Point> hex = new LinkedList<Point>();
 	private GameObject game;
 	
 	public PlayerObject(int team, GameObject game) {
@@ -17,35 +21,34 @@ public class PlayerObject implements PlayingEntity {
 	
 	@Override
 	public void getPlayerTurn() {
-		hex = null;
 		while (true) {
-			while (hex == null) {
+			while (hex.size()==0) {
 				try {
 					Thread.sleep(80);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-			if (hex.equals(new Point(-1,-1))){
-				hex = null;
+			if (hex.get(0).equals(new Point(-1,-1))){
+				hex.remove(0);
 				break;
 			}
-			if (GameAction.makeMove(this, (byte) team, hex, game)) {
-				hex = null;
+			if (GameAction.makeMove(this, (byte) team, hex.get(0), game)) {
+				hex.remove(0);
 				break;
 			}
-			hex = null;
+			hex.remove(0);
 		}
 	}
 	
 	@Override
 	public void undoCalled(){
-		hex = new Point(-1,-1);
+		endMove();
 	}
 	
 	@Override
 	public void newgameCalled() {
-		hex = new Point(-1,-1);
+		endMove();
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class PlayerObject implements PlayingEntity {
 
 	@Override
 	public void quit() {
-		hex = new Point(-1,-1);
+		endMove();
 	}
 
 	@Override
@@ -78,7 +81,7 @@ public class PlayerObject implements PlayingEntity {
 
 	@Override
 	public void endMove() {
-		hex = new Point(-1,-1);
+		hex.add(new Point(-1,-1));
 	}
 
 	@Override
@@ -113,7 +116,11 @@ public class PlayerObject implements PlayingEntity {
 
 	@Override
 	public void setMove(Object o, Point hex) {
-		if(o instanceof GameAction) this.hex = hex;
+		if(o instanceof GameAction && game.currentPlayer==team){
+			this.hex = new LinkedList<Point>();
+			this.hex.add(hex);
+		}
+		else if(o instanceof MoveListener) this.hex.add(hex);
 	}
 
 	@Override

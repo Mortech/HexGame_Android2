@@ -26,12 +26,10 @@ import com.sam.hex.R;
 import com.sam.hex.BoardView;
 import com.sam.hex.Timer;
 import com.sam.hex.net.NetGlobal;
-import com.sam.hex.replay.FileExplore;
 import com.sam.hex.replay.Save;
 
 public class NetHexGame extends Activity {
 	public static boolean startNewGame = true;
-	public static boolean replay = false;
 	public static boolean replayRunning = false;
 	public static boolean justStart = false;
 	private Runnable startnewgame = new Runnable(){
@@ -57,7 +55,7 @@ public class NetHexGame extends Activity {
     
     public void applyBoard(){
     	Global.viewLocation = NetGlobal.GAME_LOCATION;
-    	setContentView(R.layout.game);
+    	setContentView(R.layout.game_net);
     	NetGlobal.game.board=(BoardView) findViewById(R.id.board);
     	NetGlobal.game.board.setOnTouchListener(new HexGame.TouchListener(NetGlobal.game));
     	
@@ -65,13 +63,6 @@ public class NetHexGame extends Activity {
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	finish();
-            }
-        });
-        
-        Button undo = (Button) findViewById(R.id.undo);
-        undo.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	undo();
             }
         });
         
@@ -127,7 +118,6 @@ public class NetHexGame extends Activity {
     private void initializeNewGame(){
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	startNewGame = false;
-    	replayRunning = false;
     	
     	//Stop the old game
     	HexGame.stopGame(NetGlobal.game);
@@ -155,14 +145,7 @@ public class NetHexGame extends Activity {
     	super.onResume();
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	//Check if settings were changed and we need to run a new game
-    	 if(replayRunning){
-     		applyBoard();
-     	}
-    	 else if(replay){
-    		replay = false;
-    		replay(800);
-    	}
-    	else if(startNewGame || HexGame.somethingChanged(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game)){
+    	if(startNewGame || HexGame.somethingChanged(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game)){
     		initializeNewGame();
     	}
     	else{//Apply minor changes without stopping the current game
@@ -191,20 +174,7 @@ public class NetHexGame extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.settings:
-        	replayRunning = false;
         	startActivity(new Intent(getBaseContext(),Preferences.class));
-            return true;
-        case R.id.undo:
-        	undo();
-            return true;
-        case R.id.newgame:
-        	newGame();
-            return true;
-        case R.id.replay:
-        	replay(900);
-            return true;
-        case R.id.loadReplay:
-        	startActivity(new Intent(getBaseContext(),FileExplore.class));
             return true;
         case R.id.saveReplay:
         	Save save = new Save(NetGlobal.game);
@@ -216,38 +186,6 @@ public class NetHexGame extends Activity {
         default:
             return super.onOptionsItemSelected(item);
         }
-    }
-    
-    private void undo(){
-    	GameAction.undo(NetGlobal.GAME_LOCATION, NetGlobal.game);
-    }
-    
-    private void newGame(){
-    	if(NetGlobal.game.player1.supportsNewgame() && NetGlobal.game.player2.supportsNewgame()){
-			if(replayRunning){
-				replayRunning = false;
-				try {
-					replayThread.join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			initializeNewGame();
-			NetGlobal.game.board.invalidate();
-    	}
-    }
-    
-    private Thread replayThread;
-    private void replay(int time){
-    	//Create our board
-    	applyBoard();
-    	NetGlobal.game.clearBoard();
-    	replayThread = new Thread(new Runnable(){
-    		public void run(){
-    			NetGlobal.game.moveList.replay(900, NetGlobal.game);    			
-    		}
-    	});
-    	replayThread.start();
     }
     
     private void quit(){

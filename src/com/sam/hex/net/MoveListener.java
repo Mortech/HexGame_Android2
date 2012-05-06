@@ -63,58 +63,79 @@ public class MoveListener implements Runnable{
 	            
 	            final ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	        	if(!parsedDataset.error){
+	        		if(parsedDataset.lasteid!=0) lasteid = parsedDataset.lasteid;
+	        		NetGlobal.members = parsedDataset.players;
+        			for(int i=0;i<parsedDataset.messages.size();i++){
+        				WaitingRoomActivity.messages.add(parsedDataset.messages.get(i).name+": "+parsedDataset.messages.get(i).msg);
+        			}
 	        		if(team==1){
 	        			if(parsedDataset.p1moves!=null)
 		        			for(int i=0;i<parsedDataset.p1moves.size();i++)
 		        				player.setMove(this, parsedDataset.p1moves.get(i));
+	        			if(!(game.player2 instanceof NetPlayerObject))
+	        				if(parsedDataset.p2moves!=null)
+			        			for(int i=0;i<parsedDataset.p2moves.size();i++)
+			        				game.player2.setMove(this, parsedDataset.p2moves.get(i));
 	        		}
 	        		else if(team==2){
 	        			if(parsedDataset.p2moves!=null)
 		        			for(int i=0;i<parsedDataset.p2moves.size();i++)
 		        				player.setMove(this, parsedDataset.p2moves.get(i));
+	        			if(!(game.player1 instanceof NetPlayerObject))
+	        				if(parsedDataset.p1moves!=null)
+			        			for(int i=0;i<parsedDataset.p1moves.size();i++)
+			        				game.player1.setMove(this, parsedDataset.p1moves.get(i));
 	        		}
         			if(parsedDataset.undoRequested){
-        				new DialogBox(game.board.getContext(), 
-    	    					GameAction.insert(game.board.getContext().getString(R.string.LANUndo), player.getName()), 
-    	    					new DialogInterface.OnClickListener() {
-    	    	    	    	    public void onClick(DialogInterface dialog, int which) {
-    	    	    	    	        switch (which){
-    	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
-    	    	    	    	            //Yes button clicked
-    	    	    		    			NetGlobal.undoRequested = true;
-    	    	    	    	        	GameAction.undo(NetGlobal.GAME_LOCATION,NetGlobal.game);
-    	    	    	    	        	try {
-    	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ACCEPT", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
-												new URL(undoUrl).openStream();
-											} catch (MalformedURLException e) {
-												e.printStackTrace();
-											} catch (IOException e) {
-												e.printStackTrace();
-											}
-    	    	    	    	            break;
-    	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
-    	    	    	    	            //No button clicked
-    	    	    	    	        	try {
-    	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=DENY", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
-												new URL(undoUrl).openStream();
-											} catch (MalformedURLException e) {
-												e.printStackTrace();
-											} catch (IOException e) {
-												e.printStackTrace();
-											}
-    	    	    	    	            break;
-    	    	    	    	        }
-    	    	    	    	    }
-    	    	    	    	}, 
-    	    					game.board.getContext().getString(R.string.yes), 
-    	    					game.board.getContext().getString(R.string.no));
+        				try {
+	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=FORBID", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
+							new URL(undoUrl).openStream();
+						} catch (MalformedURLException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+//        				new DialogBox(game.board.getContext(), 
+//    	    					GameAction.insert(game.board.getContext().getString(R.string.LANUndo), player.getName()), 
+//    	    					new DialogInterface.OnClickListener() {
+//    	    	    	    	    public void onClick(DialogInterface dialog, int which) {
+//    	    	    	    	        switch (which){
+//    	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
+//    	    	    	    	            //Yes button clicked
+//    	    	    		    			NetGlobal.undoRequested = true;
+//    	    	    	    	        	GameAction.undo(NetGlobal.GAME_LOCATION,NetGlobal.game);
+//    	    	    	    	        	try {
+//    	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ACCEPT", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
+//												new URL(undoUrl).openStream();
+//											} catch (MalformedURLException e) {
+//												e.printStackTrace();
+//											} catch (IOException e) {
+//												e.printStackTrace();
+//											}
+//    	    	    	    	            break;
+//    	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
+//    	    	    	    	            //No button clicked
+//    	    	    	    	        	try {
+//    	    	    	    	        		String undoUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=DENY", URLEncoder.encode(server,"UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, lasteid);
+//												new URL(undoUrl).openStream();
+//											} catch (MalformedURLException e) {
+//												e.printStackTrace();
+//											} catch (IOException e) {
+//												e.printStackTrace();
+//											}
+//    	    	    	    	            break;
+//    	    	    	    	        }
+//    	    	    	    	    }
+//    	    	    	    	}, 
+//    	    					game.board.getContext().getString(R.string.yes), 
+//    	    					game.board.getContext().getString(R.string.no));
         			}
     				if(parsedDataset.undoAccepted){
-    					GameAction.undo(NetGlobal.GAME_LOCATION,NetGlobal.game);
-	    				new DialogBox(game.board.getContext(), 
-		    					game.board.getContext().getString(R.string.LANundoAccepted), 
-		    					null, 
-		    					game.board.getContext().getString(R.string.okay));
+//    					GameAction.undo(NetGlobal.GAME_LOCATION,NetGlobal.game);
+//	    				new DialogBox(game.board.getContext(), 
+//		    					game.board.getContext().getString(R.string.LANundoAccepted), 
+//		    					null, 
+//		    					game.board.getContext().getString(R.string.okay));
     				}
     				if(parsedDataset.restart){
     					if(NetHexGame.justStart){
