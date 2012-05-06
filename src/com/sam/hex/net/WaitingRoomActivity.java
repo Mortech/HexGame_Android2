@@ -200,7 +200,7 @@ public class WaitingRoomActivity extends Activity {
     	new Thread(new Runnable(){
     		public void run(){
     			try {
-    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MSG&message=%s&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(message,"UTF-8"), refreshPlayers.lasteid);
+    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MSG&message=%s&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, URLEncoder.encode(message,"UTF-8"), NetGlobal.lasteid);
     				URL url = new URL(lobbyUrl);
     				SAXParserFactory spf = SAXParserFactory.newInstance();
     	            SAXParser parser = spf.newSAXParser();
@@ -211,7 +211,7 @@ public class WaitingRoomActivity extends Activity {
     	            
     	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
     	        	if(!parsedDataset.error){
-    	        		if(parsedDataset.lasteid!=0) refreshPlayers.lasteid = parsedDataset.lasteid;
+    	        		if(parsedDataset.lasteid!=0) NetGlobal.lasteid = parsedDataset.lasteid;
     	        		NetGlobal.members = parsedDataset.players;
             			for(int i=0;i<parsedDataset.messages.size();i++){
             				WaitingRoomActivity.messages.add(parsedDataset.messages.get(i).name+": "+parsedDataset.messages.get(i).msg);
