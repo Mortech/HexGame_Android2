@@ -27,5 +27,11 @@
 	        <EditTextPreference
 	            android:key="netGridSize"
 	            android:defaultValue="0" />
+	        <EditTextPreference
+	            android:key="netTimerTime"
+	            android:defaultValue="0" />
+	        <EditTextPreference
+	            android:key="netAdditionalTimerTime"
+	            android:defaultValue="0" />
 	    </PreferenceCategory>
 </PreferenceScreen>

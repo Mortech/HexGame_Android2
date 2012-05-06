@@ -33,5 +33,37 @@
         android:defaultValue="1"
         android:entries="@array/netPositionArray"
         android:entryValues="@array/netPositionValues" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/timerTitle"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal">
+        
+        <Spinner
+	        android:id="@+id/timerTime"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:defaultValue="1"
+	        android:entries="@array/netTimerArray"
+	        android:entryValues="@array/netTimerValues" />
+        
+        <Spinner
+	        android:id="@+id/additionalTimerTime"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:defaultValue="1"
+	        android:entries="@array/netAdditionalTimeArray"
+	        android:entryValues="@array/netAdditionalTimeValues" />
+        
+    </LinearLayout>
 
 </LinearLayout>

@@ -23,6 +23,8 @@ public class XMLHandler extends DefaultHandler{
     private boolean in_eventList = false;
     private boolean in_gameOptions = false;
     private boolean in_boardSize = false;
+    private boolean in_timerTotal = false;
+    private boolean in_timerInc = false;
        
     private ParsedDataset parsedDataset = new ParsedDataset();
  
@@ -68,7 +70,7 @@ public class XMLHandler extends DefaultHandler{
     	}
     	else if(in_sessionList){
 	    	if(localName.equals("session")){
-	    		if(atts.getValue("stat").equals("ACTIVE") || atts.getValue("stat").equals("INIT")){
+	    		if((atts.getValue("stat").equals("ACTIVE") || atts.getValue("stat").equals("INIT")) && atts.getValue("priv").equals("0")){
 	    			parsedDataset.addSession(atts.getValue("stat"), Integer.parseInt(atts.getValue("sid")), Integer.parseInt(atts.getValue("uid")), atts.getValue("serv"));
 		    		this.in_session = true;
 	    		}
@@ -117,7 +119,6 @@ public class XMLHandler extends DefaultHandler{
     		else if(in_eventList){
     			if(localName.equals("event")){
     				parsedDataset.lasteid = Integer.parseInt(atts.getValue("eid"));
-    				System.out.println("Event: "+atts.getValue("type")+", Value: "+atts.getValue("data"));
     				
     				//Messages
     				if(atts.getValue("type").equals("MSG")){
@@ -185,6 +186,12 @@ public class XMLHandler extends DefaultHandler{
 			else if(in_gameOptions){
 				if(localName.equals("boardSize")){
 					this.in_boardSize = true;
+				}
+				else if(localName.equals("timerTotal")){
+					this.in_timerTotal = true;
+				}
+				else if(localName.equals("timerInc")){
+					this.in_timerInc = true;
 				}
 			}
     	}
@@ -254,6 +261,12 @@ public class XMLHandler extends DefaultHandler{
     	else if(localName.equals("boardSize")){
     		this.in_boardSize = false;
     	}
+    	else if(localName.equals("timerTotal")){
+    		this.in_timerTotal = false;
+    	}
+    	else if(localName.equals("timerInc")){
+    		this.in_timerInc = false;
+    	}
     }
        
     /** Gets be called on the following structure:
@@ -275,6 +288,12 @@ public class XMLHandler extends DefaultHandler{
     		if(this.in_gameOptions){
     			if(this.in_boardSize){
     				NetGlobal.gridSize = Integer.parseInt(new String(ch, start, length));
+    			}
+    			else if(this.in_timerTotal){
+    				NetGlobal.timerTime = Integer.parseInt(new String(ch, start, length))/60;
+    			}
+    			else if(this.in_timerInc){
+    				NetGlobal.additionalTimerTime = Integer.parseInt(new String(ch, start, length));
     			}
     		}
     	}

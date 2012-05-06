@@ -231,6 +231,8 @@ public class Preferences extends PreferenceActivity {
         	general.removePreference(findPreference("netPassword"));
         	general.removePreference(findPreference("netPosition"));
             general.removePreference(findPreference("netGridSize"));
+            general.removePreference(findPreference("netTimerTime"));
+            general.removePreference(findPreference("netAdditionalTimerTime"));
         }
     	addPreferencesFromResource(R.layout.preferences_reset);
     	

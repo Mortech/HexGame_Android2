@@ -162,7 +162,7 @@ public class HexGame extends Activity {
     	setNames(prefs, Global.GAME_LOCATION, Global.game);
     	setColors(prefs, Global.GAME_LOCATION, Global.game);
     	int timerType = Integer.parseInt(prefs.getString("timerTypePref", "0"));
-	    Global.game.timer = new Timer(Global.game, Integer.parseInt(prefs.getString("timerPref", "0")),timerType);
+	    Global.game.timer = new Timer(Global.game, Integer.parseInt(prefs.getString("timerPref", "0")), 0, timerType);
 	    
 	    applyBoard();
 	    Global.game.timer.start();

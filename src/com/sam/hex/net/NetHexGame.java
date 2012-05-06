@@ -131,7 +131,12 @@ public class NetHexGame extends Activity {
     	HexGame.setPlayer2(NetGlobal.game, startnewgame);
     	HexGame.setNames(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
     	HexGame.setColors(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
-	    NetGlobal.game.timer = new Timer(NetGlobal.game, 0,0);
+    	if(NetGlobal.timerTime==0){
+    	    NetGlobal.game.timer = new Timer(NetGlobal.game, 0, 0, 0);
+    	}
+    	else{
+    	    NetGlobal.game.timer = new Timer(NetGlobal.game, NetGlobal.timerTime, NetGlobal.additionalTimerTime, 2);
+    	}
     	
 	    //Display board
 	    applyBoard();

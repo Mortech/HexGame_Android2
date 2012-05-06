@@ -8,12 +8,14 @@ public class Timer implements Runnable{
 	private long elapsedTime;
 	public int type;
 	public long totalTime;
+	public long additionalTime;
 	private GameObject game;
 	private int currentPlayer;
 	
-	public Timer(GameObject game, long totalTime, int type){
+	public Timer(GameObject game, long totalTime, long additionalTime, int type){
 		this.game = game;
 		this.totalTime = totalTime*60*1000;
+		this.additionalTime = additionalTime*1000;
 		this.type = type;
 		startTime = System.currentTimeMillis();
 		game.player1.setTime(this.totalTime);

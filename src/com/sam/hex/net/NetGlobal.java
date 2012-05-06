@@ -21,6 +21,8 @@ public class NetGlobal{
 	public static int sid;
 	public static String server;
 	public static int lasteid;
+	public static int timerTime;
+	public static int additionalTimerTime;
 	public static ArrayList<ParsedDataset.GameSession> sessions;
 	public static ArrayList<ParsedDataset.Member> members = new ArrayList<ParsedDataset.Member>();
 	public static boolean undoRequested = false;

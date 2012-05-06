@@ -41,7 +41,7 @@ class Load implements Runnable{
 				Global.game.moveNumber = (Integer) inputStream.readObject();
 				int timertype = (Integer) inputStream.readObject();
 				long timerlength = (Long) inputStream.readObject();
-				Global.game.timer = new Timer(Global.game, timerlength, timertype);
+				Global.game.timer = new Timer(Global.game, timerlength, 0, timertype);
 				
 				inputStream.close();
 				

@@ -97,4 +97,46 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string-array name="netTimerArray">
+        <item>No timer</item>
+        <item>5min</item>
+        <item>10min</item>
+        <item>15min</item>
+        <item>20min</item>
+        <item>30min</item>
+        <item>45min</item>
+        <item>1hr</item>
+        <item>1hr 30min</item>
+        <item>2hr</item>
+    </string-array>
+    <integer-array name="netTimerValues">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </integer-array>
+    <string-array name="netAdditionalTimeArray">
+        <item>+0sec/move</item>
+        <item>+10sec/move</item>
+        <item>+15sec/move</item>
+        <item>+20sec/move</item>
+        <item>+30sec/move</item>
+        <item>+45sec/move</item>
+        <item>+1min/move</item>
+    </string-array>
+    <integer-array name="netAdditionalTimeValues">
+        <item>0</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+    </integer-array>
 </resources>

@@ -266,6 +266,8 @@ public class WaitingRoomActivity extends Activity {
     private void editBoard(){
     	LayoutInflater inflater = (LayoutInflater) WaitingRoomActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
     	View dialoglayout = inflater.inflate(R.layout.netlobby_createboard, null);
+    	
+    	//Board size
     	final Spinner gameSize = (Spinner)dialoglayout.findViewById(R.id.gameSize);
         ArrayAdapter<CharSequence> gameSizeAdapter = ArrayAdapter.createFromResource(this, R.array.netGameSizeArray, android.R.layout.simple_spinner_item);
         gameSizeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
@@ -275,11 +277,36 @@ public class WaitingRoomActivity extends Activity {
         	pos++;
         }
         gameSize.setSelection(pos);
+        
+        //Position
         final Spinner position = (Spinner)dialoglayout.findViewById(R.id.position);
         ArrayAdapter<CharSequence> positionAdapter = ArrayAdapter.createFromResource(this, R.array.netPositionArray, android.R.layout.simple_spinner_item);
         positionAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         position.setAdapter(positionAdapter);
         position.setSelection(NetGlobal.place);
+
+        //Timer time
+        final Spinner timerTime = (Spinner)dialoglayout.findViewById(R.id.timerTime);
+        ArrayAdapter<CharSequence> timerTimeAdapter = ArrayAdapter.createFromResource(this, R.array.netTimerArray, android.R.layout.simple_spinner_item);
+        timerTimeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        timerTime.setAdapter(timerTimeAdapter);
+        pos = 0;
+        while(NetGlobal.timerTime!=getResources().getIntArray(R.array.netTimerValues)[pos]){
+        	pos++;
+        }
+        timerTime.setSelection(pos);
+
+        //Additional timer time
+        final Spinner additionalTimerTime = (Spinner)dialoglayout.findViewById(R.id.additionalTimerTime);
+        ArrayAdapter<CharSequence> additionalTimerTimeAdapter = ArrayAdapter.createFromResource(this, R.array.netAdditionalTimeArray, android.R.layout.simple_spinner_item);
+        additionalTimerTimeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        additionalTimerTime.setAdapter(additionalTimerTimeAdapter);
+        pos = 0;
+        while(NetGlobal.additionalTimerTime!=getResources().getIntArray(R.array.netAdditionalTimeValues)[pos]){
+        	pos++;
+        }
+        additionalTimerTime.setSelection(pos);
+        
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setView(dialoglayout);
 		builder.setMessage(this.getText(R.string.createBoard));
@@ -296,10 +323,14 @@ public class WaitingRoomActivity extends Activity {
     	        			int previousGridSize = NetGlobal.gridSize;
 	    	        		NetGlobal.gridSize = getResources().getIntArray(R.array.netGameSizeValues)[gameSize.getSelectedItemPosition()];
 	    	        		NetGlobal.place = getResources().getIntArray(R.array.netPositionValues)[position.getSelectedItemPosition()];
+	    	        		int previousTime = NetGlobal.timerTime;
+	    	        		NetGlobal.timerTime = getResources().getIntArray(R.array.netTimerValues)[timerTime.getSelectedItemPosition()];
+	    	        		int previousAdditionalTime = NetGlobal.additionalTimerTime;
+	    	        		NetGlobal.additionalTimerTime = getResources().getIntArray(R.array.netAdditionalTimeValues)[additionalTimerTime.getSelectedItemPosition()];
 	    	        		try {
-	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize);
-	    	        			String placeUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=PLACE&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.place);
-	    	        			if(previousGridSize!=NetGlobal.gridSize) new URL(boardUrl).openStream();
+	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&timerTotal=%s&timerInc=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.timerTime*60, NetGlobal.additionalTimerTime);
+		    	        		String placeUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=PLACE&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.place);
+	    	        			if(previousGridSize!=NetGlobal.gridSize || previousTime!=NetGlobal.timerTime || previousAdditionalTime!=NetGlobal.additionalTimerTime) new URL(boardUrl).openStream();
 	    	        			new URL(placeUrl).openStream();
 	    	        		} catch (MalformedURLException e) {
 	    	        		e.printStackTrace();
