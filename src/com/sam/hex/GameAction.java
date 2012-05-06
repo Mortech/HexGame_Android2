@@ -18,6 +18,7 @@ public class GameAction {
 	public static synchronized boolean checkWinPlayer(int team, GameObject game) {
 		if(team==1){
 			if(game.timer.type!=0 && game.player2.getTime()<0) return true;
+			if(game.player2.giveUp()) return true;
 			for (int i = 0; i < game.gridSize; i++) {
 				if (RegularPolygonGameObject.checkWinTeam((byte) 1, game.gridSize, i, game.gamePiece)) {
 					System.out.println("Player one wins");
@@ -31,6 +32,7 @@ public class GameAction {
 		}
 		else{
 			if(game.timer.type!=0 && game.player1.getTime()<0) return true;
+			if(game.player1.giveUp()) return true;
 			for (int i = 0; i < game.gridSize; i++) {
 				if (RegularPolygonGameObject.checkWinTeam((byte) 2, i, game.gridSize, game.gamePiece)) {
 					System.out.println("Player two wins");

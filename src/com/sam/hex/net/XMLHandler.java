@@ -157,6 +157,7 @@ public class XMLHandler extends DefaultHandler{
     				//New game
     				else if(atts.getValue("type").equals("RESTART")){
     					parsedDataset.restart=true;
+    					parsedDataset.setSid(Integer.parseInt(atts.getValue("data")));
     				}
     			}
     		}

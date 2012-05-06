@@ -829,6 +829,11 @@ public class BeeGameAI implements PlayingEntity
 	@Override
 	public void setMove(Object o, Point hex) {
 	}
+
+	@Override
+	public boolean giveUp() {
+		return false;
+	}
 }
 
 

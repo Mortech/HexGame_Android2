@@ -115,4 +115,9 @@ public class PlayerObject implements PlayingEntity {
 	public void setMove(Object o, Point hex) {
 		if(o instanceof GameAction) this.hex = hex;
 	}
+
+	@Override
+	public boolean giveUp() {
+		return false;
+	}
 }

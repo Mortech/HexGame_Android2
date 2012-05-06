@@ -118,4 +118,9 @@ public interface PlayingEntity {
 	 * Store a point to play when its your turn
 	 * */
 	public void setMove(Object o, Point hex);
+	
+	/**
+	 * Return true to announce defeat mid-game
+	 * */
+	public boolean giveUp();
 }

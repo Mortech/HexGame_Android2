@@ -6,9 +6,9 @@
           android:title="@string/newgame" /> -->
     <item android:id="@+id/settings"
           android:title="@string/settings" />
-    <item android:id="@+id/replay"
+    <!-- <item android:id="@+id/replay"
           android:title="@string/replay" />
-    <!-- <item android:id="@+id/loadReplay"
+    <item android:id="@+id/loadReplay"
           android:title="@string/loadReplay" /> -->
     <item android:id="@+id/saveReplay"
        	  android:title="@string/saveReplay" />

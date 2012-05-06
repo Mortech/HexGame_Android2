@@ -33,6 +33,7 @@ public class MoveListener implements Runnable{
 	private int sid;
 	private int lasteid;
 	private GameObject game;
+	public boolean giveup = false;
 	public MoveListener(GameObject game, int team, Handler handler, Runnable newgame, NetPlayerObject player, String server, int uid, String session_id, int sid){
 		this.game = game;
 		this.team = team;
@@ -59,7 +60,7 @@ public class MoveListener implements Runnable{
 	            reader.setContentHandler(xmlHandler);
 	            reader.parse(new InputSource(url.openStream()));
 	            
-	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+	            final ParsedDataset parsedDataset = xmlHandler.getParsedData();
 	        	if(!parsedDataset.error){
 	        		if(team==1){
 	        			if(parsedDataset.p1moves!=null)
@@ -115,7 +116,32 @@ public class MoveListener implements Runnable{
 		    					game.board.getContext().getString(R.string.okay));
     				}
     				if(parsedDataset.restart){
-    					handler.post(newgame);
+    					if(NetHexGame.justStart){
+    						NetGlobal.sid = parsedDataset.getSid();
+        					handler.post(newgame);
+    					}
+    					else{
+	    					new DialogBox(game.board.getContext(),
+	    							GameAction.insert(game.board.getContext().getString(R.string.newLANGame), player.getName()),
+	    	    					new DialogInterface.OnClickListener() {
+	    	    	    	    	    public void onClick(DialogInterface dialog, int which) {
+	    	    	    	    	        switch (which){
+	    	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
+	    	    	    	    	            //Yes button clicked
+	    	    	    	    	        	NetGlobal.sid = parsedDataset.getSid();
+	    	    	        					handler.post(newgame);
+	    	    	    	    	            break;
+	    	    	    	    	        case DialogInterface.BUTTON_NEGATIVE:
+	    	    	    	    	            //No button clicked
+	    	    	    	    	        	giveup = true;
+	    	    	    	    	        	GameAction.getPlayer(game.currentPlayer, game).endMove();
+	    	    	    	    	            break;
+	    	    	    	    	        }
+	    	    	    	    	    }
+	    	    	    	    	},
+	    	    	    	    	game.board.getContext().getString(R.string.yes), 
+	    	    					game.board.getContext().getString(R.string.no));
+    					}
     				}
 	        	}
 	        	else{
@@ -132,7 +158,7 @@ public class MoveListener implements Runnable{
 			}
 			
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

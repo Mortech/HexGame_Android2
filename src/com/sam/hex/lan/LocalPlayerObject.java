@@ -142,4 +142,9 @@ public class LocalPlayerObject implements PlayingEntity {
 	public void setMove(Object o, Point hex) {
 		if(o instanceof PlayerUnicastListener) this.hex = hex;
 	}
+
+	@Override
+	public boolean giveUp() {
+		return false;
+	}
 }

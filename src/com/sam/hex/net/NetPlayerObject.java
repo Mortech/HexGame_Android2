@@ -203,7 +203,7 @@ public class NetPlayerObject implements PlayingEntity {
     			}
     		}
     	}).start();
-		return true;
+		return false;
 	}
 
 	@Override
@@ -324,5 +324,10 @@ public class NetPlayerObject implements PlayingEntity {
 	@Override
 	public void setMove(Object o, Point hex) {
 		if(o instanceof MoveListener) this.hex.add(hex);
+	}
+
+	@Override
+	public boolean giveUp() {
+		return listener.giveup;
 	}
 }

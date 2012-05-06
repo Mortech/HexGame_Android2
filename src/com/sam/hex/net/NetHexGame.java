@@ -27,13 +27,13 @@ import com.sam.hex.BoardView;
 import com.sam.hex.Timer;
 import com.sam.hex.net.NetGlobal;
 import com.sam.hex.replay.FileExplore;
-import com.sam.hex.replay.Replay;
 import com.sam.hex.replay.Save;
 
 public class NetHexGame extends Activity {
 	public static boolean startNewGame = true;
 	public static boolean replay = false;
 	public static boolean replayRunning = false;
+	public static boolean justStart = false;
 	private Runnable startnewgame = new Runnable(){
 		public void run(){
 			HexGame.stopGame(NetGlobal.game);
@@ -83,7 +83,9 @@ public class NetHexGame extends Activity {
             	        switch (which){
             	        case DialogInterface.BUTTON_POSITIVE:
             	            //Yes button clicked
-            	        	startnewgame.run();
+            	        	justStart = true;
+            	        	NetGlobal.game.player1.supportsNewgame();
+            	        	NetGlobal.game.player2.supportsNewgame();
             	            break;
             	        case DialogInterface.BUTTON_NEGATIVE:
             	            //No button clicked
@@ -154,7 +156,7 @@ public class NetHexGame extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	//Check if settings were changed and we need to run a new game
     	 if(replayRunning){
-     		//Do nothing
+     		applyBoard();
      	}
     	 else if(replay){
     		replay = false;
@@ -240,23 +242,12 @@ public class NetHexGame extends Activity {
     	//Create our board
     	applyBoard();
     	NetGlobal.game.clearBoard();
-        
-    	if(NetGlobal.game.moveNumber>1) NetGlobal.game.currentPlayer=(NetGlobal.game.currentPlayer%2)+1;
-	    
-    	replayRunning = true;
-    	replayThread = new Thread(new Replay(time, new Handler(), new Runnable(){
-			public void run(){
-				NetGlobal.game.timerText.setVisibility(View.GONE);
-				NetGlobal.game.winnerText.setVisibility(View.GONE);
-//				Global.replayButtons.setVisibility(View.VISIBLE);
-			}
-		}, new Runnable(){
-			public void run(){
-				if(NetGlobal.game.timer.type!=0) NetGlobal.game.timerText.setVisibility(View.VISIBLE);
-//				Global.replayButtons.setVisibility(View.GONE);
-			}
-		},NetGlobal.game, NetGlobal.GAME_LOCATION), "replay");
-		replayThread.start();
+    	replayThread = new Thread(new Runnable(){
+    		public void run(){
+    			NetGlobal.game.moveList.replay(900, NetGlobal.game);    			
+    		}
+    	});
+    	replayThread.start();
     }
     
     private void quit(){

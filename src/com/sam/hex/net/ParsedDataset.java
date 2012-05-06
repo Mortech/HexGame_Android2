@@ -32,14 +32,15 @@ public class ParsedDataset {
     				str+="Player 1: "+members.get(i).name;
     			}
     		}
+    		str+="\n";
     		for(int i=0;i<members.size();i++){
     			if(members.get(i).place==2){
-    	    		if(!str.equals("")) str+="\n";
     				str+="Player 2: "+members.get(i).name;
     			}
     		}
-    		if(!str.equals("")) return str;
+    		if(!str.equals("\n")) return str;
     		else{
+    			str="";
     			if(members.size()>0) str+="Spectating: "+members.get(0).name;
     			for(int i=1;i<members.size();i++){
         			str+=", "+members.get(i).name;
