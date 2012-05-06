@@ -34,6 +34,7 @@ public class MoveListener implements Runnable{
 	private int lasteid;
 	private GameObject game;
 	public boolean giveup = false;
+	private boolean dontAskTwice = false;
 	public MoveListener(GameObject game, int team, Handler handler, Runnable newgame, NetPlayerObject player, String server, int uid, String session_id, int sid){
 		this.game = game;
 		this.team = team;
@@ -120,7 +121,8 @@ public class MoveListener implements Runnable{
     						NetGlobal.sid = parsedDataset.getSid();
         					handler.post(newgame);
     					}
-    					else{
+    					else if(!dontAskTwice){
+    						dontAskTwice=true;
 	    					new DialogBox(game.board.getContext(),
 	    							GameAction.insert(game.board.getContext().getString(R.string.newLANGame), player.getName()),
 	    	    					new DialogInterface.OnClickListener() {
