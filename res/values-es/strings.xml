@@ -6,7 +6,8 @@
     <string name="app_name">Hex</string>
     
     <!-- Preferences -->
-    <string name="preferences">Configuración</string>
+    <string name="preferences">Configuración (Local)</string>
+    <string name="preferences_net">Configuración (Línea)</string>
     <string name="gameLocationTitle">modo de juego</string>
     <string name="gameLocationSummary">Jugar en el mismo dispositivo, a través de LAN o en Internet</string>
     <string name="gameSizeTitle">Tamaño del juego</string>

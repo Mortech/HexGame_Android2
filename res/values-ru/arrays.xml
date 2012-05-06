@@ -1,52 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="player1Array">
-        <item>Human</item>
-        <item>Computer (Will)</item>
-        <item>Computer (Bee)</item>
-    </string-array>
-    <string-array name="player1Values">
-        <item>0</item>
-        <item>1</item>
-        <item>4</item>
+        <item>человек</item>
+        <item>компьютер (Will)</item>
+        <item>компьютер (Bee)</item>
     </string-array>
     <string-array name="player2Array">
-        <item>Human</item>
-        <item>Computer (Will)</item>
-        <!-- <item>Local Network Player</item> -->
-        <!-- <item>Online Player</item> -->
-        <item>Computer (Bee)</item>
-    </string-array>
-    <string-array name="player2Values">
-        <item>0</item>
-        <item>1</item>
-        <!-- <item>2</item> -->
-        <!-- <item>3</item> -->
-        <item>4</item>
+        <item>человек</item>
+        <item>компьютер (Will)</item>
+        <item>компьютер (Bee)</item>
     </string-array>
     <string-array name="gameSizeArray">
         <item>7x7</item>
         <item>9x9</item>
         <item>11x11</item>
-        <item>Custom</item>
-    </string-array>
-    <string-array name="gameSizeValues">
-        <item>7</item>
-        <item>9</item>
-        <item>11</item>
-        <item>0</item>
+        <item>обычай</item>
     </string-array>
     <string-array name="availablePlayers">
-        <item>Scanning…</item>
+        <item>сканирование…</item>
     </string-array>
     <string-array name="gameLocationArray">
-        <item>Same Device</item>
-        <item>LAN</item>
-        <item>Online</item>
+        <item>То же устройство</item>
+        <!-- <item>LAN</item> -->
+        <item>Интернет</item>
     </string-array>
-    <string-array name="gameLocationValues">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
+    <string-array name="netPositionArray">
+        <item>зритель</item>
+        <item>Первый игрок</item>
+        <item>Второй игрок</item>
+    </string-array>
+    <string-array name="timerTypeArray">
+        <item>Нет таймер</item>
+        <item>На ходу</item>
+        <item>Весь матч</item>
     </string-array>
 </resources>

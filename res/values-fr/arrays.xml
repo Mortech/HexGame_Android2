@@ -1,60 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="player1Array">
-        <item>Human</item>
-        <item>Computer (Kinda simple)</item>
-        <item>Computer (Kinda hard)</item>
-    </string-array>
-    <string-array name="player1Values">
-        <item>0</item>
-        <item>1</item>
-        <item>4</item>
+        <item>Humain</item>
+        <item>Ordinateur (Will)</item>
+        <item>Ordinateur (Bee)</item>
     </string-array>
     <string-array name="player2Array">
-        <item>Human</item>
-        <item>Computer (Kinda simple)</item>
-        <!-- <item>Local Network Player</item> -->
-        <!-- <item>Online Player</item> -->
-        <item>Computer (Kinda hard)</item>
-    </string-array>
-    <string-array name="player2Values">
-        <item>0</item>
-        <item>1</item>
-        <!-- <item>2</item> -->
-        <!-- <item>3</item> -->
-        <item>4</item>
+        <item>Humain</item>
+        <item>Ordinateur (Will)</item>
+        <item>Ordinateur (Bee)</item>
     </string-array>
     <string-array name="gameSizeArray">
         <item>7x7</item>
         <item>9x9</item>
         <item>11x11</item>
-        <item>Custom</item>
-    </string-array>
-    <string-array name="gameSizeValues">
-        <item>7</item>
-        <item>9</item>
-        <item>11</item>
-        <item>0</item>
-    </string-array>
-    <string-array name="aiLabels">
-        <item>Easy</item>
-        <item>Hard</item>
-    </string-array>
-    <string-array name="aiValues">
-        <item>0</item>
-        <item>1</item>
+        <item>Coutume</item>
     </string-array>
     <string-array name="availablePlayers">
-        <item>Scanning…</item>
+        <item>Balayage…</item>
     </string-array>
     <string-array name="gameLocationArray">
-        <item>Same Device</item>
-        <item>LAN</item>
-        <item>Online</item>
+        <item>Même périphérique</item>
+        <!-- <item>LAN</item> -->
+        <item>En ligne</item>
     </string-array>
-    <string-array name="gameLocationValues">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
+    <string-array name="netPositionArray">
+        <item>Spectateur</item>
+        <item>Premier joueur</item>
+        <item>Deuxième joueur</item>
+    </string-array>
+    <string-array name="timerTypeArray">
+        <item>Pas de minuterie</item>
+        <item>Par coup</item>
+        <item>Match en entier</item>
     </string-array>
 </resources>

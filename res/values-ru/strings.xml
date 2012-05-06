@@ -6,7 +6,8 @@
     <string name="app_name">Hex</string>
     
     <!-- Preferences -->
-    <string name="preferences">Настройки</string>
+    <string name="preferences">Настройки (местный)</string>
+    <string name="preferences_net">Settings (Интернет)</string>
     <string name="gameLocationTitle">Игровой режим</string>
     <string name="gameLocationSummary">воспроизведения на одном устройстве, по локальной сети или через Интернет</string>
     <string name="gameSizeTitle">игры Размер</string>

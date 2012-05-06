@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="player1Array">
-        <item>Humano</item>
-        <item>Ordenador (Will)</item>
-        <item>Ordenador (Bee)</item>
+        <item>Človek</item>
+        <item>Počítač (Will)</item>
+        <item>Počítač (Bee)</item>
     </string-array>
     <string-array name="player2Array">
-        <item>Humano</item>
-        <item>Ordenador (Will)</item>
-        <item>Ordenador (Bee)</item>
+        <item>Človek</item>
+        <item>Počítač (Will)</item>
+        <item>Počítač (Bee)</item>
     </string-array>
     <string-array name="gameSizeArray">
         <item>7x7</item>
         <item>9x9</item>
         <item>11x11</item>
-        <item>Costumbre</item>
+        <item>Zvyk</item>
     </string-array>
     <string-array name="availablePlayers">
-        <item>Exploración…</item>
+        <item>Snímanie…</item>
     </string-array>
     <string-array name="gameLocationArray">
-        <item>Mismo dispositivo</item>
+        <item>Rovnaké zariadenie</item>
         <!-- <item>LAN</item> -->
-        <item>En línea</item>
+        <item>Online</item>
     </string-array>
     <string-array name="netPositionArray">
-        <item>Espectador</item>
-        <item>Primer jugador</item>
-        <item>Segundo jugador</item>
+        <item>Divák</item>
+        <item>Prvý hráč</item>
+        <item>Druhý hráč</item>
     </string-array>
     <string-array name="timerTypeArray">
-        <item>No temporizador</item>
-        <item>Por movimiento</item>
-        <item>Todo el partido</item>
+        <item>Nie časovač</item>
+        <item>Za ťah</item>
+        <item>Celý zápas</item>
     </string-array>
 </resources>
