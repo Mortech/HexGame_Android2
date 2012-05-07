@@ -34,4 +34,25 @@
         <item>Par coup</item>
         <item>Match en entier</item>
     </string-array>
+    <string-array name="netTimerArray">
+        <item>Pas de minuterie</item>
+        <item>5minutes</item>
+        <item>10minutes</item>
+        <item>15minutes</item>
+        <item>20minutes</item>
+        <item>30minutes</item>
+        <item>45minutes</item>
+        <item>1heure</item>
+        <item>1heure 30minutes</item>
+        <item>2heures</item>
+    </string-array>
+    <string-array name="netAdditionalTimeArray">
+        <item>+0secondes/déplacer</item>
+        <item>+10secondes/déplacer</item>
+        <item>+15secondes/déplacer</item>
+        <item>+20secondes/déplacer</item>
+        <item>+30secondes/déplacer</item>
+        <item>+45secondes/déplacer</item>
+        <item>+1minute/déplacer</item>
+    </string-array>
 </resources>

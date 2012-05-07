@@ -127,6 +127,8 @@
     <string name="sendAMessage">Enviar un mensaje</string>
     <string name="ready">Listo</string>
     <string name="unready">Indeciso</string>
+    <string name="optionsChanged">Opciones de cambio</string>
+    <string name="rated">Juego Calificación:</string>
     
     <!-- Dialog Options -->
     <string name="yes">Sí</string>

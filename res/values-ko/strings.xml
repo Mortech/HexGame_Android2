@@ -127,6 +127,8 @@
     <string name="sendAMessage">메세지를 보내요</string>
     <string name="ready">준비됐어요</string>
     <string name="unready">준비 안 됐어요</string>
+    <string name="optionsChanged">옵션이 변경되었습니다</string>
+    <string name="rated">정격 게임 :</string>
     
     <!-- Dialog Options -->
     <string name="yes">네</string>

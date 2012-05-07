@@ -127,6 +127,8 @@
     <string name="sendAMessage">Отправить сообщение</string>
     <string name="ready">готовый</string>
     <string name="unready">неготовый</string>
+    <string name="optionsChanged">параметры изменились</string>
+    <string name="rated">Номинальная игры:</string>
     
     <!-- Dialog Options -->
     <string name="yes">да</string>

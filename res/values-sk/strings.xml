@@ -126,6 +126,8 @@
     <string name="sendAMessage">Poslať správu</string>
     <string name="ready">Pripravené</string>
     <string name="unready">Nepripravené</string>
+    <string name="optionsChanged">Voľby zmenili</string>
+    <string name="rated">Hodnotené hry:</string>
     
     <!-- Dialog Options -->
     <string name="yes">Áno</string>

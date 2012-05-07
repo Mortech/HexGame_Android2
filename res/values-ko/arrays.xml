@@ -34,4 +34,25 @@
         <item>이사 당</item>
         <item>전체 검색</item>
     </string-array>
+    <string-array name="netTimerArray">
+        <item>아무 타이머 없음</item>
+        <item>5분</item>
+        <item>10분</item>
+        <item>15분</item>
+        <item>20분</item>
+        <item>30분</item>
+        <item>45분</item>
+        <item>1시간</item>
+        <item>1시간 30분</item>
+        <item>2시간</item>
+    </string-array>
+    <string-array name="netAdditionalTimeArray">
+        <item>+0초/이동</item>
+        <item>+10초/이동</item>
+        <item>+15초/이동</item>
+        <item>+20초/이동</item>
+        <item>+30초/이동</item>
+        <item>+45초/이동</item>
+        <item>+1분/이동</item>
+    </string-array>
 </resources>
