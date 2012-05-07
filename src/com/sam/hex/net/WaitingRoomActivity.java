@@ -103,7 +103,7 @@ public class WaitingRoomActivity extends Activity {
 				new Thread(new Runnable(){
 		    		public void run(){
 		    			try {
-		    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=START", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid);
+		    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=START&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.lasteid);
 		    				URL url = new URL(lobbyUrl);
 		    				SAXParserFactory spf = SAXParserFactory.newInstance();
 		    	            SAXParser parser = spf.newSAXParser();
@@ -337,8 +337,8 @@ public class WaitingRoomActivity extends Activity {
 	    	        		int scored = 0;
 	    	        		if(NetGlobal.ratedGame) scored++;
 	    	        		try {
-	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&timerTotal=%s&timerInc=%s&scored=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.timerTime*60, NetGlobal.additionalTimerTime, scored);
-		    	        		String placeUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=PLACE&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.place);
+	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&timerTotal=%s&timerInc=%s&scored=%s&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.timerTime*60, NetGlobal.additionalTimerTime, scored, NetGlobal.lasteid);
+		    	        		String placeUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=PLACE&place=%s&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.place, NetGlobal.lasteid);
 	    	        			if(previousGridSize!=NetGlobal.gridSize || previousTime!=NetGlobal.timerTime || previousAdditionalTime!=NetGlobal.additionalTimerTime || previousRatedGame!=NetGlobal.ratedGame) new URL(boardUrl).openStream();
 	    	        			new URL(placeUrl).openStream();
 	    	        		} catch (MalformedURLException e) {

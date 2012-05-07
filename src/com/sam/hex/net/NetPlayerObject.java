@@ -50,7 +50,7 @@ public class NetPlayerObject implements PlayingEntity {
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
-	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, URLEncoder.encode(GameAction.pointToString(new Point(game.moveList.getmove().getX(),game.moveList.getmove().getY()),game),"UTF-8"));
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s&lasteid=", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, URLEncoder.encode(GameAction.pointToString(new Point(game.moveList.getmove().getX(),game.moveList.getmove().getY()),game),"UTF-8"), NetGlobal.lasteid);
 	    				URL url = new URL(lobbyUrl);
 	    				SAXParserFactory spf = SAXParserFactory.newInstance();
 	    	            SAXParser parser = spf.newSAXParser();
@@ -112,7 +112,7 @@ public class NetPlayerObject implements PlayingEntity {
 		new Thread(new Runnable(){
     		public void run(){
     			try {
-    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ASK&move_ind=", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, (game.moveNumber-2));
+    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=UNDO&type=ASK&move_ind=%s&lasteid=%s", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, (game.moveNumber-1), NetGlobal.lasteid);
     				URL url = new URL(lobbyUrl);
     				SAXParserFactory spf = SAXParserFactory.newInstance();
     	            SAXParser parser = spf.newSAXParser();
@@ -147,7 +147,7 @@ public class NetPlayerObject implements PlayingEntity {
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
-	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=END&type=GIVEUP", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid);
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=END&type=GIVEUP&lasteid=%s", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, NetGlobal.lasteid);
 	    				URL url = new URL(lobbyUrl);
 	    				SAXParserFactory spf = SAXParserFactory.newInstance();
 	    	            SAXParser parser = spf.newSAXParser();
@@ -177,7 +177,7 @@ public class NetPlayerObject implements PlayingEntity {
 		new Thread(new Runnable(){
     		public void run(){
     			try {
-    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=RESTART", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid);
+    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=RESTART&lasteid=%s", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, NetGlobal.lasteid);
     				URL url = new URL(lobbyUrl);
     				SAXParserFactory spf = SAXParserFactory.newInstance();
     	            SAXParser parser = spf.newSAXParser();
@@ -212,7 +212,7 @@ public class NetPlayerObject implements PlayingEntity {
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
-	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=END&type=GIVEUP", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid);
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=END&type=GIVEUP&lasteid=%s", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, NetGlobal.lasteid);
 	    				URL url = new URL(lobbyUrl);
 	    				SAXParserFactory spf = SAXParserFactory.newInstance();
 	    	            SAXParser parser = spf.newSAXParser();
@@ -252,7 +252,7 @@ public class NetPlayerObject implements PlayingEntity {
 			new Thread(new Runnable(){
 	    		public void run(){
 	    			try {
-	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, URLEncoder.encode(GameAction.pointToString(new Point(game.moveList.getmove().getX(),game.moveList.getmove().getY()),game),"UTF-8"));
+	    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=MOVE&move=%s&lasteid=%s", URLEncoder.encode(server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), uid, URLEncoder.encode(session_id,"UTF-8"), sid, URLEncoder.encode(GameAction.pointToString(new Point(game.moveList.getmove().getX(),game.moveList.getmove().getY()),game),"UTF-8"), NetGlobal.lasteid);
 	    				URL url = new URL(lobbyUrl);
 	    				SAXParserFactory spf = SAXParserFactory.newInstance();
 	    	            SAXParser parser = spf.newSAXParser();
