@@ -77,7 +77,7 @@ public class XMLHandler extends DefaultHandler{
 	    	}
 	    	if(in_session){
 		    	if(localName.equals("member")){
-		    		parsedDataset.addSessionMember(Integer.parseInt(atts.getValue("plc")), Integer.parseInt(atts.getValue("uid")), atts.getValue("nam"), atts.getValue("stat"));
+		    		parsedDataset.addSessionMember(Integer.parseInt(atts.getValue("plc")), Integer.parseInt(atts.getValue("uid")), atts.getValue("nam"), atts.getValue("stat"), 0);
 		    	}
 	    	}
     	}
@@ -101,7 +101,7 @@ public class XMLHandler extends DefaultHandler{
     		}
     		else if(in_playerList){
     			if(localName.equals("player")){
-    				parsedDataset.addPlayer(Integer.parseInt(atts.getValue("place")), Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), atts.getValue("stat"));
+    				parsedDataset.addPlayer(Integer.parseInt(atts.getValue("place")), Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), atts.getValue("stat"), Integer.parseInt(atts.getValue("timerLeft")));
     			}
     		}
     		if(localName.equals("guestList")){
@@ -109,7 +109,7 @@ public class XMLHandler extends DefaultHandler{
     		}
     		else if(in_guestList){
     			if(localName.equals("guest")){
-    				parsedDataset.addPlayer(0, Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), "Spectating");
+    				parsedDataset.addPlayer(0, Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), "Spectating", 0);
     			}
     		}
     		//Events during game

@@ -46,6 +46,9 @@ public class RefreshGamePlayerlist implements Runnable{
         			for(int i=0;i<parsedDataset.messages.size();i++){
         				WaitingRoomActivity.messages.add(parsedDataset.messages.get(i).name+": "+parsedDataset.messages.get(i).msg);
         			}
+//        			if(parsedDataset.optionsChanged){
+//        				WaitingRoomActivity.messages.add(
+//        			}
         			if(parsedDataset.gameActive) handler.post(startGame);
         			else handler.post(updateResults);
 	        	}

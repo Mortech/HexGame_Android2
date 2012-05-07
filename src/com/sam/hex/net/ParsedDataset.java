@@ -54,11 +54,13 @@ public class ParsedDataset {
     	public int uid = 0;
     	public String name = null;
     	public String state = null;
-    	public Member(int place, int uid, String name, String state){
+    	public int timerLeft;
+    	public Member(int place, int uid, String name, String state, int timerLeft){
     		this.place = place;
         	this.uid = uid;
         	this.name = name;
         	this.state = state;
+        	this.timerLeft = timerLeft;
     	}
     	public String toString(){
     		return name;
@@ -67,8 +69,8 @@ public class ParsedDataset {
     public void addSession(String state, int sid, int uid, String server){
     	sessions.add(new GameSession(state, sid, uid, server));
     }
-    public void addSessionMember(int position, int uid, String name, String state){
-    	sessions.get(sessions.size()-1).members.add(new Member(position, uid, name, state));
+    public void addSessionMember(int position, int uid, String name, String state, int timerLeft){
+    	sessions.get(sessions.size()-1).members.add(new Member(position, uid, name, state, timerLeft));
     }
     
     //Playing a game
@@ -77,8 +79,8 @@ public class ParsedDataset {
     private int sid;
     private String server = null;
     public ArrayList<Member> players = new ArrayList<Member>();
-    public void addPlayer(int position, int uid, String name, String state){
-    	players.add(new Member(position, uid, name, state));
+    public void addPlayer(int position, int uid, String name, String state, int timerLeft){
+    	players.add(new Member(position, uid, name, state, timerLeft));
     }
     public ArrayList<Message> messages = new ArrayList<Message>();
     public class Message{

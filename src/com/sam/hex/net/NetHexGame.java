@@ -135,7 +135,7 @@ public class NetHexGame extends Activity {
     	    NetGlobal.game.timer = new Timer(NetGlobal.game, 0, 0, 0);
     	}
     	else{
-    	    NetGlobal.game.timer = new Timer(NetGlobal.game, NetGlobal.timerTime, NetGlobal.additionalTimerTime, 2);
+    	    NetGlobal.game.timer = new Timer(NetGlobal.game, NetGlobal.timerTime, 0, 2);
     	}
     	
 	    //Display board

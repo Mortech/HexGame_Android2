@@ -72,6 +72,16 @@ public class MoveListener implements Runnable{
 	        			lasteid = parsedDataset.lasteid;
 	        			NetGlobal.lasteid = parsedDataset.lasteid;
 	        		}
+	        		for(int i=0;i<parsedDataset.players.size();i++){
+	        			if(parsedDataset.players.get(i).place==1){
+	        				game.player1.setTime(parsedDataset.players.get(i).timerLeft*1000);
+	        			}
+	        			else if(parsedDataset.players.get(i).place==2){
+	        				game.player2.setTime(parsedDataset.players.get(i).timerLeft*1000);
+	        			}
+	        		}
+	        		game.timer.totalTime = (game.player1.getTime() + game.player2.getTime())/2;
+	        		game.timer.startTime = System.currentTimeMillis();
 	        		if(team==1){
 	        			if(parsedDataset.p1moves!=null)
 		        			for(int i=0;i<parsedDataset.p1moves.size();i++)
