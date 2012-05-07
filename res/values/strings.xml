@@ -128,6 +128,7 @@
     <string name="ready">Ready</string>
     <string name="unready">Unready</string>
     <string name="optionsChanged">Options changed</string>
+    <string name="rated">Rated Game:</string>
     
     <!-- Dialog Options -->
     <string name="yes">Yes</string>

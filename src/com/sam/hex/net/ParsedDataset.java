@@ -103,6 +103,7 @@ public class ParsedDataset {
     public boolean restart = false;
     public boolean p1GaveUp = false;
     public boolean p2GaveUp = false;
+    public boolean optionsChanged = false;
     
     //Errors
     public boolean error = false;

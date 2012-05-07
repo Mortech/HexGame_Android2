@@ -38,6 +38,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -136,7 +137,7 @@ public class WaitingRoomActivity extends Activity {
     		public void run(){
 				refreshPlayers();
 				refreshMessages();
-    		}}, startGame);
+    		}}, startGame, this);
     }
     
     @Override
@@ -307,6 +308,10 @@ public class WaitingRoomActivity extends Activity {
         }
         additionalTimerTime.setSelection(pos);
         
+        //Rated game
+        final CheckBox ratedGame = (CheckBox)dialoglayout.findViewById(R.id.ratedGame);
+        ratedGame.setChecked(NetGlobal.ratedGame);
+        
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setView(dialoglayout);
 		builder.setMessage(this.getText(R.string.createBoard));
@@ -327,10 +332,14 @@ public class WaitingRoomActivity extends Activity {
 	    	        		NetGlobal.timerTime = getResources().getIntArray(R.array.netTimerValues)[timerTime.getSelectedItemPosition()];
 	    	        		int previousAdditionalTime = NetGlobal.additionalTimerTime;
 	    	        		NetGlobal.additionalTimerTime = getResources().getIntArray(R.array.netAdditionalTimeValues)[additionalTimerTime.getSelectedItemPosition()];
+	    	        		boolean previousRatedGame = NetGlobal.ratedGame;
+	    	        		NetGlobal.ratedGame = ratedGame.isChecked();
+	    	        		int scored = 0;
+	    	        		if(NetGlobal.ratedGame) scored++;
 	    	        		try {
-	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&timerTotal=%s&timerInc=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.timerTime*60, NetGlobal.additionalTimerTime);
+	    	        			String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&timerTotal=%s&timerInc=%s&scored=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.timerTime*60, NetGlobal.additionalTimerTime, scored);
 		    	        		String placeUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=PLACE&place=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.place);
-	    	        			if(previousGridSize!=NetGlobal.gridSize || previousTime!=NetGlobal.timerTime || previousAdditionalTime!=NetGlobal.additionalTimerTime) new URL(boardUrl).openStream();
+	    	        			if(previousGridSize!=NetGlobal.gridSize || previousTime!=NetGlobal.timerTime || previousAdditionalTime!=NetGlobal.additionalTimerTime || previousRatedGame!=NetGlobal.ratedGame) new URL(boardUrl).openStream();
 	    	        			new URL(placeUrl).openStream();
 	    	        		} catch (MalformedURLException e) {
 	    	        		e.printStackTrace();

@@ -25,6 +25,7 @@ public class XMLHandler extends DefaultHandler{
     private boolean in_boardSize = false;
     private boolean in_timerTotal = false;
     private boolean in_timerInc = false;
+    private boolean in_scored = false;
        
     private ParsedDataset parsedDataset = new ParsedDataset();
  
@@ -182,6 +183,7 @@ public class XMLHandler extends DefaultHandler{
     		//Changing board configurations
 			else if(localName.equals("gameOptions")){
 				this.in_gameOptions = true;
+    			parsedDataset.optionsChanged = true;
 			}
 			else if(in_gameOptions){
 				if(localName.equals("boardSize")){
@@ -192,6 +194,9 @@ public class XMLHandler extends DefaultHandler{
 				}
 				else if(localName.equals("timerInc")){
 					this.in_timerInc = true;
+				}
+				else if(localName.equals("scored")){
+					this.in_scored = true;
 				}
 			}
     	}
@@ -267,6 +272,9 @@ public class XMLHandler extends DefaultHandler{
     	else if(localName.equals("timerInc")){
     		this.in_timerInc = false;
     	}
+    	else if(localName.equals("scored")){
+    		this.in_scored = false;
+    	}
     }
        
     /** Gets be called on the following structure:
@@ -294,6 +302,9 @@ public class XMLHandler extends DefaultHandler{
     			}
     			else if(this.in_timerInc){
     				NetGlobal.additionalTimerTime = Integer.parseInt(new String(ch, start, length));
+    			}
+    			else if(this.in_scored){
+    				NetGlobal.ratedGame = new String(ch, start, length).equals("1");
     			}
     		}
     	}

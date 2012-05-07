@@ -38,6 +38,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Spinner;
@@ -305,6 +306,10 @@ public class NetLobbyActivity extends Activity {
         additionalTimerTime.setAdapter(additionalTimerTimeAdapter);
         additionalTimerTime.setSelection(Integer.parseInt(settings.getString("netAdditionalTimerTime", "0")));
         
+        //Rated game
+        final CheckBox ratedGame = (CheckBox)dialoglayout.findViewById(R.id.ratedGame);
+        ratedGame.setChecked(settings.getBoolean("netRatedGame", true));
+        
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setView(dialoglayout);
 		builder.setMessage(this.getText(R.string.createBoard));
@@ -326,6 +331,8 @@ public class NetLobbyActivity extends Activity {
 			            	settings.edit().putString("netTimerTime", timerTime.getSelectedItemPosition()+"").commit();
 	    	        		NetGlobal.additionalTimerTime = getResources().getIntArray(R.array.netAdditionalTimeValues)[additionalTimerTime.getSelectedItemPosition()];
 			            	settings.edit().putString("netAdditionalTimerTime", additionalTimerTime.getSelectedItemPosition()+"").commit();
+			            	NetGlobal.ratedGame = ratedGame.isChecked();
+			            	settings.edit().putBoolean("netRatedGame", NetGlobal.ratedGame);
 	    	        		try {
 		    	        		String registrationUrl = String.format("http://www.iggamecenter.com/api_board_create.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&gid=%s&place=%s", NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.gid, NetGlobal.place);
 		    	        		URL url = new URL(registrationUrl);
@@ -341,8 +348,10 @@ public class NetLobbyActivity extends Activity {
 			    	        		NetGlobal.sid = parsedDataset.getSid();
 			    	        		NetGlobal.server = parsedDataset.getServer();
 			    	        		
-			    	        		//Apply board size
-			    	        		String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&timerTotal=%s&timerInc=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.timerTime*60, NetGlobal.additionalTimerTime);
+			    	        		//Apply board configuration
+			    	        		int scored = 0;
+			    	        		if(NetGlobal.ratedGame) scored++;
+			    	        		String boardUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=SETUP&boardSize=%s&timerTotal=%s&timerInc=%s&scored=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.gridSize, NetGlobal.timerTime*60, NetGlobal.additionalTimerTime, scored);
 			    	        		new URL(boardUrl).openStream();
 			    	        		
 		    	        			WaitingRoomActivity.messages = new LinkedList<String>();

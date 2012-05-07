@@ -233,6 +233,7 @@ public class Preferences extends PreferenceActivity {
             general.removePreference(findPreference("netGridSize"));
             general.removePreference(findPreference("netTimerTime"));
             general.removePreference(findPreference("netAdditionalTimerTime"));
+            general.removePreference(findPreference("netRatedGame"));
         }
     	addPreferencesFromResource(R.layout.preferences_reset);
     	
