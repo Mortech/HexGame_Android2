@@ -46,8 +46,8 @@ public class Save{
 			createDirIfNoneExists(File.separator + "Hex" + File.separator);
 			String file = Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + fileName;
 			if(file!=null){
-				if(!file.toLowerCase().endsWith(".hex")){
-				    file = file + ".hex";
+				if(!file.toLowerCase().endsWith(".rhex")){
+				    file = file + ".rhex";
 				}
 				try {
 					ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));

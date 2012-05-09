@@ -225,8 +225,8 @@ public class FileExplore extends Activity {
 		    	    	    	    		public void onClick(DialogInterface dialog, int which) {
 		    	    	    	    			if(!editText.getText().toString().equals("")){
 		    	    	    	    				String fileName = editText.getText().toString();
-		    	    	    	        			if(!fileName.toLowerCase().endsWith(".hex")){
-		    	    	    	        			    fileName += ".hex";
+		    	    	    	        			if(!fileName.toLowerCase().endsWith(".rhex")){
+		    	    	    	        			    fileName += ".rhex";
 		    	    	    	        			}
 		    	    	    	        			new File(path + "/" + chosenFile).renameTo(new File(path + "/" + fileName));
 		    	    	    	        			handle.post(new Runnable(){
