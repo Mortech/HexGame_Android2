@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-import android.os.Environment;
-
 import com.sam.hex.GameObject;
 import com.sam.hex.Global;
 import com.sam.hex.HexGame;
@@ -16,12 +14,15 @@ import com.sam.hex.Timer;
 /**
  * @author Will Harmon
  **/
-class Load implements Runnable{
+public class Load implements Runnable{
+	private File file;
+	public Load(File file){
+		this.file = file;
+	}
 	@Override
 	public void run() {
 		try {
 			HexGame.stopGame(Global.game);
-    		File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator + FileExplore.chosenFile);
     		if(file!=null){
 	            //Construct the ObjectInputStream object
 	        	ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));

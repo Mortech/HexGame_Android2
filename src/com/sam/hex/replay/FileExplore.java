@@ -37,7 +37,7 @@ public class FileExplore extends Activity {
 	private static final String TAG = "F_PATH";
 	
 	private Item[] fileList;
-	private File path = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator);
+	public static File path = new File(Environment.getExternalStorageDirectory() + File.separator + "Hex" + File.separator);
 	public static String chosenFile;
 	
 	ListAdapter adapter;
@@ -194,7 +194,7 @@ public class FileExplore extends Activity {
 	    	    	    	    public void onClick(DialogInterface dialog, int which) {
 	    	    	    	        switch (which){
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
-	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(), "loading", 200000);
+	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(new File(FileExplore.path + FileExplore.chosenFile)), "loading", 200000);
 	    	    						loading.start();
 	    	    						try {
 	    	    							loading.join();
@@ -225,8 +225,8 @@ public class FileExplore extends Activity {
 		    	    	    	    		public void onClick(DialogInterface dialog, int which) {
 		    	    	    	    			if(!editText.getText().toString().equals("")){
 		    	    	    	    				String fileName = editText.getText().toString();
-		    	    	    	        			if(!fileName.toLowerCase().endsWith(".rhex")){
-		    	    	    	        			    fileName += ".rhex";
+		    	    	    	        			if(!fileName.toLowerCase().endsWith(".hex")){
+		    	    	    	        			    fileName += ".hex";
 		    	    	    	        			}
 		    	    	    	        			new File(path + "/" + chosenFile).renameTo(new File(path + "/" + fileName));
 		    	    	    	        			handle.post(new Runnable(){

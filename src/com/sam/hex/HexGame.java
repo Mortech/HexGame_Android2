@@ -1,5 +1,7 @@
 package com.sam.hex;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,6 +29,7 @@ import com.sam.hex.lan.LocalPlayerObject;
 import com.sam.hex.net.NetGlobal;
 import com.sam.hex.net.NetPlayerObject;
 import com.sam.hex.replay.FileExplore;
+import com.sam.hex.replay.Load;
 import com.sam.hex.replay.Replay;
 import com.sam.hex.replay.Save;
 
@@ -44,6 +47,12 @@ public class HexGame extends Activity {
         	initializeNewGame();//Must be set up immediately
         }
         applyBoard();
+        
+        Intent intent = getIntent();
+        if (intent.getData() != null) {
+        	Load l = new Load(new File(intent.getData().getPath()));
+        	l.run();
+        }
     }
     
     private void applyBoard(){
