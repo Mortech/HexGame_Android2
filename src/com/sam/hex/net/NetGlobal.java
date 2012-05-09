@@ -3,6 +3,9 @@ package com.sam.hex.net;
 import java.util.ArrayList;
 import com.sam.hex.GameObject;
 
+/**
+ * @author Will Harmon
+ **/
 public class NetGlobal{
 	//Our ids to connect to igGC
 	public static final int id = 17;

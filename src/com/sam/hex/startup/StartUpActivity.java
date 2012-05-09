@@ -16,6 +16,9 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * @author Will Harmon
+ **/
 public class StartUpActivity extends Activity {
     /** Called when the activity is first created. */
     @Override

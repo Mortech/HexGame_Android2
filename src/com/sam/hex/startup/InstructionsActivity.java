@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * @author Will Harmon
+ **/
 public class InstructionsActivity extends Activity {
     /** Called when the activity is first created. */
     @Override

@@ -21,6 +21,9 @@ import com.sam.hex.PlayingEntity;
 import android.graphics.Point;
 import android.os.Handler;
 
+/**
+ * @author Will Harmon
+ **/
 public class NetPlayerObject implements PlayingEntity {
 	private String name;
 	private int color;

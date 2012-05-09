@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.ContextThemeWrapper;
 
+/**
+ * @author Will Harmon
+ **/
 public class DialogBox implements Runnable{
 	private static Handler handler;
 	AlertDialog.Builder builder;

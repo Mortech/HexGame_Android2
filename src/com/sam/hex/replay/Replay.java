@@ -9,6 +9,9 @@ import com.sam.hex.lan.LANGlobal;
 import com.sam.hex.net.NetGlobal;
 import com.sam.hex.net.NetHexGame;
 
+/**
+ * @author Will Harmon
+ **/
 public class Replay implements Runnable {
 	private int time;
 	private Handler handler;

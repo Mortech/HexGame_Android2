@@ -31,6 +31,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+/**
+ * @author Will Harmon
+ **/
 public class RegistrationActivity extends Activity {
 	SharedPreferences settings;
 	

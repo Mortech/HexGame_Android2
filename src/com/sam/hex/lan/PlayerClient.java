@@ -16,6 +16,10 @@
 //import com.sam.hex.HexGame;
 //import com.sam.hex.R;
 //
+
+/**
+ * @author Will Harmon
+ **/
 //public class PlayerClient implements PlayerUnicastListener {
 //	Thread thread;
 //	boolean run = true;

@@ -5,6 +5,9 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
+/**
+ * @author Will Harmon
+ **/
 public class MulticastSender implements Runnable {
 	Thread thread;
 	MulticastSocket socket;

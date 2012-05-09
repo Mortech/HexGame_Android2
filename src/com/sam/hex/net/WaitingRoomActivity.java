@@ -47,6 +47,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * @author Will Harmon
+ **/
 public class WaitingRoomActivity extends Activity {
 	public static LinkedList<String> messages = new LinkedList<String>();
 	private RefreshGamePlayerlist refreshPlayers;

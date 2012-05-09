@@ -7,6 +7,9 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 
+/**
+ * @author Will Harmon
+ **/
 public class WifiBroadcastReceiver extends BroadcastReceiver{
 	Handler handler;
 	Runnable updateResults;

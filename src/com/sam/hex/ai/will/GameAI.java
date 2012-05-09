@@ -13,7 +13,9 @@ import com.sam.hex.PlayingEntity;
 
 import android.graphics.Point;
 
-
+/**
+ * @author Will Harmon
+ **/
 public class GameAI implements PlayingEntity { 
 	private String name;
 	private int color;

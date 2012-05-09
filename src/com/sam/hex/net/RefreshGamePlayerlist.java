@@ -18,6 +18,9 @@ import com.sam.hex.R;
 import android.content.Context;
 import android.os.Handler;
 
+/**
+ * @author Will Harmon
+ **/
 public class RefreshGamePlayerlist implements Runnable{
 	private boolean refresh = true;
 	private Handler handler;

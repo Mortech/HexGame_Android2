@@ -21,6 +21,9 @@ import com.sam.hex.GameAction;
 import com.sam.hex.GameObject;
 import com.sam.hex.R;
 
+/**
+ * @author Will Harmon
+ **/
 public class MoveListener implements Runnable{
 	private boolean listen = true;
 	private int team;

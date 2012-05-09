@@ -17,6 +17,9 @@ import android.widget.EditText;
 import com.sam.hex.GameObject;
 import com.sam.hex.R;
 
+/**
+ * @author Will Harmon
+ **/
 public class Save{
 	public static String fileName;
 	private GameObject game;

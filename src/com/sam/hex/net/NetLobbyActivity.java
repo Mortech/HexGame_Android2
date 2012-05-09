@@ -43,6 +43,9 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Spinner;
 
+/**
+ * @author Will Harmon
+ **/
 public class NetLobbyActivity extends Activity {
 	private boolean loginSucceeded = false;
 	RefreshPlayerlist refreshPlayers;

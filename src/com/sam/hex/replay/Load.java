@@ -13,6 +13,9 @@ import com.sam.hex.MoveList;
 import com.sam.hex.PlayerObject;
 import com.sam.hex.Timer;
 
+/**
+ * @author Will Harmon
+ **/
 class Load implements Runnable{
 	@Override
 	public void run() {

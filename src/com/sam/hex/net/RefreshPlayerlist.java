@@ -15,6 +15,9 @@ import org.xml.sax.XMLReader;
 
 import android.os.Handler;
 
+/**
+ * @author Will Harmon
+ **/
 public class RefreshPlayerlist implements Runnable{
 	private boolean refresh = true;
 	Handler handler;

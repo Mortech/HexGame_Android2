@@ -4,6 +4,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+/**
+ * @author Will Harmon
+ **/
 public class LANMessage implements Runnable{
 	String message;
 	InetAddress ip;

@@ -35,6 +35,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+/**
+ * @author Will Harmon
+ **/
 public class LocalLobbyActivity extends Activity {
 	WifiManager wm;
 	MulticastLock mcLock;

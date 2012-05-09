@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import com.sam.hex.GameObject;
 
+/**
+ * @author Will Harmon
+ **/
 public class LANGlobal {
 	public static ArrayList<LocalNetworkObject> localObjects = new ArrayList<LocalNetworkObject>();
 	public static LocalNetworkObject localPlayer = new LocalNetworkObject();

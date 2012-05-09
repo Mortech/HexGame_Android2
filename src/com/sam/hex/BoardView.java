@@ -12,6 +12,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.graphics.Color;
 
+/**
+ * @author Will Harmon
+ **/
 public class BoardView extends View{
 	private ShapeDrawable[][] mDrawable;
 	private ShapeDrawable[][] mOutline;

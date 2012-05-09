@@ -25,6 +25,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+/**
+ * @author Will Harmon
+ **/
 public class Preferences extends PreferenceActivity {
 	SharedPreferences settings;
 	PreferenceScreen screen;

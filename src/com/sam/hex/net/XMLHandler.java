@@ -6,6 +6,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.sam.hex.GameAction;
      
+/**
+ * @author Will Harmon
+ **/
 public class XMLHandler extends DefaultHandler{
 	private boolean in_errorMessage = false;
 	private boolean in_loginResult = false;

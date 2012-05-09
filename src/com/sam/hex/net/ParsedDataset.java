@@ -5,6 +5,9 @@ import java.util.LinkedList;
 
 import android.graphics.Point;
  
+/**
+ * @author Will Harmon
+ **/
 public class ParsedDataset {
 	//Logging in
     private int uid = 0;

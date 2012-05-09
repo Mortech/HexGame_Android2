@@ -4,6 +4,9 @@ import java.net.InetAddress;
 
 import com.sam.hex.Global;
 
+/**
+ * @author Will Harmon
+ **/
 public class LocalNetworkObject{
 	public String playerName;
 	public int playerColor=Global.player2DefaultColor;

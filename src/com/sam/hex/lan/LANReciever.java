@@ -6,6 +6,9 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+/**
+ * @author Will Harmon
+ **/
 public class LANReciever implements Runnable{
 	String message;
 	InetAddress ip;

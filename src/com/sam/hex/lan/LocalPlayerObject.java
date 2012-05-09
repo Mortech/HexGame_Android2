@@ -6,6 +6,9 @@ import com.sam.hex.GameAction;
 import com.sam.hex.GameObject;
 import com.sam.hex.PlayingEntity;
 
+/**
+ * @author Will Harmon
+ **/
 public class LocalPlayerObject implements PlayingEntity {
 	private String name;
 	private int color;

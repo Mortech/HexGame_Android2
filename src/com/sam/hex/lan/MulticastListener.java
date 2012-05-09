@@ -6,6 +6,9 @@ import java.net.MulticastSocket;
 
 import android.os.Handler;
 
+/**
+ * @author Will Harmon
+ **/
 public class MulticastListener implements Runnable {
 	Thread thread;
 	boolean run = true;

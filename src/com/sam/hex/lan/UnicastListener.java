@@ -6,6 +6,9 @@ import java.net.InetAddress;
 
 import android.os.Handler;
 
+/**
+ * @author Will Harmon
+ **/
 public class UnicastListener implements Runnable {
 	Thread thread;
 	boolean run = true;

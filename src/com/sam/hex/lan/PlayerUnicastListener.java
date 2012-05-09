@@ -19,6 +19,9 @@ import com.sam.hex.HexGame;
 import com.sam.hex.MoveList;
 import com.sam.hex.R;
 
+/**
+ * @author Will Harmon
+ **/
 public class PlayerUnicastListener implements Runnable {
 	private Thread thread;
 	private boolean run = true;

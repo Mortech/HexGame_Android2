@@ -2,6 +2,9 @@ package com.sam.hex;
 
 import android.view.View;
 
+/**
+ * @author Will Harmon
+ **/
 public class Timer implements Runnable{
 	private boolean refresh = true;
 	public long startTime;

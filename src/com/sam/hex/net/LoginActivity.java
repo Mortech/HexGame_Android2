@@ -31,6 +31,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * @author Will Harmon
+ **/
 public class LoginActivity extends Activity {
 	SharedPreferences settings;
 	Context context;

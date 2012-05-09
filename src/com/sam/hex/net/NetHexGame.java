@@ -28,6 +28,9 @@ import com.sam.hex.Timer;
 import com.sam.hex.net.NetGlobal;
 import com.sam.hex.replay.Save;
 
+/**
+ * @author Will Harmon
+ **/
 public class NetHexGame extends Activity {
 	public static boolean startNewGame = true;
 	public static boolean replayRunning = false;
