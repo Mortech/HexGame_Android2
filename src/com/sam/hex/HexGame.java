@@ -37,6 +37,7 @@ public class HexGame extends Activity {
 	public static boolean startNewGame = true;
 	public static boolean replay = false;
 	public static boolean replayRunning = false;
+	private static Intent intent;
 	
     /** Called when the activity is first created. */
     @Override
@@ -48,10 +49,12 @@ public class HexGame extends Activity {
         }
         applyBoard();
         
-        Intent intent = getIntent();
-        if (intent.getData() != null) {
-        	Load l = new Load(new File(intent.getData().getPath()));
-        	l.run();
+        if(intent!=getIntent()){
+	        intent = getIntent();
+	        if (intent.getData() != null) {
+	        	Load l = new Load(new File(intent.getData().getPath()));
+	        	l.run();
+	        }
         }
     }
     

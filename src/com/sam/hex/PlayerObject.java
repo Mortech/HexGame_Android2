@@ -43,7 +43,6 @@ public class PlayerObject implements PlayingEntity {
 	
 	@Override
 	public void undoCalled(){
-		endMove();
 	}
 	
 	@Override
