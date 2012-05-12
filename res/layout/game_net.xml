@@ -10,6 +10,6 @@
         <include layout="@layout/game_separator"/>
 		
         <!-- Include game board -->
-		<include layout="@layout/game_board"/>
+		<include layout="@layout/game_board_net"/>
  
 </LinearLayout>

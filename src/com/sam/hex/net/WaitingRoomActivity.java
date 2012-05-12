@@ -83,7 +83,7 @@ public class WaitingRoomActivity extends Activity {
         Button submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	sendMessage((EditText) findViewById(R.id.sendMessage));
+            	sendMessage(WaitingRoomActivity.this.findViewById(R.layout.waitingroom), (EditText) findViewById(R.id.sendMessage));
             }
         });
         
@@ -91,7 +91,7 @@ public class WaitingRoomActivity extends Activity {
         text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if(actionId==EditorInfo.IME_ACTION_DONE || event.getKeyCode()==KeyEvent.KEYCODE_ENTER){
-					sendMessage(v);
+					sendMessage(WaitingRoomActivity.this.findViewById(R.layout.waitingroom), v);
 					return true;
 				}
 				return false;
@@ -138,8 +138,8 @@ public class WaitingRoomActivity extends Activity {
     	
     	refreshPlayers = new RefreshGamePlayerlist(new Handler(), new Runnable(){
     		public void run(){
-				refreshPlayers();
-				refreshMessages();
+				refreshPlayers(WaitingRoomActivity.this.findViewById(R.layout.waitingroom), WaitingRoomActivity.this);
+				refreshMessages(WaitingRoomActivity.this.findViewById(R.layout.waitingroom));
     		}}, startGame, this);
     }
     
@@ -194,11 +194,11 @@ public class WaitingRoomActivity extends Activity {
         }
     }
     
-    private void sendMessage(TextView v){
+    public static void sendMessage(View body, TextView v){
     	final String message = v.getText().toString();
     	if(!message.equals("")){
         	v.setText("");
-        	refreshMessages();
+        	refreshMessages(body);
 		}
     	
     	new Thread(new Runnable(){
@@ -215,11 +215,6 @@ public class WaitingRoomActivity extends Activity {
     	            
     	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
     	        	if(!parsedDataset.error){
-    	        		if(parsedDataset.lasteid!=0) NetGlobal.lasteid = parsedDataset.lasteid;
-    	        		NetGlobal.members = parsedDataset.players;
-            			for(int i=0;i<parsedDataset.messages.size();i++){
-            				WaitingRoomActivity.messages.add(parsedDataset.messages.get(i).name+": "+parsedDataset.messages.get(i).msg);
-            			}
     	        	}
     	        	else{
     	        		System.out.println(parsedDataset.getErrorMessage());
@@ -237,14 +232,14 @@ public class WaitingRoomActivity extends Activity {
     	}).start();
     }
     
-    private void refreshMessages(){
-    	TextView messageBoard = (TextView) findViewById(R.id.messages);
+    public static void refreshMessages(View body){
+    	TextView messageBoard = (TextView) body.findViewById(R.id.messages);
     	String msg = "";
     	for(int i=0;i<messages.size();i++){
     		msg+=messages.get(i)+"\n";
     	}
     	messageBoard.setText(msg);
-    	final ScrollView sv = (ScrollView) findViewById(R.id.messageScroller);
+    	final ScrollView sv = (ScrollView) body.findViewById(R.id.messageScroller);
     	sv.post(new Runnable() {            
     	    @Override
     	    public void run() {
@@ -254,9 +249,9 @@ public class WaitingRoomActivity extends Activity {
 
     }
     
-    private void refreshPlayers(){
-    	ListView lobby = (ListView) findViewById(R.id.players);
-    	GamePlayerlistAdapter adapter = new GamePlayerlistAdapter(this,R.layout.waitingroom_list_item, NetGlobal.members);
+    public static void refreshPlayers(View body, Context context){
+    	ListView lobby = (ListView) body.findViewById(R.id.players);
+    	GamePlayerlistAdapter adapter = new GamePlayerlistAdapter(context,R.layout.waitingroom_list_item, NetGlobal.members);
         lobby.setAdapter(adapter);
         
         lobby.setOnItemClickListener(new OnItemClickListener() {
@@ -363,11 +358,13 @@ public class WaitingRoomActivity extends Activity {
     	builder.show();
     }
 
-    private class GamePlayerlistAdapter extends ArrayAdapter<ParsedDataset.Member> {
+    public static class GamePlayerlistAdapter extends ArrayAdapter<ParsedDataset.Member> {
             private ArrayList<ParsedDataset.Member> items;
+            private Context context;
             
             public GamePlayerlistAdapter(Context context, int textViewResourceId, ArrayList<ParsedDataset.Member> items) {
                     super(context, textViewResourceId, items);
+                    this.context = context;
                     this.items = items;
             }
             
@@ -375,7 +372,7 @@ public class WaitingRoomActivity extends Activity {
             public View getView(int position, View convertView, ViewGroup parent) {
                     View v = convertView;
                     if (v == null) {
-                        LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         v = vi.inflate(R.layout.waitingroom_list_item, null);
                     }
                     ParsedDataset.Member o = items.get(position);

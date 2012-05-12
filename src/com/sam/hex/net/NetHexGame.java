@@ -2,17 +2,25 @@ package com.sam.hex.net;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,9 +66,12 @@ public class NetHexGame extends Activity {
     
     public void applyBoard(){
     	Global.viewLocation = NetGlobal.GAME_LOCATION;
-    	setContentView(R.layout.game_net);
-    	NetGlobal.game.board=(BoardView) findViewById(R.id.board);
+    	NetGlobal.game.board=new BoardView(this);
     	NetGlobal.game.board.setOnTouchListener(new HexGame.TouchListener(NetGlobal.game));
+    	setContentView(R.layout.game_net);
+        GamePagerAdapter gameAdapter = new GamePagerAdapter(NetGlobal.game);
+    	ViewPager gamePager = (ViewPager) findViewById(R.id.board);
+        gamePager.setAdapter(gameAdapter);
     	
     	Button home = (Button) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
@@ -216,5 +227,143 @@ public class NetHexGame extends Activity {
 
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	builder.setMessage(this.getString(R.string.confirmExit)).setPositiveButton(this.getString(R.string.yes), dialogClickListener).setNegativeButton(this.getString(R.string.no), dialogClickListener).show();
+    }
+    
+    private class GamePagerAdapter extends PagerAdapter{
+    	GameObject game;
+    	public GamePagerAdapter(GameObject game){
+    		this.game = game;
+    	}
+    	
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+	    /**
+	     * Create the page for the given position.  The adapter is responsible
+	     * for adding the view to the container given here, although it only
+	     * must ensure this is done by the time it returns from
+	     * {@link #finishUpdate()}.
+	     *
+	     * @param container The containing View in which the page will be shown.
+	     * @param position The page position to be instantiated.
+	     * @return Returns an Object representing the new page.  This does not
+	     * need to be a View, but can be some other container of the page.
+	     */
+        @Override
+        public Object instantiateItem(View collection, int position) {
+            if(position==0){
+            	((ViewPager) collection).addView(game.board,0);
+                
+                return game.board;
+            }
+            if(position==1){
+            	LayoutInflater inflater = (LayoutInflater) NetHexGame.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+            	final View waitingRoom = inflater.inflate(R.layout.waitingroom_body, null);
+            	
+            	Button submit = (Button) waitingRoom.findViewById(R.id.submit);
+                submit.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                    	WaitingRoomActivity.sendMessage(waitingRoom, (EditText) waitingRoom.findViewById(R.id.sendMessage));
+                    }
+                });
+                
+                EditText text = (EditText) waitingRoom.findViewById(R.id.sendMessage);
+                text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        				if(actionId==EditorInfo.IME_ACTION_DONE || event.getKeyCode()==KeyEvent.KEYCODE_ENTER){
+        					WaitingRoomActivity.sendMessage(waitingRoom, v);
+        					return true;
+        				}
+        				return false;
+        			}
+        		});
+                final Handler handler = new Handler();
+                
+                new Thread(new Runnable(){
+                	public void run(){
+                		while(!game.gameOver){
+                			handler.post(new Runnable(){
+                	    		public void run(){
+                	    			WaitingRoomActivity.refreshPlayers(waitingRoom, NetHexGame.this);
+                	    			WaitingRoomActivity.refreshMessages(waitingRoom);
+                	    			game.player1Icon.setColorFilter(game.player1.getColor());
+                	    			game.player2Icon.setColorFilter(game.player2.getColor());
+                	    			if(game.currentPlayer==1 && !game.gameOver){
+                	    				game.player1Icon.setAlpha(255);
+                	    				game.player2Icon.setAlpha(80);
+                	    			}
+                	    			else if(game.currentPlayer==2 && !game.gameOver){
+                	    				game.player1Icon.setAlpha(80);
+                	    				game.player2Icon.setAlpha(255);
+                	    			}
+                	    			else{
+                	    				game.player1Icon.setAlpha(80);
+                	    				game.player2Icon.setAlpha(80);
+                	    			}
+                	    		}});
+                			try {
+	            				Thread.sleep(5000);
+	            			} catch (InterruptedException e) {
+	            				e.printStackTrace();
+	            			}
+                		}
+                	}
+                }).start();
+                
+                
+            	((ViewPager) collection).addView(waitingRoom,0);
+                
+                return waitingRoom;
+            }
+            
+            return game.board;
+        }
+        
+	    /**
+	     * Remove a page for the given position.  The adapter is responsible
+	     * for removing the view from its container, although it only must ensure
+	     * this is done by the time it returns from {@link #finishUpdate()}.
+	     *
+	     * @param container The containing View from which the page will be removed.
+	     * @param position The page position to be removed.
+	     * @param object The same object that was returned by
+	     * {@link #instantiateItem(View, int)}.
+	     */
+        @Override
+        public void destroyItem(View collection, int position, Object view) {
+            ((ViewPager) collection).removeView((View) view);
+        }
+
+        
+        
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view==((View)object);
+        }
+
+        
+	    /**
+	     * Called when the a change in the shown pages has been completed.  At this
+	     * point you must ensure that all of the pages have actually been added or
+	     * removed from the container as appropriate.
+	     * @param container The containing View which is displaying this adapter's
+	     * page views.
+	     */
+        @Override
+        public void finishUpdate(View arg0) {}
+        
+
+        @Override
+        public void restoreState(Parcelable arg0, ClassLoader arg1) {}
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
+
+        @Override
+        public void startUpdate(View arg0) {}
     }
 }
