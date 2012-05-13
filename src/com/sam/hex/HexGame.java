@@ -52,8 +52,13 @@ public class HexGame extends Activity {
         if(intent!=getIntent()){
 	        intent = getIntent();
 	        if (intent.getData() != null) {
-	        	Load l = new Load(new File(intent.getData().getPath()));
-	        	l.run();
+	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(new File(intent.getData().getPath())), "loading", 200000);
+	        	loading.start();
+				try {
+					loading.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 	        }
         }
     }

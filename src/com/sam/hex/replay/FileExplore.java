@@ -194,7 +194,7 @@ public class FileExplore extends Activity {
 	    	    	    	    public void onClick(DialogInterface dialog, int which) {
 	    	    	    	        switch (which){
 	    	    	    	        case DialogInterface.BUTTON_POSITIVE:
-	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(new File(FileExplore.path + FileExplore.chosenFile)), "loading", 200000);
+	    	    	    	        	Thread loading = new Thread(new ThreadGroup("Load"), new Load(new File(FileExplore.path + File.separator + FileExplore.chosenFile)), "loading", 200000);
 	    	    						loading.start();
 	    	    						try {
 	    	    							loading.join();
