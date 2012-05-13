@@ -73,10 +73,11 @@
     <string name="winner"># vyhral!</string>
     <string name="timer">Čas vypršal: #</string>
     <string name="saved">Uložené!</string>
+    <string name="claimVictory">Reklamácia Víťazstvo</string>
     
     <!-- Game instructions -->
     <string name="instructions">Hes hrajú dvaja hráči, ktorí otáčajú tabličky naopak a umiestňujú ich na hracej doske. Hráči majú rozdielne farby (červená a modrá).  \n\n
-        (Taken from <a href="http://www.hexwiki.org/index.php?title=Rules">hexwiki.org</a>)</string>
+        (Prevzaté z <a href="http://www.hexwiki.org/index.php?title=Rules">hexwiki.org</a>)</string>
     
     <!-- Quit -->
     <string name="confirmExit">Chcete skutočne skončiť?</string>

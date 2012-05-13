@@ -79,6 +79,7 @@
     <string name="winner"># gagne!</string>
     <string name="timer">Temps restant: #</string>
     <string name="saved">sauvé!</string>
+    <string name="claimVictory">Revendiquer la Victoire</string>
     
     <!-- Local lobby -->
     <string name="local">Lobby Local</string>

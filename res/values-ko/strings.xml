@@ -74,6 +74,7 @@
     <string name="winner"># 이겼어요!</string>
     <string name="timer">남은 시간: #</string>
     <string name="saved">저장했어요!</string>
+    <string name="claimVictory">청구 승리</string>
     
     <!-- Game instructions -->
     <string name="instructions">헥스(Hex)는 순서대로 보드에 조각을 놓는 두 선수에 의해 진행됩니다. 선수들은 빨강과 파랑과 같이 다른 색깔을 가지고 있어요. (선수들 자신들이 가끔 빨강이나 파랑으로 불려지는 경우도 잇어요) 보드의 네 귀퉁이는 같은 색깔들로 칠해져있는데요, 이런식으로 평행하는 모서리들은 같은 색을 가지고 있어요. 만일 두 빨간 모서리간에 연속적인 체인을 만들면 빨간 선수가 이기고, 파란 모서리들 간에 그런 체인을 만들면 파란 선수가 이겨요. \n\n

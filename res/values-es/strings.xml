@@ -74,6 +74,7 @@
     <string name="winner"># gana!</string>
     <string name="timer">Tiempo restante: #</string>
     <string name="saved">¡Salvados!</string>
+    <string name="claimVictory">Reclamar la Victoria</string>
     
     <!-- Game instructions -->
     <string name="instructions">Hex es jugado por dos jugadores, que se turnan para colocar las piezas en el tablero. Los jugadores tienen diferentes colores, digamos rojo y azul. (Los jugadores mismos se denominan a veces como rojo y azul) Los cuatro bordes de la placa son de color con los mismos colores, de tal manera que los bordes paralelos tienen el mismo color. Rojo gana si se puede construir una cadena continua entre los dos bordes rojos, azules y gana si puede construir una cadena entre los bordes azules. \n \n
