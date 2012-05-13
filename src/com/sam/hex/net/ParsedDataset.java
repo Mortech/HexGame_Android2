@@ -18,10 +18,10 @@ public class ParsedDataset {
     public ArrayList<GameSession> sessions = new ArrayList<GameSession>();
     public class GameSession{
     	public ArrayList<Member> members = new ArrayList<Member>();
-    	public String state = null;
-    	public int sid = 0;
-    	public int uid = 0;
-    	public String server = null;
+    	public String state;
+    	public int sid;
+    	public int uid;
+    	public String server;
     	public GameSession(String state, int sid, int uid, String server){
         	this.state = state;
         	this.sid = sid;
@@ -53,17 +53,19 @@ public class ParsedDataset {
     	}
     }
     public class Member{
-    	public int place = 9;
-    	public int uid = 0;
-    	public String name = null;
-    	public String state = null;
+    	public int place;
+    	public int uid;
+    	public String name;
+    	public String state;
     	public int timerLeft;
-    	public Member(int place, int uid, String name, String state, int timerLeft){
+    	public long lastRefresh;
+    	public Member(int place, int uid, String name, String state, int timerLeft, long lastRefresh){
     		this.place = place;
         	this.uid = uid;
         	this.name = name;
         	this.state = state;
         	this.timerLeft = timerLeft;
+        	this.lastRefresh = lastRefresh;
     	}
     	public String toString(){
     		return name;
@@ -72,8 +74,8 @@ public class ParsedDataset {
     public void addSession(String state, int sid, int uid, String server){
     	sessions.add(new GameSession(state, sid, uid, server));
     }
-    public void addSessionMember(int position, int uid, String name, String state, int timerLeft){
-    	sessions.get(sessions.size()-1).members.add(new Member(position, uid, name, state, timerLeft));
+    public void addSessionMember(int position, int uid, String name, String state, int timerLeft, long lastRefresh){
+    	sessions.get(sessions.size()-1).members.add(new Member(position, uid, name, state, timerLeft, lastRefresh));
     }
     
     //Playing a game
@@ -82,8 +84,8 @@ public class ParsedDataset {
     private int sid;
     private String server = null;
     public ArrayList<Member> players = new ArrayList<Member>();
-    public void addPlayer(int position, int uid, String name, String state, int timerLeft){
-    	players.add(new Member(position, uid, name, state, timerLeft));
+    public void addPlayer(int position, int uid, String name, String state, int timerLeft, long lastRefresh){
+    	players.add(new Member(position, uid, name, state, timerLeft, lastRefresh));
     }
     public ArrayList<Message> messages = new ArrayList<Message>();
     public class Message{

@@ -83,7 +83,7 @@ public class WaitingRoomActivity extends Activity {
         Button submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	sendMessage(WaitingRoomActivity.this.findViewById(R.layout.waitingroom), (EditText) findViewById(R.id.sendMessage));
+            	sendMessage(WaitingRoomActivity.this.findViewById(R.id.body), (EditText) findViewById(R.id.sendMessage));
             }
         });
         
@@ -91,7 +91,7 @@ public class WaitingRoomActivity extends Activity {
         text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if(actionId==EditorInfo.IME_ACTION_DONE || event.getKeyCode()==KeyEvent.KEYCODE_ENTER){
-					sendMessage(WaitingRoomActivity.this.findViewById(R.layout.waitingroom), v);
+					sendMessage(WaitingRoomActivity.this.findViewById(R.id.body), v);
 					return true;
 				}
 				return false;
@@ -138,8 +138,8 @@ public class WaitingRoomActivity extends Activity {
     	
     	refreshPlayers = new RefreshGamePlayerlist(new Handler(), new Runnable(){
     		public void run(){
-				refreshPlayers(WaitingRoomActivity.this.findViewById(R.layout.waitingroom), WaitingRoomActivity.this);
-				refreshMessages(WaitingRoomActivity.this.findViewById(R.layout.waitingroom));
+				refreshPlayers(WaitingRoomActivity.this.findViewById(R.id.body), WaitingRoomActivity.this);
+				refreshMessages(WaitingRoomActivity.this.findViewById(R.id.body));
     		}}, startGame, this);
     }
     

@@ -29,6 +29,7 @@ public class XMLHandler extends DefaultHandler{
     private boolean in_timerTotal = false;
     private boolean in_timerInc = false;
     private boolean in_scored = false;
+    private long currentTime = 0L;
        
     private ParsedDataset parsedDataset = new ParsedDataset();
  
@@ -81,7 +82,7 @@ public class XMLHandler extends DefaultHandler{
 	    	}
 	    	if(in_session){
 		    	if(localName.equals("member")){
-		    		parsedDataset.addSessionMember(Integer.parseInt(atts.getValue("plc")), Integer.parseInt(atts.getValue("uid")), atts.getValue("nam"), atts.getValue("stat"), 0);
+		    		parsedDataset.addSessionMember(Integer.parseInt(atts.getValue("plc")), Integer.parseInt(atts.getValue("uid")), atts.getValue("nam"), atts.getValue("stat"), 0, 0);
 		    	}
 	    	}
     	}
@@ -92,6 +93,7 @@ public class XMLHandler extends DefaultHandler{
     	else if(in_handlerData){
     		//Game status
     		if(localName.equals("sessionInfo")){
+    			currentTime = Long.parseLong(atts.getValue("curtime"));
     			if(atts.getValue("status").equals("INIT")){
     				parsedDataset.gameActive = false;
     			}
@@ -105,7 +107,7 @@ public class XMLHandler extends DefaultHandler{
     		}
     		else if(in_playerList){
     			if(localName.equals("player")){
-    				parsedDataset.addPlayer(Integer.parseInt(atts.getValue("place")), Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), atts.getValue("stat"), Integer.parseInt(atts.getValue("timerLeft")));
+    				parsedDataset.addPlayer(Integer.parseInt(atts.getValue("place")), Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), atts.getValue("stat"), Integer.parseInt(atts.getValue("timerLeft")),currentTime-Long.parseLong(atts.getValue("lastRefresh")));
     			}
     		}
     		if(localName.equals("guestList")){
@@ -113,7 +115,7 @@ public class XMLHandler extends DefaultHandler{
     		}
     		else if(in_guestList){
     			if(localName.equals("guest")){
-    				parsedDataset.addPlayer(0, Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), "Spectating", 0);
+    				parsedDataset.addPlayer(0, Integer.parseInt(atts.getValue("uid")), atts.getValue("name"), "Spectating", 0, 0);
     			}
     		}
     		//Events during game

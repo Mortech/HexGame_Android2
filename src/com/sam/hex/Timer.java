@@ -6,6 +6,9 @@ import android.view.View;
  * @author Will Harmon
  **/
 public class Timer implements Runnable{
+	public static final int NO_TIMER = 0;
+	public static final int PER_MOVE = 1;
+	public static final int ENTIRE_MATCH = 2;
 	private boolean refresh = true;
 	public long startTime;
 	private long elapsedTime;

@@ -1,5 +1,18 @@
 package com.sam.hex.net;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -127,6 +141,87 @@ public class NetHexGame extends Activity {
         NetGlobal.game.replayPlayPause = (ImageButton) this.findViewById(R.id.replayPlayPause);
         NetGlobal.game.replayBack = (ImageButton) this.findViewById(R.id.replayBack);
         NetGlobal.game.replayButtons = (RelativeLayout) this.findViewById(R.id.replayButtons);
+	    
+	    new Thread(new Runnable(){
+        	public void run(){
+        		while(!NetGlobal.game.gameOver){
+        			NetGlobal.game.handler.post(new Runnable(){
+        	    		public void run(){
+        	    			if(GameAction.getPlayer(NetGlobal.game.currentPlayer, NetGlobal.game) instanceof NetPlayerObject 
+        	    					&& !(GameAction.getPlayer(NetGlobal.game.currentPlayer%2+1, NetGlobal.game) instanceof NetPlayerObject))
+        	    				for(int i=0;i<NetGlobal.members.size();i++){
+        	    					if(NetGlobal.members.get(i).place==NetGlobal.game.currentPlayer){
+        	    						if(NetGlobal.members.get(i).lastRefresh>300){
+	        	    						NetGlobal.game.handler.post(new Runnable(){
+	        	    							public void run(){
+	        	    								NetGlobal.game.timerText.setVisibility(View.GONE);
+	        	    							}
+	        	    						});
+	        	    						final Handler buttonHandler = new Handler();
+	        	    						final Button button = (Button) NetHexGame.this.findViewById(R.id.claimVictory);
+	        	    						button.setOnClickListener(new OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													new Thread(new Runnable(){
+											    		public void run(){
+											    			try {
+											    				String lobbyUrl = String.format("http://%s.iggamecenter.com/api_handler.php?app_id=%s&app_code=%s&uid=%s&session_id=%s&sid=%s&cmd=end&type=CLAIMQUIT&lasteid=%s", URLEncoder.encode(NetGlobal.server, "UTF-8"), NetGlobal.id, URLEncoder.encode(NetGlobal.passcode,"UTF-8"), NetGlobal.uid, URLEncoder.encode(NetGlobal.session_id,"UTF-8"), NetGlobal.sid, NetGlobal.lasteid);
+											    				URL url = new URL(lobbyUrl);
+											    				SAXParserFactory spf = SAXParserFactory.newInstance();
+											    	            SAXParser parser = spf.newSAXParser();
+											    	            XMLReader reader = parser.getXMLReader();
+											    	            XMLHandler xmlHandler = new XMLHandler();
+											    	            reader.setContentHandler(xmlHandler);
+											    	            reader.parse(new InputSource(url.openStream()));
+											    	            
+											    	            ParsedDataset parsedDataset = xmlHandler.getParsedData();
+											    	        	if(!parsedDataset.error){
+											    	        		buttonHandler.post(new Runnable() {
+																		@Override
+																		public void run() {
+																			button.setVisibility(View.GONE);
+																		}
+																	});
+											    	        		NetGlobal.game.timer.stop();
+											    	        		NetGlobal.game.timer = new Timer(NetGlobal.game, 0, 0, Timer.ENTIRE_MATCH);
+											    	        		NetGlobal.game.timer.start();
+											    	        	}
+											    	        	else{
+											    	        		System.out.println(parsedDataset.getErrorMessage());
+											    	        	}
+											    			} catch (MalformedURLException e) {
+											    				e.printStackTrace();
+											    			} catch (ParserConfigurationException e) {
+											    				e.printStackTrace();
+											    			} catch (SAXException e) {
+											    				e.printStackTrace();
+											    			} catch (IOException e) {
+											    				e.printStackTrace();
+											    			}
+											    		}
+											    	}).start();
+												}
+											});
+	        	    						button.setVisibility(View.VISIBLE);
+        	    						}
+        	    						else{
+            	    						if(NetGlobal.game.timer.type!=0 || !NetGlobal.game.gameOver){
+            	    				        	NetGlobal.game.timerText.setVisibility(View.VISIBLE);
+            	    				        } 
+            	    						Button button = (Button) NetHexGame.this.findViewById(R.id.claimVictory);
+            	    						button.setVisibility(View.GONE);
+            	    					}
+        	    					}
+        	    				}
+        	    		}});
+        			try {
+        				Thread.sleep(8000);
+        			} catch (InterruptedException e) {
+        				e.printStackTrace();
+        			}
+        		}
+        	}
+        }).start();
     }
     
     private void initializeNewGame(){
@@ -146,10 +241,10 @@ public class NetHexGame extends Activity {
     	HexGame.setNames(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
     	HexGame.setColors(prefs, NetGlobal.GAME_LOCATION, NetGlobal.game);
     	if(NetGlobal.timerTime==0){
-    	    NetGlobal.game.timer = new Timer(NetGlobal.game, 0, 0, 0);
+    	    NetGlobal.game.timer = new Timer(NetGlobal.game, 0, 0, Timer.NO_TIMER);
     	}
     	else{
-    	    NetGlobal.game.timer = new Timer(NetGlobal.game, NetGlobal.timerTime, 0, 2);
+    	    NetGlobal.game.timer = new Timer(NetGlobal.game, NetGlobal.timerTime, 0, Timer.ENTIRE_MATCH);
     	}
     	
 	    //Display board
@@ -230,9 +325,11 @@ public class NetHexGame extends Activity {
     }
     
     private class GamePagerAdapter extends PagerAdapter{
-    	GameObject game;
+    	private GameObject game;
+    	private Boolean inWaitingRoom;
     	public GamePagerAdapter(GameObject game){
     		this.game = game;
+    		this.inWaitingRoom = false;
     	}
     	
         @Override
@@ -259,6 +356,7 @@ public class NetHexGame extends Activity {
                 return game.board;
             }
             if(position==1){
+            	this.inWaitingRoom = true;
             	LayoutInflater inflater = (LayoutInflater) NetHexGame.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
             	final View waitingRoom = inflater.inflate(R.layout.waitingroom_body, null);
             	
@@ -283,7 +381,7 @@ public class NetHexGame extends Activity {
                 
                 new Thread(new Runnable(){
                 	public void run(){
-                		while(!game.gameOver){
+                		while(inWaitingRoom){
                 			handler.post(new Runnable(){
                 	    		public void run(){
                 	    			WaitingRoomActivity.refreshPlayers(waitingRoom, NetHexGame.this);
@@ -312,7 +410,6 @@ public class NetHexGame extends Activity {
                 	}
                 }).start();
                 
-                
             	((ViewPager) collection).addView(waitingRoom,0);
                 
                 return waitingRoom;
@@ -333,6 +430,7 @@ public class NetHexGame extends Activity {
 	     */
         @Override
         public void destroyItem(View collection, int position, Object view) {
+        	if(position==1) this.inWaitingRoom = false;
             ((ViewPager) collection).removeView((View) view);
         }
 

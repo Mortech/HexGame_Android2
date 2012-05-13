@@ -75,6 +75,7 @@ public class MoveListener implements Runnable{
 	        			lasteid = parsedDataset.lasteid;
 	        			NetGlobal.lasteid = parsedDataset.lasteid;
 	        		}
+        			NetGlobal.members = parsedDataset.players;
 	        		for(int i=0;i<parsedDataset.players.size();i++){
 	        			if(parsedDataset.players.get(i).place==1){
 	        				game.player1.setTime(parsedDataset.players.get(i).timerLeft*1000);
@@ -209,7 +210,7 @@ public class MoveListener implements Runnable{
 			}
 			
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(8000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
