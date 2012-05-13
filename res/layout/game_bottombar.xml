@@ -79,5 +79,6 @@
         android:id="@+id/claimVictory"
         android:textColor="@color/black"
         android:padding="5dp"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        android:visibility="gone"/>
 </RelativeLayout>
